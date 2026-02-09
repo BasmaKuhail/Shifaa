@@ -1,8 +1,23 @@
+import { useState } from "react";
 import Button from "./Button";
+import GoogleBtn from "./GoogleBtn";
 import Input from "./input";
 import Title from "./Title";
 
 export default function Form({ register }: { register: boolean }) {
+
+    const [userInfo, setUserInfo] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+    });
+
+    const submitOnClick = () => {
+        // Handle form submission logic here
+        console.log('Form submitted with user info:', userInfo);
+    }
     return (
         <>
             <div className="min-h-screen flex items-center justify-center ">
@@ -16,35 +31,30 @@ export default function Form({ register }: { register: boolean }) {
                         <div className="flex flex-col gap-4 w-full ">
                             <div className="flex flex-row gap-4 justify-between w-full">
                                 <div className="flex-1">
-                                    <Input label="الاسم الأول" type="text" inputText="الاسم الأول"/>
+                                    <Input label="الاسم الأخير" type="text" inputText="الاسم الأخير" value={userInfo.lastName} onChange={(value) => setUserInfo({ ...userInfo, lastName: value })} />
                                 </div>
                                 <div className="flex-1">
-                                    <Input label="الاسم الأخير" type="text" inputText="الاسم الأخير"/>
+                                    <Input label="الاسم الأول" type="text" inputText="الاسم الأول" value={userInfo.firstName} onChange={(value) => setUserInfo({ ...userInfo, firstName: value })} />
                                 </div>
                             </div>
-                            
-                            <Input label="البريد الالكتروني" type="email" inputText="youremail.com"/>
+
+                            <Input label="البريد الالكتروني" type="email" inputText="youremail.com" value={userInfo.email} onChange={(value) => setUserInfo({ ...userInfo, email: value })} />
 
 
                             <div className="flex flex-row justify-between gap-4 w-full">
                                 <div className="flex-1">
-                                <Input label="كلمة المرور" type="password" inputText="كلمة المرور"/>
+                                    <Input label="كلمة المرور" type="password" inputText="كلمة المرور" value={userInfo.password} onChange={(value) => setUserInfo({ ...userInfo, password: value })} />
                                 </div>
                                 <div className="flex-1">
-                                <Input label="تأكيد كلمة المرور" type="password" inputText="تأكيد كلمة المرور"/>
+                                    <Input label="تأكيد كلمة المرور" type="password" inputText="تأكيد كلمة المرور" value={userInfo.confirmPassword} onChange={(value) => setUserInfo({ ...userInfo, confirmPassword: value })} />
                                 </div>
                             </div>
                             <p className="text-sm text-gray-500 text-right">استخدم 8 أحرف أو أكثر مع مزيج من الأحرف والأرقام والرموز</p>
 
                             <div className="my-4 flex flex-col gap-3">
-                                <Button text={register ? 'انشاء حساب' : 'تسجيل الدخول'} onClick={() => {}} />
-
-                                <button onClick={() => {}} className="py-2 px-4 rounded border flex items-center justify-center gap-2">
-                                    <img src={"/icons/google.png"} className="inline-block w-5 h-5 mr-2 " />
-                                    التسجيل باستخدام جوجل
-                                    
-                                </button>
-                                {register && <p className="text-sm text-gray-500 text-center">بالاستمرار، فإنك توافق على شروط الاستخدام وسياسة الخصوصية</p>}
+                                <Button text={register ? 'انشاء حساب' : 'تسجيل الدخول'} onClick={submitOnClick} />
+                                <GoogleBtn />
+                                {register && <p className="text-sm  text-center">بالاستمرار، فإنك توافق على شروط الاستخدام وسياسة الخصوصية</p>}
                             </div>
                         </div>
                     </div>
