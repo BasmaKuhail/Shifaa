@@ -45,7 +45,7 @@ export default function Input({label, type, value, onChange}: InputProps) {
                     type={inputType} 
                     value={inputValue}
                     placeholder={label}
-                    className={`border border-[#D1D1D1] rounded-md p-2 w-full text-right focus:outline-none
+                    className={`border rounded-md p-2 w-full text-right focus:outline-none
                         ${
                         type === 'email' && inputValue
                             ? validEmail
@@ -60,7 +60,7 @@ export default function Input({label, type, value, onChange}: InputProps) {
                             : 'border-[#FF1F1F]'
                             : ''
                         }
-                        ${type === 'text' ? 'focus:border-[#1A71F6]' : ''}
+                        ${type === 'text' ? 'focus:border-[#1A71F6]' : 'border-[#D1D1D1] focus:border-[#1A71F6]'}
                     `}
                     />
                 {type === 'password' && 
