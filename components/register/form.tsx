@@ -22,6 +22,11 @@ export default function Form({ register }: { register: boolean }) {
             return;
         }
         console.log('Form submitted with user info:', userInfo);
+        if(userInfo.password !== userInfo.confirmPassword) {
+            alert('كلمة المرور وتأكيد كلمة المرور غير متطابقين');
+            return;
+        }
+        console.log('Form submitted with user info:', userInfo);
     }
     return (
         <>
