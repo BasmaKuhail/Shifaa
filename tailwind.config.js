@@ -28,12 +28,13 @@ module.exports = {
         },
         fontSize: {
             'xxs': '0.563rem',
-            'xs': '0.625rem', // 10px
+            'xs': '0.625rem', //10px
             'sm': '1rem', // 16px
             'md': '1.313rem',
             'lg': '1.5rem', // 24px
             'xl': '2.250rem',  
-            'xxl': '2.938rem',  
+            'xxl': '2.938rem',
+            '12px': '0.75rem', //12px
             'inpt': '0.875rem', //14px
             'title': '2.25rem', //36px
             'btn': "1.125rem", //18px
