@@ -17,6 +17,10 @@ export default function Form({ register }: { register: boolean }) {
     const submitOnClick = () => {
         // Handle form submission logic here
         console.log('Form submitted with user info:', userInfo);
+        if(userInfo.password !== userInfo.confirmPassword) {
+            alert('كلمة المرور وتأكيد كلمة المرور غير متطابقين');
+            return;
+        }
     }
     return (
         <>
@@ -43,10 +47,10 @@ export default function Form({ register }: { register: boolean }) {
 
                             <div className="flex flex-row justify-between gap-4 w-full">
                                 <div className="flex-1">
-                                    <Input label="كلمة المرور" type="password" inputText="كلمة المرور" value={userInfo.password} onChange={(value) => setUserInfo({ ...userInfo, password: value })} />
+                                    <Input label="تأكيد كلمة المرور" type="password" inputText="تأكيد كلمة المرور" value={userInfo.confirmPassword} onChange={(value) => setUserInfo({ ...userInfo, confirmPassword: value })} />
                                 </div>
                                 <div className="flex-1">
-                                    <Input label="تأكيد كلمة المرور" type="password" inputText="تأكيد كلمة المرور" value={userInfo.confirmPassword} onChange={(value) => setUserInfo({ ...userInfo, confirmPassword: value })} />
+                                    <Input label="كلمة المرور" type="password" inputText="كلمة المرور" value={userInfo.password} onChange={(value) => setUserInfo({ ...userInfo, password: value })} />
                                 </div>
                             </div>
                             <p className="text-sm text-gray-500 text-right">استخدم 8 أحرف أو أكثر مع مزيج من الأحرف والأرقام والرموز</p>

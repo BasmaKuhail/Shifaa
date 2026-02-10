@@ -60,7 +60,7 @@ export default function Input({label, type, value, onChange}: InputProps) {
                             : 'border-[#FF1F1F]'
                             : ''
                         }
-                        ${type === 'text' ? 'focus:border-[#1A71F6]' : 'border-[#D1D1D1] focus:border-[#1A71F6]'}
+                        ${type === 'text' ? 'border-[#D1D1D1] focus:border-[#1A71F6]' : 'border-[#D1D1D1] focus:border-[#1A71F6]'}
                     `}
                     />
                 {type === 'password' && 
