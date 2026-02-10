@@ -5,7 +5,7 @@ type ButtonProps = {
 
 export default function Button({text, onClick}: ButtonProps) {
     return(
-        <button onClick={onClick} className="bg-[var(--petrolBlue)] radius-[9px] text-white py-2 px-4 rounded cursor-pointer">
+        <button onClick={onClick} className="bg-blue-500 text-white py-2 rounded-btn cursor-pointer text-btn w-full md:w-[70%] hover:bg-blue-700 transition-colors">
             {text}
         </button>
     )

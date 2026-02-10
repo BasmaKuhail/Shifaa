@@ -45,7 +45,7 @@ export default function Input({label, type, value, onChange}: InputProps) {
                     type={inputType} 
                     value={inputValue}
                     placeholder={label}
-                    className={`border rounded-md p-2 w-full text-right focus:outline-none
+                    className={`border rounded-inpt p-2 w-full text-right focus:outline-none text-inpt h-[52px] md:h-[45px]
                         ${
                         type === 'email' && inputValue
                             ? validEmail
@@ -66,7 +66,7 @@ export default function Input({label, type, value, onChange}: InputProps) {
                 {type === 'password' && 
                     <img 
                         src={passSrc} 
-                        className="absolute left-2 top-1/2 transform -translate-y-1/2 cursor-pointer"
+                        className="absolute left-4 top-1/2 transform -translate-y-1/2 cursor-pointer"
                         onClick={togglePasswordVisibility} />}
             </div>
         </div>
