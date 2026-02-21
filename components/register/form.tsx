@@ -104,7 +104,7 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
     }
     return (
         <>
-            <div className="min-h-screen flex items-center justify-center ">
+            <div className="min-h-screen flex items-center justify-center bg-blue-100">
                 <div className="md:w-full w-[90%] max-w-3xl flex flex-col items-start">
                     <div 
                         className="
