@@ -121,7 +121,7 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
                         
                         <div className="flex flex-col gap-3 w-full ">
                             {isRegister && <div
-                                className="flex flex-col gap-3 md:flex-row md:gap-6 justify-between w-full">
+                                className="flex flex-col gap-3 md:flex-row-reverse md:gap-6 justify-between w-full">
                                 <div className="flex-1">
                                     <Input label="الاسم الأول" type="text" inputText="الاسم الأول" value={userInfo.firstName} onChange={(value) => setUserInfo({ ...userInfo, firstName: value })} />
                                 </div>
@@ -133,7 +133,7 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
                             <Input label="البريد الالكتروني" type="email" inputText="youremail.com" value={userInfo.email} onChange={(value) => setUserInfo({ ...userInfo, email: value })} />
 
 
-                            <div className="flex flex-col gap-3 md:flex-row justify-between md:gap-6 w-full">
+                            <div className="flex flex-col gap-3 md:flex-row-reverse justify-between md:gap-6 w-full">
                                 <div className="flex-1">
                                     <Input label="كلمة المرور" type="password" inputText="كلمة المرور" value={userInfo.password} onChange={(value) => setUserInfo({ ...userInfo, password: value })} />
                                 </div>

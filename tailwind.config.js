@@ -23,8 +23,15 @@ module.exports = {
             100: '#E5F7FF',
             50: '#FFFFFF',
           },
+          black: {
+            500: "#727272", //text gray
+            200:"#C9C9C9", //border gray
+            100: "#F6F6F6", //input background gray
+          },
             textInputCorrect: '#1A71F6',
             textInputWrong: '#FF1F1F',
+            online: '#23A149', //green
+            red: "#EA3030",
         },
         fontSize: {
             'xxs': '0.563rem',
