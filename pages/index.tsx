@@ -1,3 +1,4 @@
+import Header from '@/components/header/Header';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useRouter } from 'next/router';
@@ -19,14 +20,15 @@ export default function Index() {
 
   return (
     <>
-      <h1>{t('welcome')}</h1>
+    <Header />
+      {/* <h1>{t('welcome')}</h1>
       <button
         onClick={() =>
           router.push({ pathname, query }, asPath, { locale: nextLocale })
         }
       >
         Switch to {nextLocale}
-      </button>
+      </button> */}
     </>
   );
 }
