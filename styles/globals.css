@@ -12,12 +12,10 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground: #333333;
-    --lightBlue: #BDD6E1;
   }
 }
 
 body {
-  background: var(--lightBlue);
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
   
