@@ -157,7 +157,6 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
                             </div>
                             {isRegister && <p className="text-xs md:text-12px text-center underline md:no-underline">بالاستمرار، فإنك توافق على شروط الاستخدام وسياسة الخصوصية</p>}
 
-                                
                         </div>
                         
                     </div>
