@@ -29,7 +29,8 @@ export default function Input({label, type, value, onChange, isTrue}: InputProps
                     type={inputType} 
                     value={value}
                     placeholder={label}
-
+                    dir="auto"
+                    
                     onCopy={(e) => type === 'password' && e.preventDefault()}
                     onPaste={(e) => type === 'password' && e.preventDefault()}
                     onCut={(e) => type === 'password' && e.preventDefault()}
