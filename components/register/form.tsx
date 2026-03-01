@@ -10,7 +10,7 @@ import ButtonEmpty from "./ButtonEmpty";
 
 import Link from "next/link";
 
-import {register} from "@/services/auth";
+import {register, login} from "@/services/auth";
 import { validateRegister, validateInput, validateConfirmPassword } from "@/utils/registerValidation"
 
 
@@ -23,47 +23,64 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
         confirmPassword: { value: '', isTrueData: false }
     });
 
+    const router = useRouter();
+
     const handleSubmit = async () => {
         try {
-            const response = await register({
-                first_name: userInfo.firstName.value,
-                last_name: userInfo.lastName.value,
-                email: userInfo.email.value,
-                password: userInfo.password.value,
-                password_confirmation: userInfo.confirmPassword.value,
-            });
-            console.log('Registration successful:', response);
 
-            // Save token
-            try {
-                localStorage.setItem("token", response.data.token);
-                console.log("Token saved to localStorage");
-            } catch (storageError) {
-                alert("Failed to save token. Please check your browser settings.");
-                console.error("Failed to save token to localStorage:", storageError);
+            let response;
+
+            if (isRegister) {
+                response = await register({
+                    first_name: userInfo.firstName.value,
+                    last_name: userInfo.lastName.value,
+                    email: userInfo.email.value,
+                    password: userInfo.password.value,
+                    password_confirmation: userInfo.confirmPassword.value,
+                });
+            } else {
+                response = await login({
+                    email: userInfo.email.value,
+                    password: userInfo.password.value,
+                });
             }
 
-            console.log("Registered:", response);
-            alert("تم التسجيل بنجاح! جاري إعادة التوجيه...");
-            router.push('/'); 
+            console.log("Success:", response);
+
+            // Save token
+            const token = response.data.token;
+            const user = response.data.user;
+
+            localStorage.setItem("token", token);
+            localStorage.setItem("user", JSON.stringify(user));
+
+            alert(isRegister ? "تم التسجيل بنجاح!" : "تم تسجيل الدخول بنجاح!");
+            
+            router.push("/");
 
         } catch (error: any) {
+
             if (error.response?.status === 422) {
-                alert(error.response.data.message || "Validation error occurred");
+                alert(error.response.data.message);
                 console.log("Validation Errors:", error.response.data.errors);
             }
 
             if (error.response?.status === 401) {
-                alert("Invalid credentials. Please check your email and password.");
-                console.log("Invalid credentials");
-                }
+                alert("البريد الإلكتروني أو كلمة المرور غير صحيحة");
+                console.log("Validation Errors:", error.response.data.errors);
+            }
 
-            console.log("General Error:", error.response?.data?.message);
+            if (error.response?.status === 500) {
+                alert("حدث خطأ في الخادم، حاول مرة أخرى");
+                console.log("Validation Errors:", error.response.data.errors);
+            }
+            if(!error.response?.status){
+                alert("خلل في الوصول إلى الخادم")
+            }
+            console.log("Error:", "unknown error of", error.response?.data);
         }
-    }
+    };
     
-    const router = useRouter();
-
     
     const submitOnClick = () => {
         // Handle form submission logic here
@@ -76,13 +93,14 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
                 confirmPassword: userInfo.confirmPassword.value
             });
             if (errorMessage) {
-                alert(errorMessage);
+                alert(errorMessage.errorMsg);
                 return false;
             }
         }
         console.log('Form submitted with user info:', userInfo);
         return true;
     }
+    
     return (
         <>
             <div className="min-h-screen flex items-center justify-center bg-blue-100">
@@ -123,7 +141,7 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
                                     <Input label="تأكيد كلمة المرور" type="password" inputText="تأكيد كلمة المرور" value={userInfo.confirmPassword.value} onChange={(value) => setUserInfo({ ...userInfo, confirmPassword: { value, isTrueData: true } })} isTrue={validateInput(userInfo.confirmPassword.value, 'password') && validateConfirmPassword(userInfo.password.value, userInfo.confirmPassword.value)}/>
                                 </div>}
                             </div>
-                            {isRegister &&<p className="text-xs md:text-inpt text-gray-500 text-right">استخدم 8 أحرف أو أكثر مع مزيج من الأحرف والأرقام والرموز</p>}
+                            {isRegister &&<p className="text-xs md:text-inpt text-gray-500 text-right">استخدم 8 أحرف انجليزية أو أكثر مع مزيج من الأرقام والرموز</p>}
                             {!isRegister &&<p className="text-xs md:text-inpt text-right underline"><a className="cursor-pointer">نسيت كلمة المرور؟</a></p>}
                             {/* {error && <p className="text-red-500 text-sm text-right">{error}</p>} */}
                         </div>
@@ -141,7 +159,6 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
                             </div>
                             {isRegister && <p className="text-xs md:text-12px text-center underline md:no-underline">بالاستمرار، فإنك توافق على شروط الاستخدام وسياسة الخصوصية</p>}
 
-                                
                         </div>
                         
                     </div>
