@@ -74,8 +74,10 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
                 alert("حدث خطأ في الخادم، حاول مرة أخرى");
                 console.log("Validation Errors:", error.response.data.errors);
             }
-
-            console.log("Error:", error.response?.data);
+            if(!error.response?.status){
+                alert("خلل في الوصول إلى الخادم")
+            }
+            console.log("Error:", "unknown error of", error.response?.data);
         }
     };
     
@@ -91,7 +93,7 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
                 confirmPassword: userInfo.confirmPassword.value
             });
             if (errorMessage) {
-                alert(errorMessage);
+                alert(errorMessage.errorMsg);
                 return false;
             }
         }
