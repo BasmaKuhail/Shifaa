@@ -17,7 +17,7 @@ export default function SearchHome (){
         <Text intro="صحتك أولويتنا" titleBlack="ابحث عن دوائك" titleBlue="في ثوانٍ" sentence="ابحث، صَفِّ النتائج، قارن الأسعار، وتحقق من التوفر بالقرب منك"/>
         <div className="flex flex-col gap-4 w-[70%]">
             <SearchInput label=" ابحث عن الأدوية" value= {userInput} onChange={(value) => setUserInput(value)}/>
-            <div className="flex flex-row justify-between">{filters.map((item) => <Item title={item.title} elements= {item.elements}/>)}</div>
+            <div className="flex flex-row-reverse justify-between">{filters.map((item, indx) => <Item key={indx} title={item.title} elements= {item.elements}/>)}</div>
         </div>
         
         

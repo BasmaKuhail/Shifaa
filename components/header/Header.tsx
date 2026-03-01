@@ -8,7 +8,7 @@ export default function Header(){
     return(
         <div className="bg-white p-2 flex flex-row gap-10 items-center border-b border-black-200 justify-between px-4 md:px-8 lg:px-30"> 
         <div className="flex flex-row gap-5 items-center justify-between ">
-            <Profile imgUrl={profile} name="سبونجبوب" position="طباخ"/>
+            <Profile imgUrl={profile} name="سبونج بوب" position="طباخ"/>
             <div className="w-[2px] h-[40px] bg-black-200"></div>
             <IconHolder icon={notification} isNotification={true} width={24} height={24}/>
         </div>

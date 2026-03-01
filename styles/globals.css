@@ -18,5 +18,25 @@
 body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
-  
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+/* track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* thumb */
+::-webkit-scrollbar-thumb {
+  background: #DFDFDF;
+  border-radius: 10px;
+}
+
+/* hover */
+::-webkit-scrollbar-thumb:hover {
+  opacity: 0.8;
 }

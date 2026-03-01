@@ -1,7 +1,6 @@
 import search from "@/public/icons/search.svg"
 
 import Image from "next/image";
-import BtnFull from "./BtnFull";
 
 type SearchInputProps = {
     label: string;
