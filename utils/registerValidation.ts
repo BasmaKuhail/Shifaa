@@ -5,6 +5,11 @@ type RegisterData = {
     password: string;
     confirmPassword: string;
 };
+
+type LoginData ={
+    email:string;
+    password: string;
+}
 export const validateConfirmPassword = (password: string, confirmPassword: string): boolean => {
     return password === confirmPassword;
 }
@@ -49,3 +54,15 @@ export const validateRegister = (userData: RegisterData) => {
 
     return null; // valid
 };
+
+export const validateLogin = (loginData:LoginData) => {
+    if (!loginData.email || !loginData.password) {
+        alert("يرجى ملأ جميع الحقول الفارغة");
+        return "يرجى ملأ جميع الحقول الفارغة";
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(loginData.email)) {
+        alert("يرجى إدخال بريد إلكتروني صحيح");
+        return {errorMsg: "يرجى إدخال بريد إلكتروني صحيح", isValid: false};
+    }
+}
