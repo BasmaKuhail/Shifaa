@@ -24,11 +24,19 @@ export default function Input({label, type, value, onChange, isTrue}: InputProps
         <div className="flex flex-col gap-2">
             <label className="text-sm font-bold text-right">{label}</label>
             <div className="relative">
-                <input 
+                <input
                     onChange={(e) => {onChange(e.target.value)} }
                     type={inputType} 
                     value={value}
                     placeholder={label}
+                    dir="auto"
+                    
+                    onCopy={(e) => type === 'password' && e.preventDefault()}
+                    onPaste={(e) => type === 'password' && e.preventDefault()}
+                    onCut={(e) => type === 'password' && e.preventDefault()}
+                    onContextMenu={(e) => type === 'password' && e.preventDefault()}
+                    onDrop={(e) => type === 'password' && e.preventDefault()}
+
                     className={`border rounded-inpt p-2 w-full text-right focus:outline-none text-inpt h-[52px] md:h-[45px]
                         ${
                         value
