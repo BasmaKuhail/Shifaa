@@ -45,6 +45,8 @@ module.exports = {
             'inpt': '0.875rem', //14px
             'title': '2.25rem', //36px
             'btn': "1.125rem", //18px
+            '47px': "2.9375rem", //47px
+            "21px": "1.3125rem", //21px
         },
         backgroundColor: {
             lightBlue: "#BDD6E1",
