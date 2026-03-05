@@ -30,9 +30,9 @@ const headerItems = [
 ]
 export default function SecondaryHeader(){
     return(
-        <div className="flex flex-row-reverse items-center justify-between w-full px-4 md:px-8 lg:px-30 pt-4 ">
+        <div dir="rtl" className="flex flex-row items-center justify-between w-full px-4 md:px-8 lg:px-30 pt-4 ">
             <Image src={logo} alt="Logo"  className=" m-[2px]" />
-            <div className="flex flex-row-reverse gap-8 items-center">
+            <div className="flex flex-row gap-8 items-center">
                 {headerItems.map((item) => (
                     <p key={item.id} className="text-btn cursor-pointer hover:underline">{item.title}</p>
                 ))}

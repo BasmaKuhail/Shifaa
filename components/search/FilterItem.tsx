@@ -1,25 +1,26 @@
 import Image from "next/image";
 import filterArrowDown from "@/public/icons/filterArrowDown.svg"
-import { useState } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import DropDownMenu from "./DropDownMenu";
 type itemProps = {
     title: string,
-    elements: (string)[]
+    elements: (string)[];
+    dropDownOpened: string | null;
+    setDropDownOpened:Dispatch<SetStateAction<string | null>>;
 }
-export default function Item ({title, elements}:itemProps){
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+export default function Item ({title, elements, dropDownOpened, setDropDownOpened}:itemProps){
 
     const handleClick = () =>{
-        setIsMenuOpen((prev) => !prev);
+        setDropDownOpened((prev) => (prev === title ? null : title));
+        console.log("title" , dropDownOpened)
 
-        console.log(isMenuOpen)
     }
     return(
-        <div className="flex flex-col">
+        <div dir="rtl" className="relative flex flex-col">
             <div 
                 className= {`group  
-                    p-2 px-4 rounded-[30px] flex flex-row-reverse gap-3 cursor-pointer 
-                    ${isMenuOpen  ? "bg-gradient-to-r from-[#3E94B9] to-[#04B6FF] text-white" : "bg-white text-black-600"}
+                    p-2 px-4 rounded-[30px] flex flex-row-reverse gap-3 cursor-pointer w-fit
+                    ${(dropDownOpened === title)   ? "bg-gradient-to-r from-[#3E94B9] to-[#04B6FF] text-white" : "bg-white text-black-600"}
                     hover:bg-gradient-to-r
                     hover:from-[#3E94B9]
                     hover:to-[#04B6FF]
@@ -34,7 +35,7 @@ export default function Item ({title, elements}:itemProps){
                     alt={""} 
                     
                     className= {`transition duration-200
-                        ${isMenuOpen ? "brightness-0 invert": ""}
+                        ${(dropDownOpened === title) ? "brightness-0 invert": ""}
                         group-hover:brightness-0
                         group-hover:invert`}
                     
@@ -42,7 +43,9 @@ export default function Item ({title, elements}:itemProps){
                 <p>{title}</p>
                 
             </div>
-            {isMenuOpen && <DropDownMenu title={title} elements={["أقراص", "كبسولات", "شراب", "كريم / مرهم", "قطرات", "أقراص", "كبسولات", "شراب", "كريم / مرهم", "قطرات"]}/>}
+            <div className="absolute top-full right-0">
+            {(dropDownOpened === title) && <DropDownMenu title={title} elements={["أقراص", "كبسولات", "شراب", "كريم / مرهم", "قطرات", "أقراص", "كبسولات", "شراب", "كريم / مرهم", "قطرات"]}/>}
+            </div>
         </div>
     )
 }

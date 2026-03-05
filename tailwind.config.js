@@ -28,6 +28,7 @@ module.exports = {
             500: "#727272", //text gray
             200:"#C9C9C9", //border gray
             100: "#F6F6F6", //input background gray
+            50:"#DFDFDF", //border lighter gray
           },
             textInputCorrect: '#1A71F6',
             textInputWrong: '#FF1F1F',
