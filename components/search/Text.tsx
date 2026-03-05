@@ -11,13 +11,13 @@ type SearchTextProp ={
 }
 export default function SearchText({intro, titleBlack, titleBlue, sentence}: SearchTextProp){
     return(
-        <div className="flex flex-col gap-2">
-            <nav className="flex flex-row-reverse center gap-2 flex"> 
+        <div dir="rtl" className="flex flex-col gap-2">
+            <nav className="flex flex-row center gap-2 flex"> 
                 <Image src={heartBeat} width={19} height={15} alt="heart beat"/>
                 <p className="text-black-500 text-btn">{intro}</p>
             </nav>
             
-            <nav className="flex flex-row-reverse center gap-1 font-bold text-47px">
+            <nav className="flex flex-row center gap-1 font-bold text-47px">
                 <p>{titleBlack}</p>
                 <p 
                     className="

@@ -1,7 +1,6 @@
 import search from "@/public/icons/search.svg"
 
 import Image from "next/image";
-import BtnFull from "./BtnFull";
 
 type SearchInputProps = {
     label: string;
@@ -15,7 +14,7 @@ function handleSearch (){
 }
 export default function SearchInput({label, value, onChange}:SearchInputProps){
     return(
-        <div className="relative">
+        <div dir="rtl" className="relative">
             <Image 
                 alt=""
                 width={15}
