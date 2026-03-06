@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+
 module.exports = {
   content: [
     "./app/**/*.{js,ts,jsx,tsx}", 
@@ -13,6 +14,7 @@ module.exports = {
         },
         colors: {
           blue:{
+            900: '#266F8F', // dark blue for text
             800: '#174356',
             700: '#1E576F',
             600: '#174356',
@@ -49,6 +51,7 @@ module.exports = {
             'btn': "1.125rem", //18px
             '47px': "2.9375rem", //47px
             "21px": "1.3125rem", //21px
+            "27px":"1.688rem", //title mobile
         },
         backgroundColor: {
             lightBlue: "#BDD6E1",
