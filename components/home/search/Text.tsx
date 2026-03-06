@@ -1,6 +1,8 @@
 import heartBeat from "@/public/icons/heartBeat.svg"
 
 import Image from "next/image";
+import HeaderText from "../HeaderText";
+import SubHeader from "../SubHeader";
 
 type SearchTextProp ={
     intro: string,
@@ -17,18 +19,13 @@ export default function SearchText({intro, titleBlack, titleBlue, sentence}: Sea
                 <p className="text-black-500 text-btn">{intro}</p>
             </nav>
             
-            <nav className="flex flex-row center gap-1 font-bold text-47px">
-                <p>{titleBlack}</p>
-                <p 
-                    className="
-                        bg-gradient-to-r
-                        from-[#3E94B9]
-                        to-[#04B6FF]
-                        bg-clip-text
-                        text-transparent"
-                    >{titleBlue}</p>
+            <nav className="flex flex-row center gap-1">
+                <HeaderText text={titleBlack} isBlue={false}/>
+                <HeaderText text={titleBlue} isBlue={true}/>
             </nav>
-            <nav className="flex flex-row" ><p className="font-semibold text-21px">{sentence}</p></nav>
+            <nav className="flex flex-row" >
+                <SubHeader text={sentence}/>
+            </nav>
             
             
         </div>
