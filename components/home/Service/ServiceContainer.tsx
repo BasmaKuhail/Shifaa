@@ -32,7 +32,7 @@ export default function ServiceCotainer ({icon, header, text, link}:sectionProps
                     w-full
                     rounded-[5px]
                     cursor-pointer
-                    hover:bg-white
+                    group-hover:bg-white
                     "
                 onClick={()=> {router.push("#")}}
             >
