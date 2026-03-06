@@ -1,7 +1,7 @@
 
 export default function SubHeader ({text}:{text: string}){
     return(
-        <p className="font-semibold text-21px">
+        <p className="lg:font-semibold md:font-semibold text-inpt lg:text-21px md:text-21px">
             {text}
         </p>
     )
