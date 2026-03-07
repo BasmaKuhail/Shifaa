@@ -1,5 +1,5 @@
 import Header from "../header/Header";
-import SecondaryHeader from "../secondaryHeader/SecondaryHeader";
+import SecondaryHeader from "./secondaryHeader/SecondaryHeader";
 import SearchHome from "./search/Search";
 import Image from "next/image";
 import homeBgImg from "@/public/images/homeBgImg.png"
@@ -7,11 +7,15 @@ import Title from "./SectionTitle";
 import HeaderText from "./HeaderText";
 import SubHeader from "./SubHeader";
 import ServiceCotainer from "./Service/ServiceContainer";
+import { motion } from "framer-motion";
 
 import aidKit from "@/public/icons/aidKit.svg"
 import blog from "@/public/icons/blog.svg"
 import contact from "@/public/icons/contact.svg"
+import whoAreWe from "@/public/images/whoAreWe.jpg"
+import RequestMed from "@/public/images/RequestMed.png"
 import { link } from "fs";
+import TextSec from "./TextSection/TextSec";
 
 const services =[
     {
@@ -30,6 +34,26 @@ const services =[
         text:'هل لديك استفسار أو تحتاج إلى دعم؟ فريقنا متواجد لمساعدتك في أي وقت.',
         link:"اتصل بنا"
     },
+]
+
+const textSec =[
+    {
+        secTitle:"من نحن", 
+        header: [{text: "بالشفاء..", isBlue:false}, {text:"تكتمل الحكاية", isBlue:true}],
+        paragraphText: "نحن منصة رقمية متخصصة تهدف إلى تنظيم الوصول للمعلومة الدوائية في قطاع غزة. نعمل على توحيد ومركزية بيانات الصيدليات لتمكين المستخدم من البحث والمقارنة والتحقق من التوفر بضغطة زر واحدة. نحن هنا لنحول عناء البحث إلى سهولة الوصول، ولنكون شريكك الموثوق في رحلة التعافي وتوفير التكاليف.",
+        button:{btnText:"التعرف على المزيد", onClick:() => console.log("j")},
+        image:whoAreWe,
+        dir:"rtl"
+    },
+    {
+        secTitle:"طلب الدواء",
+        header:[{text: "اطلب دواءك الآن", isBlue:false}],
+        paragraphText:" إذا لم تجد دواءك، يمكنك تقديم طلب وسوف تعمل أقرب الصيدليات على توفيره لك.",
+        button:{btnText:"اطلب الدواء", onClick:() => console.log("j")},
+        image:RequestMed,
+        dir:"ltr"
+    }
+    
 ]
 
 export default function Home (){
@@ -62,6 +86,22 @@ export default function Home (){
                 </div>
             </div>
             
+            {/* text with motion */}
+            <div className="px-4 md:px-8 lg:px-30 pt-4 ">
+                {textSec.map((item, index) => 
+                    <TextSec 
+                        key={index}
+                        secTitle={item.secTitle}
+                        header={item.header} 
+                        paragraphText= {item.paragraphText}
+                        button={item.button}
+                        image={item.image}
+                        dir={item.dir}
+                    />)}
+            </div>
+           
+            
+    
             {/* <h1>{t('welcome')}</h1>
             <button
                 onClick={() =>
