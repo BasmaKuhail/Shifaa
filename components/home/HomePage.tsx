@@ -7,16 +7,20 @@ import Title from "./SectionTitle";
 import HeaderText from "./HeaderText";
 import SubHeader from "./SubHeader";
 import ServiceCotainer from "./Service/ServiceContainer";
-import { motion } from "framer-motion";
 
 import aidKit from "@/public/icons/aidKit.svg"
 import blog from "@/public/icons/blog.svg"
 import contact from "@/public/icons/contact.svg"
+
+import med from "@/public/icons/med.svg"
+import brain from "@/public/icons/brain.svg"
+import time from "@/public/icons/time.svg"
+
 import whoAreWe from "@/public/images/whoAreWe.jpg"
 import RequestMed from "@/public/images/RequestMed.png"
-import { link } from "fs";
 import TextSec from "./TextSection/TextSec";
 import Work from "../howItWorks/HowItWorks";
+import Features from "./FeaturesSec/FeaturesSec";
 
 const services =[
     {
@@ -63,6 +67,12 @@ const tipsArr =[
     {num: 3, title: "قارن الأدوية", text: "قارن بين النتائج وتعرف على أقرب صيدلية يتوفر بها الدواء."},
     {num: 4, title: "اطلب توفير الدواء", text: " لم تجد ما تحتاجه؟ اطلب توفيره من الصيدليات المجاورة."},
 ]
+
+const featuresArr =[
+    {logo:med, text: " ابحث عن الأدوية في أي صيدلية بقطاع غزة، وقدم طلباً ولو لم يكن الدواء مدرجاً."},
+    {logo:brain, text: " عزز معرفتك الصحية من خلال مدونتنا!"},
+    {logo:time, text: "اعثر على الأدوية بسرعة، ودعك من عناء التنقل الطويل بين الصيدليات."},
+]
 export default function Home (){
     return(
         <div className='w-full flex flex-col '>
@@ -107,7 +117,7 @@ export default function Home (){
                     />)}
             </div>
            
-           <div className="mb-20">
+           <div>
                 <Work 
                     title= " آلية العمل" 
                     header={{text: "كيف تعمل منصة شفاء؟", color:"white"}} 
@@ -116,7 +126,12 @@ export default function Home (){
                 />
            </div>
             
-    
+            <div className="bg-blue-100 w-full pt-20 px-4 md:px-8 lg:px-30 ">
+                <div className="mb-20">
+                    <Features featuresArr={featuresArr}/>
+                </div>
+                
+            </div>
             {/* <h1>{t('welcome')}</h1>
             <button
                 onClick={() =>

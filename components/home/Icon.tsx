@@ -7,8 +7,8 @@ type iconProps = {
 export default function Icon ({icon, width}:iconProps){
     return(
         <div className="
-                    w-20
-                    h-20
+                    p-3
+                    aspect-square
                     rounded-full 
                     bg-gradient-to-r
                     from-[#3E94B9]
