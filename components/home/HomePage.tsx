@@ -16,6 +16,7 @@ import whoAreWe from "@/public/images/whoAreWe.jpg"
 import RequestMed from "@/public/images/RequestMed.png"
 import { link } from "fs";
 import TextSec from "./TextSection/TextSec";
+import Work from "../howItWorks/HowItWorks";
 
 const services =[
     {
@@ -39,7 +40,7 @@ const services =[
 const textSec =[
     {
         secTitle:"من نحن", 
-        header: [{text: "بالشفاء..", isBlue:false}, {text:"تكتمل الحكاية", isBlue:true}],
+        header: [{text: "بالشفاء..",color:"black"}, {text:"تكتمل الحكاية", color:"blue"}],
         paragraphText: "نحن منصة رقمية متخصصة تهدف إلى تنظيم الوصول للمعلومة الدوائية في قطاع غزة. نعمل على توحيد ومركزية بيانات الصيدليات لتمكين المستخدم من البحث والمقارنة والتحقق من التوفر بضغطة زر واحدة. نحن هنا لنحول عناء البحث إلى سهولة الوصول، ولنكون شريكك الموثوق في رحلة التعافي وتوفير التكاليف.",
         button:{btnText:"التعرف على المزيد", onClick:() => console.log("j")},
         image:whoAreWe,
@@ -47,7 +48,7 @@ const textSec =[
     },
     {
         secTitle:"طلب الدواء",
-        header:[{text: "اطلب دواءك الآن", isBlue:false}],
+        header:[{text: "اطلب دواءك الآن", color:"black"}],
         paragraphText:" إذا لم تجد دواءك، يمكنك تقديم طلب وسوف تعمل أقرب الصيدليات على توفيره لك.",
         button:{btnText:"اطلب الدواء", onClick:() => console.log("j")},
         image:RequestMed,
@@ -56,6 +57,12 @@ const textSec =[
     
 ]
 
+const tipsArr =[
+    {num: 1, title: "البحث بالاسم", text: "أدخل الاسم التجاري أو العلمي للدواء الذي تحتاجه."},
+    {num: 2, title: "تصفية النتائج", text: "حدد بحثك حسب الموقع، الشكل الدوائي، السعر، وغيرها."},
+    {num: 3, title: "قارن الأدوية", text: "قارن بين النتائج وتعرف على أقرب صيدلية يتوفر بها الدواء."},
+    {num: 4, title: "اطلب توفير الدواء", text: " لم تجد ما تحتاجه؟ اطلب توفيره من الصيدليات المجاورة."},
+]
 export default function Home (){
     return(
         <div className='w-full flex flex-col '>
@@ -77,8 +84,8 @@ export default function Home (){
             </div>
             <div className="flex flex-col items-center justify-center mt-20 gap-1">
                 <Title title="خدماتنا"/>
-                <HeaderText text="نحن معك في كل وقت" isBlue={false}/>
-                <SubHeader text="متواجدون دائمًا لمساعدتك في العثور على دوائك"/>
+                <HeaderText text="نحن معك في كل وقت" color="black"/>
+                <SubHeader text="متواجدون دائمًا لمساعدتك في العثور على دوائك" color="black"/>
                 <div dir="rtl"  className="flex flex-col md:flex-row lg:flex-row justify-between items-center w-full mt-5 px-4 md:px-8 lg:px-30 pt-4 gap-5 mb-20">
                     {services.map((srvs, indx) => 
                         <ServiceCotainer key={indx} icon={srvs.icon} header={srvs.header} text={srvs.text} link={srvs.link}/>
@@ -100,6 +107,14 @@ export default function Home (){
                     />)}
             </div>
            
+           <div className="mb-20">
+                <Work 
+                    title= " آلية العمل" 
+                    header={{text: "كيف تعمل منصة شفاء؟", color:"white"}} 
+                    subHeader={{text: "ابحث عن دواءك باتباع الخطوات التالية:", color:"white"}}
+                    tips = {tipsArr}
+                />
+           </div>
             
     
             {/* <h1>{t('welcome')}</h1>
