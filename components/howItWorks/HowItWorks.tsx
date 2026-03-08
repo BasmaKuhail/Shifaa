@@ -24,7 +24,7 @@ const container = {
 export default function Work({title , header, subHeader, tips}:workProp){
     const width = (100 / tips.length) - 6;
     return(
-    <div dir="rtl" className="flex flex-col gap-11 bg-blue-1000 w-full items-center  py-[3.336rem] px-4 md:px-8 lg:px-30 pt-4">
+    <div dir="rtl" className="flex flex-col gap-11 bg-blue-1000 w-full items-center py-[3.336rem] px-4 md:px-8 lg:px-30">
         
         <div className="flex flex-col items-center text-center gap-2">
             <Title title={title}/>
