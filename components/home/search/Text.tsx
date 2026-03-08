@@ -20,11 +20,11 @@ export default function SearchText({intro, titleBlack, titleBlue, sentence}: Sea
             </nav>
             
             <nav className="flex flex-row center gap-1">
-                <HeaderText text={titleBlack} isBlue={false}/>
-                <HeaderText text={titleBlue} isBlue={true}/>
+                <HeaderText text={titleBlack} color="black"/>
+                <HeaderText text={titleBlue} color="blue"/>
             </nav>
             <nav className="flex flex-row" >
-                <SubHeader text={sentence}/>
+                <SubHeader text={sentence} color="black"/>
             </nav>
             
             

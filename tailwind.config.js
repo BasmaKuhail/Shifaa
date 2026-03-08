@@ -14,6 +14,7 @@ module.exports = {
         },
         colors: {
           blue:{
+            1000: "#329CCB",
             900: '#266F8F', // dark blue for text
             800: '#174356',
             700: '#1E576F',
