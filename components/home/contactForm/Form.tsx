@@ -24,7 +24,7 @@ const [code, setCode] = useState("+970")
             <div className="flex flex-col gap-2 lg:items-start lg:text-start md:items-start md:text-start items-center text-center">
                 <Title title="اتصل بنا" />
                 <HeaderText text="تواصل معنا" color="black"/>
-                <p className="font-[500] text-btn">نحن هنا من أجلك. إذا كان لديك أي استفسار أو كنت بحاجة إلى مساعدة، فلا تتردد في التواصل معنا.</p>
+                <p className="font-[500] lg:text-btn text-inpt">نحن هنا من أجلك. إذا كان لديك أي استفسار أو كنت بحاجة إلى مساعدة، فلا تتردد في التواصل معنا.</p>
 
             </div>
             
