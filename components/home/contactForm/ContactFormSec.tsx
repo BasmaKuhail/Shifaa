@@ -8,7 +8,7 @@ export default function ContatcSec(){
                 <ContactForm />
             </div>
                 
-            <div className="lg:w-1/2 md:w-1/2 flex flex-row items-center justify-center">
+            <div className="lg:w-1/2 md:w-1/2 flex flex-row items-center justify-center hidden lg:block md:block">
                 <Image src={phsist} alt="phsist" className="rounded-r-[10px] h-full object-cover scale-x-[-1] "/>
             </div>
         </div>

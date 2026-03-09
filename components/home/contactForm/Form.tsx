@@ -20,7 +20,7 @@ const [code, setCode] = useState("+970")
 
 
     return(
-        <div dir="rtl" className="bg-white flex flex-col px-10 mb-20 rounded-r-[10px] h-full gap-7 justify-center">
+        <div dir="rtl" className="bg-white flex flex-col p-10 lg:py-0 md:py-0 mb-20 rounded-[10px] lg:rounded-l-[0] md:rounded-l-[0] h-full gap-7 justify-center">
             <div className="flex flex-col gap-2 lg:items-start lg:text-start md:items-start md:text-start items-center text-center">
                 <Title title="اتصل بنا" />
                 <HeaderText text="تواصل معنا" color="black"/>
