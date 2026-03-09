@@ -8,7 +8,7 @@ type RegisterData = {
 export const validateConfirmPassword = (password: string, confirmPassword: string): boolean => {
     return password === confirmPassword;
 }
-export const validateInput = (value: string, type: 'text' | 'email' | 'password'): boolean => {
+export const validateInput = (value: string, type: 'text' | 'email' | 'password' | 'textarea'): boolean => {
     if (type === 'text') {
         return value.trim() !== ''; 
     } else if (type === 'email') {

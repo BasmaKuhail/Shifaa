@@ -1,4 +1,4 @@
-import SubHeader from "../home/SubHeader"
+import SubHeader from "../SubHeader"
 import { motion , Variants  } from "framer-motion";
 
 type tipProps = {
