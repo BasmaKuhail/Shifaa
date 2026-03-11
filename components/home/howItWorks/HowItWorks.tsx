@@ -1,7 +1,7 @@
 import { useEffect } from "react";
-import HeaderText from "../home/HeaderText";
-import Title from "../home/SectionTitle";
-import SubHeader from "../home/SubHeader";
+import HeaderText from "../HeaderText";
+import Title from "../SectionTitle";
+import SubHeader from "../SubHeader";
 import Tip from "./Tip";
 import { motion } from "framer-motion";
 

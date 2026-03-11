@@ -19,8 +19,10 @@ import time from "@/public/icons/time.svg"
 import whoAreWe from "@/public/images/whoAreWe.jpg"
 import RequestMed from "@/public/images/RequestMed.png"
 import TextSec from "./TextSection/TextSec";
-import Work from "../howItWorks/HowItWorks";
+import Work from "./howItWorks/HowItWorks";
 import Features from "./FeaturesSec/FeaturesSec";
+import ContatcSec from "./contactForm/ContactFormSec";
+import Footer from "../footer/Footer";
 
 const services =[
     {
@@ -127,10 +129,12 @@ export default function Home (){
            </div>
             
             <div className="bg-blue-100 w-full pt-20 px-4 md:px-8 lg:px-30 ">
-                <div className="mb-20">
+                <div className="lg:mb-40 md:mb-40 mb-20">
                     <Features featuresArr={featuresArr}/>
                 </div>
-                
+                <div className="mb-20">
+                    <ContatcSec/>
+                </div>
             </div>
             {/* <h1>{t('welcome')}</h1>
             <button
@@ -140,6 +144,7 @@ export default function Home (){
             >
                 Switch to {nextLocale}
             </button> */}
+            <Footer/>
         </div>
     )
 }
