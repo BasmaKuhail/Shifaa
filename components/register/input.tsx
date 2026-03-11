@@ -46,6 +46,14 @@ export default function Input({label, type, inputText, value, onChange, isTrue}:
                     type={inputType} 
                     value={value}
                     placeholder={inputText}
+                    dir="auto"
+                    
+                    onCopy={(e) => type === 'password' && e.preventDefault()}
+                    onPaste={(e) => type === 'password' && e.preventDefault()}
+                    onCut={(e) => type === 'password' && e.preventDefault()}
+                    onContextMenu={(e) => type === 'password' && e.preventDefault()}
+                    onDrop={(e) => type === 'password' && e.preventDefault()}
+
                     className={`border rounded-inpt p-2 w-full text-right focus:outline-none text-inpt h-[52px] md:h-[45px]
                         ${
                         value
