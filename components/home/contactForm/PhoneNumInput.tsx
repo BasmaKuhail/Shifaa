@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { fetchCountries } from "@/lib/countries";
 
 type InputProps = {
     label: string;
@@ -6,33 +7,73 @@ type InputProps = {
     value: string;
     onChange: (value: string) => void;
     isTrue: boolean;
+    codes: { name: string; dialCode: string; iso: string; }[]
     countryCode:string;
 }
-export default function PhoneNum ({label, inputText, value, onChange, isTrue, countryCode}: InputProps){
-    const countryCodes = [
-        { name: "Palestine", dialCode: "+970", iso: "ps" },
-        { name: "Saudi Arabia", dialCode: "+966", iso: "sa" },
-        { name: "Egypt", dialCode: "+20", iso: "eg" }
-    ]
+type Country = {
+  name: string;
+  iso: string;
+  dialCode: string;
+  flag: string;
+};
 
+export default function PhoneNum ({label, inputText, value, onChange, isTrue, codes, countryCode}: InputProps){
+    const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
+    const [countries, setCountries] = useState<Country[]>([]);
+
+    useEffect(() => {
+        const getCountries = async () => {
+        const data = await fetchCountries();
+        setCountries(data);
+        console.log(countries)
+        setSelectedCountry(countries.find(c => c.name === "Palestine") || countries[0]); 
+        console.log(countries.find(c => c.name === "Palestine"))
+        };
+        getCountries();
+    }, []);
+
+    if (!countries || countries.length == 0){
+        return(<div>loading...</div>)
+    }
     return(
-        <div dir="rtl" className="flex flex-col gap-2">
+        
+        <div dir="ltr" className="flex flex-col gap-2">
             <label className="text-sm font-bold text-right">{label}</label>
             <div className='flex flex-row gap-2 relative'>
-                <img className="absolute left-4 top-1/2 transform -translate-y-1/2" src={`https://flagcdn.com/24x18/ps.png`} width={20} />
+                <img 
+                    className="absolute left-4 top-1/2 transform -translate-y-1/2 rounded-[10px]" 
+                    src={`https://flagsapi.com/${selectedCountry?.iso}/flat/64.png`} 
+                    width={40}
+                />
+                
                 <select
-                    value={countryCode}
-                    className="px-3 outline-none absolute left-11 top-1/2 transform -translate-y-1/2 cursor-pointer"
+                    className="px-3 outline-none absolute left-15 top-1/2 transform -translate-y-1/2 cursor-pointer"
+                    onChange={(e) => {
+                        const selected = countries.find(c => c.dialCode === e.target.value)
+                        if (selected) {
+                            setSelectedCountry(selected)
+                            // console.log(selectedCountry)
+                        }
+                    }}
                 >
-                    <option value="+970">+970</option>
-                    <option value="+966">+966</option>
-                    <option value="+20">+20</option>
-                    <option value="+962">+962</option>
+                    
+                    {countries.map((code, index) => 
+                        <option 
+                            key={index} 
+                            value={code.dialCode}
+                        >
+                            <div className='flex flex-row '>
+                                <p>{code.name}</p>
+                                <p>({code.dialCode})</p>
+                            </div>
+                            
+                        </option>
+                    )}
+
                 </select>
                 <input 
                     onChange={(e) => {onChange(e.target.value)} }
                     type="tel"
-                    dir='ltr'
                     value={value}
                     placeholder={inputText}
                     className={`border rounded-inpt p-2 w-full text-right focus:outline-none text-inpt h-[52px] md:h-[45px]
@@ -47,7 +88,8 @@ export default function PhoneNum ({label, inputText, value, onChange, isTrue, co
                     `}
                 />
             </div>
-            
+                            
+
         </div>
     )
 }

@@ -15,9 +15,14 @@ export default function ContactForm(){
             password: { value: '', isTrueData: false },
             message: { value: '', isTrueData: false }
         });
-        const [phone, setPhone] = useState("")
-const [code, setCode] = useState("+970")
+    const [phone, setPhone] = useState("")
+    const [countryCode, setCounteryCode] = useState("")
 
+    const countryCodes = [
+        { name: "Palestine", dialCode: "+970", iso: "ps" },
+        { name: "Saudi Arabia", dialCode: "+966", iso: "sa" },
+        { name: "Egypt", dialCode: "+20", iso: "eg" }
+    ]
 
     return(
         <div dir="rtl" className="bg-white flex flex-col p-10 lg:py-0 md:py-0 mb-20 rounded-[10px] lg:rounded-l-[0] md:rounded-l-[0] h-full gap-7 justify-center">
@@ -56,15 +61,15 @@ const [code, setCode] = useState("+970")
                 value={userContactFornInfo.email.value} 
                 onChange={(value) => setUserContactFornInfo({ ...userContactFornInfo, email: { value, isTrueData: true } })} 
                 isTrue={validateInput(userContactFornInfo.email.value, 'email')}/>
-            <PhoneNum
+            {/* <PhoneNum
                 label="رقم الهاتف"
                 inputText=""
                 value={phone}
                 onChange={setPhone}
-                isTrue={validateInput(userContactFornInfo.email.value, 'email')}
-                countryCode={code}
-                
-            />
+                isTrue={validateInput(userContactFornInfo.email.value, 'text')}
+                codes={countryCodes}
+                countryCode={countryCode}
+            /> */}
             <Input 
                 label="الرسالة*" 
                 type="textarea" 
