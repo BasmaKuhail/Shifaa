@@ -22,6 +22,7 @@ import TextSec from "./TextSection/TextSec";
 import Work from "./howItWorks/HowItWorks";
 import Features from "./FeaturesSec/FeaturesSec";
 import ContatcSec from "./contactForm/ContactFormSec";
+import Footer from "../footer/Footer";
 
 const services =[
     {
@@ -143,6 +144,7 @@ export default function Home (){
             >
                 Switch to {nextLocale}
             </button> */}
+            <Footer/>
         </div>
     )
 }
