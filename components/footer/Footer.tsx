@@ -14,7 +14,7 @@ import linkedin from "@/public/icons/footer/linkedin.svg"
 
 export default function Footer(){
     return(
-        <div dir="rtl" className="flex flex-col gap-20 bg-white w-full pt-15  pb-15 px-4 md:px-8 lg:px-30">
+        <div dir="rtl" className="flex flex-col gap-20 bg-white w-full p-15 px-4 md:px-8 lg:px-30">
             <div className="flex flex-row justify-between items-center">
                 <div className="flex flex-col gap-6 w-[26%]">
                     <Image src={logo} alt="Logo"   />

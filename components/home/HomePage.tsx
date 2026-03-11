@@ -23,6 +23,7 @@ import Work from "./howItWorks/HowItWorks";
 import Features from "./FeaturesSec/FeaturesSec";
 import ContatcSec from "./contactForm/ContactFormSec";
 import Footer from "../footer/Footer";
+import UpArrow from "./UpArrow";
 
 const services =[
     {
@@ -94,6 +95,7 @@ export default function Home (){
                     </div>
                 </div>
             </div>
+            <UpArrow/>
             <div className="flex flex-col items-center justify-center mt-20 gap-1">
                 <Title title="خدماتنا"/>
                 <HeaderText text="نحن معك في كل وقت" color="black"/>
