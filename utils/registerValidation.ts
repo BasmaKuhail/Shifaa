@@ -5,6 +5,11 @@ type RegisterData = {
     password: string;
     confirmPassword: string;
 };
+
+type LoginData ={
+    email:string;
+    password: string;
+}
 export const validateConfirmPassword = (password: string, confirmPassword: string): boolean => {
     return password === confirmPassword;
 }
@@ -24,18 +29,17 @@ export const validateInput = (value: string, type: 'text' | 'email' | 'password'
     return false;
 }
 export const validateRegister = (userData: RegisterData) => {
-    if (!userData.firstName || !userData.lastName || !userData.email || !userData.password) {
-        alert("يرجى ملأ جميع الحقول الفارغة");
-        return "يرجى ملأ جميع الحقول الفارغة";
+    if (!userData.firstName || !userData.lastName || !userData.email || !userData.password || !userData.confirmPassword) {
+        // alert("يرجى ملأ جميع الحقول الفارغة");
+        return {errorMsg: "يرجى ملأ جميع الحقول الفارغة", isValid: false}
     }
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userData.email)) {
-        alert("يرجى إدخال بريد إلكتروني صحيح");
+        // alert("يرجى إدخال بريد إلكتروني صحيح");
         return {errorMsg: "يرجى إدخال بريد إلكتروني صحيح", isValid: false};
     }
 
     if (userData.password !== userData.confirmPassword) {
-        alert("كلمتا المرور غير متطابقتين");
         return {errorMsg: "كلمتا المرور غير متطابقتين", isValid: false};
     }
 
@@ -45,9 +49,20 @@ export const validateRegister = (userData: RegisterData) => {
         !/\d/.test(userData.password) ||
         !/[!@#$%^&*(),.?":{}|<>]/.test(userData.password)
     ) {
-        alert("كلمة المرور يجب أن تكون 8 أحرف انجليزية أو أكثر وتحتوي على مزيج من الأحرف والأرقام والرموز");
         return {errorMsg: "كلمة المرور يجب أن تكون 8 أحرف انجليزية أو أكثر وتحتوي على مزيج من الأحرف والأرقام والرموز", isValid: false};
     }
 
     return null; // valid
 };
+
+export const validateLogin = (loginData:LoginData) => {
+    if (!loginData.email || !loginData.password) {
+        alert("يرجى ملأ جميع الحقول الفارغة");
+        return "يرجى ملأ جميع الحقول الفارغة";
+    }
+
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(loginData.email)) {
+        alert("يرجى إدخال بريد إلكتروني صحيح");
+        return {errorMsg: "يرجى إدخال بريد إلكتروني صحيح", isValid: false};
+    }
+}

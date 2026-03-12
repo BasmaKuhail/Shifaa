@@ -11,7 +11,7 @@ import ButtonEmpty from "./ButtonEmpty";
 import Link from "next/link";
 
 import {register, login} from "@/services/auth";
-import { validateRegister, validateInput, validateConfirmPassword } from "@/utils/registerValidation"
+import { validateRegister, validateInput, validateConfirmPassword, validateLogin } from "@/utils/registerValidation"
 
 
 export default function Form({ isRegister }: { isRegister: boolean }) {
@@ -65,14 +65,18 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
                 console.log("Validation Errors:", error.response.data.errors);
             }
 
-            if (error.response?.status === 401) {
+            else if (error.response?.status === 401) {
                 alert("البريد الإلكتروني أو كلمة المرور غير صحيحة");
                 console.log("Validation Errors:", error.response.data.errors);
             }
 
-            if (error.response?.status === 500) {
+            else if (error.response?.status === 500) {
                 alert("حدث خطأ في الخادم، حاول مرة أخرى");
                 console.log("Validation Errors:", error.response.data.errors);
+            }
+
+            else{
+                alert("حدث خطأ غير متوقع")
             }
 
             console.log("Error:", error.response?.data);
@@ -91,7 +95,12 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
                 confirmPassword: userInfo.confirmPassword.value
             });
             if (errorMessage) {
-                alert(errorMessage);
+                alert(errorMessage.errorMsg);
+                return false;
+            }
+        }else{
+            const loginErrorMsg = validateLogin({email:userInfo.email.value, password:userInfo.password.value});
+            if (loginErrorMsg) {
                 return false;
             }
         }
