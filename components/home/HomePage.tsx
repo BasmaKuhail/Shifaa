@@ -138,6 +138,9 @@ export default function Home (){
                     <ContatcSec/>
                 </div>
             </div>
+            <div className="grid bg-blue-100 w-full">
+                <Footer/>
+            </div>
             {/* <h1>{t('welcome')}</h1>
             <button
                 onClick={() =>
@@ -146,7 +149,7 @@ export default function Home (){
             >
                 Switch to {nextLocale}
             </button> */}
-            <Footer/>
+            
         </div>
     )
 }

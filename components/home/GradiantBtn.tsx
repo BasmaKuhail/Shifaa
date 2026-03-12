@@ -9,7 +9,7 @@ export default function GradientBrn({text, onClick}:gradProps){
                     h-full
                     px-10
                     rounded-[30px]
-                    bg-gradient-to-r
+                    bg-gradient-to-b
                     from-[#3E94B9]
                     to-[#04B6FF]
                     flex
@@ -17,6 +17,10 @@ export default function GradientBrn({text, onClick}:gradProps){
                     justify-center
                     text-white
                     cursor-pointer
+
+                    hover:bg-gradient-to-b
+                    hover:from-[#356A82]
+                    hover:to-[#1689B8]
                     "
                 onClick={onClick}>
                     {text}
