@@ -28,16 +28,18 @@ module.exports = {
             50: '#FFFFFF',
           },
           black: {
-            600: "#323130", //text black
+            600: "#323130", //text black 
             500: "#727272", //text gray
+            400: "#737373", //text darker gray
             200:"#C9C9C9", //border gray
-            100: "#F6F6F6", //input background gray
+            100: "#F6F6F6", //input background gray 
             50:"#DFDFDF", //border lighter gray
+            10:"#F4F4F4", //notifications bg
           },
             textInputCorrect: '#1A71F6',
             textInputWrong: '#FF1F1F',
             online: '#23A149', //green
-            red: "#EA3030",
+            red: "#EA3030", //red
         },
         fontSize: {
             'xxs': '0.563rem',

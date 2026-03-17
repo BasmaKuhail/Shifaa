@@ -5,22 +5,26 @@ type gradProps = {
 export default function GradientBrn({text, onClick}:gradProps){
     return(
         <div
-                className="
-                    h-full
-                    px-10
-                    rounded-[30px]
-                    bg-gradient-to-r
-                    from-[#3E94B9]
-                    to-[#04B6FF]
-                    flex
-                    items-center
-                    justify-center
-                    text-white
-                    cursor-pointer
-                    "
-                onClick={onClick}>
-                    {text}
+            className="
+                h-full
+                px-10
+                rounded-[30px]
+                bg-gradient-to-b
+                from-[#3E94B9]
+                to-[#04B6FF]
+                flex                    
+                items-center
+                justify-center
+                text-white
+                cursor-pointer
+                text-btn
                 
-            </div>
+                hover:bg-gradient-to-b                    
+                hover:from-[#356A82]
+                hover:to-[#1689B8]
+                "
+            onClick={onClick}>
+                {text}
+        </div>
     )
 }

@@ -40,3 +40,6 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   opacity: 0.8;
 }
+html {
+  scroll-behavior: smooth;
+}

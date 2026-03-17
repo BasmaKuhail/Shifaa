@@ -16,7 +16,7 @@ export default function Item ({title, elements, dropDownOpened, setDropDownOpene
 
     }
     return(
-        <div dir="rtl" className="relative flex flex-col">
+        <div dir="ltr" className="relative flex flex-col">
             <div 
                 className= {`group  
                     p-2 px-4 rounded-[30px] flex flex-row-reverse gap-3 cursor-pointer w-fit
@@ -40,7 +40,7 @@ export default function Item ({title, elements, dropDownOpened, setDropDownOpene
                         group-hover:invert`}
                     
                 />
-                <p>{title}</p>
+                <p className="text-inpt">{title}</p>
                 
             </div>
             <div className="absolute top-full right-0">
