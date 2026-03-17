@@ -24,6 +24,7 @@ import Features from "./FeaturesSec/FeaturesSec";
 import ContatcSec from "./contactForm/ContactFormSec";
 import Footer from "../footer/Footer";
 import UpArrow from "./UpArrow";
+import { useEffect, useState } from "react";
 
 const services =[
     {
@@ -63,7 +64,36 @@ const textSec =[
     }
     
 ]
-
+const headerItems = [
+    {
+        id: 1,
+        title: "الصفحة الرئيسية",
+        link: "/",
+        bold: true,
+    },
+    {
+        id: 2,
+        title: "من نحن",
+        link: "/about",
+        bold: false,
+    },
+    {
+        id: 3,
+        title: "الصيدليات",
+        link: "/pharmacies",
+        bold: false,
+    },{
+        id: 4,
+        title: "مدونة التوعية الصحية",
+        link: "/blog",
+        bold: false,
+    },{
+        id: 5,
+        title: "تواصل معنا",
+        link: "/#contact",
+        bold: false,
+    }
+]
 const tipsArr =[
     {num: 1, title: "البحث بالاسم", text: "أدخل الاسم التجاري أو العلمي للدواء الذي تحتاجه."},
     {num: 2, title: "تصفية النتائج", text: "حدد بحثك حسب الموقع، الشكل الدوائي، السعر، وغيرها."},
@@ -77,8 +107,26 @@ const featuresArr =[
     {logo:time, text: "اعثر على الأدوية بسرعة، ودعك من عناء التنقل الطويل بين الصيدليات."},
 ]
 export default function Home (){
+    const [showArrow, setShowArrow] = useState(false);
+    
+    useEffect(() => {
+        const handleScroll = () => {
+            const triggerPoint = 90; 
+
+            if (window.scrollY > triggerPoint) {
+                setShowArrow(true);
+            } else {
+                setShowArrow(false);
+            }
+        };
+
+        window.addEventListener("scroll", handleScroll);
+
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
     return(
         <div className='w-full flex flex-col '>
+            {showArrow && <UpArrow />}
             <div className="fixed top-0 left-0 w-full z-50"><Header /></div>
     
             <div className="bg-blue-100 relative inline-block">
@@ -89,14 +137,15 @@ export default function Home (){
                     className='block pt-[50px]'
                 />
                 <div className="absolute inset-0 z-10 pt-[75px]">
-                    <SecondaryHeader />
+                    <SecondaryHeader headerItems={headerItems} />
                     <div className='mt-20'>
                         <SearchHome />
                     </div>
                 </div>
             </div>
-            <UpArrow/>
+            
             <div className="flex flex-col items-center justify-center mt-20 gap-1">
+                
                 <Title title="خدماتنا"/>
                 <HeaderText text="نحن معك في كل وقت" color="black"/>
                 <SubHeader text="متواجدون دائمًا لمساعدتك في العثور على دوائك" color="black"/>
@@ -134,7 +183,7 @@ export default function Home (){
                 <div className="lg:mb-40 md:mb-40 mb-20">
                     <Features featuresArr={featuresArr}/>
                 </div>
-                <div className="mb-20">
+                <div className="mb-20" id="contact">
                     <ContatcSec/>
                 </div>
             </div>

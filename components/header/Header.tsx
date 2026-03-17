@@ -45,14 +45,14 @@ export default function Header(){
                 />
             )} 
         <div dir="ltr" className="flex flex-row-reverse gap-2 items-center">
-            <IconHolder icon={languge} isNotification={false} width={17} height={17}/>
+            <IconHolder icon={languge} isNotification={false} width={17} height={17} />
             <p className=" text-input font-bold">اللغة</p>
         </div>
         <div className="flex flex-row gap-5 items-center justify-between ">
 
             {/* notifications */}
             <div className="relative" onClick={() => setNotificationsOpened(true)}>
-                <IconHolder icon={notification} isNotification={true} width={24} height={24}/>
+                <IconHolder icon={notification} isNotification={true} width={24} height={24} notiCount={notifications.length}/>
                 <div className="absolute top-full left-0 z-50">
                     {notificationsOpened && <NotificationsDropDown notifications={notifications}/>}
                 </div>
