@@ -33,6 +33,7 @@ export default function BtnEmpty({ children }: { children: React.ReactNode }) {
                     text-transparent
                     transition
                     group-hover:text-white
+                    text-btn
                     ">
                     {children}
                 </span>

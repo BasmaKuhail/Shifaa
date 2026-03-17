@@ -7,7 +7,8 @@ const headerItems = [
     {
         id: 1,
         title: "الصفحة الرئيسية",
-        link: "/"
+        link: "/",
+        bold: true,
     },
     {
         id: 2,
@@ -34,7 +35,7 @@ export default function SecondaryHeader(){
             <Image src={logo} alt="Logo"  className=" m-[2px]" />
             <div className="flex flex-row gap-8 items-center">
                 {headerItems.map((item) => (
-                    <p key={item.id} className="text-btn cursor-pointer hover:underline">{item.title}</p>
+                    <p key={item.id} className={`text-btn cursor-pointer hover:underline ${item.bold && "font-bold"}`}>{item.title}</p>
                 ))}
             </div>
             <BtnEmpty>لوحة التحكم</BtnEmpty>

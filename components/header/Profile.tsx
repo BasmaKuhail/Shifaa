@@ -7,7 +7,7 @@ type ProfileProps = {
 }
 export default function Profile({imgUrl, name, position}:ProfileProps){
     return(
-        <div className="flex flex-row gap-2 mr-[12px]">
+        <div dir="ltr" className="flex flex-row gap-2 mr-[12px]">
             <div className="relative">
                 <div className="flex flex-col cursor-pointer">
                     <Image 
