@@ -15,8 +15,8 @@ export default function SearchText({intro, titleBlack, titleBlue, sentence}: Sea
     return(
         <div dir="rtl" className="flex flex-col gap-2">
             <nav className="flex flex-row center gap-2 flex"> 
-                <Image src={heartBeat} width={19} height={15} alt="heart beat"/>
-                <p className="text-black-500 text-btn">{intro}</p>
+                <Image src={heartBeat} className="w-[19px]" alt="heart beat"/>
+                <p className="text-black-500 lg:text-btn text-12px">{intro}</p>
             </nav>
             
             <nav className="flex flex-row center gap-1">

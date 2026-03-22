@@ -3,7 +3,6 @@ import { useRouter } from "next/router";
 
 import Icon from "../Icon"
 import Link from "next/link"
-import arrowLeft from "@/public/icons/arrowLeft.svg";
 
 
 type sectionProps = {

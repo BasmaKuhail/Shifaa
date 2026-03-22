@@ -33,17 +33,18 @@ export default function SearchHome (){
     }, []);
 
     return(
-        <div dir="rtl" className="flex flex-col w-full px-4 md:px-8 lg:px-30 pt-4 gap-8">
+        <div dir="rtl" className="flex flex-col w-full px-4 md:px-8 lg:px-20 xl:px-30 pt-4 gap-8">
             <Text 
                 intro="صحتك أولويتنا" 
                 titleBlack="ابحث عن دوائك" 
                 titleBlue="في ثوانٍ" 
                 sentence="ابحث، صَفِّ النتائج، قارن الأسعار، وتحقق من التوفر بالقرب منك"
             />
-            <div className="flex flex-col gap-4 w-[70%]">
+            <div className="flex flex-col gap-4 lg:w-[90%] xl:w-[70%] w-full">
                 <SearchInput label=" ابحث عن الأدوية" value= {userInput} onChange={(value) => setUserInput(value)}/>
+                
                 <div 
-                    className="flex flex-row justify-between"
+                    className="flex flex-row justify-between hidden lg:flex md:flex"
                     ref={containerRef}
                 >
                     {filters.map((item, indx) => 

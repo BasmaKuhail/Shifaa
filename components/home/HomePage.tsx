@@ -25,6 +25,7 @@ import ContatcSec from "./contactForm/ContactFormSec";
 import Footer from "../footer/Footer";
 import UpArrow from "./UpArrow";
 import { useEffect, useState } from "react";
+import MobileHeader from "../header/MobileHeader";
 
 const services =[
     {
@@ -125,22 +126,31 @@ export default function Home (){
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
     return(
-        <div className='w-full flex flex-col '>
+        <div className='w-full flex flex-col overflow-x-hidden'>
             {showArrow && <UpArrow />}
-            <div className="fixed top-0 left-0 w-full z-50"><Header /></div>
+            <div className="fixed top-0 left-0 w-full z-50 hidden lg:block"><Header /></div>
+            
     
-            <div className="bg-blue-100 relative inline-block">
+            <div className="bg-blue-100 relative inline-block ">
+                {/* web view */}
                 <Image
                     src={homeBgImg}
                     alt='home '
                     width={610.77}
-                    className='block pt-[50px]'
+                    className='block lg:pt-[50px]'
                 />
-                <div className="absolute inset-0 z-10 pt-[75px]">
+                <div className="absolute inset-0 z-10 pt-[75px] hidden lg:block">
                     <SecondaryHeader headerItems={headerItems} />
                     <div className='mt-20'>
                         <SearchHome />
                     </div>
+                </div>
+                {/* mobile view */}
+                <div className="absolute inset-0 -top-full block lg:hidden w-full flex items-center justify-center">
+                    <MobileHeader/>
+                </div>
+                <div className='-mt-10 block lg:hidden mb-40'>
+                    <SearchHome />
                 </div>
             </div>
             
@@ -149,7 +159,7 @@ export default function Home (){
                 <Title title="خدماتنا"/>
                 <HeaderText text="نحن معك في كل وقت" color="black"/>
                 <SubHeader text="متواجدون دائمًا لمساعدتك في العثور على دوائك" color="black"/>
-                <div dir="rtl"  className="flex flex-col md:flex-row lg:flex-row justify-between items-center w-full mt-5 px-4 md:px-8 lg:px-30 pt-4 gap-5 mb-20">
+                <div dir="rtl"  className="flex flex-col md:flex-row lg:flex-row justify-between items-center w-full mt-5 px-4 md:px-8 lg:px-20 xl:px-30 pt-4 gap-5 mb-20">
                     {services.map((srvs, indx) => 
                         <ServiceCotainer key={indx} icon={srvs.icon} header={srvs.header} text={srvs.text} link={srvs.link}/>
                     )}
@@ -157,7 +167,7 @@ export default function Home (){
             </div>
             
             {/* text with motion */}
-            <div className="px-4 md:px-8 lg:px-30 pt-4 ">
+            <div className="px-4 md:px-8 lg:px-20 xl:px-30 pt-4 ">
                 {textSec.map((item, index) => 
                     <TextSec 
                         key={index}
@@ -179,7 +189,7 @@ export default function Home (){
                 />
            </div>
             
-            <div className="bg-blue-100 w-full pt-20 px-4 md:px-8 lg:px-30 ">
+            <div className="bg-blue-100 w-full pt-20 px-4 md:px-8 lg:px-20 xl:px-30 ">
                 <div className="lg:mb-40 md:mb-40 mb-20">
                     <Features featuresArr={featuresArr}/>
                 </div>

@@ -1,4 +1,6 @@
 import search from "@/public/icons/search.svg"
+import fillter from "@/public/icons/fillterBlue.svg"
+import arrow from "@/public/icons/arrowLeft.svg"
 
 import Image from "next/image";
 import GradientBrn from "../GradiantBtn";
@@ -20,7 +22,12 @@ export default function SearchInput({label, value, onChange}:SearchInputProps){
                 alt=""
                 width={15}
                 src={search} 
-                className="absolute right-5 top-1/2 -translate-y-1/2 cursor-pointer z-10"
+                className="hidden lg:block md:block absolute right-5 top-1/2 -translate-y-1/2 cursor-pointer z-10"
+                onClick={handleSearch} />
+            <Image 
+                alt=""
+                src={fillter} 
+                className="lg:hidden md:hidden block absolute right-5 top-1/2 -translate-y-1/2 cursor-pointer z-10"
                 onClick={handleSearch} />
             <input 
                 onChange={(e) => {onChange(e.target.value)} }
@@ -44,12 +51,22 @@ export default function SearchInput({label, value, onChange}:SearchInputProps){
                 className="
                     absolute
                     left-2
-                    top-1/2
+                    lg:left-2
+                    md:left-2
+                    top-7
+                    lg:top-1/2
+                    md:top-1/2
                     -translate-y-1/2
-                    w-[19%]
+                    w-auto
                     h-[44px] md:h-[51px]"
             >
-                <GradientBrn text="ابدأ البحث" onClick={() => {}}/>
+                <div className="hidden lg:block md:block  h-full">
+                    <GradientBrn text="ابدأ البحث" onClick={() => {}} px={10} />
+                </div>
+                <div className="block lg:hidden md:hidden h-[90%]">
+                    <GradientBrn image={arrow} onClick={() => {}} px={5}/>
+                </div>
+                
             </div>
             
             
