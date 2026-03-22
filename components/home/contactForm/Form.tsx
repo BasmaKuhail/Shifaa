@@ -79,7 +79,7 @@ export default function ContactForm(){
                 isTrue={validateInput(userContactFornInfo.message.value, 'textarea')}/>
 
             <div className="flex w-fit h-[51px] justify-center lg:justify-start md:justify-start w-full">
-                <GradientBrn text="إرسال الرسالة" onClick={() => {}}/>
+                <GradientBrn text="إرسال الرسالة" onClick={() => {}} px={10}/>
             </div>
         </div>
     )
