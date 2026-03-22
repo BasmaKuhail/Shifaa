@@ -18,7 +18,7 @@ export default function Footer(){
             className="
                 lg:bg-white md:bg-white 
                 w-full lg:p-15 
-                md:p-15 p-5 px-4 md:px-8 lg:px-30">
+                md:p-15 p-5 px-4 md:px-8 lg:px-20 xl:px-30">
             <div className="
                     grid grid-cols-2 grid-rows-2 gap-8 items-center justify-center
                     md:flex md:flex-row md:justify-between md:items-center
