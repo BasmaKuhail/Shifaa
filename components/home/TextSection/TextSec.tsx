@@ -16,7 +16,7 @@ type textSecProps ={
     dir:string
 }
 export default function TextSec({secTitle, header, paragraphText, button, image,dir}:textSecProps){
-    const isMobile = useMediaQuery({ maxWidth: 1024 });
+    const isMobile = useMediaQuery({ maxWidth: 1023 });
     const direction = isMobile ? "rtl" : dir;
 
     return(
