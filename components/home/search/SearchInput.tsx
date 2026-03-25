@@ -4,6 +4,8 @@ import arrow from "@/public/icons/arrowLeft.svg"
 
 import Image from "next/image";
 import GradientBrn from "../GradiantBtn";
+import { useState } from "react";
+import MobileFilter from "./mobileFilter/MobileFilter";
 
 type SearchInputProps = {
     label: string;
@@ -16,7 +18,8 @@ function handleSearch (){
     return;
 }
 export default function SearchInput({label, value, onChange}:SearchInputProps){
-    return(
+    const [isFilterOpened, setIsFilterOpened] = useState(false);
+    return(<>
         <div dir="rtl" className="relative">
             <Image 
                 alt=""
@@ -24,11 +27,14 @@ export default function SearchInput({label, value, onChange}:SearchInputProps){
                 src={search} 
                 className="hidden lg:block md:block absolute right-5 top-1/2 -translate-y-1/2 cursor-pointer z-10"
                 onClick={handleSearch} />
-            <Image 
-                alt=""
-                src={fillter} 
-                className="lg:hidden md:hidden block absolute right-5 top-1/2 -translate-y-1/2 cursor-pointer z-10"
-                onClick={handleSearch} />
+            <div onClick={() => setIsFilterOpened(!isFilterOpened)}>
+                <Image 
+                    alt=""
+                    src={fillter} 
+                    className="lg:hidden md:hidden block absolute right-5 top-1/2 -translate-y-1/2 cursor-pointer z-10"
+                    onClick={handleSearch} />
+             </div>
+             
             <input 
                 onChange={(e) => {onChange(e.target.value)} }
                 type="text" 
@@ -71,5 +77,6 @@ export default function SearchInput({label, value, onChange}:SearchInputProps){
             
             
         </div>
+        {isFilterOpened && <MobileFilter isFilterOpened={isFilterOpened} setIsFilterOpened={setIsFilterOpened}/>}</>
     )
 }

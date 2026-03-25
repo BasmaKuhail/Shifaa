@@ -10,7 +10,6 @@ import settings from "@/public/icons/profile/settings.svg"
 import switchTo from "@/public/icons/profile/switch.svg"
 import ArrowRight from "@/public/icons/profile/arrowRight.svg"
 import { Dispatch } from 'react';
-import { menu } from 'framer-motion/client';
 
 type headerProps = {
     user:{
