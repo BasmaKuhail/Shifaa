@@ -50,7 +50,7 @@ const headerItems = [
 export default function HomeNav({user, isMenuOpened, setIsMenuOpened}:mobileNavProps){
     return(
         <div className="flex flex-col  p-6 rounded-r-[14px] gap-8 ">
-            <div onClick={() => setIsMenuOpened(!isMenuOpened)}>
+            <div className="w-fit" onClick={() => setIsMenuOpened(!isMenuOpened)}>
                 <Image src={x} alt="x" />
             </div>
             
