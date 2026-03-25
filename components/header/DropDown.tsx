@@ -19,7 +19,9 @@ type headerProps = {
         position:string,
         email:string
     },
-    setProfileOpened:Dispatch<React.SetStateAction<boolean>>
+    profileOpened:boolean,
+    setProfileOpened:Dispatch<React.SetStateAction<boolean>>,
+    
    
 }
 const dropDownItems =[
@@ -35,7 +37,7 @@ const dropDownItems =[
 const OpenMenu = (index: number) => {
 
 }
-export default function HeaderDeopDown({user, setProfileOpened}:headerProps){
+export default function HeaderDeopDown({user, profileOpened, setProfileOpened}:headerProps){
     return(
         <div dir="rtl" className="bg-white rounded-[12px] py-4 p-3 w-[21.75rem] ">
             <div className='flex flex-row justify-between  w-full border-b border-b-black-200 pb-5'>
@@ -46,7 +48,7 @@ export default function HeaderDeopDown({user, setProfileOpened}:headerProps){
                         <p className='text-sm text-black-500'>{user.email}</p>
                     </div>
                 </div>
-                <div onClick={() => setProfileOpened(false)} className='bg-red p-2 rounded-[10px] w-fit h-fit hover:bg-[#c73030]'>
+                <div  onClick={() => {setProfileOpened(!profileOpened); console.log(profileOpened)}} className='bg-red p-2 rounded-[10px] w-fit h-fit hover:bg-[#c73030]'>
                     <Image src={cross} alt="x" width={13}/>
                 </div>
             </div>   

@@ -1,5 +1,5 @@
 import Image, { StaticImageData } from "next/image";
-import ProNotCont from "../home/ProfileNotificationsContainer";
+import ProNotCont from "./ProfileNotificationsContainer";
 import x from "@/public/icons/header/x.svg"
 import Link from "next/link";
 type mobileNavProps ={

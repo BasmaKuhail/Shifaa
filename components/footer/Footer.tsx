@@ -16,6 +16,7 @@ export default function Footer(){
         <div 
             dir="rtl" 
             className="
+            flex flex-col gap-20
                 lg:bg-white md:bg-white 
                 w-full lg:p-15 
                 md:p-15 p-5 px-4 md:px-8 lg:px-20 xl:px-30">
@@ -24,7 +25,7 @@ export default function Footer(){
                     md:flex md:flex-row md:justify-between md:items-center
                     lg:flex lg:flex-row lg:justify-between lg:items-center"
             >
-                <div className="col-start-1 row-start-1
+                <div className="grid col-start-1 row-start-1 gap-3
                         lg:flex lg:flex-col lg:gap-6 lg:w-[26%]
                         md:flex md:flex-col md:gap-6 md:w-[26%]"
                 >
@@ -34,7 +35,7 @@ export default function Footer(){
                     </p>
                 </div>
                 <div className="
-                        col-start-2 row-start-1
+                        grid col-start-2 row-start-1 gap-3
                         lg:flex lg:flex-col lg:gap-6
                         md:flex md:flex-col md:gap-6"
                 >
@@ -49,8 +50,8 @@ export default function Footer(){
                 </div>
 
                 <div className="
-                        col-start-1 row-start-2  w-full
-                        lg:flex lg:flex-col gap-6 w-[26%]
+                        grid gap-3 col-start-1 row-start-2  w-full
+                        lg:flex lg:flex-col w-[26%]
                         md:w-[26%]"
                 >
                     <p className="lg:text-btn md:text-btn text-sm font-bold">اشترك معنا</p>
@@ -125,7 +126,7 @@ export default function Footer(){
                     
                 </nav>
             </div>
-            <div className="flex flex-row justify-between border-t border-t-black-50 pt-2 text-inpt items-center lg:mt-15 md:mt-15">
+            <div className="flex flex-row justify-between border-t border-t-black-50 pt-2 text-inpt items-center">
                 <nav className="hidden lg:flex md:flex flex-row gap-5 justify-center">
                     <div className="flex border border-black-50 rounded-full p-3 aspect-square justify-center items-center hover:bg-black-50">
                         <Image src={facebook} alt="facebook" className="w-4 h-4 object-contain"/>
