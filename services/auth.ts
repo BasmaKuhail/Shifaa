@@ -1,4 +1,5 @@
 import api from "@/lib/api";
+import profile from "@/public/icons/profile.jpg"
 
 export const register = async (data: {
   first_name: string;
@@ -30,7 +31,15 @@ export const getMe = async () => {
       Accept: "application/json",
     },
   });
-  return response.data;
+  const rawUser = response.data.data[0];
+  console.log("raw user", rawUser)
+  return {
+    id: rawUser.id,
+    name: rawUser.attributes.first_name,
+    email: rawUser.attributes.email,
+    avatar: profile, // fallback image
+    position: rawUser.type, 
+  };
 }
 
 export const logout = async () => {
