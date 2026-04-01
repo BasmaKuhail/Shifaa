@@ -66,7 +66,7 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
             }
 
             else if (error.response?.status === 401) {
-                alert("البريد الإلكتروني أو كلمة المرور غير صحيحة");
+                alert(error.response.data.message);
                 console.log("Validation Errors:", error.response.data.errors);
             }
 

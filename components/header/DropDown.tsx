@@ -10,7 +10,7 @@ import settings from "@/public/icons/profile/settings.svg"
 import switchTo from "@/public/icons/profile/switch.svg"
 import ArrowRight from "@/public/icons/profile/arrowRight.svg"
 import { Dispatch } from 'react';
-
+import { logout as logoutService } from '@/services/auth';
 type headerProps = {
     user:{
         name:string,
@@ -24,13 +24,13 @@ type headerProps = {
    
 }
 const dropDownItems =[
-    {title: "حسابي", icon: profile, opened:true, arrow: ArrowRight, onclick: "profileMenu"},
-    {title: "الإعدادات", icon: settings, opened:false, arrow: ArrowRight, onclick: "settingsMenu"},
-    {title: "الإشعارات", icon: notification, allowed:false, onclick: "notificationsMenu"},
-    {title: "انضمام كصيدلي", icon: switchTo, opened:false, arrow: ArrowRight, onclick: "requestMedMenu"},
-    {title: "طلب دواء", icon:medication , opened:false, arrow: ArrowRight, onclick: "requestMedMenu"},
-    {title: "العناصر المحفوظة", icon: saved, opened:false, arrow: ArrowRight, onclick: "savedItemsMenu"},
-    {title: "تسجيل خروج", icon:logout , opened:false, onclick:"loggout"},
+    {title: "حسابي", icon: profile, opened:true, arrow: ArrowRight, onclick: () => {}},
+    {title: "الإعدادات", icon: settings, opened:false, arrow: ArrowRight, onclick: () => {}},
+    {title: "الإشعارات", icon: notification, allowed:false, onclick: () => {}},
+    {title: "انضمام كصيدلي", icon: switchTo, opened:false, arrow: ArrowRight, onclick: () => {}},
+    {title: "طلب دواء", icon:medication , opened:false, arrow: ArrowRight, onclick: () => {}},
+    {title: "العناصر المحفوظة", icon: saved, opened:false, arrow: ArrowRight, onclick: () => {}},
+    {title: "تسجيل خروج", icon:logout , opened:false, onclick:() => { logoutService(); localStorage.removeItem("token"); localStorage.removeItem("user"); window.location.reload(); }} ,
 ]
 
 const OpenMenu = (index: number) => {
@@ -56,7 +56,7 @@ export default function HeaderDeopDown({user, profileOpened, setProfileOpened}:h
                     <div 
                         key={index} 
                         className='flex flex-row justify-between items-center cursor-pointer hover:bg-black-100 p-2 px-6'
-                        onClick={() => item.opened = true}>
+                        onClick={item.onclick}>
                         <div className='flex flex-row gap-4'>
                             <Image  src={item.icon} alt='icon' width={24} />
                             <p className='font-[500] text-sm'>{item.title}</p>
