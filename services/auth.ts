@@ -18,3 +18,14 @@ export const login = async (data: {
   const response = await api.post("/login", data);
   return response.data;
 };
+
+
+export const getMe = async () => {
+  const response = await api.get("/me");
+  return response.data;
+}
+
+export const logout = async () => {
+  const res = await api.post("/logout");
+  return res.data
+}
