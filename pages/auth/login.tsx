@@ -10,12 +10,7 @@ export default function Login() {
         const token = localStorage.getItem("token");
   
         if (token) {
-          console.log(token)
-          router.push("/");
-          const me = await getMe();
-          localStorage.setItem("user", JSON.stringify(me));
-          console.log(me)
-  
+          console.log("Token found, fetching user..." , token);
           router.push("/");
         }
       };

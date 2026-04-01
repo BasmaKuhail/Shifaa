@@ -21,11 +21,28 @@ export const login = async (data: {
 
 
 export const getMe = async () => {
-  const response = await api.get("/me");
+  const token = localStorage.getItem("token");
+  if (!token) throw new Error("No token found");
+
+  const response = await api.get("/me" ,{
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+    },
+  });
   return response.data;
 }
 
 export const logout = async () => {
-  const res = await api.post("/logout");
-  return res.data
+  const token = localStorage.getItem("token");
+  console.log(token)
+  if (!token) throw new Error("No token found");
+
+  const response = await api.post("/logout" ,null, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: "application/json",
+    },
+  });
+  return response.data;
 }
