@@ -4,6 +4,7 @@ import languge from "@/public/icons/languge.svg"
 import ProNotCont from "./ProfileNotificationsContainer";
 import { useContext } from "react";
 import { UserContext } from "@/contexts/UserContext";
+import { useRouter } from "next/router";
 
 const dummUser = {
     name:"سبونج بوب",
@@ -12,6 +13,7 @@ const dummUser = {
     email:"spongebob@gmail.com"
 }
 export default function Header(){
+    const router = useRouter();
     const {user, loading} = useContext(UserContext);
     console.log("header user", user)
     if(loading) return "loading...";
@@ -22,7 +24,9 @@ export default function Header(){
                 <IconHolder icon={languge} isNotification={false} width={17} height={17} />
                 <p className=" text-input font-bold">اللغة</p>
             </div>
-            <ProNotCont user={user || dummUser} />
+            {localStorage.getItem("token") ? <ProNotCont user={user || dummUser} /> : <></>}
+            {/* <p className="text-primary font-bold cursor-pointer" onClick={() => router.push("/auth/login")}>تسجيل الدخول</p>} */}
+
         </div>
     )
 }
