@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import notification from "@/public/icons/notifications.svg"
 import profile from "@/public/icons/profile.jpg"
 import mrKrabs from "@/public/images/mrKrabs.jpg"
-import IconHolder from "./IconHolder";
-import NotificationsDropDown from "./NotificationsDropDown";
-import Profile from "./Profile";
-import HeaderDeopDown from "./DropDown";
+import IconHolder from "../IconHolder";
+import NotificationsDropDown from "../NotificationsDropDown";
+import Profile from "../Profile";
+import HeaderDeopDown from "../DropDown";
 type ProNotContProps ={
     user : {
         avatar: StaticImageData;
