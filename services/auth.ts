@@ -32,7 +32,6 @@ export const getMe = async () => {
     },
   });
   const rawUser = response.data.data[0];
-  console.log("raw user", rawUser)
   return {
     id: rawUser.id,
     name: rawUser.attributes.first_name,

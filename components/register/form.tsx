@@ -54,7 +54,7 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
             localStorage.setItem("token", token);
             localStorage.setItem("user", JSON.stringify(user));
 
-            alert(isRegister ? "تم التسجيل بنجاح!" : "تم تسجيل الدخول بنجاح!");
+            // alert(isRegister ? "تم التسجيل بنجاح!" : "تم تسجيل الدخول بنجاح!");
             
             router.push("/");
 
