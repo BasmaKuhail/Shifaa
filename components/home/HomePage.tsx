@@ -81,6 +81,7 @@ export default function Home (){
         <div className='w-full flex flex-col overflow-x-hidden'>
             <div className="bg-blue-100 relative inline-block ">
                 {/* web view */}
+                
                 <Image
                     src={homeBgImg}
                     alt='home '
