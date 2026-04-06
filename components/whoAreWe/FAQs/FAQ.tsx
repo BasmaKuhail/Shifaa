@@ -15,7 +15,7 @@ const questions = [
 ]
 export default function FAQ (){
     return(
-        <div dir="rtl" className="flex flex-col gap-4 items-center">
+        <div dir="rtl" className="w-full flex flex-col gap-4 items-center">
             {questions.map((qua, indx) => <Quastion key={indx} question={qua}/>)}
             
             <p className="text-inpt text-black-500">

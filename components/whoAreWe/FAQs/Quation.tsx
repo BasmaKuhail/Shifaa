@@ -6,8 +6,9 @@ export default function Quastion({question}:{question:{id:number, question:strin
 
     const [viewAnswer, setViewAnswer] = useState(false);
     return(
-        <div dir="rtl" className="bg-white p-5 px-10 rounded-[14px] flex flex-col text-btn gap-3 w-full" onClick={() => setViewAnswer(!viewAnswer)}>
-            <div className="flex flex-row justify-between items-center">
+        
+        <div dir="rtl" className="bg-white p-5 px-10 rounded-[14px] flex flex-col text-btn gap-3 w-full" onClick={() => setViewAnswer(prev => !prev)}>
+            <div className="flex flex-row justify-between gap-2 items-start">
                 <p className="font-[500]">{question.id} . {question.question}</p>
                 <motion.div
                     animate={{
@@ -19,7 +20,7 @@ export default function Quastion({question}:{question:{id:number, question:strin
                     }}
                     className="cursor-pointer"
                 >
-                    <Image src={plus} alt="" />
+                    <Image src={plus} alt="" width={20}/>
                 </motion.div>
 
             </div>
@@ -31,12 +32,12 @@ export default function Quastion({question}:{question:{id:number, question:strin
                 }}
                 transition={{
                     duration: 1.0,
-                    delay: 0.2,
+                    delay: 0.1,
                     ease: [0.22, 1, 0.36, 1] 
                 }}
                 className="px-5 text-black-400 overflow-hidden"
             >
-                <p className={`px-5 text-black-400 ${viewAnswer ? "block": "hidden"}`}>{question.answer}</p>
+                <p>{question.answer}</p>
             </motion.div>
         </div>
     )
