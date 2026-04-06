@@ -33,7 +33,7 @@ export default function TextSec({secTitle, header, paragraphText, button, image,
             </div>
             
             <div dir="rtl" className="flex flex-col gap-4 lg:gap-7 lg:w-[50%] xl:w-[45%]  w-full">
-                <Title title={secTitle} />
+                <Title title={secTitle} bgColor="blue"/>
                 <nav className="flex lg:flex-col xl:flex-row gap-1">
                     {header?.map((item, index) => <HeaderText key={index} text={item.text} color={item.color}/>)}
                 </nav>

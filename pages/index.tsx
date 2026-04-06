@@ -1,9 +1,8 @@
-import Header from '@/components/header/Header';
 import Home from '@/components/home/HomePage';
-import SecondaryHeader from '@/components/home/secondaryHeader/SecondaryHeader';
 import { useTranslation } from 'next-i18next';
 import { serverSideTranslations } from 'next-i18next/serverSideTranslations';
 import { useRouter } from 'next/router';
+import MainLayout from "@/layouts/MainLayout"
 
 
 export async function getStaticProps({ locale }: { locale: string }) {
@@ -22,6 +21,9 @@ export default function Index() {
   const nextLocale = locale === 'en' ? 'ar' : 'en';
 
   return (
-    <Home/>
+    <MainLayout>
+      <Home/>
+    </MainLayout>
+   
   );
 }
