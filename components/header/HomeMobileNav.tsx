@@ -2,6 +2,7 @@ import Image, { StaticImageData } from "next/image";
 import ProNotCont from "./ProfileNotification/ProfileNotificationsContainer";
 import x from "@/public/icons/header/x.svg"
 import Link from "next/link";
+import { useRouter } from "next/router";
 type mobileNavProps ={
     user : {
         avatar: StaticImageData;
@@ -22,7 +23,7 @@ const headerItems = [
     {
         id: 2,
         title: "من نحن",
-        link: "/about",
+        link: "/whoAreWe",
         bold: false,
     },
     {
@@ -48,6 +49,7 @@ const headerItems = [
     }
 ]
 export default function HomeNav({user, isMenuOpened, setIsMenuOpened}:mobileNavProps){
+    const router = useRouter();
     return(
         <div className="flex flex-col  p-6 rounded-r-[14px] gap-8 ">
             <div className="w-fit" onClick={() => setIsMenuOpened(!isMenuOpened)}>
@@ -57,7 +59,7 @@ export default function HomeNav({user, isMenuOpened, setIsMenuOpened}:mobileNavP
             <ProNotCont user={user}/>
             <div className="flex flex-col gap-2">
                 {headerItems.map((item) => (
-                    <p key={item.id} className={`text-btn cursor-pointer hover:underline ${item.bold && "font-bold"} border-b border-b-black-200 pb-3`}><Link href={item.link}>{item.title}</Link></p>
+                    <p key={item.id} className={`text-btn cursor-pointer hover:underline ${router.pathname === item.link ? "font-bold" : ""} border-b border-b-black-200 pb-3`}><Link href={item.link}>{item.title}</Link></p>
                 ))}
             </div>
         </div>

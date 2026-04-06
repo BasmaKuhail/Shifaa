@@ -7,14 +7,18 @@ import { motion } from "framer-motion";
 import left from "@/public/images/About/left.png"
 import right from "@/public/images/About/right.png"
 import Image from "next/image";
+import MobileHeader from "../header/MobileHeader";
 export default function WhoAreWe(){
     return(
-        <div className='w-full flex flex-col overflow-x-hidden'>
-            <div className="bg-blue-100 relative inline-block pb-100">
-                <div className="pt-[75px]">
+        <div className='w-full flex flex-col overflow-x-hidden '>
+            <div className="bg-blue-100 relative inline-block pb-100 px-4 md:px-8 lg:px-20 xl:px-30 pt-4">
+                <div className="pt-[75px] hidden lg:block">
                     <SecondaryHeader />
                 </div>
-                
+                {/* mobile view */}
+                <div className="absolute inset-0 -top-full block lg:hidden w-full flex items-center justify-center">
+                    <MobileHeader/>
+                </div>
                 <div className="flex flex-col items-center justify-center mt-40 gap-10 md:px-10 lg:px-30 xl:px-50">
                     <div className="flex flex-col items-center justify-center">
                         <Title  title="من نحن؟" bgColor="white"/>
