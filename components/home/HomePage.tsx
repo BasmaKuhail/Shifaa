@@ -22,9 +22,6 @@ import TextSec from "./TextSection/TextSec";
 import Work from "./howItWorks/HowItWorks";
 import Features from "./FeaturesSec/FeaturesSec";
 import ContatcSec from "./contactForm/ContactFormSec";
-import Footer from "../footer/Footer";
-import UpArrow from "./UpArrow";
-import { useEffect, useState } from "react";
 import MobileHeader from "../header/MobileHeader";
 
 const services =[
@@ -65,36 +62,7 @@ const textSec =[
     }
     
 ]
-const headerItems = [
-    {
-        id: 1,
-        title: "الصفحة الرئيسية",
-        link: "/",
-        bold: true,
-    },
-    {
-        id: 2,
-        title: "من نحن",
-        link: "/about",
-        bold: false,
-    },
-    {
-        id: 3,
-        title: "الصيدليات",
-        link: "/pharmacies",
-        bold: false,
-    },{
-        id: 4,
-        title: "مدونة التوعية الصحية",
-        link: "/blog",
-        bold: false,
-    },{
-        id: 5,
-        title: "تواصل معنا",
-        link: "/#contact",
-        bold: false,
-    }
-]
+
 const tipsArr =[
     {num: 1, title: "البحث بالاسم", text: "أدخل الاسم التجاري أو العلمي للدواء الذي تحتاجه."},
     {num: 2, title: "تصفية النتائج", text: "حدد بحثك حسب الموقع، الشكل الدوائي، السعر، وغيرها."},
@@ -108,31 +76,12 @@ const featuresArr =[
     {logo:time, text: "اعثر على الأدوية بسرعة، ودعك من عناء التنقل الطويل بين الصيدليات."},
 ]
 export default function Home (){
-    const [showArrow, setShowArrow] = useState(false);
     
-    useEffect(() => {
-        const handleScroll = () => {
-            const triggerPoint = 90; 
-
-            if (window.scrollY > triggerPoint) {
-                setShowArrow(true);
-            } else {
-                setShowArrow(false);
-            }
-        };
-
-        window.addEventListener("scroll", handleScroll);
-
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
     return(
         <div className='w-full flex flex-col overflow-x-hidden'>
-            {showArrow && <UpArrow />}
-            <div className="fixed top-0 left-0 w-full z-50 hidden lg:block"><Header /></div>
-            
-    
             <div className="bg-blue-100 relative inline-block ">
                 {/* web view */}
+                
                 <Image
                     src={homeBgImg}
                     alt='home '
@@ -140,7 +89,7 @@ export default function Home (){
                     className='block lg:pt-[50px]'
                 />
                 <div className="absolute inset-0 z-10 pt-[75px] hidden lg:block">
-                    <SecondaryHeader headerItems={headerItems} />
+                    <SecondaryHeader/>
                     <div className='mt-20'>
                         <SearchHome />
                     </div>
@@ -156,7 +105,7 @@ export default function Home (){
             
             <div className="flex flex-col items-center justify-center mt-20 gap-1">
                 
-                <Title title="خدماتنا"/>
+                <Title title="خدماتنا" bgColor="blue"/>
                 <HeaderText text="نحن معك في كل وقت" color="black"/>
                 <SubHeader text="متواجدون دائمًا لمساعدتك في العثور على دوائك" color="black"/>
                 <div dir="rtl"  className="flex flex-col md:flex-row lg:flex-row justify-between items-center w-full mt-5 px-4 md:px-8 lg:px-20 xl:px-30 pt-4 gap-5 mb-20">
@@ -197,9 +146,7 @@ export default function Home (){
                     <ContatcSec/>
                 </div>
             </div>
-            <div className="grid bg-blue-100 w-full">
-                <Footer/>
-            </div>
+            
             {/* <h1>{t('welcome')}</h1>
             <button
                 onClick={() =>

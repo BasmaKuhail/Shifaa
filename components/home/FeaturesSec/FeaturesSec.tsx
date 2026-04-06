@@ -19,7 +19,7 @@ const container = {
 export default function Features ({featuresArr}:featuresProp){
     return(<div dir="rtl" className="flex flex-col gap-2 items-center text-center">
         <div className="flex justify-between items-center justify-center border border-blue-900 rounded-full w-[13rem]">
-            <Title title="مميزات المنصة"/>
+            <Title title="مميزات المنصة" bgColor="blue"/>
         </div>
         <Image src={featuresImg} alt="med"/>
         <motion.div
