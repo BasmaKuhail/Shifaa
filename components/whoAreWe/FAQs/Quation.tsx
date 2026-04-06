@@ -23,7 +23,7 @@ export default function Quastion({question}:{question:{id:number, question:strin
                 </motion.div>
 
             </div>
-            <motion.p
+            <motion.div
                 initial={{ height: 0, opacity: 0 }}
                 animate={{
                     height: viewAnswer ? "auto" : 0,
@@ -37,7 +37,7 @@ export default function Quastion({question}:{question:{id:number, question:strin
                 className="px-5 text-black-400 overflow-hidden"
             >
                 <p className={`px-5 text-black-400 ${viewAnswer ? "block": "hidden"}`}>{question.answer}</p>
-            </motion.p>
+            </motion.div>
         </div>
     )
 }
