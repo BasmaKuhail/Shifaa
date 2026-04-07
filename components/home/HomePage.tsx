@@ -138,11 +138,11 @@ export default function Home (){
                 />
            </div>
             
-            <div className="bg-blue-100 w-full pt-20 px-4 md:px-8 lg:px-20 xl:px-30 ">
+            <div className="bg-blue-100 w-full h:fit pt-20 px-4 md:px-8 lg:px-20 xl:px-30 ">
                 <div className="lg:mb-40 md:mb-40 mb-20">
                     <Features featuresArr={featuresArr}/>
                 </div>
-                <div className="mb-20" id="contact">
+                <div id="contact"> 
                     <ContatcSec/>
                 </div>
             </div>
