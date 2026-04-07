@@ -59,7 +59,7 @@ export default function WhoAreWe(){
                     <div className="flex flex-col items-center justify-center mt-20 lg:mt-30 gap-7 w-full ">
                         <div className="flex flex-col gap-1 w-full items-center">
                             <Title  title="البحث عن الدواء" bgColor="white"/>
-                            <div className="flex flex-row gap-3 items-center justify-between w-full lg:w-[50%] md:w-[80%]">
+                            <div className="flex flex-row gap-3 items-center justify-between w-full lg:w-[80%] xl:w-[50%] md:w-[80%]">
                                 <Image src={leftBubble} alt=""/>
                                 <HeaderText text="هل أنت مستعد للبحث؟" color="black"/>
                                 <Image src={rightBubble} alt=""/>
@@ -79,7 +79,7 @@ export default function WhoAreWe(){
                     </div>
                     
                 </div>
-                <div className="flex flex-col items-center justify-center mt-20 lg:mt-30 w-full bg-blue-1000 py-30"><Request/></div>
+                <div className="flex flex-col items-center justify-center mt-20 lg:mt-30 w-full bg-blue-1000 py-20"><Request/></div>
             </div>
         </div>
     )

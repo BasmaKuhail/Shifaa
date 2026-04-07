@@ -5,11 +5,11 @@ import HeaderText from "../home/HeaderText";
 import bubble from "@/public/images/About/bubble.svg"
 
 export default function Request(){
-    return(<div className="flex flex-col py-10 items-center justify-center gap-5 w-full md:px-10 lg:px-30 xl:px-50 px-5">
+    return(<div className="flex flex-col py-5 items-center justify-center gap-5 w-full md:px-10 lg:px-30 xl:px-50 px-5">
                 
                 <div className="flex flex-col gap-1 w-full items-center">
                     <Title title="طلب الدواء" bgColor="white"/>
-                    <div className="flex flex-row gap-3 items-center justify-between w-full lg:w-[40%] md:w-[80%]">
+                    <div className="flex flex-row gap-3 items-center justify-between w-full lg:w-[80%] xl:w-[50%] md:w-[80%]">
                         <Image src={bubble} alt=""/>
                         <HeaderText text="اطلب دواءك الان" color="white"/>
                         <Image src={bubble} alt=""/>

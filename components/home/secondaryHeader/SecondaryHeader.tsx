@@ -48,7 +48,7 @@ export default function SecondaryHeader(){
             <Image src={logo} alt="Logo"  className=" m-[2px]" />
             <div className="flex flex-row gap-8 items-center">
                 {headerItems.map((item) => (
-                    <p key={item.id} className={`text-btn cursor-pointer hover:underline ${router.pathname === item.link ? "font-bold" : ""}`}><Link href={item.link}>{item.title}</Link></p>
+                    <p key={item.id} className={`text-btn cursor-pointer hover:underline text-center ${router.pathname === item.link ? "font-bold" : ""}`}><Link href={item.link}>{item.title}</Link></p>
                 ))}
             </div>
             <BtnEmpty>لوحة التحكم</BtnEmpty>
