@@ -37,7 +37,7 @@ export default function Quastion({question}:{question:{id:number, question:strin
                     delay: 0.1,
                     ease: [0.22, 1, 0.36, 1] 
                 }}
-                className="px-5 text-black-400 overflow-hidden text-inpt"
+                className="px-5 text-black-400 overflow-hidden text-inpt lg:text-btn md:text-btn"
             >
                 <p>{question.answer}</p>
             </motion.div>
