@@ -44,7 +44,7 @@ export default function WhoAreWe(){
                         >
                             <Image src={left} alt=""/>
                         </motion.div>
-                        <div className="bg-white py-12 rounded-[10px]">
+                        <div className="bg-white py-10 lg:py-12 md:py-12 rounded-[10px]">
                             <TextArea/>
                         </div>
                         <motion.div
@@ -56,7 +56,7 @@ export default function WhoAreWe(){
                             <Image src={right} alt=""/>
                         </motion.div>
                     </div>
-                    <div className="flex flex-col items-center justify-center mt-30 gap-7 w-full ">
+                    <div className="flex flex-col items-center justify-center mt-20 lg:mt-30 gap-7 w-full ">
                         <div className="flex flex-col gap-1 w-full items-center">
                             <Title  title="البحث عن الدواء" bgColor="white"/>
                             <div className="flex flex-row gap-3 items-center justify-between w-full lg:w-[50%] md:w-[80%]">
@@ -68,7 +68,7 @@ export default function WhoAreWe(){
                         <p className="text-center text-btn font-[500] w-full lg:w-[50%]">لا تدع البحث عن الدواء يستنزف وقتك وطاقتك. ابدأ بحثك الآن لتجد أقرب صيدلية توفر الدواء الذي تحتاجه بضغطة زر واحدة.</p>
                         <div className="h-[45px]"><GradientBrn text="ابحث الان" onClick={() => {}} px={20}/></div>
                     </div>
-                    <div className="flex flex-col items-center justify-center mt-30 gap-7 w-full">
+                    <div className="flex flex-col items-center justify-center mt-20 lg:mt-30 gap-7 w-full">
                         <div className="flex flex-col gap-1 w-full items-center">
                             <Title  title="FAQs" bgColor="white"/>
                             <HeaderText text="الأسئلة الشائعة" color="black"/>
@@ -79,7 +79,7 @@ export default function WhoAreWe(){
                     </div>
                     
                 </div>
-                <div className="flex flex-col items-center justify-center mt-30 w-full bg-blue-1000"><Request/></div>
+                <div className="flex flex-col items-center justify-center mt-20 lg:mt-30 w-full bg-blue-1000 py-30"><Request/></div>
             </div>
         </div>
     )

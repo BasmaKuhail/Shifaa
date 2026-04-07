@@ -16,7 +16,9 @@ export default function Footer(){
         <div 
             dir="rtl" 
             className="
-            flex flex-col gap-20
+                pt-20
+                lg:pt-15 md:pt-15
+                flex flex-col gap-20
                 lg:bg-white md:bg-white 
                 w-full lg:p-15 
                 md:p-15 p-5 px-4 md:px-8 lg:px-20 xl:px-30">
