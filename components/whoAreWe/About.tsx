@@ -66,7 +66,7 @@ export default function WhoAreWe(){
                             </div>
                         </div>
                         <p className="text-center text-btn font-[500] w-full lg:w-[50%]">لا تدع البحث عن الدواء يستنزف وقتك وطاقتك. ابدأ بحثك الآن لتجد أقرب صيدلية توفر الدواء الذي تحتاجه بضغطة زر واحدة.</p>
-                        <div className="h-[45px]"><GradientBrn text="ابحث الان" onClick={() => {}} px={20}/></div>
+                        <div className="h-[45px] w-full flex flex-row items-center justify-center"><GradientBrn text="ابحث الان" onClick={() => {}} px={10}/></div>
                     </div>
                     <div className="flex flex-col items-center justify-center mt-20 lg:mt-30 gap-7 w-full">
                         <div className="flex flex-col gap-1 w-full items-center">
