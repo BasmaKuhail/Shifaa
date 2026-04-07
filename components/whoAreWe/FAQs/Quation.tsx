@@ -7,7 +7,7 @@ export default function Quastion({question}:{question:{id:number, question:strin
     const [viewAnswer, setViewAnswer] = useState(false);
     return(
 
-        <div dir="rtl" className="bg-white p-5 lg:px-10 md:px-10 rounded-[14px] flex flex-col gap-3 w-full" onClick={() => {setViewAnswer(prev => !prev); console.log(question.id)}}>
+        <div dir="rtl" className="bg-white p-5 lg:px-10 md:px-10 rounded-[14px] flex flex-col gap-3 w-full"  onClick={() => {setViewAnswer(prev => !prev); console.log(question.id)}}>
             <div className="flex flex-row justify-between gap-2 items-start">
                 <p className="font-[500] text-btn">{question.id} . {question.question}</p>
                 <motion.div
@@ -18,9 +18,9 @@ export default function Quastion({question}:{question:{id:number, question:strin
                         duration: 1.2,
                         ease: "easeInOut"
                     }}
-                    className="cursor-pointer"
+                    className="cursor-pointer p-2 touch-none pointer-events-auto"
                 >
-                    <div onClick={() => {setViewAnswer(prev => !prev); console.log(question.id)}} className="w-5 h-5 md:w-6 md:h-6 lg:w-6 lg:h-6">
+                    <div className="w-5 h-5 md:w-6 md:h-6 lg:w-6 lg:h-6">
                         <Image src={plus} alt="" className="w-full h-full"/>
                     </div>
                 </motion.div>
@@ -37,7 +37,7 @@ export default function Quastion({question}:{question:{id:number, question:strin
                     delay: 0.1,
                     ease: [0.22, 1, 0.36, 1] 
                 }}
-                className="px-5 text-black-400 overflow-hidden text-inpt lg:text-btn md:text-btn"
+                className="px-5 text-black-400 text-inpt lg:text-btn md:text-btn"
             >
                 <p>{question.answer}</p>
             </motion.div>
