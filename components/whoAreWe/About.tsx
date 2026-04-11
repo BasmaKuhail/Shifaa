@@ -20,7 +20,7 @@ export default function WhoAreWe(){
         <div className='w-full flex flex-col overflow-x-hidden '>
             <div className="bg-blue-100 relative inline-block ">
                 <div className="pt-[75px] hidden lg:block">
-                    <SecondaryHeader />
+                    <div className="px-4 md:px-8 lg:px-20 xl:px-30 pt-4"><SecondaryHeader/></div>
                 </div>
                 {/* mobile view */}
                 <div className="absolute inset-0 -top-full block lg:hidden w-full flex items-center justify-center">

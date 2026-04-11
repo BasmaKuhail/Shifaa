@@ -1,6 +1,6 @@
-export default function BtnEmpty({ children }: { children: React.ReactNode }) {
+export default function BtnEmpty({ children, onClick }: { children: React.ReactNode, onClick?: () => void }) {
     return (
-        <div className="
+        <div onClick={onClick} className="
             flex items-center justify-center 
             p-[2px]
             rounded-full
