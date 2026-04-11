@@ -19,9 +19,10 @@ export default function Quastion({question}:{question:{id:number, question:strin
                         ease: "easeInOut"
                     }}
                     className="cursor-pointer p-2 touch-none pointer-events-auto"
+
                 >
-                    <div className="w-7 h-7 md:w-6 md:h-6 lg:w-6 lg:h-6" onClick={() => {setViewAnswer(prev => !prev); console.log(question.id)}}>
-                        <Image src={plus} alt="" className="w-full h-full"/>
+                    <div className="w-7 h-7 md:w-6 md:h-6 lg:w-6 lg:h-6" >
+                        <Image src={plus} alt="" className="w-full h-full" onClick={() => {setViewAnswer(prev => !prev); console.log(question.id)}}/>
                     </div>
                 </motion.div>
 
