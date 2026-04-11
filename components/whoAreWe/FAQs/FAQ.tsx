@@ -16,8 +16,8 @@ const questions = [
 export default function FAQ (){
     return(
         <div dir="rtl" className="w-full flex flex-col gap-4 items-center">
-            {questions.map((qua, indx) => <Quastion key={indx} question={qua}/>)}
-            
+            {questions.map((qua) => <Quastion key={qua.id} question={qua}/>)}
+
             <p className="text-inpt text-black-500">
                 إذا كان لديكم المزيد من الاستفسارات، 
                 <Link href="#" className="underline text-black-600">يرجى التواصل معنا.</Link>
