@@ -1,5 +1,7 @@
 import IconHolder from "./IconHolder";
-import profile from "@/public/icons/profile.jpg"
+import profile from "@/public/icons/profile/profile.svg"
+
+import loggout from "@/public/icons/profile/logout.svg"
 import languge from "@/public/icons/languge.svg"
 import ProNotCont from "./ProfileNotification/ProfileNotificationsContainer";
 import { useContext } from "react";
@@ -32,8 +34,13 @@ export default function Header(){
                 <IconHolder icon={languge} isNotification={false} width={17} height={17} />
                 <p className=" text-input font-bold">اللغة</p>
             </div>
-            {localStorage.getItem("token") ? <ProNotCont user={user || dummUser} /> : <></>}
-            {/* <p className="text-primary font-bold cursor-pointer" onClick={() => router.push("/auth/login")}>تسجيل الدخول</p>} */}
+            {localStorage.getItem("token") ? <ProNotCont user={user || dummUser} /> : 
+            <div dir="ltr" className="flex flex-row-reverse gap-2 items-center" onClick={() => router.push("/auth/login")}>
+                <IconHolder icon={loggout} isNotification={false} width={17} height={17} />
+                <p className="text-input font-bold cursor-pointer hover:underline">تسجيل الدخول</p>
+            </div>
+
+            }
 
         </div>
     )
