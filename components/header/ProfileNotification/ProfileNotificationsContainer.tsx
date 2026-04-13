@@ -14,14 +14,15 @@ type ProNotContProps ={
         name: string;
         position: string;
         email:string
-    }
+    },
+    bg?:string
 }
 const notifications = [
     {sender:{name:"سبونج بوب", avatar:profile}, msg: "تم تلبية طلب الدواء رقم ٣٤٣٢٢.عنوان الصيدلية:", date: new Date('2025-07-04T10:00:00')},
     {sender:{name:"شفيق حبار"}, msg: "تم تلبية طلب الدواء رقم ٣٤٣٢٢.عنوان الصيدلية:", date: new Date('2025-07-04T10:00:00')},
     {sender:{name:"مستر سلطع", avatar:mrKrabs}, msg: "يدعوكم إلى الإنضمام إلى مقرمشات سلطع", date: new Date, action:{title:"قبول الدعوة", onClick:() => console.log("accepted")}},
 ]
-export default function ProNotCont({user}:ProNotContProps){
+export default function ProNotCont({user, bg="white"}:ProNotContProps){
     const [profileOpened, setProfileOpened] = useState(false);
     const [notificationsOpened, setNotificationsOpened] = useState(false);
 
@@ -37,7 +38,7 @@ export default function ProNotCont({user}:ProNotContProps){
     }, [profileOpened, notificationsOpened]);
 
     return(
-        <div className="flex flex-row gap-5 items-center justify-between bg-white">
+        <div className={`flex flex-row gap-5 items-center justify-between ${bg=="white" ? "bg-white" : "bg-blue-100"}`}>
             {(profileOpened || notificationsOpened) && (
                 <div
                     className="fixed inset-0 bg-black/40 z-40"

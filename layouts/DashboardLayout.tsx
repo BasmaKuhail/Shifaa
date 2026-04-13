@@ -1,0 +1,51 @@
+import SideNav from "@/components/dashboard/SideNav";
+import ProNotCont from "@/components/header/ProfileNotification/ProfileNotificationsContainer";
+import UpArrow from "@/components/home/UpArrow";
+import { UserContext } from "@/contexts/UserContext";
+import { useContext, useEffect, useState } from "react";
+import profile from "@/public/icons/profile/profile.svg"
+import ProNotContSkeleton from "@/components/header/ProfileNotification/ProNotContSkeleton";
+
+export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+    const [showArrow, setShowArrow] = useState(false);
+    const {user, loading} = useContext(UserContext);
+
+    const dummUser = {
+        name:"سبونج بوب",
+        avatar:profile,
+        position: "طباخ",
+        email:"spongebob@gmail.com"
+    }
+
+    useEffect(() => {
+        const handleScroll = () => {
+          setShowArrow(window.scrollY > 90);
+        };
+    
+        window.addEventListener("scroll", handleScroll);
+        return () => window.removeEventListener("scroll", handleScroll);
+    }, []);
+
+    if (loading) {
+        return (
+            <div className="bg-white p-2 flex flex-row gap-10 items-center border-b border-black-200 justify-between px-4 md:px-8 lg:px-20 xl:px-30">
+                <ProNotContSkeleton />
+            </div>
+        );
+    }
+    return (
+        <div dir="rtl" className="flex flex-row bg-blue-100">
+            {showArrow && <UpArrow />}
+            <div className="w-[25%]">
+                <SideNav/>
+            </div>
+            <div  className="flex flex-col pt-8 pr-20 pl-4 md:pl-8 lg:pl-20 xl:pl-30 w-full">
+                <div dir="ltr" className="w-full flex flex-row justify-between items-center">
+                    {<ProNotCont user={user || dummUser} bg="blue" /> }
+                </div>
+                {children}
+            </div>
+            
+        </div>
+    );
+}
