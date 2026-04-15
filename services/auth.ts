@@ -46,10 +46,10 @@ export const logout = async () => {
   console.log(token)
   if (!token) throw new Error("No token found");
 
-  const response = await api.post("/logout" ,null, {
+  const response = await api.post("/logout", null, {
     headers: {
       Authorization: `Bearer ${token}`,
-      Accept: "application/json",
+      // Accept: "application/json",
     },
   });
   return response.data;
