@@ -20,7 +20,7 @@ export default function WhoAreWe(){
         <div className='w-full flex flex-col overflow-x-hidden '>
             <div className="bg-blue-100 relative inline-block ">
                 <div className="pt-[75px] hidden lg:block">
-                    <div className="px-4 md:px-8 lg:px-20 xl:px-30 pt-4"><SecondaryHeader/></div>
+                    <div className="px-4 md:px-8 lg:px-20 xl:px-30 pt-4 relative z-50"><SecondaryHeader/></div>
                 </div>
                 {/* mobile view */}
                 <div className="absolute inset-0 -top-full block lg:hidden w-full flex items-center justify-center">
@@ -40,7 +40,7 @@ export default function WhoAreWe(){
                             initial={{ x: -100, opacity: 0 }}
                             animate={{ x: 0, opacity: 1 }}
                             transition={{ duration: 1, ease: "easeOut" }}
-                            className="absolute top-0 lg:-left-30 xl:left-0 hidden lg:block"
+                            className="absolute top-0 lg:-left-30 xl:left-0 hidden lg:block z-0"
                         >
                             <Image src={left} alt=""/>
                         </motion.div>

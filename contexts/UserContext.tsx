@@ -29,6 +29,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
 
   const fetchUser = async () => {
     const token = localStorage.getItem("token");
+    console.log("Fetching user with token:", token);
     if (!token) {
       setLoading(false);
       return;

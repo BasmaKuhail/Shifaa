@@ -9,6 +9,7 @@ import Settings from "@/public/icons/dashboard/settings";
 import Help from "@/public/icons/dashboard/help";
 
 import NavItem from "./NavItem";
+import { useRouter } from "next/router";
 
 const navIcons = [
     {
@@ -53,10 +54,11 @@ const otherIcons =[
 ]
 
 export default function SideNav(){
+    const router = useRouter();
     return(
         <div className="min-h-screen border-l border-l-black-200 flex flex-col gap-4 justify-between items-start p-5 "> 
             <div className="w-full flex flex-col gap-4">
-                <Image src={logo} alt="Logo"  className=" m-[2px]" />
+                <Image src={logo} alt="Logo"  className=" m-[2px] cursor-pointer" onClick={() => router.push("/")}/>
 
                 <div className="flex flex-col gap-3 mt-10 w-full">
                     {navIcons.map((item) => (

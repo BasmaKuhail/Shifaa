@@ -1,6 +1,3 @@
-import SecondaryHeader from "../home/secondaryHeader/SecondaryHeader";
-import SideNav from "./SideNav";
-
 export default function Dashboard() {
     return (
         

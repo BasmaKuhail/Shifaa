@@ -2,14 +2,17 @@ import Image from "next/image";
 import logo from "@/public/icons/logo.svg";
 import BtnEmpty from "./BtnEmpty"
 import Link from "next/link";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useRouter } from "next/router";
+import { UserContext } from "@/contexts/UserContext";
 
 type secHeaderProps = {
     headerItems:  {id:number, title:string, link: string, bold:boolean, includeLogo:boolean}[]
 }
 
 export default function SecondaryHeader({includeLogo=true}){
+    const {user, loading} = useContext(UserContext);
+
     const headerItems = [
         {
             id: 1,
@@ -51,7 +54,7 @@ export default function SecondaryHeader({includeLogo=true}){
                     <p key={item.id} className={`text-btn cursor-pointer hover:underline text-center ${router.pathname === item.link ? "font-bold" : ""}`}><Link href={item.link}>{item.title}</Link></p>
                 ))}
             </div>
-            { <BtnEmpty onClick={() => {router.push("/dashboard")}}>لوحة التحكم</BtnEmpty>}
+            {<div className={`${!user ? "invisible" : "block"}`}><BtnEmpty onClick={() => {router.push("/dashboard")}}>لوحة التحكم</BtnEmpty></div>}
         </div>
     )
 }
