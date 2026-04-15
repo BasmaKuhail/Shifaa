@@ -30,7 +30,21 @@ const dropDownItems =[
     {title: "انضمام كصيدلي", icon: switchTo, opened:false, arrow: ArrowRight, onclick: () => {}},
     {title: "طلب دواء", icon:medication , opened:false, arrow: ArrowRight, onclick: () => {}},
     {title: "العناصر المحفوظة", icon: saved, opened:false, arrow: ArrowRight, onclick: () => {}},
-    {title: "تسجيل خروج", icon:logout , opened:false, onclick:() => { logoutService(); localStorage.removeItem("token"); localStorage.removeItem("user"); window.location.reload(); }} ,
+    {
+        title: "تسجيل خروج", 
+        icon:logout , 
+        opened:false, 
+        onclick: async () => {
+            try {
+                await logoutService(); // call API FIRST
+            } catch (e) {
+                console.error(e);
+            } 
+            localStorage.removeItem("token"); 
+            localStorage.removeItem("user"); 
+            window.location.href = "/auth/login"; 
+        }
+    } ,
 ]
 
 const OpenMenu = (index: number) => {
