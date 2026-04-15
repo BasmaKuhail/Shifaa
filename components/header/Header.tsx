@@ -18,6 +18,7 @@ const dummUser = {
 export default function Header(){
     const router = useRouter();
     const {user, loading} = useContext(UserContext);
+    
     console.log("header user", user)
     if (loading) {
         return (
@@ -34,7 +35,7 @@ export default function Header(){
                 <IconHolder icon={languge} isNotification={false} width={17} height={17} />
                 <p className=" text-input font-bold">اللغة</p>
             </div>
-            {localStorage.getItem("token") ? <ProNotCont user={user || dummUser} /> : 
+            {user ? <ProNotCont user={user} /> : 
             <div dir="ltr" className="flex flex-row-reverse gap-2 items-center" onClick={() => router.push("/auth/login")}>
                 <IconHolder icon={loggout} isNotification={false} width={17} height={17} />
                 <p className="text-input font-bold cursor-pointer hover:underline">تسجيل الدخول</p>
