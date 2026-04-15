@@ -27,23 +27,43 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    const fetchUser = async () => {
-      const token = localStorage.getItem("token");
-      if (token) {
-        try {
-          const data = await getMe();
-          setUser(data);
-        } catch (err) {
-          console.log("Failed to fetch user", err);
-          localStorage.removeItem("token"); // clear invalid token
-        }
-      }
+  const fetchUser = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
       setLoading(false);
-    };
+      return;
+    }
 
+    try {
+      const data = await getMe();
+      setUser(data);
+    } catch (err: any) {
+      if (err.response?.status === 401) {
+        localStorage.removeItem("token");
+        setUser(null);
+      } else {
+        console.log("Network error, keeping session");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
     fetchUser();
   }, []);
+
+  useEffect(() => {
+    const handleOnline = () => {
+      const token = localStorage.getItem("token");
+      if (token && !user) {
+        fetchUser();
+      }
+    };
+
+    window.addEventListener("online", handleOnline);
+    return () => window.removeEventListener("online", handleOnline);
+  }, [user]);
 
   return (
     <UserContext.Provider value={{ user, setUser, loading }}>
