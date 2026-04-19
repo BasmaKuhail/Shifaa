@@ -23,7 +23,7 @@ export default function MobileHeader (){
                         onClick={() => setIsMenuOpened(false)}
                     />
 
-                    <div className="fixed top-0 left-0 h-screen bg-white z-50">
+                    <div className="w-[60%] h-full md:w-[40%] fixed top-0 left-0 h-screen bg-white z-50">
                         <HomeNav isMenuOpened={isMenuOpened} setIsMenuOpened={setIsMenuOpened}/>
                     </div>
                 </>
