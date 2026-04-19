@@ -1,18 +1,15 @@
 import Image from "next/image";
 import logo from "@/public/icons/logo.svg";
 import menu from "@/public/icons/header/burgerMenu.svg";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import HomeNav from "./HomeMobileNav";
 import profile from "@/public/icons/profile.jpg"
+import { UserContext } from "@/contexts/UserContext";
 
-const user ={
-    name:"سبونج بوب",
-    avatar:profile,
-    position: "طباخ",
-    email:"spongebob@gmail.com"
-}
+
 export default function MobileHeader (){
     const [isMenuOpened, setIsMenuOpened] = useState(false);
+    
     return(
         <div dir="rtl" className="flex flex-row justify-between items-center w-[90%] mt-25 flex items-center">
             <Image src={logo} alt="Logo" width={106} />
@@ -27,7 +24,7 @@ export default function MobileHeader (){
                     />
 
                     <div className="fixed top-0 left-0 h-screen bg-white z-50">
-                        <HomeNav user={user} isMenuOpened={isMenuOpened} setIsMenuOpened={setIsMenuOpened}/>
+                        <HomeNav isMenuOpened={isMenuOpened} setIsMenuOpened={setIsMenuOpened}/>
                     </div>
                 </>
                 )}
