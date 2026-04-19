@@ -3,13 +3,10 @@ import ProNotCont from "./ProfileNotification/ProfileNotificationsContainer";
 import x from "@/public/icons/header/x.svg"
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useContext } from "react";
+import { UserContext } from "@/contexts/UserContext";
+import ProNotContSkeleton from "./ProfileNotification/ProNotContSkeleton";
 type mobileNavProps ={
-    user : {
-        avatar: StaticImageData;
-        name: string;
-        position: string;
-        email:string
-    },
     isMenuOpened:boolean,
     setIsMenuOpened:(isMenuOpened: boolean) => void
 }
@@ -48,19 +45,26 @@ const headerItems = [
         bold: false
     }
 ]
-export default function HomeNav({user, isMenuOpened, setIsMenuOpened}:mobileNavProps){
+export default function HomeNav({isMenuOpened, setIsMenuOpened}:mobileNavProps){
+    const {user, loading} = useContext(UserContext);
     const router = useRouter();
     return(
-        <div className="flex flex-col  p-6 rounded-r-[14px] gap-8 ">
+        <div className="flex flex-col  p-6 rounded-r-[14px] gap-8">
             <div className="w-fit" onClick={() => setIsMenuOpened(!isMenuOpened)}>
                 <Image src={x} alt="x" />
             </div>
-            
-            <ProNotCont user={user}/>
+            {loading && 
+                <div className="bg-white p-2 flex flex-row gap-10 items-center border-b border-black-200 justify-between px-4 md:px-8 lg:px-20 xl:px-30">
+                    <ProNotContSkeleton />
+                </div>
+            }
+            {user && <ProNotCont user={user}/>}
             <div className="flex flex-col gap-2">
                 {headerItems.map((item) => (
                     <p key={item.id} className={`text-btn cursor-pointer hover:underline ${router.pathname === item.link ? "font-bold" : ""} border-b border-b-black-200 pb-3`}><Link href={item.link}>{item.title}</Link></p>
                 ))}
+                {!user && <p className={`text-btn cursor-pointer hover:underline ${router.pathname === "/auth/login" ? "font-bold" : ""} border-b border-b-black-200 pb-3`}><Link href={"/auth/login"}>تسجيل الدخول</Link></p>}
+
             </div>
         </div>
     )
