@@ -10,7 +10,7 @@ export default function Profile({user}:ProfileProps){
         <div dir="ltr" className="flex flex-row gap-2 mr-[12px]">
             <div className="relative">
                 <div className="flex flex-col cursor-pointer">
-                    <ProfileIcon imageUrl={user.avatar} width="40" isCircle={false}/>
+                    <ProfileIcon imageUrl={user.avatar} width={40} isCircle={false}/>
                 </div>
                 <div className="bg-online p-1 w-[11px] h-[11px] rounded-full absolute right-0 bottom-0"></div>
             </div>
