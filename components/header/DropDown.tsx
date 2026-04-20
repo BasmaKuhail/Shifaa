@@ -54,7 +54,7 @@ const dropDownItems =[
         <div dir="rtl" className="bg-white rounded-[12px] py-4 p-3 w-[21.75rem]">
             <div className='flex flex-row justify-between  w-full border-b border-b-black-200 pb-5'>
                 <div className='flex flex-row items-center gap-4'>
-                    <ProfileIcon imageUrl={user.avatar} width="40" isCircle={false}/>
+                    <ProfileIcon imageUrl={user.avatar} width={40} isCircle={false}/>
 
                     <div dir="rtl" className='flex flex-col'>
                         <p className='font-semibold text-sm'>{user.firstName}</p>

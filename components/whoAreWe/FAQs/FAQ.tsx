@@ -20,7 +20,7 @@ export default function FAQ (){
 
             <p className="text-inpt text-black-500">
                 إذا كان لديكم المزيد من الاستفسارات، 
-                <Link href="#" className="underline text-black-600">يرجى التواصل معنا.</Link>
+                <Link href={"/#contact"} className="underline text-black-600 cursor-pointer">يرجى التواصل معنا.</Link>
             </p>
         </div>
     )
