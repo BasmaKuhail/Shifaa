@@ -1,5 +1,4 @@
 import IconHolder from "./IconHolder";
-import profile from "@/public/icons/profile/profile.svg"
 
 import loggout from "@/public/icons/profile/logout.svg"
 import languge from "@/public/icons/languge.svg"
@@ -9,12 +8,7 @@ import { UserContext } from "@/contexts/UserContext";
 import { useRouter } from "next/router";
 import ProNotContSkeleton from "./ProfileNotification/ProNotContSkeleton";
 
-const dummUser = {
-    name:"سبونج بوب",
-    avatar:profile,
-    position: "طباخ",
-    email:"spongebob@gmail.com"
-}
+
 export default function Header(){
     const router = useRouter();
     const {user, loading} = useContext(UserContext);

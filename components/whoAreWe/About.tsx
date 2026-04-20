@@ -12,7 +12,7 @@ import HeaderText from "../home/HeaderText";
 
 import leftBubble from "@/public/images/About/leftBubble.png"
 import rightBubble from "@/public/images/About/rightBubble.png"
-import GradientBrn from "../home/GradiantBtn";
+import GradientBtn from "../home/GradiantBtn";
 import FAQ from "./FAQs/FAQ";
 import Request from "./Request";
 export default function WhoAreWe(){
@@ -20,7 +20,7 @@ export default function WhoAreWe(){
         <div className='w-full flex flex-col overflow-x-hidden '>
             <div className="bg-blue-100 relative inline-block ">
                 <div className="pt-[75px] hidden lg:block">
-                    <div className="px-4 md:px-8 lg:px-20 xl:px-30 pt-4 relative z-50"><SecondaryHeader/></div>
+                    <div className="px-4 md:px-8 lg:px-20 xl:px-30 pt-4 relative z-20"><SecondaryHeader/></div>
                 </div>
                 {/* mobile view */}
                 <div className="absolute inset-0 -top-full block lg:hidden w-full flex items-center justify-center">
@@ -66,7 +66,7 @@ export default function WhoAreWe(){
                             </div>
                         </div>
                         <p className="text-center text-btn font-[500] w-full lg:w-[50%]">لا تدع البحث عن الدواء يستنزف وقتك وطاقتك. ابدأ بحثك الآن لتجد أقرب صيدلية توفر الدواء الذي تحتاجه بضغطة زر واحدة.</p>
-                        <div className="h-[45px] w-full flex flex-row items-center justify-center"><GradientBrn text="ابحث الان" onClick={() => {}} px={10}/></div>
+                        <div className="h-[45px] w-full flex flex-row items-center justify-center"><GradientBtn text="ابحث الان" onClick={() => {}} px={10} rounded="30"/></div>
                     </div>
                     <div className="flex flex-col items-center justify-center mt-20 lg:mt-30 gap-7 w-full">
                         <div className="flex flex-col gap-1 w-full items-center">

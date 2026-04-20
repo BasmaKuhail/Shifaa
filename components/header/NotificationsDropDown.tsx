@@ -1,7 +1,7 @@
 import Image, { StaticImageData } from "next/image";
 import profileContainer from "@/public/icons/profileContainer.svg"
 type notificationsDropDownProps = {
-    notifications: {sender:{name:string, avatar?:StaticImageData}, msg: string, date: Date, action?:{title:string, onClick:() => void}}[]
+    notifications: {sender:{name:string, avatar:string | null}, msg: string, date: Date, action?:{title:string, onClick:() => void}}[]
 }
 export default function NotificationsDropDown ({notifications}: notificationsDropDownProps){
     return (

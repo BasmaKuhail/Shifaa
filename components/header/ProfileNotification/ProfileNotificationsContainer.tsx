@@ -8,17 +8,13 @@ import IconHolder from "../IconHolder";
 import NotificationsDropDown from "../NotificationsDropDown";
 import Profile from "../Profile";
 import HeaderDeopDown from "../DropDown";
+import { User } from "@/types/UserType";
 type ProNotContProps ={
-    user : {
-        avatar: StaticImageData;
-        name: string;
-        position: string;
-        email:string
-    },
+    user: User
     bg?:string
 }
 const notifications = [
-    {sender:{name:"سبونج بوب", avatar:profile}, msg: "تم تلبية طلب الدواء رقم ٣٤٣٢٢.عنوان الصيدلية:", date: new Date('2025-07-04T10:00:00')},
+    {sender:{name:"سبونج بوب", avatar:""}, msg: "تم تلبية طلب الدواء رقم ٣٤٣٢٢.عنوان الصيدلية:", date: new Date('2025-07-04T10:00:00')},
     {sender:{name:"شفيق حبار"}, msg: "تم تلبية طلب الدواء رقم ٣٤٣٢٢.عنوان الصيدلية:", date: new Date('2025-07-04T10:00:00')},
     {sender:{name:"مستر سلطع", avatar:mrKrabs}, msg: "يدعوكم إلى الإنضمام إلى مقرمشات سلطع", date: new Date, action:{title:"قبول الدعوة", onClick:() => console.log("accepted")}},
 ]
@@ -49,7 +45,7 @@ export default function ProNotCont({user, bg="white"}:ProNotContProps){
                 <div className="relative" onClick={() => setNotificationsOpened(true)}>
                     <IconHolder icon={notification} isNotification={true} width={24} height={24} notiCount={notifications.length}/>
                     <div className="absolute top-full left-0 z-50">
-                        {notificationsOpened && <NotificationsDropDown notifications={notifications}/>}
+                        {/* {notificationsOpened && <NotificationsDropDown notifications={notifications}/>} */}
                     </div>
                 </div>
                 
@@ -59,7 +55,7 @@ export default function ProNotCont({user, bg="white"}:ProNotContProps){
 
                 {/* profile */}
                 <div className="relative" onClick={() => setProfileOpened(true)}>
-                    <Profile imgUrl={user.avatar} name={user.name} position={user.position}/>
+                    <Profile user={user} />
                     <div className="absolute top-full left-0 z-50">
                         {profileOpened && <HeaderDeopDown user={user} profileOpened={profileOpened} setProfileOpened={setProfileOpened}/>}
                     </div>

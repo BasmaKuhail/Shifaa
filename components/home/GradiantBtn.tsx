@@ -4,17 +4,20 @@ type gradProps = {
     text?: string;
     image?: StaticImageData;
     onClick: () => void;
-    px:number
+    px:number;
+    rounded:string;
 }
-export default function GradientBrn({text,image, onClick,px}:gradProps){
+export default function GradientBtn({text,image, onClick,px, rounded="30"}:gradProps){
     return(
         <div
+            style={{ borderRadius: `${rounded}px` }}
             className=
             {`flex items-center text-center justify-center
                 h-full
                 w-fit
+                py-2
                 px-${px}
-                rounded-[30px]
+                rounded-${rounded}
                 bg-gradient-to-b
                 from-[#3E94B9]
                 to-[#04B6FF]
