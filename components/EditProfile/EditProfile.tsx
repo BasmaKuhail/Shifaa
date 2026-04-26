@@ -7,7 +7,6 @@ import { UserContext } from "@/contexts/UserContext";
 import Input from "../register/input";
 import { validateInput } from "@/utils/registerValidation";
 import GradientBtn from "../home/GradiantBtn";
-import SecondaryHeader from "../home/secondaryHeader/SecondaryHeader";
 import ImageProfile from "./Image";
 
 export default function EditProfile() {
