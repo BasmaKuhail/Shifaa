@@ -11,25 +11,29 @@ import switchTo from "@/public/icons/profile/switch.svg"
 import ArrowRight from "@/public/icons/profile/arrowRight.svg"
 import { Dispatch } from 'react';
 import { logout as logoutService } from '@/services/auth';
+import { useRouter } from 'next/router';
+import ProfileIcon from '../ProfileIcon';
+import { User } from '@/types/UserType';
 type headerProps = {
-    user:{
-        name:string,
-        avatar:StaticImageData,
-        position:string,
-        email:string
-    },
+    user: User
     profileOpened:boolean,
     setProfileOpened:Dispatch<React.SetStateAction<boolean>>,
-    
-   
 }
+
+
+const OpenMenu = (index: number) => {
+
+}
+export default function HeaderDropDown({user, profileOpened, setProfileOpened}:headerProps){
+    const router = useRouter();
+
 const dropDownItems =[
-    {title: "حسابي", icon: profile, opened:true, arrow: ArrowRight, onclick: () => {}},
-    {title: "الإعدادات", icon: settings, opened:false, arrow: ArrowRight, onclick: () => {}},
-    {title: "الإشعارات", icon: notification, allowed:false, onclick: () => {}},
-    {title: "انضمام كصيدلي", icon: switchTo, opened:false, arrow: ArrowRight, onclick: () => {}},
-    {title: "طلب دواء", icon:medication , opened:false, arrow: ArrowRight, onclick: () => {}},
-    {title: "العناصر المحفوظة", icon: saved, opened:false, arrow: ArrowRight, onclick: () => {}},
+    {title: "حسابي", icon: profile, opened:true, arrow: ArrowRight, onclick: () => {router.push("/editProfile")}},
+    {title: "الإعدادات", icon: settings, opened:false, arrow: ArrowRight, onclick: () => {router.push("/settings")}},
+    {title: "الإشعارات", icon: notification, allowed:false, onclick: () => {router.push("/notifications")}},
+    {title: "انضمام كصيدلي", icon: switchTo, opened:false, arrow: ArrowRight, onclick: () => {router.push("/switch-to-pharmacist")}},
+    {title: "طلب دواء", icon:medication , opened:false, arrow: ArrowRight, onclick: () => {router.push("/request-medication")}},
+    {title: "العناصر المحفوظة", icon: saved, opened:false, arrow: ArrowRight, onclick: () => {router.push("/saved-items")}},
     {
         title: "تسجيل خروج", 
         icon:logout , 
@@ -46,18 +50,14 @@ const dropDownItems =[
         }
     } ,
 ]
-
-const OpenMenu = (index: number) => {
-
-}
-export default function HeaderDeopDown({user, profileOpened, setProfileOpened}:headerProps){
     return(
-        <div dir="rtl" className="bg-white rounded-[12px] py-4 p-3 w-[21.75rem] ">
+        <div dir="rtl" className="bg-white rounded-[12px] py-4 p-3 w-[21.75rem]">
             <div className='flex flex-row justify-between  w-full border-b border-b-black-200 pb-5'>
                 <div className='flex flex-row items-center gap-4'>
-                    <Image className='rounded-full square' src={user.avatar} alt='avatar' width={70}/>
+                    <ProfileIcon imageUrl={user.avatar} width={40} isCircle={false}/>
+
                     <div dir="rtl" className='flex flex-col'>
-                        <p className='font-semibold text-sm'>{user.name}</p>
+                        <p className='font-semibold text-sm'>{user.firstName}</p>
                         <p className='text-sm text-black-500'>{user.email}</p>
                     </div>
                 </div>

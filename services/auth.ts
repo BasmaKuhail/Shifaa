@@ -1,9 +1,9 @@
 import api from "@/lib/api";
-import profile from "@/public/icons/profile.jpg"
+import { User } from "@/types/UserType";
 
 export const register = async (data: {
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   password: string;
   password_confirmation: string;
@@ -21,7 +21,7 @@ export const login = async (data: {
 };
 
 
-export const getMe = async () => {
+export const getMe = async ():Promise<User> => {
   const token = localStorage.getItem("token");
   if (!token) throw new Error("No token found");
 
@@ -34,10 +34,11 @@ export const getMe = async () => {
   const rawUser = response.data.data[0];
   return {
     id: rawUser.id,
-    name: rawUser.attributes.first_name,
+    firstName: rawUser.attributes.first_name,
+    lastName: rawUser.attributes.last_name,
     email: rawUser.attributes.email,
-    avatar: profile, // fallback image
-    position: rawUser.type, 
+    avatar: rawUser.avatar,
+    type: rawUser.type, 
   };
 }
 

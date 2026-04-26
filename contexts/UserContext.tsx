@@ -1,15 +1,8 @@
 "use client";
 import { createContext, useState, useEffect, ReactNode } from "react";
 import { getMe } from "@/services/auth";
-import { StaticImageData } from "next/image";
+import { User } from "@/types/UserType";
 
-interface User {
-  id: number;
-  name: string;
-  email: string;
-  avatar: StaticImageData;
-  position: string;
-}
 
 interface UserContextType {
   user: User | null;

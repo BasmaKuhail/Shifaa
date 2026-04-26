@@ -3,7 +3,7 @@ import fillter from "@/public/icons/fillterBlue.svg"
 import arrow from "@/public/icons/arrowLeft.svg"
 
 import Image from "next/image";
-import GradientBrn from "../GradiantBtn";
+import GradientBtn from "../GradiantBtn";
 import { useState } from "react";
 import MobileFilter from "./mobileFilter/MobileFilter";
 
@@ -67,12 +67,12 @@ export default function SearchInput({label, value, onChange}:SearchInputProps){
                     h-[44px] md:h-[51px]"
             >
                 <div className="hidden lg:block md:block  h-full">
-                    <GradientBrn text="ابدأ البحث" onClick={() => {}} px={10} />
+                    <GradientBtn text="ابدأ البحث" onClick={() => {}} px={10} rounded="30"/>
                 </div>
                 <div className="block lg:hidden md:hidden h-[90%]">
-                    <GradientBrn image={arrow} onClick={() => {}} px={5}/>
+                    <GradientBtn image={arrow} onClick={() => {}} px={5} rounded="30"/>
                 </div>
-                
+
             </div>
             
             

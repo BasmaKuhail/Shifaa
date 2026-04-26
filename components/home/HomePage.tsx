@@ -143,7 +143,7 @@ export default function Home (){
                 <div className="lg:mb-40 md:mb-40 mb-20">
                     <Features featuresArr={featuresArr}/>
                 </div>
-                <div id="contact"> 
+                <div className="mb-30" id="contact"> 
                     <ContatcSec/>
                 </div>
             </div>

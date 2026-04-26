@@ -32,8 +32,8 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
 
             if (isRegister) {
                 response = await register({
-                    first_name: userInfo.firstName.value,
-                    last_name: userInfo.lastName.value,
+                    firstName: userInfo.firstName.value,
+                    lastName: userInfo.lastName.value,
                     email: userInfo.email.value,
                     password: userInfo.password.value,
                     password_confirmation: userInfo.confirmPassword.value,

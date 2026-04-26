@@ -2,7 +2,7 @@ import Image, { StaticImageData } from "next/image";
 
 type BtnProps = {
     text: string;
-    icon: StaticImageData;
+    icon?: StaticImageData;
     onClick: () => void;
 }
 export default function Btn({ text, icon, onClick }: BtnProps) {
@@ -12,7 +12,7 @@ export default function Btn({ text, icon, onClick }: BtnProps) {
             onClick={onClick}
             className="bg-white border border-black-200 rounded-[10px] flex flex-row items-center justify-center gap-2 px-4 py-2 hover:bg-gray-100 transition-colors duration-300 cursor-pointer" 
         >
-            <Image src={icon} alt="" />
+            {icon && <Image src={icon} alt="" />}
             <p className="text-inpt font-bold">{text}</p>
         </button>
     );
