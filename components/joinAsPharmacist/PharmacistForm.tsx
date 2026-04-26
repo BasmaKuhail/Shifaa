@@ -31,7 +31,7 @@ export default function PharmacistForm(){
                     shadow-lg"
                 >
                     <nav className="flex items-center gap-4">
-                        <Image src={arrowL} alt="arrow left" className="transform rotate-180 cursor-pointer" onClick={handlePreviousPage}/>
+                        <Image src={arrowL} alt="arrow left" className="transform rotate-180 cursor-pointer hidden md:block" onClick={handlePreviousPage}/>
                         <p className="font-semibold text-27px">انضم كصيدلي</p>
                     </nav>
                     <p className="text-sm">قدم طلب للانضمام كصيدلي</p>
