@@ -3,19 +3,11 @@ import ProNotCont from "@/components/header/ProfileNotification/ProfileNotificat
 import UpArrow from "@/components/home/UpArrow";
 import { UserContext } from "@/contexts/UserContext";
 import { useContext, useEffect, useState } from "react";
-import profile from "@/public/icons/profile/profile.svg"
 import ProNotContSkeleton from "@/components/header/ProfileNotification/ProNotContSkeleton";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
     const [showArrow, setShowArrow] = useState(false);
     const {user, loading} = useContext(UserContext);
-
-    const dummUser = {
-        name:"سبونج بوب",
-        avatar:profile,
-        position: "طباخ",
-        email:"spongebob@gmail.com"
-    }
 
     useEffect(() => {
         const handleScroll = () => {
@@ -41,7 +33,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             </div>
             <div  className="flex flex-col pt-8 pr-20 pl-4 md:pl-8 lg:pl-20 xl:pl-30 w-full">
                 <div dir="ltr" className="w-full flex flex-row justify-between items-center">
-                    {<ProNotCont user={user || dummUser} bg="blue" /> }
+                    {user &&<ProNotCont user={user} bg="blue" /> }
                 </div>
                 {children}
             </div>
