@@ -4,6 +4,7 @@ import { Tajawal } from 'next/font/google';
 import { appWithTranslation } from 'next-i18next';
 import { UserProvider } from '@/contexts/UserContext';
 import { ReactElement, ReactNode } from 'react';
+import { BreadcrumbProvider } from '@/contexts/BreadcrumbContext';
 
 
 const tajawal = Tajawal({ subsets: ['arabic'], weight: ['400','500','700'] });
@@ -17,9 +18,13 @@ function MyApp({ Component, pageProps }: AppProps) {
     ((page) => page); // default layout (no wrapper)
      return (
     <div className={tajawal.className}>
+      
       <UserProvider>
-        {getLayout(<Component {...pageProps} />)}
+        <BreadcrumbProvider>
+          {getLayout(<Component {...pageProps} />)}
+        </BreadcrumbProvider>
       </UserProvider>
+      
     </div>);
 }
 

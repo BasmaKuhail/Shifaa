@@ -1,10 +1,10 @@
 import EditProfile from "@/components/EditProfile/EditProfile";
-import HeaderLayout from "@/layouts/HeaderLayout";
+import FormLayout from "@/layouts/FormsLayout";
 
 export default function EditProfilePage() {
     return (
-        <HeaderLayout>
+        <FormLayout>
             <EditProfile/>
-        </HeaderLayout>
+        </FormLayout>
     )
 }

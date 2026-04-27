@@ -13,12 +13,26 @@ type LoginData ={
 export const validateConfirmPassword = (password: string, confirmPassword: string): boolean => {
     return password === confirmPassword;
 }
-export const validateInput = (value: string, type: 'text' | 'email' | 'password' | 'textarea'): boolean => {
+export const validateInput = (value: string | File | null, type: 'text' | 'email' | 'password' | 'textarea' | 'file'): boolean => {
+    if (type === 'file'){
+        if (!value || !(value instanceof File)) return false;
+        const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+        const maxSize = 2 * 1024 * 1024;
+
+        if (!allowedTypes.includes(value.type)) return false;
+        if (value.size > maxSize) return false;
+
+        return true;
+    }
+    if (typeof value !== "string") return false;
+
     if (type === 'text') {
         return value.trim() !== ''; 
-    } else if (type === 'email') {
+    }
+    if (type === 'email') {
         return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-    } else if (type === 'password') { 
+    }
+    if (type === 'password') { 
         return (
             value.length >= 8 &&
             /[A-Za-z]/.test(value) &&   

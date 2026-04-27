@@ -5,12 +5,13 @@ type InputProps = {
     label: string;
     type: 'text' | 'email' | 'password' | 'textarea' | 'file';
     inputText: string;
-    value: string;
-    onChange: (value: string) => void;
+    value: string | File | null;
+    onChange: (value: string | File | null) => void;
     isTrue: boolean;
+    editable?:boolean
 }
 
-export default function Input({label, type, inputText, value, onChange, isTrue}: InputProps) {
+export default function Input({label, type, inputText, value, onChange, isTrue, editable=true}: InputProps) {
     const [passSrc, setPassSrc] = useState<string>('/icons/unshowPass.svg');
     const [inputType, setInputType] = useState<'text' | 'email' | 'password' | 'textarea' | 'file'>(type);
     const togglePasswordVisibility = () => {
@@ -37,9 +38,11 @@ export default function Input({label, type, inputText, value, onChange, isTrue}:
                             }
                             ${'border-[#D1D1D1] focus:border-[#1A71F6] '}
                         `}
-                        value={value}
+                        value={typeof value === 'string' ? value : ''}
                         placeholder={inputText}
-                        onChange={(e) => {onChange(e.target.value)} }>
+                        onChange={(e) => {onChange(e.target.value)} }
+                        readOnly={editable?true : false}
+                        disabled={!editable?true : false}>
                     </textarea>
                 )  : type === 'file' ? (
                     <div className="relative border border-[#D1D1D1] rounded-inpt h-[52px] md:h-[45px] flex items-center justify-center cursor-pointer overflow-hidden">
@@ -49,9 +52,10 @@ export default function Input({label, type, inputText, value, onChange, isTrue}:
                             type="file"
                             className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                             onChange={(e) => {
-                                const file = e.target.files?.[0];
-                                if (file) onChange(file.name);
+                                const file = e.target.files?.[0] || null;
+                                onChange(file);
                             }}
+                            disabled={!editable}
                         />
 
                         {/* Custom UI */}
@@ -62,16 +66,18 @@ export default function Input({label, type, inputText, value, onChange, isTrue}:
                                 width={18}
                                 height={18}
                             />
-                            <span className="text-sm text-gray-600">
-                                اختر ملف
-                            </span>
+                            {value instanceof File && (
+                                <span className="text-xs text-gray-500">
+                                    {value.name}
+                                </span>
+                            )}
                         </div>
                     </div>
                 ) : (
                     <input 
                         onChange={(e) => {onChange(e.target.value)} }
                         type={inputType} 
-                        value={value}
+                        value={typeof value === 'string' ? value : ''}
                         placeholder={inputText}
                         dir="auto"
                         
@@ -80,7 +86,8 @@ export default function Input({label, type, inputText, value, onChange, isTrue}:
                         onCut={(e) => type === 'password' && e.preventDefault()}
                         onContextMenu={(e) => type === 'password' && e.preventDefault()}
                         onDrop={(e) => type === 'password' && e.preventDefault()}
-
+                        readOnly={editable?true : false}
+                        disabled={!editable?true : false}
                         className={`border rounded-inpt p-2 w-full text-right focus:outline-none text-inpt h-[52px] md:h-[45px]
                             ${
                             value

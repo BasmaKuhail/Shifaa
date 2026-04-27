@@ -1,9 +1,10 @@
 import PharmacistForm from "@/components/joinAsPharmacist/PharmacistForm";
+import FormLayout from "@/layouts/FormsLayout";
 
 export default function JoinAsPharmacist() {
     return (
-        <div>
+        <FormLayout>
             <PharmacistForm />
-        </div>
+        </FormLayout>
     );
 }
