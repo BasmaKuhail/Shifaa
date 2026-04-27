@@ -8,10 +8,15 @@ import Input from "../register/input";
 import { validateInput } from "@/utils/registerValidation";
 import GradientBtn from "../home/GradiantBtn";
 import ImageProfile from "./Image";
+import EditProfileSkeleton from "../Skeleton/EditProfileSkeleton";
 
 export default function EditProfile() {
     const {user, loading} = useContext(UserContext);
 
+    if(loading){
+        return <EditProfileSkeleton/>
+    }
+        
     useEffect(() => {
         if (user) {
             setUserInfo({
