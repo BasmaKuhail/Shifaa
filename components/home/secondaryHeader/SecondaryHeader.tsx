@@ -6,13 +6,6 @@ import { useContext, useState } from "react";
 import { useRouter } from "next/router";
 import { UserContext } from "@/contexts/UserContext";
 
-type secHeaderProps = {
-    headerItems:  {id:number, title:string, link: string, bold:boolean, includeLogo:boolean}[]
-}
-
-export default function SecondaryHeader({includeLogo=true}){
-    const {user, loading} = useContext(UserContext);
-
     const headerItems = [
         {
             id: 1,
@@ -44,8 +37,14 @@ export default function SecondaryHeader({includeLogo=true}){
         }
     ]
 
-
+export default function SecondaryHeader({includeLogo=true}){
+    const {user, loading} = useContext(UserContext);
+    
     const router = useRouter();
+    if(loading) {
+        return <p>loading...</p>
+    } else {
+
     return(
         <div dir="rtl" className="flex flex-row items-center justify-between w-full gap-8 ">
             {includeLogo &&<Image src={logo} alt="Logo"  className=" m-[2px]" />}
@@ -54,7 +53,7 @@ export default function SecondaryHeader({includeLogo=true}){
                     <p key={item.id} className={`text-btn cursor-pointer hover:underline text-center ${router.pathname === item.link ? "font-bold" : ""}`}><Link href={item.link}>{item.title}</Link></p>
                 ))}
             </div>
-            {<div className={`${!user ? "invisible" : "block"}`}><BtnEmpty onClick={() => {router.push("/dashboard")}}>لوحة التحكم</BtnEmpty></div>}
+            <div className={`${user && user?.user_type === "pharmacist" ? "block" : "invisible"}`}><BtnEmpty onClick={() => {router.push("/dashboard")}}>لوحة التحكم</BtnEmpty></div>
         </div>
     )
-}
+}}
