@@ -7,7 +7,6 @@ import ImageProfile from "./Image";
 import EditProfileSkeleton from "../Skeleton/EditProfileSkeleton";
 
 import { useBreadcrumb } from "@/contexts/BreadcrumbContext"
-import Breadcrumb from "../Breadcrumb";
 
 export default function EditProfile() {
     const {user, loading} = useContext(UserContext);

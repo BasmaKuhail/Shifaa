@@ -7,24 +7,14 @@ import Link from "next/link";
 
 import Image from "next/image";
 import arrowL from "@/public/icons/switchToPharmacist/arrowL.svg";
-import Breadcrumb from "../Breadcrumb";
-
 import { useBreadcrumb } from "@/contexts/BreadcrumbContext"
 
+
+import {switchToPharmasist} from "@/services/auth"
 export default function PharmacistForm(){
 
     const [checkBoxChecked, setCheckBoxChecked] = useState(false)
-    const handleSubmitForm = () =>{
-        if (userInfo.serialNumber == ""){
-            alert("يجب تعبئة البيانات المطلوبة")
-            return
-        }
-        
-        if(!checkBoxChecked)
-            alert("يجب التأكيد على أن هذه الوثائق تخصك")
-        
-        
-        console.log(userInfo)}
+  
     
     const {user, loading} = useContext(UserContext);
     const handlePreviousPage = () => {
@@ -42,7 +32,9 @@ export default function PharmacistForm(){
     const [userInfo, setUserInfo] = useState(getInitialUserInfo);
 
     const { setCrumbs  } = useBreadcrumb()
-    useEffect(() => {getInitialUserInfo()}),[user]
+    useEffect(() => {
+        setUserInfo(getInitialUserInfo());
+    },[user])
     
     useEffect(() => {
         setCrumbs([
@@ -51,12 +43,27 @@ export default function PharmacistForm(){
         ])
     }, [])
     
+    const handleSubmitForm = async () => {
+    if (userInfo.serialNumber === "") {
+        alert("يجب تعبئة البيانات المطلوبة");
+        return;
+    }
+
+    if (!checkBoxChecked) {
+        alert("يجب التأكيد على أن هذه الوثائق تخصك");
+        return;
+    }
+
+    try {
+        const res = await switchToPharmasist(userInfo.serialNumber);
+        console.log(res);
+    } catch (err: any) {
+        console.log(err.response?.data); // 🔥 THIS IS THE TRUTH
+    }
+};
     const { crumbs } = useBreadcrumb()
-    {console.log(crumbs)}
     return(
         <div className="flex flex-col gap-10">
-            
-            
                     <nav className="flex items-center gap-4">
                         <Image src={arrowL} alt="arrow left" className="transform rotate-180 cursor-pointer hidden md:block" onClick={handlePreviousPage}/>
                         <p className="font-semibold text-27px">انضم كصيدلي</p>

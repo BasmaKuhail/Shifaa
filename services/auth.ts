@@ -39,6 +39,7 @@ export const getMe = async ():Promise<User> => {
     email: rawUser.attributes.email,
     avatar: rawUser.avatar,
     type: rawUser.type, 
+    user_type:rawUser.attributes.user_type,
   };
 }
 
@@ -55,3 +56,26 @@ export const logout = async () => {
   });
   return response.data;
 }
+export const switchToPharmasist = async (licenseNumber: string) => {
+  const token = localStorage.getItem("token");
+  if (!token) throw new Error("No token found");
+
+  const response = await api.post(
+    "/pharmacist-application",
+    {
+      data: {
+        type: "pharmacist-application", // 🔥 ADD THIS
+        attributes: {
+          license_number: licenseNumber,
+        },
+      },
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }
+  );
+
+  return response.data;
+};

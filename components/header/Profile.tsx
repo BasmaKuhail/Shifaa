@@ -16,7 +16,7 @@ export default function Profile({user}:ProfileProps){
             </div>
             <div className="flex flex-col gap-0">
                 <p className="text-input">{user.firstName}</p>
-                <p className="text-12px text-black-500">{user.type}</p>
+                <p className="text-12px text-black-500">{user.user_type}</p>
             </div>
         </div>
     )
