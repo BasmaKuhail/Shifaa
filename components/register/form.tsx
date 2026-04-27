@@ -130,22 +130,22 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
                             {isRegister && <div
                                 className="flex flex-col gap-3 md:flex-row-reverse md:gap-6 justify-between w-full">
                                 <div className="flex-1">
-                                    <Input label="الاسم الأول" type="text" inputText="الاسم الأول" value={userInfo.firstName.value} onChange={(value) => setUserInfo({ ...userInfo, firstName: { value, isTrueData: true } })} isTrue={validateInput(userInfo.firstName.value, 'text')}/>
+                                    <Input label="الاسم الأول" type="text" inputText="الاسم الأول" value={userInfo.firstName.value} onChange={(value) => setUserInfo({ ...userInfo, firstName: { value: value as string, isTrueData: true } })} isTrue={validateInput(userInfo.firstName.value, 'text')}/>
                                 </div>
                                 <div className="flex-1">
-                                    <Input label="الاسم الأخير" type="text" inputText="الاسم الأخير" value={userInfo.lastName.value} onChange={(value) => setUserInfo({ ...userInfo, lastName: { value, isTrueData: true } })} isTrue={validateInput(userInfo.lastName.value, 'text')}/>
+                                    <Input label="الاسم الأخير" type="text" inputText="الاسم الأخير" value={userInfo.lastName.value} onChange={(value) => setUserInfo({ ...userInfo, lastName: { value: value as string, isTrueData: true } })} isTrue={validateInput(userInfo.lastName.value, 'text')}/>
                                 </div>
                             </div>}
 
-                            <Input label="البريد الالكتروني" type="email" inputText="youremail.com" value={userInfo.email.value} onChange={(value) => setUserInfo({ ...userInfo, email: { value, isTrueData: true } })} isTrue={validateInput(userInfo.email.value, 'email')}/>
+                            <Input label="البريد الالكتروني" type="email" inputText="youremail.com" value={userInfo.email.value} onChange={(value) => setUserInfo({ ...userInfo, email: { value : value as string, isTrueData: true } })} isTrue={validateInput(userInfo.email.value, 'email')}/>
 
 
                             <div className="flex flex-col gap-3 md:flex-row-reverse justify-between md:gap-6 w-full">
                                 <div className="flex-1">
-                                    <Input label="كلمة المرور" type="password" inputText="كلمة المرور" value={userInfo.password.value} onChange={(value) => setUserInfo({ ...userInfo, password: { value, isTrueData: true } })} isTrue={validateInput(userInfo.password.value, 'password')}/>
+                                    <Input label="كلمة المرور" type="password" inputText="كلمة المرور" value={userInfo.password.value} onChange={(value) => setUserInfo({ ...userInfo, password: { value: value as string, isTrueData: true } })} isTrue={validateInput(userInfo.password.value, 'password')}/>
                                 </div>
                                 {isRegister &&<div className="flex-1">
-                                    <Input label="تأكيد كلمة المرور" type="password" inputText="تأكيد كلمة المرور" value={userInfo.confirmPassword.value} onChange={(value) => setUserInfo({ ...userInfo, confirmPassword: { value, isTrueData: true } })} isTrue={validateInput(userInfo.confirmPassword.value, 'password') && validateConfirmPassword(userInfo.password.value, userInfo.confirmPassword.value)}/>
+                                    <Input label="تأكيد كلمة المرور" type="password" inputText="تأكيد كلمة المرور" value={userInfo.confirmPassword.value} onChange={(value) => setUserInfo({ ...userInfo, confirmPassword: { value: value as string, isTrueData: true } })} isTrue={validateInput(userInfo.confirmPassword.value, 'password') && validateConfirmPassword(userInfo.password.value, userInfo.confirmPassword.value)}/>
                                 </div>}
                             </div>
                             {isRegister &&<p className="text-xs md:text-inpt text-gray-500 text-right">استخدم 8 أحرف انجليزية أو أكثر مع مزيج من الأرقام والرموز</p>}
