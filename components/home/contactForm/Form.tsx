@@ -15,14 +15,14 @@ export default function ContactForm(){
             password: { value: '', isTrueData: false },
             message: { value: '', isTrueData: false }
         });
-    const [phone, setPhone] = useState("")
-    const [countryCode, setCounteryCode] = useState("")
+    // const [phone, setPhone] = useState("")
+    // const [countryCode, setCounteryCode] = useState("")
 
-    const countryCodes = [
-        { name: "Palestine", dialCode: "+970", iso: "ps" },
-        { name: "Saudi Arabia", dialCode: "+966", iso: "sa" },
-        { name: "Egypt", dialCode: "+20", iso: "eg" }
-    ]
+    // const countryCodes = [
+    //     { name: "Palestine", dialCode: "+970", iso: "ps" },
+    //     { name: "Saudi Arabia", dialCode: "+966", iso: "sa" },
+    //     { name: "Egypt", dialCode: "+20", iso: "eg" }
+    // ]
 
     return(
         <div dir="rtl" className="bg-white flex flex-col p-10 lg:py-0 md:py-0 lg:mb-20 md:mb-20 rounded-[10px] lg:rounded-l-[0] md:rounded-l-[0] h-full gap-7 justify-center">
@@ -41,7 +41,12 @@ export default function ContactForm(){
                         type="text" 
                         inputText="الاسم الأول" 
                         value={userContactFornInfo.firstName.value} 
-                        onChange={(value) => setUserContactFornInfo({ ...userContactFornInfo, firstName: { value, isTrueData: true } })} 
+                        onChange={(value) => 
+                            setUserContactFornInfo({ 
+                                ...userContactFornInfo, 
+                                firstName: { value: value as string, isTrueData: true } 
+                            })
+                        } 
                         isTrue={validateInput(userContactFornInfo.firstName.value, 'text')}/>
                 </div>
                 <div className="lg:flex-1 w-full">
@@ -49,8 +54,13 @@ export default function ContactForm(){
                         label="اسم العائلة*" 
                         type="text" 
                         inputText="اسم العائلة" 
-                        value={userContactFornInfo.lastName.value} 
-                        onChange={(value) => setUserContactFornInfo({ ...userContactFornInfo, lastName: { value, isTrueData: true } })} 
+                        value={userContactFornInfo.lastName.value } 
+                        onChange={(value) => 
+                            setUserContactFornInfo({
+                                ...userContactFornInfo,
+                                lastName: { value: value as string, isTrueData: true }
+                            })
+                        }
                         isTrue={validateInput(userContactFornInfo.lastName.value, 'text')}/>
                 </div>
             </div>
@@ -59,7 +69,12 @@ export default function ContactForm(){
                 type="email" 
                 inputText="youremail.com" 
                 value={userContactFornInfo.email.value} 
-                onChange={(value) => setUserContactFornInfo({ ...userContactFornInfo, email: { value, isTrueData: true } })} 
+                onChange={(value) => 
+                    setUserContactFornInfo({ 
+                        ...userContactFornInfo, 
+                        email: { value: value as string, isTrueData: true } 
+                    })
+                } 
                 isTrue={validateInput(userContactFornInfo.email.value, 'email')}/>
             {/* <PhoneNum
                 label="رقم الهاتف"
@@ -75,7 +90,7 @@ export default function ContactForm(){
                 type="textarea" 
                 inputText="اترك رسالتك هنا..."  
                 value={userContactFornInfo.message.value} 
-                onChange={(value) => setUserContactFornInfo({ ...userContactFornInfo, message: { value, isTrueData: true } })} 
+                onChange={(value) => setUserContactFornInfo({ ...userContactFornInfo, message: { value: value as string, isTrueData: true } })} 
                 isTrue={validateInput(userContactFornInfo.message.value, 'textarea')}/>
 
             <div className="flex w-fit h-[51px] justify-center lg:justify-start md:justify-start w-full">
