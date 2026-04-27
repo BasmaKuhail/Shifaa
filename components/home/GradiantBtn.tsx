@@ -5,7 +5,7 @@ type gradProps = {
     image?: StaticImageData;
     onClick: () => void;
     px:number;
-    rounded:string;
+    rounded?:string;
 }
 export default function GradientBtn({text,image, onClick,px, rounded="30"}:gradProps){
     return(

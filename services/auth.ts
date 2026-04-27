@@ -2,8 +2,8 @@ import api from "@/lib/api";
 import { User } from "@/types/UserType";
 
 export const register = async (data: {
-  firstName: string;
-  lastName: string;
+  first_name: string;
+  last_name: string;
   email: string;
   password: string;
   password_confirmation: string;
