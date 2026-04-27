@@ -4,6 +4,7 @@ import Input from "../register/input";
 import { validateInput } from "@/utils/registerValidation";
 import GradientBtn from "../home/GradiantBtn";
 import ImageProfile from "./Image";
+import EditProfileSkeleton from "../Skeleton/EditProfileSkeleton";
 
 import { useBreadcrumb } from "@/contexts/BreadcrumbContext"
 import Breadcrumb from "../Breadcrumb";
@@ -11,6 +12,10 @@ import Breadcrumb from "../Breadcrumb";
 export default function EditProfile() {
     const { setCrumbs } = useBreadcrumb()
 
+    if(loading){
+        return <EditProfileSkeleton/>
+    }
+        
     useEffect(() => {
         setCrumbs([
             { title: "الصفحة الرئيسية", link: "/" },
