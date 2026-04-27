@@ -20,36 +20,32 @@ type headerProps = {
     setProfileOpened:Dispatch<React.SetStateAction<boolean>>,
 }
 
-
-const OpenMenu = (index: number) => {
-
-}
 export default function HeaderDropDown({user, profileOpened, setProfileOpened}:headerProps){
     const router = useRouter();
 
-const dropDownItems =[
-    {title: "حسابي", icon: profile, opened:true, arrow: ArrowRight, onclick: () => {router.push("/editProfile")}},
-    {title: "الإعدادات", icon: settings, opened:false, arrow: ArrowRight, onclick: () => {router.push("/settings")}},
-    {title: "الإشعارات", icon: notification, allowed:false, onclick: () => {router.push("/notifications")}},
-    {title: "انضمام كصيدلي", icon: switchTo, opened:false, arrow: ArrowRight, onclick: () => {router.push("/switch-to-pharmacist")}},
-    {title: "طلب دواء", icon:medication , opened:false, arrow: ArrowRight, onclick: () => {router.push("/request-medication")}},
-    {title: "العناصر المحفوظة", icon: saved, opened:false, arrow: ArrowRight, onclick: () => {router.push("/saved-items")}},
-    {
-        title: "تسجيل خروج", 
-        icon:logout , 
-        opened:false, 
-        onclick: async () => {
-            try {
-                await logoutService(); // call API FIRST
-            } catch (e) {
-                console.error(e);
-            } 
-            localStorage.removeItem("token"); 
-            localStorage.removeItem("user"); 
-            window.location.href = "/auth/login"; 
-        }
-    } ,
-]
+    const dropDownItems =[
+        {title: "حسابي", icon: profile, opened:true, arrow: ArrowRight, onclick: () => {router.push("/editProfile")}},
+        {title: "الإعدادات", icon: settings, opened:false, arrow: ArrowRight, onclick: () => {router.push("/settings")}},
+        {title: "الإشعارات", icon: notification, allowed:false, onclick: () => {router.push("/notifications")}},
+        {title: "انضمام كصيدلي", icon: switchTo, opened:false, arrow: ArrowRight, onclick: () => {router.push("/switch-to-pharmacist")}},
+        {title: "طلب دواء", icon:medication , opened:false, arrow: ArrowRight, onclick: () => {router.push("/request-medication")}},
+        {title: "العناصر المحفوظة", icon: saved, opened:false, arrow: ArrowRight, onclick: () => {router.push("/saved-items")}},
+        {
+            title: "تسجيل خروج", 
+            icon:logout , 
+            opened:false, 
+            onclick: async () => {
+                try {
+                    await logoutService(); // call API FIRST
+                } catch (e) {
+                    console.error(e);
+                } 
+                localStorage.removeItem("token"); 
+                localStorage.removeItem("user"); 
+                window.location.href = "/auth/login"; 
+            }
+        } ,
+    ]
     return(
         <div dir="rtl" className="bg-white rounded-[12px] py-4 p-3 w-[21.75rem]">
             <div className='flex flex-row justify-between  w-full border-b border-b-black-200 pb-5'>
@@ -66,18 +62,20 @@ const dropDownItems =[
                 </div>
             </div>   
             <div className='flex flex-col gap-2 pt-5'>
-                {dropDownItems.map((item, index) => 
+                {dropDownItems.map((item, index) => !( user.user_type === "pharmacist" && item.title === "انضمام كصيدلي") &&
                     <div 
                         key={index} 
                         className='flex flex-row justify-between items-center cursor-pointer hover:bg-black-100 p-2 px-6'
-                        onClick={item.onclick}>
+                        onClick={item.onclick}
+                    >
                         <div className='flex flex-row gap-4'>
-                            <Image  src={item.icon} alt='icon' width={24} />
+                            <Image  src={item.icon} alt='icon' width={24}/>
                             <p className='font-[500] text-sm'>{item.title}</p>
                         </div>
                         {item.arrow && <Image className="scale-x-[-1]" src={item.arrow} alt="arrow"/>}
                         {item.allowed == true || item.allowed == false && <p className='text-12px text-black-400'>{(item.allowed) ? "مُفعَل" : "مكتوم"}</p>}
-                    </div>)} 
+                    </div>
+                )} 
                      
             </div>
             
