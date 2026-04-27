@@ -10,19 +10,11 @@ import { useBreadcrumb } from "@/contexts/BreadcrumbContext"
 import Breadcrumb from "../Breadcrumb";
 
 export default function EditProfile() {
-    const { setCrumbs } = useBreadcrumb()
+    const {user, loading} = useContext(UserContext);
 
     if(loading){
         return <EditProfileSkeleton/>
     }
-        
-    useEffect(() => {
-        setCrumbs([
-            { title: "الصفحة الرئيسية", link: "/" },
-            { title: "تعديل الحساب", link: "/editProfile" }
-        ])
-    }, [])
-    const {user, loading} = useContext(UserContext);
 
     const getInitialUserInfo = () => ({
         firstName:  user?.firstName || '',
@@ -38,8 +30,14 @@ export default function EditProfile() {
     }, [user]);
 
     const [userInfo, setUserInfo] = useState(getInitialUserInfo());
-    if (loading) return (<p>loading .... </p>)
-
+    const { setCrumbs } = useBreadcrumb()
+    useEffect(() => {
+        setCrumbs([
+            { title: "الصفحة الرئيسية", link: "/" },
+            { title: "تعديل الحساب", link: "/editProfile" }
+        ])
+    }, [])
+    
 
     return (
         <div dir="rtl" className="

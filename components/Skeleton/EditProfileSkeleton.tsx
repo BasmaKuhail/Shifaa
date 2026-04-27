@@ -1,8 +1,8 @@
+import FormLayout from "@/layouts/FormsLayout";
+
 export default function EditProfileSkeleton() {
     return (
-        <div dir="rtl" className="bg-blue-100 w-full flex flex-col pb-20 py-20 items-center justify-center min-h-screen">
-            <div className="bg-white rounded-normal md:w-full w-[90%] max-w-3xl px-10 py-10 flex flex-col gap-10 shadow-lg animate-pulse">
-
+            <div className="flex flex-col gap-10 animate-pulse">
                 {/* Title */}
                 <div className="h-6 w-48 bg-gray-200 rounded" />
 
@@ -29,6 +29,5 @@ export default function EditProfileSkeleton() {
                 </div>
                 
             </div>
-        </div>
     );
 }
