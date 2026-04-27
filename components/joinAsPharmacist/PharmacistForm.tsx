@@ -12,6 +12,20 @@ import Breadcrumb from "../Breadcrumb";
 import { useBreadcrumb } from "@/contexts/BreadcrumbContext"
 
 export default function PharmacistForm(){
+
+    const [checkBoxChecked, setCheckBoxChecked] = useState(false)
+    const handleSubmitForm = () =>{
+        if (userInfo.serialNumber == ""){
+            alert("يجب تعبئة البيانات المطلوبة")
+            return
+        }
+        
+        if(!checkBoxChecked)
+            alert("يجب التأكيد على أن هذه الوثائق تخصك")
+        
+        
+        console.log(userInfo)}
+    
     const {user, loading} = useContext(UserContext);
     const handlePreviousPage = () => {
         window.history.back();
@@ -22,7 +36,8 @@ export default function PharmacistForm(){
         email: user?.email || "",
         IdVerification: null as File | null,
         pharmacyLicense: null as File | null,
-        profileImage: null as File | null
+        profileImage: null as File | null,
+        serialNumber: ""
     });
     const [userInfo, setUserInfo] = useState(getInitialUserInfo);
 
@@ -72,9 +87,7 @@ export default function PharmacistForm(){
                             type="file"
                             inputText=""
                             value={userInfo.IdVerification}
-                            onChange={(file) =>
-                                setUserInfo({ ...userInfo, IdVerification: file as File | null })
-                            }
+                            onChange={(file) => setUserInfo({ ...userInfo, pharmacyLicense: file as File | null})} 
                             isTrue={validateInput(userInfo.IdVerification, 'file')}
                         />                        
                         <Input 
@@ -93,13 +106,21 @@ export default function PharmacistForm(){
                             onChange={(file) => setUserInfo({ ...userInfo, profileImage: file as File | null })} 
                             isTrue={validateInput(userInfo.profileImage, 'file')}
                         />
+                        <Input 
+                            label="رقم الرخصة" 
+                            type="text" 
+                            inputText="ادخل رقم رخصتك كصيدلي" 
+                            value={userInfo.serialNumber} 
+                            onChange={(value) => setUserInfo({ ...userInfo, serialNumber: typeof value === 'string' ? value : ''})}
+                            isTrue={validateInput(userInfo.serialNumber, 'text')}
+                        />
                     </div>
                     <div className="flex items-center gap-2">
-                        <input type="checkbox" id="confirm" name="confirm" className="w-4 h-4" />
+                        <input checked={checkBoxChecked} onChange={() => {setCheckBoxChecked(!checkBoxChecked)}} type="checkbox" id="confirm" name="confirm" className="w-4 h-4" />
                         <p className="text-12px">أؤكد أن هذه الوثائق تخصني وأن المعلومات دقيقة</p>
                     </div>
                     <div className="flex flex-row items-center gap-5 ">
-                        <PetrolBtn text="تقديم الطلب" onClick={() => {}} />
+                        <PetrolBtn text="تقديم الطلب" onClick={handleSubmitForm} />
                             <Link href={"/"} className="underline text-sm text-gray-600"> إلغاء </Link>
                     </div>
                     

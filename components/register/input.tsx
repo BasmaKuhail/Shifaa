@@ -41,8 +41,7 @@ export default function Input({label, type, inputText, value, onChange, isTrue, 
                         value={typeof value === 'string' ? value : ''}
                         placeholder={inputText}
                         onChange={(e) => {onChange(e.target.value)} }
-                        readOnly={editable?true : false}
-                        disabled={!editable?true : false}>
+                        readOnly={editable?true : false}>
                     </textarea>
                 )  : type === 'file' ? (
                     <div className="relative border border-[#D1D1D1] rounded-inpt h-[52px] md:h-[45px] flex items-center justify-center cursor-pointer overflow-hidden">
@@ -59,7 +58,7 @@ export default function Input({label, type, inputText, value, onChange, isTrue, 
                         />
 
                         {/* Custom UI */}
-                        <div className="flex items-center gap-2 pointer-events-none">
+                        <div className="flex items-center gap-2 pointer-events-none text-xs text-gray-500">
                             <Image 
                                 src={addAttatchmentIcon} 
                                 alt='add attachment'
@@ -67,7 +66,7 @@ export default function Input({label, type, inputText, value, onChange, isTrue, 
                                 height={18}
                             />
                             {value instanceof File && (
-                                <span className="text-xs text-gray-500">
+                                <span >
                                     {value.name}
                                 </span>
                             )}
@@ -86,7 +85,6 @@ export default function Input({label, type, inputText, value, onChange, isTrue, 
                         onCut={(e) => type === 'password' && e.preventDefault()}
                         onContextMenu={(e) => type === 'password' && e.preventDefault()}
                         onDrop={(e) => type === 'password' && e.preventDefault()}
-                        readOnly={editable?true : false}
                         disabled={!editable?true : false}
                         className={`border rounded-inpt p-2 w-full text-right focus:outline-none text-inpt h-[52px] md:h-[45px]
                             ${
