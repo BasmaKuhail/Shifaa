@@ -7,5 +7,5 @@ export type User = {
     type: string;
     mobileNum?: string;
     location?: string;
-    user_type: string
+    user_type: "user" | "pharmacist" | "admin"; 
 }
