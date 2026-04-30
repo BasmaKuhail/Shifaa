@@ -2,6 +2,7 @@ import Image from "next/image";
 import invite from "@/public/icons/phcyInfo/invite.svg";
 import search from "@/public/icons/search.svg"
 import Result from "./SearchResults";
+import PopupContainer from "../PopUpContainer";
 
 function handleSearch (){
     console.log("search")
@@ -23,8 +24,7 @@ const dummyResults = [
 
 export default function InvitePopup({ onClose }: { onClose: () => void }) {
     return (
-        <div dir="rtl" className="w-full h-full bg-black-500/50 absolute top-0 left-0 flex items-center justify-center" onClick={onClose}>
-            <div className="bg-white w-[50%] rounded-[14px] p-5 px-10 pb-10 flex flex-col items-center justify-center gap-5" onClick={(e) => e.stopPropagation()}>
+        <PopupContainer onClose={onClose}>
                 <div className="w-full flex flex-row items-center justify-start gap-2">
                     <Image src={invite} alt="" />
                     <p className="text-lg font-[500] flex flex-row items-center gap-2">دعوة صيدلي</p>
@@ -59,7 +59,6 @@ export default function InvitePopup({ onClose }: { onClose: () => void }) {
                     ))}
                 </div>
                 
-            </div>
-        </div>
+        </PopupContainer>
     )
 }

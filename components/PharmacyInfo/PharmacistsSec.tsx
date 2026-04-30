@@ -4,6 +4,7 @@ import edit from "@/public/icons/phcyInfo/edit.svg";
 import Table from "./pharmacistsTable/Table";
 import InvitePopup from "./invitePopup/InvitePopup";
 import { useState } from "react";
+import EditPopup from "./EditPopup/EditPopup";
 type PharmacistsSecProps = {
     pharmacyName: string;
 }
@@ -25,6 +26,7 @@ const pharmacistsArr = [
 
 export default function PharmacistsSec({ pharmacyName }: PharmacistsSecProps) {
     const [showInvitePopup, setShowInvitePopup] = useState(false);
+    const [showEditPopup, setShowEditPopup] = useState(false);
     return (
         <div dir="rtl" className="bg-white rounded-[24px] border border-black-200 flex flex-col items-start justify-start gap-5 w-full p-5 px-10">
             <div className="w-full flex flex-row items-center justify-between">
@@ -34,13 +36,14 @@ export default function PharmacistsSec({ pharmacyName }: PharmacistsSecProps) {
                 </p>
                 <div className="flex flex-row items-center gap-5">
                     <Btn text="دعوة صيدلي" icon={invite} onClick={() => {setShowInvitePopup(true)}} />
-                    <Btn text="تعديل" icon={edit} onClick={() => {}} />
+                    <Btn text="تعديل" icon={edit} onClick={() => {setShowEditPopup(true)}} />
                 </div>
             </div>
             <div className="w-full flex flex-col ">
-                <Table pharmacistsArr={pharmacistsArr} />
+                <Table pharmacistsArr={pharmacistsArr} onEdit={false} />
             </div>
             {showInvitePopup && <InvitePopup  onClose={() => setShowInvitePopup(false)}/>}
+            {showEditPopup && <EditPopup  onClose={() => setShowEditPopup(false)} pharmacyName={pharmacyName}/>}
         </div>
     );
 }
