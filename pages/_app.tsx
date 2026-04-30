@@ -10,23 +10,42 @@ import { useRouter } from 'next/router';
 
 const tajawal = Tajawal({ subsets: ['arabic'], weight: ['400','500','700'] });
 
-const protectedRoutes = ["/dashboard"];
+const protectedRoutes = [{route:"/switch-to-pharmacist", type:'pharmacist'}];
 
 
 
 type NextPageWithLayout = AppProps['Component'] & {
   getLayout?: (page: ReactElement) => ReactNode;
 };
-function MyApp({ Component, pageProps }: AppProps) {
+
+function AuthGuard({ children }: { children: ReactNode }) {
   const router = useRouter();
   const { user, loading } = useContext(UserContext);
-  useEffect(() => {
-      const isProtected = protectedRoutes.includes(router.pathname);
 
-      if (isProtected && user?.user_type === "pharmacist") {
-        router.replace("/");
-      }
-    }, [router.pathname, user, loading]);
+  useEffect(() => {
+    if (loading) return;
+
+    const currentRoute = router.pathname;
+    const routeObj = protectedRoutes.find(
+      (item) => item.route === currentRoute
+    );
+
+    console.log("currentRoute" + currentRoute)
+    console.log("routeObj" + routeObj)
+    if (!routeObj) return;
+
+    const userType = user?.user_type;
+    console.log("userType" + userType)
+    // 🔥 Check access
+    if (!user || userType !== routeObj.type) {
+      router.replace("/");
+    }
+  }, [router.pathname, user, loading]);
+
+  return <>{children}</>;
+}
+
+function MyApp({ Component, pageProps }: AppProps) {
   const getLayout =
     (Component as NextPageWithLayout).getLayout ||
     ((page) => page); // default layout (no wrapper)
@@ -34,9 +53,11 @@ function MyApp({ Component, pageProps }: AppProps) {
     <div className={tajawal.className}>
       
       <UserProvider>
-        <BreadcrumbProvider>
-          {getLayout(<Component {...pageProps} />)}
-        </BreadcrumbProvider>
+        <AuthGuard>
+          <BreadcrumbProvider>
+            {getLayout(<Component {...pageProps} />)}
+          </BreadcrumbProvider>
+        </AuthGuard>
       </UserProvider>
       
     </div>);
