@@ -26,7 +26,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         );
     }
     return (
-        <div dir="rtl" className="flex flex-row bg-blue-100">
+        <div dir="rtl" className="flex flex-row bg-blue-70">
             {showArrow && <UpArrow />}
             <div className="w-[25%]">
                 <SideNav/>
