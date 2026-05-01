@@ -14,9 +14,8 @@ export default function NavItem({ icon: Icon, label, link }: NavItemProps){
                 rounded-[5px] text-black-1000 
                 cursor-pointer 
                 border-r-2 border-transparent
-                hover:bg-white 
-                hover:bg-blue-200 
-                ${router.pathname === link ? "text-blue-1000 bg-white border-r-blue-1000" : ""}
+                hover:bg-blue-100 
+                ${router.pathname === link ? "text-blue-1000 bg-blue-100 border-r-blue-1000" : ""}
             `} 
             onClick={() => router.push(link)}
         >
