@@ -1,3 +1,4 @@
+import Branches from "./Branches";
 import ContactInfo from "./ContactDeatils";
 import PharmacistsSec from "./PharmacistsSec";
 import PharmInfoSec from "./PharmInfoSec";
@@ -9,7 +10,7 @@ export default function PharmInfo(){
             <PharmInfoSec/>
             <ContactInfo/>
             <PharmacistsSec pharmacyName="شنن" />
-            
+            <Branches/>
         </div>
     )
 }
