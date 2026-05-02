@@ -26,12 +26,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         );
     }
     return (
-        <div dir="rtl" className="flex flex-row bg-blue-70">
+        <div dir="rtl" className="flex flex-row bg-blue-70 h-screen overflow-hidden">
             {showArrow && <UpArrow />}
-            <div className="w-[25%]">
+            <div className="w-[25%] h-screen">
                 <SideNav/>
             </div>
-            <div  className="flex flex-col pt-8 pr-20 pl-4 md:pl-8 lg:pl-20 xl:pl-30 w-full">
+            <div  className="flex flex-col pt-8 pr-20 pl-4 md:pl-8 lg:pl-20 xl:pl-30 w-full overflow-y-auto">
                 <div dir="ltr" className="w-full flex flex-row justify-between items-center">
                     {user &&<ProNotCont user={user} bg="blue" /> }
                 </div>

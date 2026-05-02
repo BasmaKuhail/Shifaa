@@ -56,7 +56,7 @@ const otherIcons =[
 export default function SideNav(){
     const router = useRouter();
     return(
-        <div className="bg-white min-h-screen border-l border-l-black-200 flex flex-col gap-4 justify-between items-start p-5 "> 
+        <div className="bg-white h-screen border-l border-l-black-200 flex flex-col gap-4 justify-between items-start p-5 "> 
             <div className="w-full flex flex-col gap-4">
                 <Image src={logo} alt="Logo"  className=" m-[2px] cursor-pointer" onClick={() => router.push("/")}/>
 
