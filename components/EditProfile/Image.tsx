@@ -1,10 +1,10 @@
-import Btn from "../PharmacyInfo/Btn";
 import ProfileIcon from "../ProfileIcon";
 import editIcon from "@/public/icons/editProfile/edit.svg"
 import deleteIcon from "@/public/icons/editProfile/delete.svg"
 
 import { useEffect, useRef, useState } from "react";
 import Cropper, { Area } from "react-easy-crop";
+import Btn from "../dashboard/PharmacyInfo/Btn";
 type ImageProfileProps = {
   userAvatar: string | null;
 };

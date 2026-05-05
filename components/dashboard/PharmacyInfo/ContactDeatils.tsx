@@ -1,4 +1,4 @@
-import Input from "../register/input";
+import Input from "@/components/register/input";
 import Btn from "./Btn";
 import Card from "./CardContainer";
 import editIcon from "@/public/icons/editProfile/edit.svg"
