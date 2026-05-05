@@ -28,7 +28,7 @@ const navIcons = [
         id: 3,
         icon: Request,
         label: "الطلبات",
-        link: "/dashboard/requests"
+        link: "/medicine-requests"
     },
     {
         id: 4,

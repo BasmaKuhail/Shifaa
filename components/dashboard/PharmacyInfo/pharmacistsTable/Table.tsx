@@ -20,7 +20,7 @@ export default function Table({pharmacistsArr, onEdit=false}: TableProps){
         <div className="w-full flex flex-col gap-2">
             <div className="flex items-center gap-5 p-2">
                 {onEdit &&  <div className="w-6" />}
-                <Row pharmacist={{name: "الاسم", contactNum: "رقم التواصل", email: "البريد الالكتروني", address: "العنوان"}} isFrist={true} />
+                <Row data={{name: "الاسم", contactNum: "رقم التواصل", email: "البريد الالكتروني", address: "العنوان"}} />
             </div>
             
             {pharmacistsArr.map((pharmacist, index) => (
@@ -45,7 +45,7 @@ export default function Table({pharmacistsArr, onEdit=false}: TableProps){
                             className="w-4 h-4 cursor-pointer"
                         />
                     )}
-                    <Row key={index} pharmacist={pharmacist} />
+                    <Row key={index} data={pharmacist} />
                 </div>
                 
             ))}

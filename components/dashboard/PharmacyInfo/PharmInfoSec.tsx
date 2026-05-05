@@ -1,12 +1,12 @@
-import ImageProfile from "../EditProfile/Image";
 import Btn from "./Btn";
 import Card from "./CardContainer";
 import pharmLogo from "@/public/icons/pharmInfo/pharmLogo.svg"
 import editIcon from "@/public/icons/editProfile/edit.svg"
 import { useRef } from "react";
-import Input from "../register/input";
 import PetrolBtn from "./invitePopup/PetrolBtn";
 import Link from "next/link";
+import ImageProfile from "@/components/EditProfile/Image";
+import Input from "@/components/register/input";
 
 export default function PharmInfoSec (){
     const fileInputRef = useRef<HTMLInputElement | null>(null);

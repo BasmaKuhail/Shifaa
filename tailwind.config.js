@@ -37,10 +37,13 @@ module.exports = {
             50:"#DFDFDF", //border lighter gray
             10:"#F4F4F4", //notifications bg
           },
-            textInputCorrect: '#1A71F6',
-            textInputWrong: '#FF1F1F',
-            online: '#23A149', //green
-            red: "#EA3030", //red
+          accepted: '#C4F4D0',
+          pending: '#FFE898',
+          rejected: '#F4C4C4',
+          textInputCorrect: '#1A71F6',
+          textInputWrong: '#FF1F1F',
+          online: '#23A149', //green
+          red: "#EA3030", //red
         },
         fontSize: {
             'xxs': '0.563rem',
