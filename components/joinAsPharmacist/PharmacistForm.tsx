@@ -2,7 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import Input from "../register/input";
 import { UserContext } from "@/contexts/UserContext";
 import { validateInput } from "@/utils/registerValidation";
-import PetrolBtn from "../PharmacyInfo/invitePopup/PetrolBtn";
 import Link from "next/link";
 
 import Image from "next/image";
@@ -11,6 +10,7 @@ import { useBreadcrumb } from "@/contexts/BreadcrumbContext"
 
 
 import {switchToPharmasist} from "@/services/auth"
+import PetrolBtn from "../dashboard/PharmacyInfo/invitePopup/PetrolBtn";
 export default function PharmacistForm(){
 
     const [checkBoxChecked, setCheckBoxChecked] = useState(false)
