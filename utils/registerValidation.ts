@@ -50,6 +50,7 @@ export const validateRegister = (userData: RegisterData) => {
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userData.email)) {
         // alert("يرجى إدخال بريد إلكتروني صحيح");
+        //check if not english used
         return {errorMsg: "يرجى إدخال بريد إلكتروني صحيح", isValid: false};
     }
 
