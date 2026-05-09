@@ -15,6 +15,7 @@ import { validateRegister, validateInput, validateConfirmPassword, validateLogin
 
 
 export default function Form({ isRegister }: { isRegister: boolean }) {
+
     const [userInfo, setUserInfo] = useState({
         firstName: { value: '', isTrueData: false },
         lastName: { value: '', isTrueData: false },
@@ -130,10 +131,11 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
                             {isRegister && <div
                                 className="flex flex-col gap-3 md:flex-row-reverse md:gap-6 justify-between w-full">
                                 <div className="flex-1">
-                                    <Input label="الاسم الأول" type="text" inputText="الاسم الأول" value={userInfo.firstName.value} onChange={(value) => setUserInfo({ ...userInfo, firstName: { value: value as string, isTrueData: true } })} isTrue={validateInput(userInfo.firstName.value, 'text')}/>
+                                    {/* nombers is not accepted as name */} 
+                                    <Input label="الاسم الأول" type="text" inputText="الاسم الأول" value={userInfo.firstName.value} onChange={(value) => setUserInfo({ ...userInfo, firstName: { value: value as string, isTrueData: true } })} isTrue={validateInput(userInfo.firstName.value, 'text') && !/\d/.test(userInfo.firstName.value)}/>
                                 </div>
                                 <div className="flex-1">
-                                    <Input label="الاسم الأخير" type="text" inputText="الاسم الأخير" value={userInfo.lastName.value} onChange={(value) => setUserInfo({ ...userInfo, lastName: { value: value as string, isTrueData: true } })} isTrue={validateInput(userInfo.lastName.value, 'text')}/>
+                                    <Input label="الاسم الأخير" type="text" inputText="الاسم الأخير" value={userInfo.lastName.value} onChange={(value) => setUserInfo({ ...userInfo, lastName: { value: value as string, isTrueData: true } })} isTrue={validateInput(userInfo.lastName.value, 'text') && !/\d/.test(userInfo.firstName.value)}/>
                                 </div>
                             </div>}
 
