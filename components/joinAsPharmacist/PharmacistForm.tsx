@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import Input from "../register/input";
 import { UserContext } from "@/contexts/UserContext";
-import { validateInput } from "@/utils/registerValidation";
+import { validateInput } from "@/utils/ValidateInput";
 import Link from "next/link";
 
 import Image from "next/image";
@@ -58,7 +58,7 @@ export default function PharmacistForm(){
         const res = await switchToPharmasist(userInfo.serialNumber);
         console.log(res);
     } catch (err: any) {
-        console.log(err.response?.data); // 🔥 THIS IS THE TRUTH
+        console.log(err.response?.data); 
     }
 };
     const { crumbs } = useBreadcrumb()

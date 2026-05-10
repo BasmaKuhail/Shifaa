@@ -8,10 +8,12 @@ type InputProps = {
     value: string | File | null;
     onChange: (value: string | File | null) => void;
     isTrue: boolean;
-    editable?:boolean
+    editable?:boolean;
+    errorMsg?: string;
+
 }
 
-export default function Input({label, type, inputText, value, onChange, isTrue, editable=true}: InputProps) {
+export default function Input({label, type, inputText, value, onChange, isTrue, editable=true, errorMsg}: InputProps) {
     const [passSrc, setPassSrc] = useState<string>('/icons/unshowPass.svg');
     const [inputType, setInputType] = useState<'text' | 'email' | 'password' | 'textarea' | 'file'>(type);
     const togglePasswordVisibility = () => {
@@ -22,7 +24,7 @@ export default function Input({label, type, inputText, value, onChange, isTrue, 
 
 
     return (
-        <div dir="rtl" className="flex flex-col gap-2">
+        <div dir="rtl" className="flex flex-col gap-1">
             <label className="text-sm font-bold text-right">{label}</label>
             <div className="relative">
                 {(type == 'textarea') ? (
@@ -79,13 +81,13 @@ export default function Input({label, type, inputText, value, onChange, isTrue, 
                         value={typeof value === 'string' ? value : ''}
                         placeholder={inputText}
                         dir="auto"
-                        
-                        onCopy={(e) => type === 'password' && e.preventDefault()}
-                        onPaste={(e) => type === 'password' && e.preventDefault()}
-                        onCut={(e) => type === 'password' && e.preventDefault()}
+                        maxLength={type === 'password' ? 15 : undefined}
+                        // onCopy={(e) => type === 'password' && e.preventDefault()}
+                        // onPaste={(e) => type === 'password' && e.preventDefault()}
+                        // onCut={(e) => type === 'password' && e.preventDefault()}
                         onContextMenu={(e) => type === 'password' && e.preventDefault()}
                         onDrop={(e) => type === 'password' && e.preventDefault()}
-                        disabled={!editable?true : false}
+                        disabled={!editable}
                         className={`border rounded-inpt p-2 w-full text-right focus:outline-none text-inpt h-[52px] md:h-[45px]
                             ${
                             value
@@ -104,7 +106,13 @@ export default function Input({label, type, inputText, value, onChange, isTrue, 
                         className="absolute left-4 top-1/2 transform -translate-y-1/2 cursor-pointer"
                         onClick={togglePasswordVisibility} />
                 }
+      
             </div>
+
+            <p className={`text-red-500 text-xs text-right mt-1 `}>
+                {errorMsg  || "\u00A0"}
+            </p>
+        
         </div>
     )
 }
