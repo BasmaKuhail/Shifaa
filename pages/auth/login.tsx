@@ -1,4 +1,5 @@
 import Form from "@/components/register/form";
+import RegisterFormLayout from "@/layouts/RegisterFormLayout";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 export default function Login() {
@@ -17,6 +18,9 @@ export default function Login() {
     }, []);
   
     return (
+      <RegisterFormLayout>
         <Form isRegister={false} />
+      </RegisterFormLayout>
+        
     )
 }

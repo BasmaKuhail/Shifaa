@@ -3,7 +3,7 @@ import HeaderText from "../HeaderText";
 import Title from "../SectionTitle";
 import SubHeader from "../SubHeader";
 import { useState } from "react";
-import { validateInput } from "@/utils/registerValidation"
+import { validateInput } from "@/utils/ValidateInput"
 import GradientBrn from "../GradiantBtn";
 import PhoneNum from "./PhoneNumInput";
 
@@ -47,7 +47,7 @@ export default function ContactForm(){
                                 firstName: { value: value as string, isTrueData: true } 
                             })
                         } 
-                        isTrue={validateInput(userContactFornInfo.firstName.value, 'text')}/>
+                        isTrue={validateInput(userContactFornInfo.firstName.value, 'text').isValid}/>
                 </div>
                 <div className="lg:flex-1 w-full">
                     <Input 
@@ -61,7 +61,7 @@ export default function ContactForm(){
                                 lastName: { value: value as string, isTrueData: true }
                             })
                         }
-                        isTrue={validateInput(userContactFornInfo.lastName.value, 'text')}/>
+                        isTrue={validateInput(userContactFornInfo.lastName.value, 'text').isValid}/>
                 </div>
             </div>
             <Input 
@@ -75,7 +75,7 @@ export default function ContactForm(){
                         email: { value: value as string, isTrueData: true } 
                     })
                 } 
-                isTrue={validateInput(userContactFornInfo.email.value, 'email')}/>
+                isTrue={validateInput(userContactFornInfo.email.value, 'email').isValid}/>
             {/* <PhoneNum
                 label="رقم الهاتف"
                 inputText=""
@@ -91,7 +91,7 @@ export default function ContactForm(){
                 inputText="اترك رسالتك هنا..."  
                 value={userContactFornInfo.message.value} 
                 onChange={(value) => setUserContactFornInfo({ ...userContactFornInfo, message: { value: value as string, isTrueData: true } })} 
-                isTrue={validateInput(userContactFornInfo.message.value, 'textarea')}/>
+                isTrue={validateInput(userContactFornInfo.message.value, 'textarea').isValid}/>
 
             <div className="flex w-fit h-[51px] justify-center lg:justify-start md:justify-start w-full">
                 <GradientBrn text="إرسال الرسالة" onClick={() => {}} px={10}/>

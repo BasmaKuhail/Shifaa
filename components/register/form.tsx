@@ -5,29 +5,28 @@ import ButtonFull from "./ButtonFull";
 import GoogleBtn from "./GoogleBtn";
 import Input from "./input";
 import Title from "./Title";
-import LanguageSelector from "./LangugeSelector";
 import ButtonEmpty from "./ButtonEmpty";
 
 import Link from "next/link";
 
 import {register, login} from "@/services/auth";
-import { validateRegister, validateInput, validateConfirmPassword, validateLogin } from "@/utils/registerValidation"
-
+import { validateRegister, validateLogin } from "@/utils/ValidateForms"
+import { validateInput, validateConfirmPassword} from "@/utils/ValidateInput";
 
 export default function Form({ isRegister }: { isRegister: boolean }) {
-    const [userInfo, setUserInfo] = useState({
-        firstName: { value: '', isTrueData: false },
-        lastName: { value: '', isTrueData: false },
-        email: { value: '', isTrueData: false },
-        password: { value: '', isTrueData: false },
-        confirmPassword: { value: '', isTrueData: false }
-    });
 
     const router = useRouter();
 
+    const [userInfo, setUserInfo] = useState({
+        firstName: { value: '', isTrueData: false, errorMsg: '' },
+        lastName: { value: '', isTrueData: false, errorMsg: '' },
+        email: { value: '', isTrueData: false, errorMsg: '' },
+        password: { value: '', isTrueData: false, errorMsg: '' },
+        confirmPassword: { value: '', isTrueData: false, errorMsg: '' }
+    });
+
     const handleSubmit = async () => {
         try {
-
             let response;
 
             if (isRegister) {
@@ -53,32 +52,20 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
 
             localStorage.setItem("token", token);
             localStorage.setItem("user", JSON.stringify(user));
-
-            // alert(isRegister ? "تم التسجيل بنجاح!" : "تم تسجيل الدخول بنجاح!");
             
             router.push("/");
 
         } catch (error: any) {
 
-            if (error.response?.status === 422) {
+            if (error.response?.status === 422 || error.response?.status === 401) {
                 alert(error.response.data.message);
                 console.log("Validation Errors:", error.response.data.errors);
-            }
-
-            else if (error.response?.status === 401) {
-                alert(error.response.data.message);
-                console.log("Validation Errors:", error.response.data.errors);
-            }
-
-            else if (error.response?.status === 500) {
+            } else if (error.response?.status === 500) {
                 alert("حدث خطأ في الخادم، حاول مرة أخرى");
                 console.log("Validation Errors:", error.response.data.errors);
+            } else {
+                alert("حدث خطأ غير متوقع");
             }
-
-            else{
-                alert("حدث خطأ غير متوقع")
-            }
-
             console.log("Error:", error.response?.data);
         }
     };
@@ -109,69 +96,93 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
     }
     
     return (
-        <>
-            <div className="min-h-screen flex items-center justify-center bg-blue-100">
-                <div className="md:w-full w-[90%] max-w-3xl flex flex-col items-start">
-                    <div 
-                        className="
-                            bg-white rounded-normal w-full
-                            px-10 md:px-36
-                            py-10
-                            flex flex-col gap-5 md:gap-10
-                            mt-5 md:mt-0
-                            shadow-lg"
-                    >
-                        <div className="flex flex-col gap-1.5 items-center">
-                            <Title title={isRegister ? 'انشاء حساب' : 'تسجيل الدخول'} />
-                            {isRegister && <p className="mt-4 text-inpt">هل لديك حساب بالفعل؟ <Link href="/auth/login" className="font-bold hover:underline">تسجيل الدخول</Link></p>}
-                        </div>
+        <div dir="rtl" className="flex flex-col gap-2 md:gap-5">
+            <div className="flex flex-col gap-1.5 items-center">
+                <Title title={isRegister ? 'انشاء حساب' : 'تسجيل الدخول'} />
+                {isRegister && <p className="mt-4 text-inpt">هل لديك حساب بالفعل؟ <Link href="/auth/login" className="font-bold hover:underline">تسجيل الدخول</Link></p>}
+             </div>
                         
-                        <div className="flex flex-col gap-3 w-full ">
-                            {isRegister && <div
-                                className="flex flex-col gap-3 md:flex-row-reverse md:gap-6 justify-between w-full">
-                                <div className="flex-1">
-                                    <Input label="الاسم الأول" type="text" inputText="الاسم الأول" value={userInfo.firstName.value} onChange={(value) => setUserInfo({ ...userInfo, firstName: { value: value as string, isTrueData: true } })} isTrue={validateInput(userInfo.firstName.value, 'text')}/>
-                                </div>
-                                <div className="flex-1">
-                                    <Input label="الاسم الأخير" type="text" inputText="الاسم الأخير" value={userInfo.lastName.value} onChange={(value) => setUserInfo({ ...userInfo, lastName: { value: value as string, isTrueData: true } })} isTrue={validateInput(userInfo.lastName.value, 'text')}/>
-                                </div>
-                            </div>}
-
-                            <Input label="البريد الالكتروني" type="email" inputText="youremail.com" value={userInfo.email.value} onChange={(value) => setUserInfo({ ...userInfo, email: { value : value as string, isTrueData: true } })} isTrue={validateInput(userInfo.email.value, 'email')}/>
-
-
-                            <div className="flex flex-col gap-3 md:flex-row-reverse justify-between md:gap-6 w-full">
-                                <div className="flex-1">
-                                    <Input label="كلمة المرور" type="password" inputText="كلمة المرور" value={userInfo.password.value} onChange={(value) => setUserInfo({ ...userInfo, password: { value: value as string, isTrueData: true } })} isTrue={validateInput(userInfo.password.value, 'password')}/>
-                                </div>
-                                {isRegister &&<div className="flex-1">
-                                    <Input label="تأكيد كلمة المرور" type="password" inputText="تأكيد كلمة المرور" value={userInfo.confirmPassword.value} onChange={(value) => setUserInfo({ ...userInfo, confirmPassword: { value: value as string, isTrueData: true } })} isTrue={validateInput(userInfo.confirmPassword.value, 'password') && validateConfirmPassword(userInfo.password.value, userInfo.confirmPassword.value)}/>
-                                </div>}
-                            </div>
-                            {isRegister &&<p className="text-xs md:text-inpt text-gray-500 text-right">استخدم 8 أحرف انجليزية أو أكثر مع مزيج من الأرقام والرموز</p>}
-                            {!isRegister &&<p className="text-xs md:text-inpt text-right underline"><a className="cursor-pointer">نسيت كلمة المرور؟</a></p>}
-                            {/* {error && <p className="text-red-500 text-sm text-right">{error}</p>} */}
-                        </div>
-                        <div className="flex flex-col items-center w-full gap-4">
-                            <div className="w-full md:w-[70%] flex flex-col items-center gap-4">
-                                <ButtonFull text={isRegister ? 'انشاء حساب' : 'تسجيل دخول'} onClick={() => { if (submitOnClick()) {handleSubmit();}}} />
-                                <GoogleBtn text={isRegister ? "التسجيل باستخدام جوجل" : "المتابعة باستخدام جوجل"}/>
-                            {!isRegister && <>
-                                <div className="w-full flex items-center gap-3 mt-4"> 
-                                    <hr className="flex-1 border-gray-300 border-1" /><p className="text-gray-500">جديد في مجتمعنا؟</p><hr className="flex-1 border-gray-300 border-1" />
-                                </div>
-                                
-                                <ButtonEmpty text= "انشاء حساب" onClick={() => {router.push('/auth/signup')}} />
-                            </>}
-                            </div>
-                            {isRegister && <p className="text-xs md:text-12px text-center underline md:no-underline">بالاستمرار، فإنك توافق على شروط الاستخدام وسياسة الخصوصية</p>}
-
-                        </div>
-                        
+            <div className="flex flex-col gap-3 w-full ">
+                {isRegister && <div
+                    className="grid grid-cols-1 md:grid-cols-2 gap-3 md:flex-row md:gap-6 justify-between w-full">
+                        {/* nombers are not accepted as name */} 
+                        <Input 
+                            label="الاسم الأول" 
+                            type="text" 
+                            inputText="الاسم الأول" 
+                            value={userInfo.firstName.value} 
+                            onChange={(value) =>{ setUserInfo({ ...userInfo, firstName: {...userInfo. firstName,  value: value as string}})}} 
+                            isTrue={validateInput(userInfo.firstName.value, 'text').isValid} 
+                            errorMsg={userInfo.firstName.value? validateInput(userInfo.firstName.value, 'text').errorMsg : ""}
+                        />
+                        {/* <p >{userInfo.firstName.errorMsg}</p> */}
+                        <Input 
+                            label="الاسم الأخير" 
+                            type="text" 
+                            inputText="الاسم الأخير" 
+                            value={userInfo.lastName.value} 
+                            onChange={(value) => setUserInfo({ ...userInfo, lastName: { ...userInfo. lastName, value: value as string}})} 
+                            isTrue={validateInput(userInfo.lastName.value, 'text').isValid} 
+                            errorMsg={userInfo.lastName.value? validateInput(userInfo.lastName.value, 'text').errorMsg : ""}
+                        />
                     </div>
-                    <LanguageSelector/>
+                }
+
+                <Input 
+                    label="البريد الالكتروني" 
+                    type="email" 
+                    inputText="youremail@domain.com" 
+                    value={userInfo.email.value} 
+                    onChange={(value) => setUserInfo({ ...userInfo, email: { ...userInfo. email, value : value as string }})} 
+                    isTrue={validateInput(userInfo.email.value, 'email').isValid} 
+                    errorMsg={userInfo.email.value? validateInput(userInfo.email.value, 'email').errorMsg : ""}
+                />
+
+
+                <div className={`grid grid-cols-1 gap-3 md:flex-row-reverse md:gap-6 justify-between w-full ${isRegister ? 'md:grid-cols-2' : 'md:grid-cols-1'}`}>
+                    <Input 
+                        label="كلمة المرور" 
+                        type="password" 
+                        inputText="كلمة المرور" 
+                        value={userInfo.password.value} 
+                        onChange={(value) => setUserInfo({ ...userInfo, password: {  ...userInfo. password, value: value as string }})} 
+                        isTrue={validateInput(userInfo.password.value, 'password').isValid} 
+                        errorMsg={userInfo.password.value? validateInput(userInfo.password.value, 'password').errorMsg : ""}
+                    />
+                    {isRegister && 
+                        <Input 
+                            label="تأكيد كلمة المرور" 
+                            type="password" 
+                            inputText="تأكيد كلمة المرور" 
+                            value={userInfo.confirmPassword.value} 
+                            onChange={(value) => setUserInfo({ ...userInfo, confirmPassword: { ...userInfo.confirmPassword, value: value as string} })} 
+                            isTrue={validateInput(userInfo.confirmPassword.value, 'password').isValid && validateConfirmPassword(userInfo.password.value, userInfo.confirmPassword.value)}
+                            errorMsg={userInfo.confirmPassword.value? validateInput(userInfo.confirmPassword.value, 'password').errorMsg? "الكلمة يجب أن تطابق كلمة المرور" : "" : ""}
+                        />
+                    }
                 </div>
+                {isRegister 
+                    ? 
+                    <p className="text-xs md:text-inpt text-gray-500 text-right">استخدم 8 أحرف انجليزية أو أكثر مع مزيج من الأرقام والرموز</p> 
+                    : 
+                    <p className="text-xs md:text-inpt text-right underline"><a className="cursor-pointer">نسيت كلمة المرور؟</a></p>
+                }
             </div>
-        </>
+            <div className="flex flex-col items-center w-full gap-4">
+                <div className="w-full md:w-[70%] flex flex-col items-center gap-4">
+                    <ButtonFull text={isRegister ? 'انشاء حساب' : 'تسجيل دخول'} onClick={() => { if (submitOnClick()) {handleSubmit();}}} />
+                    {/* <GoogleBtn text={isRegister ? "التسجيل باستخدام جوجل" : "المتابعة باستخدام جوجل"}/> */}
+                    {!isRegister && <>
+                        <div className="w-full flex items-center gap-3 mt-4"> 
+                            <hr className="flex-1 border-gray-300 border-1" /><p className="text-gray-500">جديد في مجتمعنا؟</p><hr className="flex-1 border-gray-300 border-1" />
+                        </div>
+                                
+                        <ButtonEmpty text= "انشاء حساب" onClick={() => {router.push('/auth/signup')}} />
+                    </>}
+                </div>
+                {isRegister && <p className="text-xs md:text-12px text-center underline md:no-underline">بالاستمرار، فإنك توافق على شروط الاستخدام وسياسة الخصوصية</p>}
+
+            </div>
+        </div>         
     )
 }
