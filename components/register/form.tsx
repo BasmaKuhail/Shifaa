@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 import { useRouter } from "next/router";
 
 import ButtonFull from "./ButtonFull";
@@ -94,7 +94,26 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
         console.log('Form submitted with user info:', userInfo);
         return true;
     }
-    
+
+    const inputOnChange = useCallback((field: keyof typeof userInfo, value: string) => {
+        const validationType =
+            field === "email" ? "email" :
+            field === "password" || field === "confirmPassword" ? "password" :
+            "text";
+        const validation = validateInput(value, validationType);
+
+        setUserInfo((prev) => ({
+            ...prev,
+            [field]: {
+                ...prev[field],
+                value,
+                isTrueData: validation.isValid,
+                errorMsg: validation.errorMsg,
+            },
+        }));
+    }, []);
+
+
     return (
         <div dir="rtl" className="flex flex-col gap-2 md:gap-5">
             <div className="flex flex-col gap-1.5 items-center">
@@ -111,9 +130,9 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
                             type="text" 
                             inputText="الاسم الأول" 
                             value={userInfo.firstName.value} 
-                            onChange={(value) =>{ setUserInfo({ ...userInfo, firstName: {...userInfo. firstName,  value: value as string}})}} 
-                            isTrue={validateInput(userInfo.firstName.value, 'text').isValid} 
-                            errorMsg={userInfo.firstName.value? validateInput(userInfo.firstName.value, 'text').errorMsg : ""}
+                            onChange={(value) => inputOnChange('firstName', value as string)} 
+                            isTrue={userInfo.firstName.isTrueData} 
+                            errorMsg={userInfo.firstName.value ? userInfo.firstName.errorMsg : ""}
                         />
                         {/* <p >{userInfo.firstName.errorMsg}</p> */}
                         <Input 
@@ -121,9 +140,9 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
                             type="text" 
                             inputText="الاسم الأخير" 
                             value={userInfo.lastName.value} 
-                            onChange={(value) => setUserInfo({ ...userInfo, lastName: { ...userInfo. lastName, value: value as string}})} 
-                            isTrue={validateInput(userInfo.lastName.value, 'text').isValid} 
-                            errorMsg={userInfo.lastName.value? validateInput(userInfo.lastName.value, 'text').errorMsg : ""}
+                            onChange={(value) => inputOnChange('lastName', value as string)} 
+                            isTrue={userInfo.lastName.isTrueData} 
+                            errorMsg={userInfo.lastName.value ? userInfo.lastName.errorMsg : ""}
                         />
                     </div>
                 }
@@ -133,9 +152,9 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
                     type="email" 
                     inputText="youremail@domain.com" 
                     value={userInfo.email.value} 
-                    onChange={(value) => setUserInfo({ ...userInfo, email: { ...userInfo. email, value : value as string }})} 
-                    isTrue={validateInput(userInfo.email.value, 'email').isValid} 
-                    errorMsg={userInfo.email.value? validateInput(userInfo.email.value, 'email').errorMsg : ""}
+                    onChange={(value) => inputOnChange('email', value as string)} 
+                    isTrue={userInfo.email.isTrueData} 
+                    errorMsg={userInfo.email.value ? userInfo.email.errorMsg : ""}
                 />
 
 
@@ -145,9 +164,9 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
                         type="password" 
                         inputText="كلمة المرور" 
                         value={userInfo.password.value} 
-                        onChange={(value) => setUserInfo({ ...userInfo, password: {  ...userInfo. password, value: value as string }})} 
-                        isTrue={validateInput(userInfo.password.value, 'password').isValid} 
-                        errorMsg={userInfo.password.value? validateInput(userInfo.password.value, 'password').errorMsg : ""}
+                        onChange={(value) => inputOnChange('password', value as string)} 
+                        isTrue={userInfo.password.isTrueData} 
+                        errorMsg={userInfo.password.value ? userInfo.password.errorMsg : ""}
                     />
                     {isRegister && 
                         <Input 
@@ -155,21 +174,15 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
                             type="password" 
                             inputText="تأكيد كلمة المرور" 
                             value={userInfo.confirmPassword.value} 
-                            onChange={(value) => setUserInfo({ ...userInfo, confirmPassword: { ...userInfo.confirmPassword, value: value as string} })} 
-                            isTrue={validateInput(userInfo.confirmPassword.value, 'password').isValid && validateConfirmPassword(userInfo.password.value, userInfo.confirmPassword.value)}
-                            errorMsg={userInfo.confirmPassword.value? validateInput(userInfo.confirmPassword.value, 'password').errorMsg? "الكلمة يجب أن تطابق كلمة المرور" : "" : ""}
+                            onChange={(value) => inputOnChange('confirmPassword', value as string)} 
+                            isTrue={userInfo.confirmPassword.isTrueData && validateConfirmPassword(userInfo.password.value, userInfo.confirmPassword.value)}
+                            errorMsg={userInfo.confirmPassword.value ? validateInput(userInfo.confirmPassword.value, 'password').errorMsg ? "الكلمة يجب أن تطابق كلمة المرور" : "" : ""}
                         />
                     }
                 </div>
-                {isRegister 
-                    ? 
-                    <p className="text-xs md:text-inpt text-gray-500 text-right">استخدم 8 أحرف انجليزية أو أكثر مع مزيج من الأرقام والرموز</p> 
-                    : 
-                    <p className="text-xs md:text-inpt text-right underline"><a className="cursor-pointer">نسيت كلمة المرور؟</a></p>
-                }
             </div>
             <div className="flex flex-col items-center w-full gap-4">
-                <div className="w-full md:w-[70%] flex flex-col items-center gap-4">
+                <div className="w-full md:w-[70%] flex flex-col items-center gap-4 mt-2">
                     <ButtonFull text={isRegister ? 'انشاء حساب' : 'تسجيل دخول'} onClick={() => { if (submitOnClick()) {handleSubmit();}}} />
                     {/* <GoogleBtn text={isRegister ? "التسجيل باستخدام جوجل" : "المتابعة باستخدام جوجل"}/> */}
                     {!isRegister && <>
@@ -180,6 +193,7 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
                         <ButtonEmpty text= "انشاء حساب" onClick={() => {router.push('/auth/signup')}} />
                     </>}
                 </div>
+                
                 {isRegister && <p className="text-xs md:text-12px text-center underline md:no-underline">بالاستمرار، فإنك توافق على شروط الاستخدام وسياسة الخصوصية</p>}
 
             </div>
