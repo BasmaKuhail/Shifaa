@@ -3,6 +3,7 @@ import Card from "../PharmacyInfo/CardContainer";
 import PhoneNum from "@/components/home/contactForm/PhoneNumInput";
 import Row from "../PharmacyInfo/pharmacistsTable/Row";
 import { style } from "framer-motion/client";
+import StatusHolder from "./StatusHolder";
 
 const requestsCategory =[
     {text:"كل الطلبات", value:"all"}, 
@@ -19,23 +20,6 @@ const medicineReqData = [
     {id:4, customerName:"فاطمة محمد", medicineName:"سيبروفلوكساسين", PhoneNum:"+444444444", date:"20-01-2023", quantity:1, status:"unread"},
     {id:5, customerName:"خالد عبد الله", medicineName:"ميترونيدازول", PhoneNum:"+333333333", date:"25-01-2023", quantity:2, status:"accepted"},
 ]
-
-const StatusHolder = ({status}:{status:string}) => {
-    const statusStyles: Record<string, string> = {
-        accepted: "bg-accepted",
-        pending: "bg-pending",
-        rejected: "bg-rejected",
-    };
-    return(
-        <div 
-            className={`flex w-fit items-center justify-center  px-5 texy-inpt rounded-[14px] gap-2 ${
-                statusStyles[status] || "bg-gray-100"
-            }`}
-        >
-            <p className="">{status}</p>
-        </div>
-    )
-}
 
 export default function MedicineReq(){
     const [selectedCategory, setSelectedCategory] = useState(requestsCategory[0]);

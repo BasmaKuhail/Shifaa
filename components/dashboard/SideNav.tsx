@@ -10,6 +10,7 @@ import Help from "@/public/icons/dashboard/help";
 
 import NavItem from "./NavItem";
 import { useRouter } from "next/router";
+import { label } from "framer-motion/client";
 
 const navIcons = [
     {
@@ -35,6 +36,12 @@ const navIcons = [
         icon: Add,
         label: "إضافة دواء",
         link: "/dashboard/add"
+    },
+    {
+        id:5,
+        icon: Request,
+        label:"الدعوات",
+        link: "/invitations"
     }
 ];
 
