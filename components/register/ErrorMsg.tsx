@@ -1,6 +1,12 @@
-export default function ErrorMsg({errorMsg}: {errorMsg?: {text: string, isRed?: boolean}}) {
+type ErrorMsgProps = {
+  text?: string;
+  isRed?: boolean;
+};
+
+export default function ErrorMsg({text, isRed = false}: ErrorMsgProps) {
+    if (!text) return null;
     return (
-        <p className={`absolute transform translate-y-20 ${errorMsg?.isRed ? 'text-red-500 text-xs' : 'text-gray-500 text-inpt'}`}>{errorMsg?.text}</p>
+        <p className={`absolute transform translate-y-20 ${isRed ? 'text-red-500 text-xs' : 'text-gray-500 text-xs lg:text-inpt '}`}>{text}</p>
 
     )
 }
