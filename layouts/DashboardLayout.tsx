@@ -5,7 +5,7 @@ import { UserContext } from "@/contexts/UserContext";
 import { useContext, useEffect, useState } from "react";
 import ProNotContSkeleton from "@/components/header/ProfileNotification/ProNotContSkeleton";
 
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default function DashboardLayout({ children, sideNavArr }: { children: React.ReactNode, sideNavArr: {id: number, icon: any, label: string, link: string}[] }) {
     const [showArrow, setShowArrow] = useState(false);
     const {user, loading} = useContext(UserContext);
 
@@ -29,7 +29,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
         <div dir="rtl" className="flex flex-row bg-blue-70 h-screen overflow-hidden">
             {showArrow && <UpArrow />}
             <div className="w-[25%] h-screen">
-                <SideNav/>
+                <SideNav sideNavArr={sideNavArr}/>
             </div>
             <div  className="flex flex-col pt-8 pr-20 pl-4 md:pl-8 lg:pl-20 xl:pl-30 w-full overflow-y-auto">
                 <div dir="ltr" className="w-full flex flex-row justify-between items-center">

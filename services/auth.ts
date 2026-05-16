@@ -64,7 +64,7 @@ export const switchToPharmasist = async (licenseNumber: string) => {
     "/pharmacist-application",
     {
       data: {
-        type: "pharmacist-application", // 🔥 ADD THIS
+        type: "pharmacist-application",
         attributes: {
           license_number: licenseNumber,
         },
