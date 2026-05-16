@@ -1,17 +1,13 @@
-import MainLayout from "@/layouts/MainLayout"
-import Dashboard from "@/components/dashboard/Dashboard"
-import DashboardLayout from "@/layouts/DashboardLayout"
+import Dashboard from "@/components/dashboard/Dashboard";
+import PharmInfo from "@/components/dashboard/PharmacyInfo/PharmacyInfo";
+import DashboardLayout from "@/layouts/DashboardLayout";
 
 import Add from "@/public/icons/dashboard/add";
 import Dash from "@/public/icons/dashboard/dashboard";
 import Pharm from "@/public/icons/dashboard/pharmacy";
 import Request from "@/public/icons/dashboard/request";
 import Home from "@/public/icons/dashboard/home";
-
-
-
-export default function DashboardPage(){
-
+export default function PharmInfoPage(){
     const sideNavArr = [
     {
         id:1,
@@ -50,11 +46,10 @@ export default function DashboardPage(){
         link: "/dashboard/invitations"
     }
 ];
-
     return(
         <DashboardLayout sideNavArr={sideNavArr}>
-            <Dashboard />
+            <PharmInfo/>
         </DashboardLayout>
-
+        
     )
 }

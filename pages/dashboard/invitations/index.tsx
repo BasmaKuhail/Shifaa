@@ -1,5 +1,5 @@
+import Invitations from "@/components/dashboard/invitations/Invitations";
 import DashboardLayout from "@/layouts/DashboardLayout";
-import MedicineReq from "@/components/dashboard/MedicineRequests/MedReq";
 
 import Add from "@/public/icons/dashboard/add";
 import Dash from "@/public/icons/dashboard/dashboard";
@@ -7,7 +7,7 @@ import Pharm from "@/public/icons/dashboard/pharmacy";
 import Request from "@/public/icons/dashboard/request";
 import Home from "@/public/icons/dashboard/home";
 
-export default function MedicineRequests(){
+export default function InvitationsIndex() {
             const sideNavArr = [
             {
                 id:1,
@@ -43,12 +43,13 @@ export default function MedicineRequests(){
                 id: 6,
                 icon: Request,
                 label:"الدعوات",
-                link: "/invitations"
+                link: "/dashboard/invitations"
             }
         ];
+    
     return(
         <DashboardLayout sideNavArr={sideNavArr}>
-            <MedicineReq/>
+            <Invitations/>
         </DashboardLayout>
     )
 }
