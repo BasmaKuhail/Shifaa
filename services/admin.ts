@@ -39,3 +39,19 @@ export const pharmacistApplications = async ():Promise<PharmacistApplication[]> 
         status: application.employment_status as "accepted" | "rejected" | "unread" | "pending",
     }))
 }
+
+export const acceptPharmacistApplication = async (id: number) => {
+  const response = await api.post(`/admin/pharmacists/${id}/approve`);
+
+  if (response.status !== 200) {
+    throw new Error("Failed to accept pharmacist application");
+  }else if (response.status === 200) {
+    console.log("Pharmacist application accepted successfully");
+  }else if (response.status === 404) {
+    throw new Error("Pharmacist application not found");
+  }else if (response.status === 500) { 
+    throw new Error("Internal server error");
+  }else { 
+    throw new Error("Unexpected error");
+  }
+}

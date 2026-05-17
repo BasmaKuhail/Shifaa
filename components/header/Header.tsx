@@ -31,8 +31,15 @@ export default function Header(){
             </div> */}
             {user ? <ProNotCont user={user} /> : 
             <div dir="ltr" className="flex flex-row-reverse gap-2 items-center" onClick={() => router.push("/auth/login")}>
-                <IconHolder icon={loggout} isNotification={false} width={17} height={17} />
-                <p className="text-input font-bold cursor-pointer hover:underline">تسجيل الدخول</p>
+                {localStorage.getItem('token') 
+                    ?
+                        <p className="text-inpt font-semibold text-red">يتعذر تحميل المستخدم</p> 
+                    : 
+                        <>
+                            <IconHolder icon={loggout} isNotification={false} width={17} height={17}/> 
+                            <p className="text-inpt font-bold cursor-pointer hover:underline">تسجيل الدخول</p>
+                        </>
+                }
             </div>
 
             }
