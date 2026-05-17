@@ -11,10 +11,12 @@ import { useBreadcrumb } from "@/contexts/BreadcrumbContext"
 
 import {switchToPharmasist} from "@/services/auth"
 import PetrolBtn from "../dashboard/PharmacyInfo/invitePopup/PetrolBtn";
+import { useRouter } from "next/router";
 export default function PharmacistForm(){
 
     const [checkBoxChecked, setCheckBoxChecked] = useState(false)
-  
+    
+    const router = useRouter();
     
     const {user, loading} = useContext(UserContext);
     const handlePreviousPage = () => {
@@ -58,7 +60,7 @@ export default function PharmacistForm(){
         const res = await switchToPharmasist(userInfo.serialNumber);
         console.log(res);
         alert(res.message || "تم تقديم طلبك بنجاح، سيتم مراجعة طلبك خلال 3-5 أيام عمل");
-
+        router.push("/");
     } catch (err: any) {
         console.log(err.response?.data);
         alert(err.response?.data.message || "حدث خطأ غير متوقع");
