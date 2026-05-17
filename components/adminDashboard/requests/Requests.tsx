@@ -3,6 +3,7 @@ import Card from "@/components/dashboard/PharmacyInfo/CardContainer";
 import Row from "@/components/dashboard/PharmacyInfo/pharmacistsTable/Row";
 import { useEffect, useState } from "react";
 import {pharmacistApplications} from "@/services/admin";
+import Interact from "./Interact";
 export default function Requests() {
     const [requests, setRequests] = useState<{ id: number; name: string; email: string; date: string; licenseNumber: string; status: string; }[]>([]);
     const [loading, setLoading] = useState(true);
@@ -42,7 +43,7 @@ export default function Requests() {
                     </div>
                     <div className="flex w-full flex-col px-10">
                         <div className="text-black-500 text-inpt">
-                            <Row data={{customerName: "اسم العميل", PhoneNum: "رقم التواصل", date: "تاريخ الطلب", brief: "رقم الرخصة", status: "الحالة"}} />
+                            <Row data={{customerName: "اسم العميل", email: "البريد الإلكتروني", date: "تاريخ الطلب", brief: "رقم الرخصة", status: "الحالة", interact: "التفاعل"}} />
                         </div>
                         {loading && <p className="py-6 text-center">جاري التحميل...</p>}
 
@@ -61,8 +62,9 @@ export default function Requests() {
                                             email: req.email,
                                             date: req.date,
                                             licenseNumber: req.licenseNumber,
-                                            status: <StatusHolder status={req.status} />
-                                        }} 
+                                            status: <StatusHolder status={req.status} />,
+                                            interact: <Interact status={req.status} id={req.id} name={req.name}/>
+                                        }}
                                 />
                             </div>
                         ))}
