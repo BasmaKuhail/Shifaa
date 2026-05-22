@@ -50,7 +50,9 @@ html {
   scrollbar-color: #cbd5e1 transparent;
   -webkit-overflow-scrolling: touch;
 }
-
+.custom-y-scrollbar {
+  -webkit-overflow-scrolling: touch;
+}
 /* Horizontal scrollbar only */
 .custom-x-scrollbar::-webkit-scrollbar:horizontal {
   height: 4px;

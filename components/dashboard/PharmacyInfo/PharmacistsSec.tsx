@@ -35,8 +35,9 @@ export default function PharmacistsSec({ pharmacyName }: PharmacistsSecProps) {
                 <Btn text="تعديل" icon={edit} onClick={() => {setOnEdit(Prev => !Prev)}} />
             </div>
             }
+            scrollable
         >
-            <div className="w-full flex flex-col overflow-x-auto">
+            <div className="w-full flex flex-col">
                 <Table pharmacistsArr={pharmacistsArr} onEdit={onEdit} />
             </div>
             {showInvitePopup && <InvitePopup  onClose={() => setShowInvitePopup(false)}/>}
