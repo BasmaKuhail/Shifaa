@@ -7,7 +7,7 @@ type ProfileProps = {
 
 export default function Profile({user}:ProfileProps){
     return(
-        <div dir="ltr" className="flex flex-row gap-2 mr-[12px]">
+        <div dir="rtl" className="flex flex-row gap-2 mr-[12px]">
             <div className="relative">
                 <div className="flex flex-col cursor-pointer">
                     <ProfileIcon imageUrl={user.avatar} width={40} isCircle={false}/>

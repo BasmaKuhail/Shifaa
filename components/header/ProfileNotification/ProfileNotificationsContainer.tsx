@@ -34,7 +34,7 @@ export default function ProNotCont({user, bg="white"}:ProNotContProps){
     }, [profileOpened, notificationsOpened]);
 
     return(
-        <div className={`flex flex-row gap-5 items-center justify-between ${bg=="white" ? "bg-white" : "bg-blue-100"}`}>
+        <div className={`flex flex-row gap-5 items-center justify-between ${bg=="white" ? "bg-white" : "bg-blue-70"}`}>
             {(profileOpened || notificationsOpened) && (
                 <div
                     className="fixed inset-0 bg-black/40 z-40"

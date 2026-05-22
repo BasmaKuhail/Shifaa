@@ -33,7 +33,7 @@ export default function MedicineReq(){
     return(
         <div className="flex flex-col gap-10 mt-13 mb-40">
             <p className="font-semibold text-27px">طلبات الدواء</p>
-            <Card title="طلبات الأدوية">
+            <Card title="طلبات الأدوية" scrollable={true}>
                 <div className="w-full flex flex-col gap-5">
                     <div className="w-full flex flex-row items-center justify-between border border-gray-200 rounded-[14px] p-2">
                         {requestsCategory.map((category, index) => (
@@ -42,7 +42,7 @@ export default function MedicineReq(){
                     </div>
                     <div className="flex w-full flex-col px-10">
                         <div className="text-black-500 text-inpt">
-                            <Row data={{customerName: "اسم العميل", medicineName: "اسم الدواء", PhoneNum: "رقم التواصل", date: "تاريخ الطلب", quantity: "الكمية", status: "الحالة"}} />
+                            <Row isFirst={true} data={{customerName: "اسم العميل", medicineName: "اسم الدواء", PhoneNum: "رقم التواصل", date: "تاريخ الطلب", quantity: "الكمية", status: "الحالة"}} />
 
                         </div>
                         {filterResults.map((req) => (

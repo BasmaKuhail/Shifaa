@@ -44,3 +44,29 @@ body {
 html {
   scroll-behavior: smooth;
 }
+
+.custom-x-scrollbar {
+  scrollbar-width: thin; /* Firefox */
+  scrollbar-color: #cbd5e1 transparent;
+  -webkit-overflow-scrolling: touch;
+}
+.custom-y-scrollbar {
+  -webkit-overflow-scrolling: touch;
+}
+/* Horizontal scrollbar only */
+.custom-x-scrollbar::-webkit-scrollbar:horizontal {
+  height: 4px;
+}
+
+.custom-x-scrollbar::-webkit-scrollbar-track:horizontal {
+  background: transparent;
+}
+
+.custom-x-scrollbar::-webkit-scrollbar-thumb:horizontal {
+  background-color: #cbd5e1;
+  border-radius: 9999px;
+}
+
+.custom-x-scrollbar::-webkit-scrollbar-thumb:horizontal:hover {
+  background-color: #94a3b8;
+}

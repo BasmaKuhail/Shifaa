@@ -48,10 +48,19 @@ export default function Invitations() {
                 </div>
                 </div>
             </Card>
-            <Card title="الدعوات المرسلة والحالات" >
+            <Card title="الدعوات المرسلة والحالات" scrollable >
                 <div className="flex w-full flex-col px-10">
                     <div className="text-black-500 text-inpt">
-                        <Row data={{customerName: "اسم الصيدلي", PhoneNum: "رقم التواصل", email: "البريد الإلكتروني", status: "حالة الدعوة", resendStatus:"إعادة إرسال الدعوة"}} />
+                        <Row 
+                            data={{customerName: "اسم الصيدلي", PhoneNum: "رقم التواصل", email: "البريد الإلكتروني", status: "حالة الدعوة", resendStatus:"إعادة إرسال الدعوة"}} 
+                            columnClassNames={{
+                                customerName: "flex-1",
+                                PhoneNum: "flex-1",
+                                email: "flex-[2]",
+                                status: "flex-[2]",
+                                resendStatus: "flex-1"
+                            }}
+                        />
                     </div>
                     {requests.map((req) => (
                         <div className="flex border-t border-gray-200 w-full items-center text-inpt">
@@ -69,6 +78,13 @@ export default function Invitations() {
                                         : 
                                             <Resend className={`${req.resendStatus === "resend" ? "text-black-500 cursor-pointer" : "text-blue-1000"}`} />
                                 }} 
+                                columnClassNames={{
+                                    customerName: "flex-1",
+                                    PhoneNum: "flex-1",
+                                    email: "flex-[2]",
+                                    status: "flex-[2]",
+                                    resendStatus: "flex-1"
+                                }}
                             />
                         </div>
                     ))}

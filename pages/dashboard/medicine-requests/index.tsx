@@ -8,44 +8,44 @@ import Request from "@/public/icons/dashboard/request";
 import Home from "@/public/icons/dashboard/home";
 
 export default function MedicineRequests(){
-            const sideNavArr = [
-            {
-                id:1,
-                icon:Home,
-                label:"الرئيسية",
-                link:"/"
-            },
-            {
-                id: 2,
-                icon: Dash,
-                label: "لوحة التحكم",
-                link: "/dashboard"
-            },
-            {
-                id: 3,
-                icon: Pharm,
-                label: "معلومات الصيدلية",
-                link: "/pharmInfo"
-            },
-            {
-                id: 4,
-                icon: Request,
-                label: "الطلبات",
-                link: "/medicine-requests"
-            },
-            {
-                id: 5,
-                icon: Add,
-                label: "إضافة دواء",
-                link: "/dashboard/add"
-            },
-            {
-                id: 6,
-                icon: Request,
-                label:"الدعوات",
-                link: "/dashboard/invitations"
-            }
-        ];
+    const sideNavArr = [
+    {
+        id:1,
+        icon:Home,
+        label:"الرئيسية",
+        link:"/"
+    },
+    {
+        id: 2,
+        icon: Dash,
+        label: "لوحة التحكم",
+        link: "/dashboard"
+    },
+    {
+        id: 3,
+        icon: Pharm,
+        label: "معلومات الصيدلية",
+        link: "/dashboard/pharmInfo"
+    },
+    {
+        id: 4,
+        icon: Request,
+        label: "الطلبات",
+        link: "/dashboard/medicine-requests"
+    },
+    {
+        id: 5,
+        icon: Add,
+        label: "إضافة دواء",
+        link: "/dashboard/add"
+    },
+    {
+        id: 6,
+        icon: Request,
+        label:"الدعوات",
+        link: "/dashboard/invitations"
+    }
+];
     return(
         <DashboardLayout sideNavArr={sideNavArr}>
             <MedicineReq/>

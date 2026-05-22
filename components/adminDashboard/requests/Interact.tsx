@@ -4,12 +4,13 @@ import { acceptPharmacistApplication, rejectPharmacistApplication } from "@/serv
 import PopupContainer from "@/components/dashboard/PharmacyInfo/PopUpContainer";
 import { useState } from "react";
 import PetrolBtn from "@/components/dashboard/PharmacyInfo/invitePopup/PetrolBtn";
+import { useRouter } from "next/router";
 
 
 export default function Interact({status, id, name}: {status: string, id: number, name: string}) {
     const [showPopup, setShowPopup] = useState(false);
     const [isAccept, setIsAccept] = useState(true);
-    
+    const router = useRouter();
 
     const onClose = () => {
         setShowPopup(false);
@@ -34,6 +35,7 @@ export default function Interact({status, id, name}: {status: string, id: number
                 await acceptPharmacistApplication(id);
                 alert("تم قبول الطلب بنجاح");
                 setShowPopup(false);
+                router.reload()
             } catch (error) {
                 console.error(error);
             }
@@ -46,13 +48,14 @@ export default function Interact({status, id, name}: {status: string, id: number
                 await rejectPharmacistApplication(id);
                 alert("تم رفض الطلب بنجاح");
                 setShowPopup(false);
+                router.reload()
             } catch (error) {
                 console.error(error);
             }
         }
     };
     return(
-        <div className="flex flex-row gap-3">
+        <div className="w-full flex flex-row gap-3 items-center justify-center">
             <div onClick={() => {setIsAccept(prev => true); setShowPopup(true)}}>
                 <Check className={`${status === "pending" ? "text-online cursor-pointer" : "text-black-200"}`}/>
             </div>
