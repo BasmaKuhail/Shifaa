@@ -17,38 +17,58 @@ export default function Table({pharmacistsArr, onEdit=false}: TableProps){
         );
     };
     return(
-        <div className="w-full flex flex-col gap-2">
-            <div className="flex items-center gap-5 p-2">
-                {onEdit &&  <div className="w-6" />}
-                <Row data={{name: "الاسم", contactNum: "رقم التواصل", email: "البريد الالكتروني", address: "العنوان"}} />
-            </div>
-            
-            {pharmacistsArr.map((pharmacist, index) => (
-                <div className={
-                        `flex flex-row items-center justify-between gap-5 
-                        hover:bg-gray-50 
-                        px-2 
-                        py-1
-                        transition 
-                        border-t border-black-200 border-t-1
-                        text-black-500
-                        cursor-pointer
-                        `
-                    }
-                    onClick={() => handleCheck(index)}
-                >
-                    {onEdit && (
-                        <input
-                            type="checkbox"
-                            checked={checkedItems.includes(index)}
-                            onChange={() => handleCheck(index)}
-                            className="w-4 h-4 cursor-pointer"
-                        />
-                    )}
-                    <Row key={index} data={pharmacist} />
+        <div className="w-full overflow-x-auto overscroll-x-contain custom-x-scrollbar">
+            <div className="min-w-[550px] flex flex-col gap-4">
+                <div className="flex items-center gap-5 p-2">
+                    {onEdit &&  <div className="w-6 shrink-0" />}
+                    <Row 
+                        data={{name: "الاسم", contactNum: "رقم التواصل", email: "البريد الالكتروني", address: "العنوان"}}
+                        columnClassNames={{
+                            name: "flex-1",
+                            contactNum: "flex-1",
+                            email: "flex-[2]",
+                            address: "flex-[2]",
+                        }}
+                    />
                 </div>
                 
-            ))}
+                {pharmacistsArr.map((pharmacist, index) => (
+                    <div 
+                    key={pharmacist.email}
+                    className={
+                            `flex flex-row items-center gap-5 
+                            hover:bg-gray-50 
+                            px-2 
+                            py-1
+                            transition 
+                            border-t border-black-200 border-t-1
+                            text-black-500
+                            cursor-pointer
+                            `
+                        }
+                        onClick={() => handleCheck(index)}
+                    >
+                        {onEdit && (
+                            <input
+                                type="checkbox"
+                                checked={checkedItems.includes(index)}
+                                onChange={() => handleCheck(index)}
+                                className="w-4 h-4 shrink-0 cursor-pointer"
+                            />
+                        )}
+                        <Row 
+                            key={index} 
+                            data={pharmacist} 
+                            columnClassNames={{
+                                name: "flex-1",
+                                contactNum: "flex-1",
+                                email: "flex-[2]",
+                                address: "flex-[2]",
+                            }}/>
+                    </div>
+                    
+                ))}
+            </div>
         </div>
     )
 }

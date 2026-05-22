@@ -27,20 +27,19 @@ const pharmacistsArr = [
 
 export default function PharmacistsSec({ pharmacyName }: PharmacistsSecProps) {
     const [showInvitePopup, setShowInvitePopup] = useState(false);
-    const [showEditPopup, setShowEditPopup] = useState(false);
+    const [onEdit, setOnEdit] = useState(false);
     return (
         <Card title={"الصيادلة العاملون في صيدلية " + pharmacyName} actions={
             <div className="flex flex-row items-center gap-5">
                 <Btn text="دعوة صيدلي" icon={invite} onClick={() => {setShowInvitePopup(true)}} />
-                <Btn text="تعديل" icon={edit} onClick={() => {setShowEditPopup(true)}} />
+                <Btn text="تعديل" icon={edit} onClick={() => {setOnEdit(Prev => !Prev)}} />
             </div>
             }
         >
-            <div className="w-full flex flex-col ">
-                <Table pharmacistsArr={pharmacistsArr} onEdit={false} />
+            <div className="w-full flex flex-col overflow-x-auto">
+                <Table pharmacistsArr={pharmacistsArr} onEdit={onEdit} />
             </div>
             {showInvitePopup && <InvitePopup  onClose={() => setShowInvitePopup(false)}/>}
-            {showEditPopup && <EditPopup  onClose={() => setShowEditPopup(false)} pharmacyName={pharmacyName}/>}
         </Card>
     );
 }

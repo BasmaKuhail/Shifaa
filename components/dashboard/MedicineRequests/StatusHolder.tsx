@@ -8,7 +8,7 @@ const StatusHolder = ({status}:{status:string}) => {
     };
     return(
         <div 
-            className={`flex  items-center justify-center p-1 px-5 rounded-[14px] gap-2 ${
+            className={`flex w-fit items-center justify-center p-1 px-5 rounded-[14px] gap-2 ${
                 statusStyles[status] || "bg-gray-100"
             }`}
         >

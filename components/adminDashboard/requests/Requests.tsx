@@ -35,7 +35,7 @@ export default function Requests() {
     return(
         <div className="flex flex-col gap-10 mt-13 mb-40 w-full">
             <p className="font-semibold text-27px">إدارة الدعوات</p>
-            <Card title="طلبات الانضمام كصيدلي">
+            <Card title="طلبات الانضمام كصيدلي" scrollable>
                 <div className="w-full flex flex-col gap-5">
                     <div className="w-full flex flex-row items-center justify-between border border-gray-200 rounded-[14px] p-2">
                         {requestsCategory.map((category, index) => (
