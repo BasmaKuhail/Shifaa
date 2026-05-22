@@ -37,9 +37,10 @@ module.exports = {
             50:"#DFDFDF", //border lighter gray
             10:"#F4F4F4", //notifications bg
           },
-          accepted: '#C4F4D0',
-          pending: '#FFE898',
-          rejected: '#F4C4C4',
+          accepted: '#9CE2A2',
+          pending: '#FFE381',
+          rejected: '#FC9E9E',
+          unread: '#C0CADB',
           textInputCorrect: '#1A71F6',
           textInputWrong: '#FF1F1F',
           online: '#23A149', //green
