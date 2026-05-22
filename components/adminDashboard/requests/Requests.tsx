@@ -8,6 +8,7 @@ export default function Requests() {
     const [requests, setRequests] = useState<{ id: number; name: string; email: string; date: string; licenseNumber: string; status: string; }[]>([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+
     useEffect(()=>{
         pharmacistApplications().then(res => {
             setRequests(res);
@@ -38,12 +39,29 @@ export default function Requests() {
                 <div className="w-full flex flex-col gap-5">
                     <div className="w-full flex flex-row items-center justify-between border border-gray-200 rounded-[14px] p-2">
                         {requestsCategory.map((category, index) => (
-                            <p key={index} className={`px-10 p-2 text-inpt font-semibold text-black-400 cursor-pointer ${selectedCategory.value === category.value ? "bg-blue-100" : ""}`} onClick={() => setSelectedCategory(category)}>{category.text}</p>    
+                            <p key={index} className={`px-10 p-1 text-inpt font-semibold text-black-400 cursor-pointer ${selectedCategory.value === category.value ? "bg-blue-100 rounded-[10px]" : ""}`} onClick={() => setSelectedCategory(category)}>{category.text}</p>    
                         ))}
                     </div>
                     <div className="flex w-full flex-col px-10">
                         <div className="text-black-500 text-inpt">
-                            <Row data={{customerName: "اسم العميل", email: "البريد الإلكتروني", date: "تاريخ الطلب", brief: "رقم الرخصة", status: "الحالة", interact: "التفاعل"}} />
+                            <Row 
+                                isFirst={true} 
+                                data={{
+                                    customerName: "اسم العميل", 
+                                    email: "البريد الإلكتروني", 
+                                    date: "تاريخ الطلب", 
+                                    licenseNumber: "رقم الرخصة", 
+                                    status: "الحالة", 
+                                    interact: "التفاعل"
+                                }} 
+                                columnClassNames={{
+                                    email: "flex-[2]",
+                                    customerName: "flex-1",
+                                    date: "flex-1",
+                                    licenseNumber: "flex-1",
+                                    status: "flex-1",
+                                    interact: "flex-1",
+                                }}/>
                         </div>
                         {loading && <p className="py-6 text-center">جاري التحميل...</p>}
 
@@ -65,6 +83,14 @@ export default function Requests() {
                                             status: <StatusHolder status={req.status} />,
                                             interact: <Interact status={req.status} id={req.id} name={req.name}/>
                                         }}
+                                    columnClassNames={{
+                                        email: "flex-[2]",
+                                        customerName: "flex-1",
+                                        date: "flex-1",
+                                        licenseNumber: "flex-1",
+                                        status: "flex-1",
+                                        interact: "flex-1",
+                                    }}
                                 />
                             </div>
                         ))}

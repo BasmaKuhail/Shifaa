@@ -55,7 +55,7 @@ export default function Interact({status, id, name}: {status: string, id: number
         }
     };
     return(
-        <div className="flex flex-row gap-3">
+        <div className="w-full flex flex-row gap-3 items-center justify-center">
             <div onClick={() => {setIsAccept(prev => true); setShowPopup(true)}}>
                 <Check className={`${status === "pending" ? "text-online cursor-pointer" : "text-black-200"}`}/>
             </div>

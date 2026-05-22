@@ -42,7 +42,7 @@ export default function MedicineReq(){
                     </div>
                     <div className="flex w-full flex-col px-10">
                         <div className="text-black-500 text-inpt">
-                            <Row data={{customerName: "اسم العميل", medicineName: "اسم الدواء", PhoneNum: "رقم التواصل", date: "تاريخ الطلب", quantity: "الكمية", status: "الحالة"}} />
+                            <Row isFirst={true} data={{customerName: "اسم العميل", medicineName: "اسم الدواء", PhoneNum: "رقم التواصل", date: "تاريخ الطلب", quantity: "الكمية", status: "الحالة"}} />
 
                         </div>
                         {filterResults.map((req) => (

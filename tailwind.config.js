@@ -29,6 +29,7 @@ module.exports = {
             50: '#FFFFFF',
           },
           black: {
+            700: "#454545", //text darker black
             600: "#323130", //text black 
             500: "#727272", //text gray
             400: "#737373", //text darker gray
