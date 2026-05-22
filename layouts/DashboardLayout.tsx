@@ -1,22 +1,12 @@
 import SideNav from "@/components/dashboard/SideNav";
 import ProNotCont from "@/components/header/ProfileNotification/ProfileNotificationsContainer";
-import UpArrow from "@/components/home/UpArrow";
 import { UserContext } from "@/contexts/UserContext";
-import { useContext, useEffect, useState } from "react";
+import { useContext} from "react";
 import ProNotContSkeleton from "@/components/header/ProfileNotification/ProNotContSkeleton";
+import MobileNav from "@/components/dashboard/MobileNav";
 
 export default function DashboardLayout({ children, sideNavArr }: { children: React.ReactNode, sideNavArr: {id: number, icon: any, label: string, link: string}[] }) {
-    const [showArrow, setShowArrow] = useState(false);
     const {user, loading} = useContext(UserContext);
-
-    useEffect(() => {
-        const handleScroll = () => {
-          setShowArrow(window.scrollY > 90);
-        };
-    
-        window.addEventListener("scroll", handleScroll);
-        return () => window.removeEventListener("scroll", handleScroll);
-    }, []);
 
     if (loading) {
         return (
@@ -26,18 +16,19 @@ export default function DashboardLayout({ children, sideNavArr }: { children: Re
         );
     }
     return (
-        <div dir="rtl" className="flex flex-row bg-blue-70 h-screen overflow-hidden">
-            {showArrow && <UpArrow />}
-            <div className="w-[25%] h-screen">
+        <div dir="rtl" className="flex flex-col md:flex-row bg-blue-70 h-screen overflow-hidden">
+            <div className="xl:w-[25%] lg:w-[35%] md:w-[40%] hidden md:flex h-screen">
                 <SideNav sideNavArr={sideNavArr}/>
             </div>
-            <div  className="flex flex-col pt-8 pr-20 pl-4 md:pl-8 lg:pl-20 xl:pl-30 w-full overflow-y-auto">
-                <div dir="ltr" className="w-full flex flex-row justify-between items-center">
+            <div className="w-full w-full flex md:hidden">
+                <MobileNav sideNavArr={sideNavArr}/>
+            </div>
+            <div  className="w-full flex flex-col pt-8 w-full overflow-y-auto md:p-10 p-5">
+                <div dir="ltr" className="md:flex hidden w-full flex flex-row justify-between items-center">
                     {user &&<ProNotCont user={user} bg="blue" /> }
                 </div>
                 {children}
             </div>
-            
         </div>
     );
 }

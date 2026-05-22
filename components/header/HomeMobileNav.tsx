@@ -6,6 +6,8 @@ import { useRouter } from "next/router";
 import { useContext } from "react";
 import { UserContext } from "@/contexts/UserContext";
 import ProNotContSkeleton from "./ProfileNotification/ProNotContSkeleton";
+import BtnEmpty from "../home/secondaryHeader/BtnEmpty";
+import GradientBtn from "../home/GradiantBtn";
 type mobileNavProps ={
     isMenuOpened:boolean,
     setIsMenuOpened:(isMenuOpened: boolean) => void
@@ -64,6 +66,8 @@ export default function HomeNav({isMenuOpened, setIsMenuOpened}:mobileNavProps){
                     <p key={item.id} className={`text-btn cursor-pointer hover:underline ${router.pathname === item.link ? "font-bold" : ""} border-b border-b-black-200 pb-3`}><Link href={item.link}>{item.title}</Link></p>
                 ))}
                 {!user && <p className={`text-btn cursor-pointer hover:underline ${router.pathname === "/auth/login" ? "font-bold" : ""} border-b border-b-black-200 pb-3`}><Link href={"/auth/login"}>تسجيل الدخول</Link></p>}
+
+                <div className={`w-full mt-10 flex items-center justify-center ${user && user?.user_type === "pharmacist" ? "block" : "invisible"}`}><GradientBtn w="full" text="لوحة التحكم" onClick={() => {router.push("/dashboard")}} px={10} rounded="30"/></div>
 
             </div>
         </div>
