@@ -8,6 +8,7 @@ import notification from "@/public/icons/profile/notifications.svg"
 import saved from "@/public/icons/profile/saved.svg"
 import settings from "@/public/icons/profile/settings.svg"
 import switchTo from "@/public/icons/profile/switch.svg"
+import createPharm from "@/public/icons/profile/createPharm.svg"
 import ArrowRight from "@/public/icons/profile/arrowRight.svg"
 import { Dispatch } from 'react';
 import { logout as logoutService } from '@/services/auth';
@@ -28,6 +29,7 @@ export default function HeaderDropDown({user, profileOpened, setProfileOpened}:h
         {title: "الإعدادات", icon: settings, opened:false, arrow: ArrowRight, onclick: () => {router.push("/settings")}},
         {title: "الإشعارات", icon: notification, allowed:false, onclick: () => {router.push("/notifications")}},
         {title: "انضمام كصيدلي", icon: switchTo, opened:false, arrow: ArrowRight, onclick: () => {router.push("/switch-to-pharmacist")}},
+        {title: "إنشاء صيدلية", icon: createPharm, opened:false, arrow: ArrowRight, onclick: () => {router.push("/create-pharmacy")}},
         {title: "طلب دواء", icon:medication , opened:false, arrow: ArrowRight, onclick: () => {router.push("/request-medication")}},
         {title: "العناصر المحفوظة", icon: saved, opened:false, arrow: ArrowRight, onclick: () => {router.push("/saved-items")}},
         {
@@ -46,6 +48,8 @@ export default function HeaderDropDown({user, profileOpened, setProfileOpened}:h
             }
         } ,
     ]
+    const pharmaciesArr = dropDownItems.filter(item => !(user.user_type === "pharmacist" && item.title === "انضمام كصيدلي"))
+    const userArr = dropDownItems.filter(item => !(user.user_type === "user" && item.title === "إنشاء صيدلية"))
     return(
         <div dir="rtl" className="bg-white rounded-[12px] py-4 p-3 w-[21.75rem]">
             <div className='flex flex-row justify-between  w-full border-b border-b-black-200 pb-5'>
@@ -62,7 +66,7 @@ export default function HeaderDropDown({user, profileOpened, setProfileOpened}:h
                 </div>
             </div>   
             <div className='flex flex-col gap-2 pt-5'>
-                {dropDownItems.map((item, index) => !( user.user_type === "pharmacist" && item.title === "انضمام كصيدلي") &&
+                {(user.user_type === "pharmacist" ? pharmaciesArr: userArr).map((item, index) =>
                     <div 
                         key={index} 
                         className='flex flex-row justify-between items-center cursor-pointer hover:bg-black-100 p-2 px-6'

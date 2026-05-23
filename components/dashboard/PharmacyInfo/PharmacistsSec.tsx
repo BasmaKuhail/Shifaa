@@ -4,6 +4,8 @@ import edit from "@/public/icons/phcyInfo/edit.svg";
 import Table from "./pharmacistsTable/Table";
 import InvitePopup from "./invitePopup/InvitePopup";
 import { useState } from "react";
+import EditPopup from "./EditPopup/EditPopup";
+import Card from "./CardContainer";
 type PharmacistsSecProps = {
     pharmacyName: string;
 }
@@ -25,22 +27,20 @@ const pharmacistsArr = [
 
 export default function PharmacistsSec({ pharmacyName }: PharmacistsSecProps) {
     const [showInvitePopup, setShowInvitePopup] = useState(false);
+    const [onEdit, setOnEdit] = useState(false);
     return (
-        <div dir="rtl" className="bg-white rounded-[24px] border border-black-200 flex flex-col items-start justify-start gap-5 w-full p-5 px-10">
-            <div className="w-full flex flex-row items-center justify-between">
-                <p className="text-24px font-bold flex flex-row items-center gap-2">
-                    الصيادلة العاملون في صيدلية 
-                    <p className="underline">{pharmacyName}</p>
-                </p>
-                <div className="flex flex-row items-center gap-5">
-                    <Btn text="دعوة صيدلي" icon={invite} onClick={() => {setShowInvitePopup(true)}} />
-                    <Btn text="تعديل" icon={edit} onClick={() => {}} />
-                </div>
+        <Card title={"الصيادلة العاملون في صيدلية " + pharmacyName} actions={
+            <div className="flex flex-row items-center gap-5">
+                <Btn text="دعوة صيدلي" icon={invite} onClick={() => {setShowInvitePopup(true)}} />
+                <Btn text="تعديل" icon={edit} onClick={() => {setOnEdit(Prev => !Prev)}} />
             </div>
-            <div className="w-full flex flex-col ">
-                <Table pharmacistsArr={pharmacistsArr} />
+            }
+            scrollable
+        >
+            <div className="w-full flex flex-col">
+                <Table pharmacistsArr={pharmacistsArr} onEdit={onEdit} />
             </div>
             {showInvitePopup && <InvitePopup  onClose={() => setShowInvitePopup(false)}/>}
-        </div>
+        </Card>
     );
 }

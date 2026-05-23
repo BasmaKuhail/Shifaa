@@ -1,8 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import Input from "../register/input";
 import { UserContext } from "@/contexts/UserContext";
-import { validateInput } from "@/utils/registerValidation";
-import PetrolBtn from "../PharmacyInfo/invitePopup/PetrolBtn";
+import { validateInput } from "@/utils/ValidateInput";
 import Link from "next/link";
 
 import Image from "next/image";
@@ -11,10 +10,13 @@ import { useBreadcrumb } from "@/contexts/BreadcrumbContext"
 
 
 import {switchToPharmasist} from "@/services/auth"
+import PetrolBtn from "../dashboard/PharmacyInfo/invitePopup/PetrolBtn";
+import { useRouter } from "next/router";
 export default function PharmacistForm(){
 
     const [checkBoxChecked, setCheckBoxChecked] = useState(false)
-  
+    
+    const router = useRouter();
     
     const {user, loading} = useContext(UserContext);
     const handlePreviousPage = () => {
@@ -57,8 +59,12 @@ export default function PharmacistForm(){
     try {
         const res = await switchToPharmasist(userInfo.serialNumber);
         console.log(res);
+        alert(res.message || "تم تقديم طلبك بنجاح، سيتم مراجعة طلبك خلال 3-5 أيام عمل");
+        router.push("/");
     } catch (err: any) {
-        console.log(err.response?.data); // 🔥 THIS IS THE TRUTH
+        console.log(err.response?.data);
+        alert(err.response?.data.message || "حدث خطأ غير متوقع");
+
     }
 };
     const { crumbs } = useBreadcrumb()
@@ -77,7 +83,7 @@ export default function PharmacistForm(){
                             inputText={user? userInfo.fullName : ""} 
                             value={userInfo.fullName} 
                             onChange={(value) => setUserInfo({ ...userInfo, fullName: typeof value === 'string' ? value : '' })} 
-                            isTrue={validateInput(userInfo.fullName, 'text')} 
+                            isTrue={validateInput(userInfo.fullName, 'text').isValid} 
                             editable={false}
                         />
                         <Input 
@@ -86,7 +92,7 @@ export default function PharmacistForm(){
                             inputText={user? user.email : ""} 
                             value={userInfo.email} 
                             onChange={(value) => setUserInfo({ ...userInfo, email: typeof value === 'string' ? value : '' })} 
-                            isTrue={validateInput(userInfo.email, 'text')} 
+                            isTrue={validateInput(userInfo.email, 'text').isValid} 
                             editable={false}
                         />
                         <Input 
@@ -95,7 +101,7 @@ export default function PharmacistForm(){
                             inputText=""
                             value={userInfo.IdVerification}
                             onChange={(file) => setUserInfo({ ...userInfo, pharmacyLicense: file as File | null})} 
-                            isTrue={validateInput(userInfo.IdVerification, 'file')}
+                            isTrue={validateInput(userInfo.IdVerification, 'file').isValid}
                         />                        
                         <Input 
                             label="مزاولة المهنة" 
@@ -103,7 +109,7 @@ export default function PharmacistForm(){
                             inputText="" 
                             value={userInfo.pharmacyLicense} 
                             onChange={(file) => setUserInfo({ ...userInfo, pharmacyLicense: file as File | null})} 
-                            isTrue={validateInput(userInfo.pharmacyLicense, 'file')}
+                            isTrue={validateInput(userInfo.pharmacyLicense, 'file').isValid}
                         />
                         <Input 
                             label="صورة شخصية" 
@@ -111,7 +117,7 @@ export default function PharmacistForm(){
                             inputText="" 
                             value={userInfo.profileImage} 
                             onChange={(file) => setUserInfo({ ...userInfo, profileImage: file as File | null })} 
-                            isTrue={validateInput(userInfo.profileImage, 'file')}
+                            isTrue={validateInput(userInfo.profileImage, 'file').isValid}
                         />
                         <Input 
                             label="رقم الرخصة" 
@@ -119,7 +125,7 @@ export default function PharmacistForm(){
                             inputText="ادخل رقم رخصتك كصيدلي" 
                             value={userInfo.serialNumber} 
                             onChange={(value) => setUserInfo({ ...userInfo, serialNumber: typeof value === 'string' ? value : ''})}
-                            isTrue={validateInput(userInfo.serialNumber, 'text')}
+                            isTrue={validateInput(userInfo.serialNumber, 'text').isValid}
                         />
                     </div>
                     <div className="flex items-center gap-2">

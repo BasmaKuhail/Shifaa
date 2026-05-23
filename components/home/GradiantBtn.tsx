@@ -6,15 +6,16 @@ type gradProps = {
     onClick: () => void;
     px:number;
     rounded?:string;
+    w?:string
 }
-export default function GradientBtn({text,image, onClick,px, rounded="30"}:gradProps){
+export default function GradientBtn({text,image, onClick,px, rounded="30", w="fit"}:gradProps){
     return(
         <div
             style={{ borderRadius: `${rounded}px` }}
             className=
             {`flex items-center text-center justify-center
                 h-full
-                w-fit
+                w-${w}
                 py-2
                 px-${px}
                 rounded-${rounded}

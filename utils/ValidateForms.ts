@@ -10,47 +10,27 @@ type LoginData ={
     email:string;
     password: string;
 }
-export const validateConfirmPassword = (password: string, confirmPassword: string): boolean => {
-    return password === confirmPassword;
-}
-export const validateInput = (value: string | File | null, type: 'text' | 'email' | 'password' | 'textarea' | 'file'): boolean => {
-    if (type === 'file'){
-        if (!value || !(value instanceof File)) return false;
-        const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
-        const maxSize = 2 * 1024 * 1024;
 
-        if (!allowedTypes.includes(value.type)) return false;
-        if (value.size > maxSize) return false;
-
-        return true;
-    }
-    if (typeof value !== "string") return false;
-
-    if (type === 'text') {
-        return value.trim() !== ''; 
-    }
-    if (type === 'email') {
-        return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
-    }
-    if (type === 'password') { 
-        return (
-            value.length >= 8 &&
-            /[A-Za-z]/.test(value) &&   
-            /\d/.test(value) &&
-            /[!@#$%^&*(),.?":{}|<>]/.test(value)
-        );
-    }
-    return false;
-}
+//validate register data
 export const validateRegister = (userData: RegisterData) => {
     if (!userData.firstName || !userData.lastName || !userData.email || !userData.password || !userData.confirmPassword) {
         // alert("يرجى ملأ جميع الحقول الفارغة");
         return {errorMsg: "يرجى ملأ جميع الحقول الفارغة", isValid: false}
     }
-
+    if(/\d/.test(userData.firstName) || /\d/.test(userData.lastName)){
+        // alert("الاسم لا يجب أن يحتوي على أرقام");
+        return {errorMsg: "الاسم لا يجب أن يحتوي على أرقام", isValid: false};
+    }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userData.email)) {
         // alert("يرجى إدخال بريد إلكتروني صحيح");
         return {errorMsg: "يرجى إدخال بريد إلكتروني صحيح", isValid: false};
+    }
+    //check if not english used
+    if (!/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(userData.email)) {
+    return {
+        errorMsg: "يرجى إدخال بريد إلكتروني باللغة الإنجليزية فقط",
+        isValid: false
+    };
     }
 
     if (userData.password !== userData.confirmPassword) {
@@ -69,6 +49,7 @@ export const validateRegister = (userData: RegisterData) => {
     return null; // valid
 };
 
+// validate login data
 export const validateLogin = (loginData:LoginData) => {
     if (!loginData.email || !loginData.password) {
         alert("يرجى ملأ جميع الحقول الفارغة");

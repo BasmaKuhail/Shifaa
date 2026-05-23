@@ -24,10 +24,12 @@ module.exports = {
             400: '#5595B1',
             300: '#70A6BD', 
             200: '#99D4EE',
-            100: '#E5F7FF',
+            100: '#E5F7FF', 
+            70: '#EFF8FC' ,
             50: '#FFFFFF',
           },
           black: {
+            700: "#454545", //text darker black
             600: "#323130", //text black 
             500: "#727272", //text gray
             400: "#737373", //text darker gray
@@ -36,10 +38,14 @@ module.exports = {
             50:"#DFDFDF", //border lighter gray
             10:"#F4F4F4", //notifications bg
           },
-            textInputCorrect: '#1A71F6',
-            textInputWrong: '#FF1F1F',
-            online: '#23A149', //green
-            red: "#EA3030", //red
+          accepted: '#9CE2A2',
+          pending: '#FFE381',
+          rejected: '#FC9E9E',
+          unread: '#C0CADB',
+          textInputCorrect: '#1A71F6',
+          textInputWrong: '#FF1F1F',
+          online: '#23A149', //green
+          red: "#EA3030", //red
         },
         fontSize: {
             'xxs': '0.563rem',

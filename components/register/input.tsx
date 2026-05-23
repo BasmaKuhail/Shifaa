@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import addAttatchmentIcon from "@/public/icons/switchToPharmacist/addAttatchment.svg";
 import Image from 'next/image';
+import ErrorMsg from './ErrorMsg';
 type InputProps = {
     label: string;
     type: 'text' | 'email' | 'password' | 'textarea' | 'file';
@@ -8,10 +9,12 @@ type InputProps = {
     value: string | File | null;
     onChange: (value: string | File | null) => void;
     isTrue: boolean;
-    editable?:boolean
+    editable?:boolean;
+    errorMsg?: string;
 }
 
-export default function Input({label, type, inputText, value, onChange, isTrue, editable=true}: InputProps) {
+
+const Input = React.memo(({label, type, inputText, value, onChange, isTrue, editable=true, errorMsg}: InputProps) =>{
     const [passSrc, setPassSrc] = useState<string>('/icons/unshowPass.svg');
     const [inputType, setInputType] = useState<'text' | 'email' | 'password' | 'textarea' | 'file'>(type);
     const togglePasswordVisibility = () => {
@@ -22,9 +25,9 @@ export default function Input({label, type, inputText, value, onChange, isTrue, 
 
 
     return (
-        <div dir="rtl" className="flex flex-col gap-2">
+        <div dir="rtl" className="flex flex-col gap-1">
             <label className="text-sm font-bold text-right">{label}</label>
-            <div className="relative">
+            <div className="relative mb-5">
                 {(type == 'textarea') ? (
                     <textarea 
                         rows={10}
@@ -79,13 +82,13 @@ export default function Input({label, type, inputText, value, onChange, isTrue, 
                         value={typeof value === 'string' ? value : ''}
                         placeholder={inputText}
                         dir="auto"
-                        
-                        onCopy={(e) => type === 'password' && e.preventDefault()}
-                        onPaste={(e) => type === 'password' && e.preventDefault()}
-                        onCut={(e) => type === 'password' && e.preventDefault()}
-                        onContextMenu={(e) => type === 'password' && e.preventDefault()}
-                        onDrop={(e) => type === 'password' && e.preventDefault()}
-                        disabled={!editable?true : false}
+                        maxLength={type === 'password' ? 15 : undefined}
+                        onCopy={(e) => type === 'password' && passSrc=="/icons/unshowPass.svg" && e.preventDefault()}
+                        onPaste={(e) => type === 'password' && passSrc=="/icons/unshowPass.svg" && e.preventDefault()}
+                        onContextMenu={(e) => type === 'password' && passSrc=="/icons/unshowPass.svg" && e.preventDefault()}
+                        onCut={undefined}
+                        // onDrop={(e) => type === 'password' && passSrc=="/icons/unshowPass.svg" && e.preventDefault()}
+                        disabled={!editable}
                         className={`border rounded-inpt p-2 w-full text-right focus:outline-none text-inpt h-[52px] md:h-[45px]
                             ${
                             value
@@ -104,7 +107,14 @@ export default function Input({label, type, inputText, value, onChange, isTrue, 
                         className="absolute left-4 top-1/2 transform -translate-y-1/2 cursor-pointer"
                         onClick={togglePasswordVisibility} />
                 }
+      
             </div>
+                { type === 'password' && !errorMsg && label !== "تأكيد كلمة المرور" ? 
+                     <ErrorMsg text= "استخدم 8 أحرف انجليزية أو أكثر مع مزيج من الأرقام والرموز" isRed={false}/> 
+                    : label !== "تأكيد كلمة المرور" && <ErrorMsg text= {errorMsg || "\u00A0"} isRed={true}/> 
+                }
+
         </div>
     )
-}
+});
+export default Input;

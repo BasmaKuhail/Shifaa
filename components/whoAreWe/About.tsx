@@ -15,7 +15,9 @@ import rightBubble from "@/public/images/About/rightBubble.png"
 import GradientBtn from "../home/GradiantBtn";
 import FAQ from "./FAQs/FAQ";
 import Request from "./Request";
+import { useRouter } from "next/router";
 export default function WhoAreWe(){
+    const router = useRouter()
     return(
         <div className='w-full flex flex-col overflow-x-hidden '>
             <div className="bg-blue-100 relative inline-block ">
@@ -66,7 +68,7 @@ export default function WhoAreWe(){
                             </div>
                         </div>
                         <p className="text-center text-btn font-[500] w-full lg:w-[50%]">لا تدع البحث عن الدواء يستنزف وقتك وطاقتك. ابدأ بحثك الآن لتجد أقرب صيدلية توفر الدواء الذي تحتاجه بضغطة زر واحدة.</p>
-                        <div className="h-[45px] w-full flex flex-row items-center justify-center"><GradientBtn text="ابحث الان" onClick={() => {}} px={10} rounded="30"/></div>
+                        <div className="h-[45px] w-full flex flex-row items-center justify-center"><GradientBtn text="ابحث الان" onClick={() => {router.push("/#search"); console.log("clicked")}} px={10} rounded="30"/></div>
                     </div>
                     <div className="flex flex-col items-center justify-center mt-20 lg:mt-30 gap-7 w-full">
                         <div className="flex flex-col gap-1 w-full items-center">
