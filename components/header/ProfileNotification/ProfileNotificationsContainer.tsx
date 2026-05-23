@@ -34,7 +34,7 @@ export default function ProNotCont({user, bg="white"}:ProNotContProps){
     }, [profileOpened, notificationsOpened]);
 
     return(
-        <div className={`flex flex-row gap-5 items-center justify-between ${bg=="white" ? "bg-white" : "bg-blue-70"}`}>
+        <div dir="rtl" className={`flex flex-row gap-3 items-center justify-between ${bg=="white" ? "bg-white" : "bg-blue-70"}`}>
             {(profileOpened || notificationsOpened) && (
                 <div
                     className="fixed inset-0 bg-black/40 z-40"
@@ -43,7 +43,7 @@ export default function ProNotCont({user, bg="white"}:ProNotContProps){
             )}
                 {/* notifications */}
                 <div className="relative" onClick={() => setNotificationsOpened(true)}>
-                    <IconHolder icon={notification} isNotification={true} width={24} height={24} notiCount={notifications.length}/>
+                    <IconHolder icon={notification} isNotification={true} width={24} height={24} notiCount={notifications.length} />
                     <div className="absolute top-full left-0 z-50">
                         {/* {notificationsOpened && <NotificationsDropDown notifications={notifications}/>} */}
                     </div>
@@ -54,7 +54,7 @@ export default function ProNotCont({user, bg="white"}:ProNotContProps){
                 <div className="w-[1px] h-[35px] bg-black-200"></div>
 
                 {/* profile */}
-                <div className="relative" onClick={() => setProfileOpened(true)}>
+                <div className="relative cursor-pointer" onClick={() => setProfileOpened(true)}>
                     <Profile user={user} />
                     <div className="absolute top-full left-0 z-50">
                         {profileOpened && <HeaderDeopDown user={user} profileOpened={profileOpened} setProfileOpened={setProfileOpened}/>}
