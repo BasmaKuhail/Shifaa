@@ -24,7 +24,7 @@ export default function Item ({logo, text}:itemProps){
         <motion.div
             variants={item}
             dir="rtl"
-            className="bg-white rounded-full items-center flex flex-row gap-3 p-3 w-full lg:w-[30%] mb-5 lg:mb-0 "
+            className="bg-white rounded-[32px] flex flex-row items-center gap-3 p-3 w-full h-full"
         >
             <Icon icon={logo} width={30}/>
             <p className="w-[85%] text-start font-[500] lg:text-btn md:text-btn text-12px">{text}</p>
