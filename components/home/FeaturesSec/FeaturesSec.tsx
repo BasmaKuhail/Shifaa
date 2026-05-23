@@ -17,7 +17,7 @@ const container = {
 };
 
 export default function Features ({featuresArr}:featuresProp){
-    return(<div dir="rtl" className="flex flex-col gap-2 items-center text-center">
+    return(<div dir="rtl" className="flex flex-col gap-2 items-center text-center h-full">
         <div className="flex justify-between items-center justify-center border border-blue-900 rounded-full w-[13rem]">
             <Title title="مميزات المنصة" bgColor="blue"/>
         </div>
@@ -27,7 +27,7 @@ export default function Features ({featuresArr}:featuresProp){
             initial="hidden"
             whileInView="show"
             viewport={{ once: true }}
-            className="flex flex-col lg:flex-row md:flex-col justify-between items-center"
+            className="grid grid-cols-1 lg:grid-cols-3 gap-5 w-full items-stretch"
             >
                 {featuresArr.map((item, index)=><Item key={index} logo={item.logo} text={item.text}/>)}
             </motion.div>

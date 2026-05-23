@@ -25,13 +25,15 @@ import SecHeadSkel from "@/components/Skeleton/SubHeaderSkeleton";
             title: "الصيدليات",
             link: "/pharmacies",
             bold: false,
-        },{
+        },
+        // {
+        //     id: 4,
+        //     title: "مدونة التوعية الصحية",
+        //     link: "/blog",
+        //     bold: false,
+        // },
+        {
             id: 4,
-            title: "مدونة التوعية الصحية",
-            link: "/blog",
-            bold: false,
-        },{
-            id: 5,
             title: "تواصل معنا",
             link: "/#contact",
             bold: false,
