@@ -50,6 +50,15 @@ const headerItems = [
 export default function HomeNav({isMenuOpened, setIsMenuOpened}:mobileNavProps){
     const {user, loading} = useContext(UserContext);
     const router = useRouter();
+    const handleBtnRedirect = () => {
+        if(user?.user_type === "user"){
+            router.push("/request-medicen")
+        }else if (user?.user_type === "pharmacist"){
+            router.push("/dashboard")
+        }else if (user?.user_type === "admin"){
+            router.push("/admin-dashboard")
+        }
+    }
     return(
         <div className="flex flex-col  p-6 rounded-r-[14px] gap-8">
             <div className="w-fit" onClick={() => setIsMenuOpened(!isMenuOpened)}>
@@ -67,7 +76,17 @@ export default function HomeNav({isMenuOpened, setIsMenuOpened}:mobileNavProps){
                 ))}
                 {!user && <p className={`text-btn cursor-pointer hover:underline ${router.pathname === "/auth/login" ? "font-bold" : ""} border-b border-b-black-200 pb-3`}><Link href={"/auth/login"}>تسجيل الدخول</Link></p>}
 
-                <div className={`w-full mt-10 flex items-center justify-center ${user && user?.user_type === "pharmacist" ? "block" : "invisible"}`}><GradientBtn w="full" text="لوحة التحكم" onClick={() => {router.push("/dashboard")}} px={10} rounded="30"/></div>
+                <div 
+                    className={`w-full mt-10 flex items-center justify-center `}
+                >
+                    <GradientBtn 
+                        w="full" 
+                        text={user && (user?.user_type === "pharmacist" || user?.user_type === "admin") ? "لوحة التحكم" :"طلب دواء"}
+                        onClick={() => {router.push("/dashboard")}} 
+                        px={10} 
+                        rounded="30"
+                    />
+                </div>
 
             </div>
         </div>
