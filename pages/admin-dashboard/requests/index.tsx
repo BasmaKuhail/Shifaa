@@ -20,30 +20,30 @@ export default function RequestsPage() {
                 label: "لوحة التحكم",
                 link: "/admin-dashboard"
             },
-            {
-                id: 3,
-                icon: Pharm,
-                label: "معلومات الصيدلية",
-                link: "/pharmInfo"
-            },
+            // {
+            //     id: 3,
+            //     icon: Pharm,
+            //     label: "معلومات الصيدلية",
+            //     link: "/pharmInfo"
+            // },
             {
                 id: 4,
                 icon: Request,
                 label: "الطلبات",
                 link: "/admin-dashboard/requests"
             },
-            {
-                id: 5,
-                icon: Add,
-                label: "إضافة دواء",
-                link: "/dashboard/add"
-            },
-            {
-                id:6,
-                icon: Request,
-                label:"الدعوات",
-                link: "/invitations"
-            }
+            // {
+            //     id: 5,
+            //     icon: Add,
+            //     label: "إضافة دواء",
+            //     link: "/dashboard/add"
+            // },
+            // {
+            //     id:6,
+            //     icon: Request,
+            //     label:"الدعوات",
+            //     link: "/invitations"
+            // }
         ];
     return(
         <DashboardLayout sideNavArr={sideNavArr}>
