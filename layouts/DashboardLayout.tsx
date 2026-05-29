@@ -17,15 +17,15 @@ export default function DashboardLayout({ children, sideNavArr }: { children: Re
         );
     }
     return (
-        <div dir="rtl" className="flex flex-col md:flex-row bg-blue-70 h-screen overflow-hidden">
-            <div className="xl:w-[25%] lg:w-[35%] md:w-[40%] hidden md:flex h-screen">
+        <div dir="rtl" className="flex flex-col lg:flex-row bg-blue-70 h-screen overflow-hidden">
+            <div className="xl:w-[25%] lg:w-[35%] hidden lg:flex h-screen">
                 <SideNav sideNavArr={sideNavArr}/>
             </div>
-            <div className="w-full w-full flex md:hidden">
+            <div className="w-full flex lg:hidden">
                 <MobileNav sideNavArr={sideNavArr}/>
             </div>
             <div  className="w-full flex flex-col pt-8 w-full overflow-y-auto md:p-10 p-5">
-                <div dir="ltr" className="md:flex hidden w-full flex flex-row justify-between items-center">
+                <div dir="ltr" className="lg:flex hidden w-full flex flex-row justify-between items-center">
                     {user && <ProNotCont user={user} bg="blue" /> }
                 </div>
                 {children}
