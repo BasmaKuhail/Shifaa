@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://api.myshifaa.com/api/v1",
+  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",

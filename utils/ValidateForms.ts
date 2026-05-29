@@ -1,29 +1,41 @@
-type RegisterData = {
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-    confirmPassword: string;
-};
+import ErrorMsg from "@/components/register/ErrorMsg";
+import  {RegisterData} from "@/types/RegisterFormData"
+import { error } from "console";
 
 type LoginData ={
     email:string;
     password: string;
 }
+type ValidationResult = {
+  errorMsg: string;
+  isValid: false;
+};
 
 //validate register data
-export const validateRegister = (userData: RegisterData) => {
-    if (!userData.firstName || !userData.lastName || !userData.email || !userData.password || !userData.confirmPassword) {
-        // alert("يرجى ملأ جميع الحقول الفارغة");
-        return {errorMsg: "يرجى ملأ جميع الحقول الفارغة", isValid: false}
+export const validateRegister = (userData: RegisterData): ValidationResult | null => {
+    if (
+        !userData.firstName || 
+        !userData.lastName || 
+        !userData.email || 
+        !userData.password || 
+        !userData.confirmPassword
+    ) {
+        return {
+            errorMsg: "يرجى ملأ جميع الحقول الفارغة", 
+            isValid: false
+        }
     }
     if(/\d/.test(userData.firstName) || /\d/.test(userData.lastName)){
-        // alert("الاسم لا يجب أن يحتوي على أرقام");
-        return {errorMsg: "الاسم لا يجب أن يحتوي على أرقام", isValid: false};
+        return {
+            errorMsg: "الاسم لا يجب أن يحتوي على أرقام", 
+            isValid: false
+        };
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(userData.email)) {
-        // alert("يرجى إدخال بريد إلكتروني صحيح");
-        return {errorMsg: "يرجى إدخال بريد إلكتروني صحيح", isValid: false};
+        return {
+            errorMsg: "يرجى إدخال بريد إلكتروني صحيح", 
+            isValid: false
+        };
     }
     //check if not english used
     if (!/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/.test(userData.email)) {
@@ -34,7 +46,10 @@ export const validateRegister = (userData: RegisterData) => {
     }
 
     if (userData.password !== userData.confirmPassword) {
-        return {errorMsg: "كلمتا المرور غير متطابقتين", isValid: false};
+        return {
+            errorMsg: "كلمتا المرور غير متطابقتين", 
+            isValid: false
+        };
     }
 
     if (
@@ -43,21 +58,29 @@ export const validateRegister = (userData: RegisterData) => {
         !/\d/.test(userData.password) ||
         !/[!@#$%^&*(),.?":{}|<>]/.test(userData.password)
     ) {
-        return {errorMsg: "كلمة المرور يجب أن تكون 8 أحرف انجليزية أو أكثر وتحتوي على مزيج من الأحرف والأرقام والرموز", isValid: false};
+        return {
+            errorMsg: "كلمة المرور يجب أن تكون 8 أحرف انجليزية أو أكثر وتحتوي على مزيج من الأحرف والأرقام والرموز", 
+            isValid: false
+        };
     }
 
     return null; // valid
 };
 
 // validate login data
-export const validateLogin = (loginData:LoginData) => {
+export const validateLogin = (loginData:LoginData) : ValidationResult | null => {
     if (!loginData.email || !loginData.password) {
-        alert("يرجى ملأ جميع الحقول الفارغة");
-        return "يرجى ملأ جميع الحقول الفارغة";
+        return {
+            errorMsg:"يرجى ملأ جميع الحقول الفارغة",
+            isValid:false
+        };
     }
 
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(loginData.email)) {
-        alert("يرجى إدخال بريد إلكتروني صحيح");
-        return {errorMsg: "يرجى إدخال بريد إلكتروني صحيح", isValid: false};
+        return {
+            errorMsg: "يرجى إدخال بريد إلكتروني صحيح",
+            isValid: false
+        };
     }
+    return null
 }

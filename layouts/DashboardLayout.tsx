@@ -4,8 +4,9 @@ import { UserContext } from "@/contexts/UserContext";
 import { useContext} from "react";
 import ProNotContSkeleton from "@/components/header/ProfileNotification/ProNotContSkeleton";
 import MobileNav from "@/components/dashboard/MobileNav";
+import {NavItem} from "@/types/NavItemType"
 
-export default function DashboardLayout({ children, sideNavArr }: { children: React.ReactNode, sideNavArr: {id: number, icon: any, label: string, link: string}[] }) {
+export default function DashboardLayout({ children, sideNavArr }: { children: React.ReactNode, sideNavArr: NavItem[] }) {
     const {user, loading} = useContext(UserContext);
 
     if (loading) {
@@ -25,7 +26,7 @@ export default function DashboardLayout({ children, sideNavArr }: { children: Re
             </div>
             <div  className="w-full flex flex-col pt-8 w-full overflow-y-auto md:p-10 p-5">
                 <div dir="ltr" className="md:flex hidden w-full flex flex-row justify-between items-center">
-                    {user &&<ProNotCont user={user} bg="blue" /> }
+                    {user && <ProNotCont user={user} bg="blue" /> }
                 </div>
                 {children}
             </div>

@@ -49,7 +49,7 @@ export default function SecondaryHeader(){
         } else if (user && user?.user_type === "admin"){
             return <BtnEmpty onClick={() => {router.push("/admin-dashboard")}}>لوحة التحكم</BtnEmpty>
         }else{
-            return
+            return <div className="px-20"></div>
         }
     }
     const router = useRouter();
