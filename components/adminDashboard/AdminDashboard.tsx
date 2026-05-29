@@ -15,18 +15,21 @@ export default function AdminDashboard() {
             id:1,
             title: "كل الأدوية",
             icon: medcin,
+            iconWidth:50,
             number:265
         },
         {
             id:2,
             title: "كل الطلبات",
             icon: comment,
+            iconWidth:50,
             number:265
         },
         {
             id:3,
             title: "أخر تحديث",
             icon: updates,
+            iconWidth:50,
             date:"19-11-2026"
         },
       
@@ -35,18 +38,18 @@ export default function AdminDashboard() {
         <div className="flex flex-col gap-10 mt-13 mb-40 w-full">
             <p className="font-semibold text-27px">مرحباً {user?.firstName} 👋🏼</p>
             <Card>
-                <div className="flex flex-col md:flex-row w-full gap-4 items-center justify-between">
+                <div className="flex flex-col xl:flex-row w-full gap-4 items-center justify-between">
                     {headItems.map((item, index)=> (
                         <div
                             key={item.id}
-                            className={`flex w-full pb-4 md:w-auto md:justify-center md:p-2 ${
+                            className={`flex w-full pb-4 xl:w-auto xl:justify-center xl:p-2 ${
                                 index !== headItems.length - 1
-                                    ? "border-b border-black-50 md:border-b-0"
+                                    ? "border-b border-black-50 xl:border-b-0"
                                     : ""
                             } ${
                                 index !== 0
-                                    ? "md:border-r md:border-black-50 md:pr-20"
-                                    : "md:pl-20"
+                                    ? "xl:border-r xl:border-black-50 xl:pr-20"
+                                    : "xl:pl-20"
                             }`}
                         >
                             <Item item={item}/>
@@ -54,6 +57,18 @@ export default function AdminDashboard() {
                     ))}
                 </div>
             </Card>
+            <div className="flex flex-row items-center w-full gap-10">
+                <Card>
+                    <div>
+                        
+                    </div>
+                </Card>      
+                <Card>
+                    <div>
+                        
+                    </div>
+                </Card>
+            </div>
         </div>
     )
 }
