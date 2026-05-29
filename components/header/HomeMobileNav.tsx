@@ -82,7 +82,7 @@ export default function HomeNav({isMenuOpened, setIsMenuOpened}:mobileNavProps){
                     <GradientBtn 
                         w="full" 
                         text={user && (user?.user_type === "pharmacist" || user?.user_type === "admin") ? "لوحة التحكم" :"طلب دواء"}
-                        onClick={() => {router.push("/dashboard")}} 
+                        onClick={handleBtnRedirect} 
                         px={10} 
                         rounded="30"
                     />

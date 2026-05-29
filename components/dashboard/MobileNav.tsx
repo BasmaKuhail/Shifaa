@@ -13,7 +13,7 @@ export default function MobileNav({sideNavArr}: {sideNavArr: {id: number, icon: 
     return(
         <div 
             dir="rtl" 
-            className="w-full flex flex-row md:hidden w-full justify-between items-center p-5">
+            className="w-full flex flex-row lg:hidden w-full justify-between items-center p-5">
             <Image src={logo} alt="Logo" width={106} />
             <div className="flex flex-row gap-4 items-center">
                 <IconHolder icon={notification} width={25} height={25} isNotification={true} notiCount={3} bg="white"/>

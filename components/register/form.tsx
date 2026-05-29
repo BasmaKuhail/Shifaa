@@ -9,11 +9,17 @@ import ButtonEmpty from "./ButtonEmpty";
 
 import Link from "next/link";
 
-import {register, login} from "@/services/auth";
-import { validateRegister, validateLogin } from "@/utils/ValidateForms"
 import { validateInput, validateConfirmPassword} from "@/utils/ValidateInput";
+import { useAuthForm } from "@/hooks/useAuthForm";
 
 export default function Form({ isRegister }: { isRegister: boolean }) {
+    const {
+        formData,
+        errorMsg,
+        isSubmitting,
+        updateField,
+        submit,
+    } = useAuthForm(isRegister);
 
     const router = useRouter();
 
@@ -25,75 +31,6 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
         confirmPassword: { value: '', isTrueData: false, errorMsg: '' }
     });
 
-    const handleSubmit = async () => {
-        try {
-            let response;
-
-            if (isRegister) {
-                response = await register({
-                    first_name: userInfo.firstName.value,
-                    last_name: userInfo.lastName.value,
-                    email: userInfo.email.value,
-                    password: userInfo.password.value,
-                    password_confirmation: userInfo.confirmPassword.value,
-                });
-            } else {
-                response = await login({
-                    email: userInfo.email.value,
-                    password: userInfo.password.value,
-                });
-            }
-
-            console.log("Success:", response);
-
-            // Save token
-            const token = response.data.token;
-            const user = response.data.user;
-
-            localStorage.setItem("token", token);
-            localStorage.setItem("user", JSON.stringify(user));
-            
-            router.push("/");
-
-        } catch (error: any) {
-
-            if (error.response?.status === 422 || error.response?.status === 401) {
-                alert(error.response.data.message);
-                console.log("Validation Errors:", error.response.data.errors);
-            } else if (error.response?.status === 500) {
-                alert("حدث خطأ في الخادم، حاول مرة أخرى");
-                console.log("Validation Errors:", error.response.data.errors);
-            } else {
-                alert("حدث خطأ غير متوقع");
-            }
-            console.log("Error:", error.response?.data);
-        }
-    };
-    
-    
-    const submitOnClick = () => {
-        // Handle form submission logic here
-        if(isRegister){
-            const errorMessage = validateRegister({
-                firstName: userInfo.firstName.value,
-                lastName: userInfo.lastName.value,
-                email: userInfo.email.value,
-                password: userInfo.password.value,
-                confirmPassword: userInfo.confirmPassword.value
-            });
-            if (errorMessage) {
-                alert(errorMessage.errorMsg);
-                return false;
-            }
-        }else{
-            const loginErrorMsg = validateLogin({email:userInfo.email.value, password:userInfo.password.value});
-            if (loginErrorMsg) {
-                return false;
-            }
-        }
-        console.log('Form submitted with user info:', userInfo);
-        return true;
-    }
 
     const inputOnChange = useCallback((field: keyof typeof userInfo, value: string) => {
         const validationType =
@@ -129,8 +66,8 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
                             label="الاسم الأول" 
                             type="text" 
                             inputText="الاسم الأول" 
-                            value={userInfo.firstName.value} 
-                            onChange={(value) => inputOnChange('firstName', value as string)} 
+                            value={formData.firstName} 
+                            onChange={(value) => {inputOnChange('firstName', value as string); updateField('firstName', value as string)}} 
                             isTrue={userInfo.firstName.isTrueData} 
                             errorMsg={userInfo.firstName.value ? userInfo.firstName.errorMsg : ""}
                         />
@@ -139,8 +76,8 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
                             label="الاسم الأخير" 
                             type="text" 
                             inputText="الاسم الأخير" 
-                            value={userInfo.lastName.value} 
-                            onChange={(value) => inputOnChange('lastName', value as string)} 
+                            value={formData.lastName} 
+                            onChange={(value) => {updateField('lastName', value as string); inputOnChange('lastName', value as string)}} 
                             isTrue={userInfo.lastName.isTrueData} 
                             errorMsg={userInfo.lastName.value ? userInfo.lastName.errorMsg : ""}
                         />
@@ -151,8 +88,8 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
                     label="البريد الالكتروني" 
                     type="email" 
                     inputText="youremail@domain.com" 
-                    value={userInfo.email.value} 
-                    onChange={(value) => inputOnChange('email', value as string)} 
+                    value={formData.email} 
+                    onChange={(value) => {updateField('email', value as string); inputOnChange('email', value as string)}} 
                     isTrue={userInfo.email.isTrueData} 
                     errorMsg={userInfo.email.value ? userInfo.email.errorMsg : ""}
                 />
@@ -163,8 +100,8 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
                         label="كلمة المرور" 
                         type="password" 
                         inputText="كلمة المرور" 
-                        value={userInfo.password.value} 
-                        onChange={(value) => inputOnChange('password', value as string)} 
+                        value={formData.password} 
+                        onChange={(value) => {updateField('password', value as string); inputOnChange('password', value as string)}} 
                         isTrue={userInfo.password.isTrueData} 
                         errorMsg={userInfo.password.value ? userInfo.password.errorMsg : ""}
                     />
@@ -173,8 +110,8 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
                             label="تأكيد كلمة المرور" 
                             type="password" 
                             inputText="تأكيد كلمة المرور" 
-                            value={userInfo.confirmPassword.value} 
-                            onChange={(value) => inputOnChange('confirmPassword', value as string)} 
+                            value={formData.confirmPassword} 
+                            onChange={(value) => {updateField('confirmPassword', value as string); inputOnChange('confirmPassword', value as string)}} 
                             isTrue={userInfo.confirmPassword.isTrueData && validateConfirmPassword(userInfo.password.value, userInfo.confirmPassword.value)}
                             errorMsg={userInfo.confirmPassword.value ? validateInput(userInfo.confirmPassword.value, 'password').errorMsg ? "الكلمة يجب أن تطابق كلمة المرور" : "" : ""}
                         />
@@ -183,7 +120,7 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
             </div>
             <div className="flex flex-col items-center w-full gap-4">
                 <div className="w-full md:w-[70%] flex flex-col items-center gap-4 mt-2">
-                    <ButtonFull text={isRegister ? 'انشاء حساب' : 'تسجيل دخول'} onClick={() => { if (submitOnClick()) {handleSubmit();}}} />
+                    <ButtonFull text={isRegister ? 'انشاء حساب' : 'تسجيل دخول'} onClick={submit} />
                     {/* <GoogleBtn text={isRegister ? "التسجيل باستخدام جوجل" : "المتابعة باستخدام جوجل"}/> */}
                     {!isRegister && <>
                         <div className="w-full flex items-center gap-3 mt-4"> 

@@ -43,6 +43,15 @@ import SecHeadSkel from "@/components/Skeleton/SubHeaderSkeleton";
 export default function SecondaryHeader(){
     const {user, loading} = useContext(UserContext);
     
+    const dashboardBtn = () => {
+        if (user && user?.user_type === "pharmacist"){
+            return <BtnEmpty onClick={() => {router.push("/dashboard")}}>لوحة التحكم</BtnEmpty>
+        } else if (user && user?.user_type === "admin"){
+            return <BtnEmpty onClick={() => {router.push("/admin-dashboard")}}>لوحة التحكم</BtnEmpty>
+        }else{
+            return <div className="px-20"></div>
+        }
+    }
     const router = useRouter();
     if(loading) {
         return <SecHeadSkel arrLength={headerItems.length} includeBtn={true}/>
@@ -56,7 +65,7 @@ export default function SecondaryHeader(){
                     <p key={item.id} className={`text-btn cursor-pointer hover:underline text-center ${router.pathname === item.link ? "font-bold" : ""}`}><Link href={item.link}>{item.title}</Link></p>
                 ))}
             </div>
-            <div className={`${user && user?.user_type === "pharmacist" ? "block" : "invisible"}`}><BtnEmpty onClick={() => {router.push("/dashboard")}}>لوحة التحكم</BtnEmpty></div>
+           {dashboardBtn()}
         </div>
     )
 }}

@@ -27,11 +27,11 @@ export default function HeaderDropDown({user, profileOpened, setProfileOpened}:h
     const dropDownItems =[
         {title: "حسابي", icon: profile, opened:true, arrow: ArrowRight, onclick: () => {router.push("/editProfile")}},
         {title: "الإعدادات", icon: settings, opened:false, arrow: ArrowRight, onclick: () => {router.push("/settings")}},
-        {title: "الإشعارات", icon: notification, allowed:false, onclick: () => {router.push("/notifications")}},
+        // {title: "الإشعارات", icon: notification, allowed:false, onclick: () => {router.push("/notifications")}},
         {title: "انضمام كصيدلي", icon: switchTo, opened:false, arrow: ArrowRight, onclick: () => {router.push("/switch-to-pharmacist")}},
         {title: "إنشاء صيدلية", icon: createPharm, opened:false, arrow: ArrowRight, onclick: () => {router.push("/create-pharmacy")}},
         {title: "طلب دواء", icon:medication , opened:false, arrow: ArrowRight, onclick: () => {router.push("/request-medication")}},
-        {title: "العناصر المحفوظة", icon: saved, opened:false, arrow: ArrowRight, onclick: () => {router.push("/saved-items")}},
+        // {title: "العناصر المحفوظة", icon: saved, opened:false, arrow: ArrowRight, onclick: () => {router.push("/saved-items")}},
         {
             title: "تسجيل خروج", 
             icon:logout , 
@@ -77,7 +77,7 @@ export default function HeaderDropDown({user, profileOpened, setProfileOpened}:h
                             <p className='font-[500] text-sm'>{item.title}</p>
                         </div>
                         {item.arrow && <Image className="scale-x-[-1]" src={item.arrow} alt="arrow"/>}
-                        {item.allowed == true || item.allowed == false && <p className='text-12px text-black-400'>{(item.allowed) ? "مُفعَل" : "مكتوم"}</p>}
+                        {/* {item.allowed == true || item.allowed == false && <p className='text-12px text-black-400'>{(item.allowed) ? "مُفعَل" : "مكتوم"}</p>} */}
                     </div>
                 )} 
                      

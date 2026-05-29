@@ -60,6 +60,7 @@ module.exports = {
             'title': '2.25rem', //36px
             'btn': "1.125rem", //18px
             '47px': "2.9375rem", //47px
+            '64px': "4rem",
             "21px": "1.3125rem", //21px
             "27px":"1.688rem", //title mobile
         },

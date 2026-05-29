@@ -8,7 +8,7 @@ export default function Card(
         scrollable = false,
     }: {
         children: ReactNode;
-        title: string;
+        title?: string;
         actions?: ReactNode;
         scrollable?: boolean;
     } ) {
