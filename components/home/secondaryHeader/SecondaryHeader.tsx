@@ -6,39 +6,7 @@ import { useContext, useState } from "react";
 import { useRouter } from "next/router";
 import { UserContext } from "@/contexts/UserContext";
 import SecHeadSkel from "@/components/Skeleton/SubHeaderSkeleton";
-
-    const headerItems = [
-        {
-            id: 1,
-            title: "الصفحة الرئيسية",
-            link: "/",
-            bold: true,
-        },
-        {
-            id: 2,
-            title: "من نحن",
-            link: "/whoAreWe",
-            bold: false,
-        },
-        {
-            id: 3,
-            title: "الصيدليات",
-            link: "/pharmacies",
-            bold: false,
-        },
-        // {
-        //     id: 4,
-        //     title: "مدونة التوعية الصحية",
-        //     link: "/blog",
-        //     bold: false,
-        // },
-        {
-            id: 4,
-            title: "تواصل معنا",
-            link: "/#contact",
-            bold: false,
-        }
-    ]
+import { headerItems } from "@/config/navigations";
 
 export default function SecondaryHeader(){
     const {user, loading} = useContext(UserContext);

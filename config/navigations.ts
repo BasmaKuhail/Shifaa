@@ -4,6 +4,44 @@ import Pharm from "@/public/icons/dashboard/pharmacy";
 import Request from "@/public/icons/dashboard/request";
 import Home from "@/public/icons/dashboard/home";
 
+export const headerItems = [
+    {
+        id: 1,
+        title: "الصفحة الرئيسية",
+        link: "/",
+        bold: true,
+    },
+    {
+        id: 2,
+        title: "من نحن",
+        link: "/whoAreWe",
+        bold: false,
+    },
+    {
+        id: 3,
+        title: "الصيدليات",
+        link: "/pharmacies",
+        bold: false,
+    },
+    // {
+    //     id: 4,
+    //     title: "مدونة التوعية الصحية",
+    //     link: "/blog",
+    //     bold: false,
+    // },
+    {
+        id: 5,
+        title: "تواصل معنا",
+        link: "/#contact",
+        bold: false,
+    },
+    // {
+    //     id:6,
+    //     title:"اللغة",
+    //     link: "#",
+    //     bold: false
+    // }
+]
 export const pharmacistNav = [
     {
         id:1,
