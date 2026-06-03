@@ -1,4 +1,5 @@
 import api from "@/lib/api";
+import { PharmacistApplication } from "@/types/PharmacistApplication";
 
 type PharmacistApplicationResponse = {
   id: number;
@@ -11,24 +12,20 @@ type PharmacistApplicationResponse = {
     email: string;
     user_type: string;
   };
+    attachments: [
+    license_certificate: File | string,
+    personal_photo: File | string,
+    identity_document: File | string
+  ]
 };
 
-export type PharmacistApplication = {
-  id: number;
-  name: string;
-  email: string;
-  user_type: string;
-  date: string;
-  licenseNumber: string;
-  status:  "accepted" | "rejected" | "unread" | "pending";
-};
 export const pharmacistApplications = async ():Promise<PharmacistApplication[]> => {
     const response = await 
         api.get<{
             status: string;
             data: PharmacistApplicationResponse[];
         }>("/admin/pharmacist-applications");
-
+    console.log(response.data);
     return response.data.data.map((application) => ({
         id: application.id,
         name: application.user.name,
@@ -37,6 +34,9 @@ export const pharmacistApplications = async ():Promise<PharmacistApplication[]> 
         date: new Date(application.created_at).toLocaleDateString("en-GB"),
         licenseNumber: application.license_number,
         status: application.employment_status as "accepted" | "rejected" | "unread" | "pending",
+        license_certificate: application.attachments[0], 
+        personal_photo: application.attachments[1],
+        identity_document: application.attachments[2]
     }))
 }
 

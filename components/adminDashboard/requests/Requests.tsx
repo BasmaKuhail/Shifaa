@@ -1,23 +1,12 @@
 import StatusHolder from "@/components/dashboard/MedicineRequests/StatusHolder";
 import Card from "@/components/dashboard/PharmacyInfo/CardContainer";
 import Row from "@/components/dashboard/PharmacyInfo/pharmacistsTable/Row";
-import { useEffect, useState } from "react";
-import {pharmacistApplications} from "@/services/admin";
+import { useContext, useEffect, useState } from "react";
 import Interact from "./Interact";
+import { AdminRequestContext } from "@/contexts/AdminPharmacistsRequestsContext";
+import { useRouter } from "next/router";
 export default function Requests() {
-    const [requests, setRequests] = useState<{ id: number; name: string; email: string; date: string; licenseNumber: string; status: string; }[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState<string | null>(null);
-
-    useEffect(()=>{
-        pharmacistApplications().then(res => {
-            setRequests(res);
-            console.log(res);
-        }).catch(err => {
-            setError(err.message || "حدث خطأ غير متوقع");
-            console.error(err);
-        }).finally(() => setLoading(false));
-    }, []);
+    const { requests, loading, error } = useContext(AdminRequestContext);
 
     const requestsCategory =[
         {text:"كل الطلبات", value:"all"}, 
@@ -27,11 +16,16 @@ export default function Requests() {
         {text:"الطلبات قيد التنفيذ", value:"pending"}
     ];
 
+    const router = useRouter();
 
     const [selectedCategory, setSelectedCategory] = useState<(typeof requestsCategory[number])>(requestsCategory[0]);
     const filteredResults = requests.filter((request) => {
         return selectedCategory.value === "all" || request.status === selectedCategory.value;
     });
+    const handleSeeDetails = (id:number) => {
+        router.push(`/admin-dashboard/requests/${id}`);
+        console.log(`See details of request with id: ${id}`);
+    }
     return(
         <div className="flex flex-col gap-10 mt-13 mb-40 w-full">
             <p className="font-semibold text-27px">إدارة الدعوات</p>
@@ -71,7 +65,7 @@ export default function Requests() {
                             <p className="py-6 text-center text-gray-500">لا توجد طلبات</p>
                         )}
                         {filteredResults.map((req) => (
-                            <div className="flex border-t border-gray-200 w-full items-center text-inpt">
+                            <div className="flex border-t border-gray-200 w-full items-center text-inpt" onClick={() => handleSeeDetails(req.id)}>
                                 <Row 
                                     key={req.id} 
                                     data={

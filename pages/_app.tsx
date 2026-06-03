@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 
 import { protectedRoutes, guestOnlyRoutes } from "@/config/routeRules";
 import AuthGuard from '@/components/auth/AuthGuard';
+import { AdminRequestProvider } from '@/contexts/AdminPharmacistsRequestsContext';
 
 const tajawal = Tajawal({ subsets: ['arabic'], weight: ['400','500','700'] });
 
@@ -25,7 +26,9 @@ function MyApp({ Component, pageProps }: AppProps) {
       <UserProvider>
         <AuthGuard>
           <BreadcrumbProvider>
+          <AdminRequestProvider>
             {getLayout(<Component {...pageProps} />)}
+            </AdminRequestProvider>
           </BreadcrumbProvider>
         </AuthGuard>
       </UserProvider>
