@@ -10,9 +10,8 @@ export default function Requests() {
 
     const requestsCategory =[
         {text:"كل الطلبات", value:"all"}, 
-        {text:"الطلبات المقبولة", value:"accepted"}, 
-        {text:"الطلبات الملغاة", value:"ignored"}, 
-        {text:"الطلبات الغير مقروءة", value:"unread"}, 
+        {text:"طلبات الانضمام كصيدلي", value:"pharmacist"}, 
+        {text:"طلبات انشاء صيدلية", value:"pharmacy"}, 
         {text:"الطلبات قيد التنفيذ", value:"pending"}
     ];
 
@@ -33,7 +32,7 @@ export default function Requests() {
                 <div className="w-full flex flex-col gap-5">
                     <div className="w-full flex flex-row items-center justify-between border border-gray-200 rounded-[14px] p-2">
                         {requestsCategory.map((category, index) => (
-                            <p key={index} className={`px-10 p-1 text-inpt font-semibold text-black-400 cursor-pointer ${selectedCategory.value === category.value ? "bg-blue-100 rounded-[10px]" : ""}`} onClick={() => setSelectedCategory(category)}>{category.text}</p>    
+                            <p key={index} className={`text-center px-10 p-1 text-inpt font-semibold text-black-400 cursor-pointer ${selectedCategory.value === category.value ? "bg-blue-100 rounded-[10px]" : ""}`} onClick={() => setSelectedCategory(category)}>{category.text}</p>    
                         ))}
                     </div>
                     <div className="flex w-full flex-col px-10">

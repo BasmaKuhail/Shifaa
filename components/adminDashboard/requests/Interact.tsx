@@ -24,7 +24,8 @@ export default function Interact({status, id, name}: {status: string, id: number
                 <Eye className="text-black-400 cursor-pointer"/>
             </div>
             {showPopup && <PopUp id={id} isAccept={isAccept} setShowPopup={setShowPopup}/>}
-            <div onClick={() => {setIsAccept(prev => false); setShowPopup(true)}}>
+            <div 
+            onClick={(e) => {e.stopPropagation(); setIsAccept(prev => false); setShowPopup(true); }}>
                 <Delete className={`${status === "pending" ? "text-black-400 cursor-pointer" : "text-black-200"}`}/>
             </div>
             

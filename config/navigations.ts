@@ -3,6 +3,9 @@ import Dash from "@/public/icons/dashboard/dashboard";
 import Pharm from "@/public/icons/dashboard/pharmacy";
 import Request from "@/public/icons/dashboard/request";
 import Home from "@/public/icons/dashboard/home";
+import Settings from "@/public/icons/dashboard/settings";
+import Help from "@/public/icons/dashboard/help";
+
 
 export const headerItems = [
     {
@@ -119,3 +122,18 @@ export const adminNav =[
         //     link: "/invitations"
         // }
     ];
+
+export const otherDashboardItems =[
+    {
+        id: 1,
+        icon: Help,
+        label: "مركز المساعدة",
+        link: "/help"
+    },
+    // {
+    //     id: 2,
+    //     icon: Settings,
+    //     label: "الاعدادات",
+    //     link: "/settings"
+    // },
+]

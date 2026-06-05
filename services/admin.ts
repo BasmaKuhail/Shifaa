@@ -1,5 +1,5 @@
 import api from "@/lib/api";
-import { PharmacistApplication } from "@/types/PharmacistApplication";
+import { ApplicationFile, PharmacistApplication } from "@/types/PharmacistApplication";
 
 type PharmacistApplicationResponse = {
   id: number;
@@ -13,9 +13,9 @@ type PharmacistApplicationResponse = {
     user_type: string;
   };
     attachments: [
-    license_certificate: File | string,
-    personal_photo: File | string,
-    identity_document: File | string
+    license_certificate: ApplicationFile ,
+    personal_photo: ApplicationFile,
+    identity_document: ApplicationFile 
   ]
 };
 

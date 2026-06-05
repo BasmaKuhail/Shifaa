@@ -24,12 +24,16 @@ export default function DashboardLayout({ children, sideNavArr }: { children: Re
             <div className="w-full flex lg:hidden">
                 <MobileNav sideNavArr={sideNavArr}/>
             </div>
-            <div  className="w-full flex flex-col pt-8 w-full overflow-y-auto md:p-10 p-5">
+            <div  className="w-full flex flex-col pt-8 w-full overflow-y-auto pb-5 md:p-10 p-5">
                 <div dir="ltr" className="lg:flex hidden w-full flex flex-row justify-between items-center">
                     {user && <ProNotCont user={user} bg="blue" /> }
                 </div>
                 {children}
-            </div>
+                <div className="w-full flex flex-col items-center">
+                    <p className="text-xs lg:text-inpt md:text-inpt">جميع الحقوق محفوظة لـ شِفاء © 2026.</p>
+                </div>
+            </div>                
+
         </div>
     );
 }

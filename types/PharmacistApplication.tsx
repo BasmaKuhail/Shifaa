@@ -1,3 +1,13 @@
+import { StatusType } from "./Status";
+
+export type ApplicationFile = {
+  id: number;
+  name: string;
+  type: string;
+  mime_type: "image/jpeg" | "image/jpg" | "image/png" | "application/pdf";
+  url: string;
+};
+
 export type PharmacistApplication = {
   id: number;
   name: string;
@@ -5,8 +15,8 @@ export type PharmacistApplication = {
   user_type: string;
   date: string;
   licenseNumber: string;
-  status:  "accepted" | "rejected" | "unread" | "pending";
-  license_certificate: File | string;
-  personal_photo: File | string;
-  identity_document: File | string
+  status:  StatusType;
+  license_certificate: ApplicationFile | undefined;
+  personal_photo: ApplicationFile | undefined;
+  identity_document: ApplicationFile | undefined;
 };
