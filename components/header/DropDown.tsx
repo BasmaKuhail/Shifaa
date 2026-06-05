@@ -48,8 +48,11 @@ export default function HeaderDropDown({user, profileOpened, setProfileOpened}:h
             }
         } ,
     ]
-    const pharmaciesArr = dropDownItems.filter(item => !(user.user_type === "pharmacist" && item.title === "انضمام كصيدلي"))
-    const userArr = dropDownItems.filter(item => !(user.user_type === "user" && item.title === "إنشاء صيدلية"))
+    const pharmaciesArr = dropDownItems.filter(item => !(item.title === "انضمام كصيدلي"))
+    const userArr = dropDownItems.filter(item => !(item.title === "إنشاء صيدلية"))
+    const adminArr = dropDownItems.filter(item => !(item.title === "انضمام كصيدلي" || item.title === "إنشاء صيدلية" || item.title === "طلب دواء"))
+    
+    const itemsToShow = user.user_type === "pharmacist" ? pharmaciesArr : user.user_type === "admin" ? adminArr : userArr;
     return(
         <div dir="rtl" className="bg-white rounded-[12px] py-4 p-3 w-[21.75rem]">
             <div className='flex flex-row justify-between  w-full border-b border-b-black-200 pb-5'>
@@ -66,7 +69,7 @@ export default function HeaderDropDown({user, profileOpened, setProfileOpened}:h
                 </div>
             </div>   
             <div className='flex flex-col gap-2 pt-5'>
-                {(user.user_type === "pharmacist" ? pharmaciesArr: userArr).map((item, index) =>
+                {itemsToShow.map((item, index) =>
                     <div 
                         key={index} 
                         className='flex flex-row justify-between items-center cursor-pointer hover:bg-black-100 p-2 px-6'

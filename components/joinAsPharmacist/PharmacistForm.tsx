@@ -26,10 +26,10 @@ export default function PharmacistForm(){
     const getInitialUserInfo = () => ({
         fullName: user ? `${user.firstName} ${user.lastName}` : "",
         email: user?.email || "",
-        IdVerification: null as File | null,
-        pharmacyLicense: null as File | null,
-        profileImage: null as File | null,
-        serialNumber: ""
+        identity_document: null as File | null,
+        license_number: "",
+        license_certificate: null as File | null,
+        personal_photo: null as File | null,
     });
     const [userInfo, setUserInfo] = useState(getInitialUserInfo);
 
@@ -46,18 +46,21 @@ export default function PharmacistForm(){
     }, [])
     
     const handleSubmitForm = async () => {
-    if (userInfo.serialNumber === "") {
+    if (userInfo.identity_document === null || userInfo.license_certificate === null || userInfo.personal_photo === null) {
         alert("يجب تعبئة البيانات المطلوبة");
+
         return;
     }
 
     if (!checkBoxChecked) {
         alert("يجب التأكيد على أن هذه الوثائق تخصك");
+                console.log(userInfo);
+
         return;
     }
 
     try {
-        const res = await switchToPharmasist(userInfo.serialNumber);
+        const res = await switchToPharmasist(userInfo.identity_document, userInfo.license_certificate, userInfo.personal_photo, userInfo.license_number);
         console.log(res);
         alert(res.message || "تم تقديم طلبك بنجاح، سيتم مراجعة طلبك خلال 3-5 أيام عمل");
         router.push("/");
@@ -99,33 +102,33 @@ export default function PharmacistForm(){
                             label="صورة الهوية"
                             type="file"
                             inputText=""
-                            value={userInfo.IdVerification}
-                            onChange={(file) => setUserInfo({ ...userInfo, pharmacyLicense: file as File | null})} 
-                            isTrue={validateInput(userInfo.IdVerification, 'file').isValid}
+                            value={userInfo.identity_document}
+                            onChange={(file) => setUserInfo({ ...userInfo, identity_document: file as File | null})} 
+                            isTrue={validateInput(userInfo.identity_document, 'file').isValid}
                         />                        
                         <Input 
                             label="مزاولة المهنة" 
                             type="file" 
                             inputText="" 
-                            value={userInfo.pharmacyLicense} 
-                            onChange={(file) => setUserInfo({ ...userInfo, pharmacyLicense: file as File | null})} 
-                            isTrue={validateInput(userInfo.pharmacyLicense, 'file').isValid}
+                            value={userInfo.license_certificate} 
+                            onChange={(file) => setUserInfo({ ...userInfo, license_certificate: file as File | null})} 
+                            isTrue={validateInput(userInfo.license_certificate, 'file').isValid}
                         />
                         <Input 
                             label="صورة شخصية" 
                             type="file" 
                             inputText="" 
-                            value={userInfo.profileImage} 
-                            onChange={(file) => setUserInfo({ ...userInfo, profileImage: file as File | null })} 
-                            isTrue={validateInput(userInfo.profileImage, 'file').isValid}
+                            value={userInfo.personal_photo} 
+                            onChange={(file) => setUserInfo({ ...userInfo, personal_photo: file as File | null })} 
+                            isTrue={validateInput(userInfo.personal_photo, 'file').isValid}
                         />
                         <Input 
                             label="رقم الرخصة" 
                             type="text" 
                             inputText="ادخل رقم رخصتك كصيدلي" 
-                            value={userInfo.serialNumber} 
-                            onChange={(value) => setUserInfo({ ...userInfo, serialNumber: typeof value === 'string' ? value : ''})}
-                            isTrue={validateInput(userInfo.serialNumber, 'text').isValid}
+                            value={userInfo.license_number} 
+                            onChange={(value) => setUserInfo({ ...userInfo, license_number: typeof value === 'string' ? value : ''})}
+                            isTrue={validateInput(userInfo.license_number, 'text').isValid}
                         />
                     </div>
                     <div className="flex items-center gap-2">
