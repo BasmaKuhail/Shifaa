@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { login, register } from "@/services/auth";
 import { validateLogin, validateRegister } from "@/utils/ValidateForms"
 import {RegisterData} from "@/types/RegisterFormData"
+import { showAlert } from "@/components/alerts/AlertContainer";
 
 const initialFormData: RegisterData = {
     firstName: "",
@@ -40,7 +41,11 @@ export const useAuthForm = (isRegister: boolean) => {
             });
 
         if (validationError) {
-            alert(validationError.errorMsg);
+            showAlert({
+                type: "Error",
+                title: "خطأ في التحقق",
+                message: validationError.errorMsg,
+            });
             setErrorMsg(validationError.errorMsg);
             return;
         }
@@ -72,13 +77,25 @@ export const useAuthForm = (isRegister: boolean) => {
 
         } catch (error: any) {
             if (error.response?.status === 422 || error.response?.status === 401) {
-                alert(error.response.data.message);
+                showAlert({
+                    type: "Error",
+                    title: "خطأ في التحقق",
+                    message: error.response.data.message,
+                });
                 console.log("Validation Errors:", error.response.data.errors);
             } else if (error.response?.status === 500) {
-                alert("حدث خطأ في الخادم، حاول مرة أخرى");
+                showAlert({
+                    type: "Error",
+                    title: "خطأ في الخادم",
+                    message: "حدث خطأ في الخادم، حاول مرة أخرى",
+                });
                 console.log("Validation Errors:", error.response.data.errors);
             } else {
-                alert("حدث خطأ غير متوقع");
+                showAlert({
+                    type: "Error",
+                    title: "خطأ غير متوقع",
+                    message: "حدث خطأ غير متوقع، حاول مرة أخرى",
+                });
             }
             console.log("Error:", error.response?.data);
             setErrorMsg(
