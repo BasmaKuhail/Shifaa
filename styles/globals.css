@@ -12,6 +12,8 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground: #333333;
+    --toastify-font-family: var(--font-tajawal), sans-serif;
+
   }
 }
 
@@ -69,4 +71,11 @@ html {
 
 .custom-x-scrollbar::-webkit-scrollbar-thumb:horizontal:hover {
   background-color: #94a3b8;
+}
+
+.Toastify__toast-container,
+.Toastify__toast,
+.Toastify__toast-body,
+.Toastify__toast * {
+  font-family: var(--font-tajawal), sans-serif !important;
 }

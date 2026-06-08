@@ -12,6 +12,7 @@ import { useBreadcrumb } from "@/contexts/BreadcrumbContext"
 import {switchToPharmasist} from "@/services/auth"
 import PetrolBtn from "../dashboard/PharmacyInfo/invitePopup/PetrolBtn";
 import { useRouter } from "next/router";
+import { showAlert } from "../alerts/AlertContainer";
 export default function PharmacistForm(){
 
     const [checkBoxChecked, setCheckBoxChecked] = useState(false)
@@ -46,27 +47,43 @@ export default function PharmacistForm(){
     }, [])
     
     const handleSubmitForm = async () => {
-    if (userInfo.identity_document === null || userInfo.license_certificate === null || userInfo.personal_photo === null) {
-        alert("يجب تعبئة البيانات المطلوبة");
 
-        return;
-    }
+        if (userInfo.identity_document === null || userInfo.license_certificate === null || userInfo.personal_photo === null) {
+            showAlert({
+                type: "Warning",
+                title: "تحذير",
+                message: "يجب تعبئة البيانات المطلوبة",
+            });
+            return;
+        }
+        if (!checkBoxChecked) {
+            showAlert({
+                type: "Warning",
+                title: "تحذير",
+                message: "يجب التأكيد على أن هذه الوثائق تخصك",
+            });
+            console.log(userInfo);
 
-    if (!checkBoxChecked) {
-        alert("يجب التأكيد على أن هذه الوثائق تخصك");
-                console.log(userInfo);
+            return;
+        }
 
-        return;
-    }
 
     try {
         const res = await switchToPharmasist(userInfo.identity_document, userInfo.license_certificate, userInfo.personal_photo, userInfo.license_number);
         console.log(res);
-        alert(res.message || "تم تقديم طلبك بنجاح، سيتم مراجعة طلبك خلال 3-5 أيام عمل");
+        showAlert({
+            type: "Success",
+            title: "تم تقديم الطلب بنجاح",
+            message: "سيتم مراجعة طلبك خلال 3-5 أيام عمل",
+        });
         router.push("/");
     } catch (err: any) {
         console.log(err.response?.data);
-        alert(err.response?.data.message || "حدث خطأ غير متوقع");
+        showAlert({
+            type: "Error",
+            title: "خطأ",
+            message: err.response?.data.message || "حدث خطأ غير متوقع",
+        });
 
     }
 };
@@ -139,7 +156,6 @@ export default function PharmacistForm(){
                         <PetrolBtn text="تقديم الطلب" onClick={handleSubmitForm} />
                             <Link href={"/"} className="underline text-sm text-gray-600"> إلغاء </Link>
                     </div>
-                    
                 </div>
 
     )

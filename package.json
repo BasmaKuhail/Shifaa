@@ -19,7 +19,8 @@
     "react-dom": "19.2.3",
     "react-easy-crop": "^5.5.7",
     "react-i18next": "^16.5.4",
-    "react-responsive": "^10.0.1"
+    "react-responsive": "^10.0.1",
+    "react-toastify": "^11.1.0"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",

@@ -46,6 +46,18 @@ module.exports = {
           textInputWrong: '#FF1F1F',
           online: '#23A149', //green
           red: "#EA3030", //red
+          bg :{
+            Success: "#E8F5E9",
+            Warning:"#FFF3E0",
+            Error:"#FFEBEE",
+            Hint:"#E3F2FD",
+          },
+          border : {
+            Success: "#43A047",
+            Warning:"#FF9800",
+            Error:"#F44336",
+            Hint:"#2196F3",
+          }
         },
         fontSize: {
             'xxs': '0.563rem',
