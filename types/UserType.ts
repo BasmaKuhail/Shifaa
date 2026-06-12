@@ -7,5 +7,6 @@ export type User = {
     type: string;
     mobileNum?: string;
     location?: string;
-    user_type: "user" | "pharmacist" | "admin"; 
+    role: "user" | "pharmacist" | "admin"; 
+    has_pharmacist_application: boolean;
 }

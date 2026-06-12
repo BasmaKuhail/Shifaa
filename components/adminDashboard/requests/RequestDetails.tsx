@@ -59,7 +59,6 @@ export default function RequestDetails({request}: requestDetailsProps) {
                             <Columen c1="اسم العميل" c2={request?.name} />
                             <Columen c1="البريد الإلكتروني" c2={request?.email} />
                             <Columen c1="تاريخ الطلب" c2={request?.date} />
-                            <Columen c1="رقم الرخصة" c2={request?.licenseNumber} />
                             <Columen c1="ملف الهوية" c2={request?.identity_document} />
                             <Columen c1="الصورة الشخصية" c2={request?.personal_photo} />
                             <Columen c1="شهادة الترخيص" c2={request?.license_certificate} />

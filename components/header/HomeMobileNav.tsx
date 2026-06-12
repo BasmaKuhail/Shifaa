@@ -19,11 +19,11 @@ export default function HomeNav({isMenuOpened, setIsMenuOpened}:mobileNavProps){
     const {user, loading} = useContext(UserContext);
     const router = useRouter();
     const handleBtnRedirect = () => {
-        if(user?.user_type === "user"){
+        if(user?.role === "user"){
             router.push("/request-medicen")
-        }else if (user?.user_type === "pharmacist"){
+        }else if (user?.role === "pharmacist"){
             router.push("/dashboard")
-        }else if (user?.user_type === "admin"){
+        }else if (user?.role === "admin"){
             router.push("/admin-dashboard")
         }
     }
@@ -49,7 +49,7 @@ export default function HomeNav({isMenuOpened, setIsMenuOpened}:mobileNavProps){
                 >
                     <GradientBtn 
                         w="full" 
-                        text={user && (user?.user_type === "pharmacist" || user?.user_type === "admin") ? "لوحة التحكم" :"طلب دواء"}
+                        text={user && (user?.role === "pharmacist" || user?.role === "admin") ? "لوحة التحكم" :"طلب دواء"}
                         onClick={handleBtnRedirect} 
                         px={10} 
                         rounded="30"

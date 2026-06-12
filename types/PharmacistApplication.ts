@@ -12,7 +12,7 @@ export type PharmacistApplication = {
   id: number;
   name: string;
   email: string;
-  user_type: string;
+  role: string;
   date: string;
   licenseNumber: string;
   status:  StatusType;

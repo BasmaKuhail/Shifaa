@@ -13,6 +13,7 @@ import {switchToPharmasist} from "@/services/auth"
 import PetrolBtn from "../dashboard/PharmacyInfo/invitePopup/PetrolBtn";
 import { useRouter } from "next/router";
 import { showAlert } from "../alerts/AlertContainer";
+import HasPharmacistApplication from "./HasForm";
 export default function PharmacistForm(){
 
     const [checkBoxChecked, setCheckBoxChecked] = useState(false)
@@ -69,7 +70,7 @@ export default function PharmacistForm(){
 
 
     try {
-        const res = await switchToPharmasist(userInfo.identity_document, userInfo.license_certificate, userInfo.personal_photo, userInfo.license_number);
+        const res = await switchToPharmasist(userInfo.identity_document, userInfo.license_certificate, userInfo.personal_photo);
         console.log(res);
         showAlert({
             type: "Success",
@@ -88,6 +89,10 @@ export default function PharmacistForm(){
     }
 };
     const { crumbs } = useBreadcrumb()
+
+    if(user?.has_pharmacist_application){
+        return <HasPharmacistApplication/>
+    }
     return(
         <div className="flex flex-col gap-10">
                     <nav className="flex items-center gap-4">
@@ -139,14 +144,14 @@ export default function PharmacistForm(){
                             onChange={(file) => setUserInfo({ ...userInfo, personal_photo: file as File | null })} 
                             isTrue={validateInput(userInfo.personal_photo, 'file').isValid}
                         />
-                        <Input 
+                        {/* <Input 
                             label="رقم الرخصة" 
                             type="text" 
                             inputText="ادخل رقم رخصتك كصيدلي" 
                             value={userInfo.license_number} 
                             onChange={(value) => setUserInfo({ ...userInfo, license_number: typeof value === 'string' ? value : ''})}
                             isTrue={validateInput(userInfo.license_number, 'text').isValid}
-                        />
+                        /> */}
                     </div>
                     <div className="flex items-center gap-2">
                         <input checked={checkBoxChecked} onChange={() => {setCheckBoxChecked(!checkBoxChecked)}} type="checkbox" id="confirm" name="confirm" className="w-4 h-4" />
