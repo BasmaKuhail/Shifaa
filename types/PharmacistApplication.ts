@@ -14,7 +14,7 @@ export type PharmacistApplication = {
   email: string;
   role: string;
   date: string;
-  licenseNumber: string;
+  phone_number:string;
   status:  StatusType;
   license_certificate: ApplicationFile | undefined;
   personal_photo: ApplicationFile | undefined;

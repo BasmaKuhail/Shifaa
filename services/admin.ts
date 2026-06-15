@@ -1,9 +1,10 @@
 import api from "@/lib/api";
 import { ApplicationFile, PharmacistApplication } from "@/types/PharmacistApplication";
+import { File } from "buffer";
 
 type PharmacistApplicationResponse = {
   id: number;
-  license_number: string;
+  phone_number: string;
   employment_status: string;
   created_at: string;
   user: {
@@ -32,7 +33,7 @@ export const pharmacistApplications = async ():Promise<PharmacistApplication[]> 
         email: application.user.email,
         role: application.user.role,
         date: new Date(application.created_at).toLocaleDateString("en-GB"),
-        licenseNumber: application.license_number,
+        phone_number: application.phone_number,
         status: application.employment_status as "accepted" | "rejected" | "unread" | "pending",
         license_certificate: application.attachments[0], 
         personal_photo: application.attachments[1],
@@ -70,4 +71,16 @@ export const rejectPharmacistApplication = async (id: number) => {
   }else { 
     throw new Error("Unexpected error");
   }
+}
+export const getAttachment = async (id:number):Promise<Blob>=> {
+    const token = localStorage.getItem("token");
+
+    const response = await api.get(`/admin/attachments/${id}` ,{
+      responseType: "blob",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+      },
+    });
+  return response.data ;
 }

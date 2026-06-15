@@ -1,11 +1,50 @@
 import { ApplicationFile } from "@/types/PharmacistApplication";
+import { getAttachment } from "@/services/admin";
+import { useEffect, useState } from "react";
 
 type FileViewerProps = {
     file: ApplicationFile | null;
     label: string;
+    id: number;
 };
 
-export default function FileViewer({ file, label }: FileViewerProps) {
+export default function FileViewer({ file, label, id }: FileViewerProps) {
+    const [objectUrl, setObjectUrl] = useState<string | null>(null);
+    const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        setIsLoading(true)
+        if (!file) return;
+
+        let objectUrlToRevoke: string | null = null;
+
+        const fetchAttachment = async () => {
+            try {
+                const blob = await getAttachment(id);
+
+                if (!(blob instanceof Blob)) {
+                    console.error("Expected Blob, received:", blob);
+                    return;
+                }
+
+                const objectUrl = URL.createObjectURL(blob);
+                objectUrlToRevoke = objectUrl;
+                setObjectUrl(objectUrl);
+                setIsLoading(false)
+            } catch (error) {
+                console.error("Failed to load attachment:", error);
+            }
+        };
+
+        fetchAttachment();
+
+        return () => {
+            if (objectUrlToRevoke) {
+                URL.revokeObjectURL(objectUrlToRevoke);
+            }
+        };
+    }, [id, file]);
+
     if (!file) {
         return (
         <div className="flex flex-col gap-2">
@@ -15,46 +54,41 @@ export default function FileViewer({ file, label }: FileViewerProps) {
         );
     }
 
-    const fileUrl = `${process.env.NEXT_PUBLIC_API_BASE_URL?.replace(
-        "/api/v1",
-        ""
-    )}${file.url}`;
-
-    const isImage =
-        file.mime_type === "image/jpeg" ||
-        file.mime_type === "image/jpg" ||
-        file.mime_type === "image/png";
-
+    const isImage = file.mime_type.startsWith("image/");
     const isPdf = file.mime_type === "application/pdf";
 
+    if(isLoading){
+        return<p className="text-inpt text-black-500">جاري تحميل الملف...</p>
+    }
     return (
         <div className="flex flex-col gap-2">
-            {/* <p className="font-semibold">{label}</p>
 
-            {isImage && (
-                <img
-                    src={fileUrl}
-                    alt={file.name}
-                    className="w-48 h-48 object-cover rounded-lg border"
-                />
-            )}
+        {objectUrl && isImage && (
+            <img
+            src={objectUrl}
+            alt={file.name}
+            className="h-20 w-full rounded-lg border object-cover"
+            />
+        )}
 
-            {isPdf && (
-                <iframe
-                src={fileUrl}
-                title={file.name}
-                className="w-full h-[500px] rounded-lg border"
-                />
-            )} */}
+        {objectUrl && isPdf && (
+            <iframe
+            src={objectUrl}
+            title={file.name}
+            className="h-[500px] w-full rounded-lg border"
+            />
+        )}
 
+        {objectUrl && (
             <a
-                href={fileUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-600 underline"
+            href={objectUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-fit text-blue-600 underline"
             >
-                فتح الملف
+            فتح الملف
             </a>
+        )}
         </div>
     );
 }
