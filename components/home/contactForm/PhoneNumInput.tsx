@@ -24,7 +24,7 @@ export default function PhoneNum ({label, inputText, value, onChange, isTrue, co
     useEffect(() => {
         const getCountries = async () => {
         const data = await fetchCountries();
-        setCountries(data);
+        // setCountries(data);
         console.log(countries)
         setSelectedCountry(countries.find(c => c.name === "Palestine") || countries[0]); 
         console.log(countries.find(c => c.name === "Palestine"))

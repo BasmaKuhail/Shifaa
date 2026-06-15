@@ -17,7 +17,9 @@ export default function Requests() {
 
     const router = useRouter();
 
-    const [selectedCategory, setSelectedCategory] = useState<(typeof requestsCategory[number])>(requestsCategory[0]);
+    const [selectedCategory, setSelectedCategory] = useState<(typeof requestsCategory[number])>(
+        requestsCategory[0]
+    );
     const filteredResults = requests.filter((request) => {
         return selectedCategory.value === "all" || request.status === selectedCategory.value;
     });
@@ -72,7 +74,7 @@ export default function Requests() {
                                             customerName: req.name,
                                             email: req.email,
                                             date: req.date,
-                                            licenseNumber: req.licenseNumber,
+                                            phone_number: req.phone_number,
                                             status: <StatusHolder status={req.status} />,
                                             interact: <Interact status={req.status} id={req.id} name={req.name}/>
                                         }}
@@ -80,7 +82,7 @@ export default function Requests() {
                                         email: "flex-[2]",
                                         customerName: "flex-1",
                                         date: "flex-1",
-                                        licenseNumber: "flex-1",
+                                        phone_number: "flex-1",
                                         status: "flex-1",
                                         interact: "flex-1",
                                     }}

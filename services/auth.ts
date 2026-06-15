@@ -32,6 +32,7 @@ export const getMe = async ():Promise<User> => {
     },
   });
   const rawUser = response.data.data[0];
+  // console.log("Raw user data:", rawUser);
   return {
     id: rawUser.id,
     firstName: rawUser.attributes.first_name,
@@ -39,7 +40,8 @@ export const getMe = async ():Promise<User> => {
     email: rawUser.attributes.email,
     avatar: rawUser.avatar,
     type: rawUser.type, 
-    user_type:rawUser.attributes.user_type,
+    role:rawUser.attributes.role,
+    has_pharmacist_application: rawUser.attributes.pharmacist_application.has_pharmacist_application,
   };
 }
 
@@ -58,9 +60,9 @@ export const logout = async () => {
 }
 export const switchToPharmasist = async (
   identity_document: File | null,
+  phone_number: string,
   license_certificate: File | null,
   personal_photo: File | null,
-  license_number: string
 ) => {
   const token = localStorage.getItem("token");
 
@@ -80,16 +82,13 @@ export const switchToPharmasist = async (
     throw new Error("Personal photo is required");
   }
 
-  if (!license_number.trim()) {
-    throw new Error("License number is required");
-  }
 
   const formData = new FormData();
 
-  formData.append("data[attributes][license_number]", license_number.trim());
-  formData.append("data[attributes][license_certificate]", license_certificate);
-  formData.append("data[attributes][personal_photo]", personal_photo);
-  formData.append("data[attributes][identity_document]", identity_document);
+  formData.append("license_certificate", license_certificate);
+  formData.append("personal_photo", personal_photo);
+  formData.append("identity_document", identity_document);
+  formData.append("phone_number", phone_number);
 
   for (const [key, value] of formData.entries()) {
     console.log(key, value);
@@ -99,9 +98,10 @@ export const switchToPharmasist = async (
     headers: {
       Authorization: `Bearer ${token}`,
       Accept: "application/json",
-      "Content-Type": undefined,
+      // "Content-Type": undefined,
     },
   });
 
   return response.data;
 };
+

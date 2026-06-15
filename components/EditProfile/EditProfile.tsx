@@ -7,6 +7,8 @@ import ImageProfile from "./Image";
 import EditProfileSkeleton from "../Skeleton/EditProfileSkeleton";
 
 import { useBreadcrumb } from "@/contexts/BreadcrumbContext"
+import Link from "next/link";
+import PetrolBtn from "../dashboard/PharmacyInfo/invitePopup/PetrolBtn";
 
 export default function EditProfile() {
     const {user, loading} = useContext(UserContext);
@@ -51,11 +53,15 @@ export default function EditProfile() {
                             <Input label="الاسم الأول" type="text" inputText={user? user.firstName : ""} value={userInfo.firstName} onChange={(value) => setUserInfo({ ...userInfo, firstName: typeof value === 'string' ? value : ''})} isTrue={validateInput(userInfo.firstName, 'text').isValid} />
                             <Input label="الاسم الأخير" type="text" inputText={user? user.lastName : ""} value={userInfo.lastName} onChange={(value) => setUserInfo({ ...userInfo, lastName: typeof value === 'string' ? value : ''})} isTrue={validateInput(userInfo.lastName, 'text').isValid} />
                             <Input label="البريد الالكتروني" type="text" inputText={user? user.email : ""} value={userInfo.email} onChange={(value) => setUserInfo({ ...userInfo, email: typeof value === 'string' ? value : '' })} isTrue={validateInput(userInfo.email, 'text').isValid} />
-                            <Input label="رقم الهاتف" type="text" inputText={user?.mobileNum || ""} value={userInfo.mobileNum} onChange={(value) => setUserInfo({ ...userInfo, mobileNum: typeof value === 'string' ? value : ''})} isTrue={validateInput(userInfo.mobileNum, 'text').isValid} />
+                            {/* <Input label="رقم الهاتف" type="text" inputText={user? user.mobileNum || ""} value={userInfo.mobileNum} onChange={(value) => setUserInfo({ ...userInfo, mobileNum: typeof value === 'string' ? value : '' })} isTrue={validateInput(userInfo.mobileNum, 'text').isValid} /> */}
                             <Input label="الموقع" type="text" inputText={user?.location || ""} value={userInfo.location} onChange={(value) => setUserInfo({ ...userInfo, location: typeof value === 'string' ? value : ''})} isTrue={validateInput(userInfo.location, 'text').isValid} />
                         </div>
                     </div>
-                    <GradientBtn text="حفظ التغيرات" onClick={() => {}} px={10} rounded="10"/>
+                    <div className="flex flex-row items-center gap-5 ">
+                        <PetrolBtn text="حفظ التغيرات" onClick={() => {}}/>
+                        <Link href={"/"} className="underline text-sm text-gray-600"> إلغاء </Link>
+                    </div>
+                    
         </div>
     )
 }

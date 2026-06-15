@@ -1,16 +1,17 @@
 import api from "@/lib/api";
 import { ApplicationFile, PharmacistApplication } from "@/types/PharmacistApplication";
+import { File } from "buffer";
 
 type PharmacistApplicationResponse = {
   id: number;
-  license_number: string;
+  phone_number: string;
   employment_status: string;
   created_at: string;
   user: {
     id: number;
     name: string;
     email: string;
-    user_type: string;
+    role: string;
   };
     attachments: [
     license_certificate: ApplicationFile ,
@@ -30,9 +31,9 @@ export const pharmacistApplications = async ():Promise<PharmacistApplication[]> 
         id: application.id,
         name: application.user.name,
         email: application.user.email,
-        user_type: application.user.user_type,
+        role: application.user.role,
         date: new Date(application.created_at).toLocaleDateString("en-GB"),
-        licenseNumber: application.license_number,
+        phone_number: application.phone_number,
         status: application.employment_status as "accepted" | "rejected" | "unread" | "pending",
         license_certificate: application.attachments[0], 
         personal_photo: application.attachments[1],
@@ -70,4 +71,16 @@ export const rejectPharmacistApplication = async (id: number) => {
   }else { 
     throw new Error("Unexpected error");
   }
+}
+export const getAttachment = async (id:number):Promise<Blob>=> {
+    const token = localStorage.getItem("token");
+
+    const response = await api.get(`/admin/attachments/${id}` ,{
+      responseType: "blob",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json",
+      },
+    });
+  return response.data ;
 }

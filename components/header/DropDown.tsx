@@ -52,7 +52,7 @@ export default function HeaderDropDown({user, profileOpened, setProfileOpened}:h
     const userArr = dropDownItems.filter(item => !(item.title === "إنشاء صيدلية"))
     const adminArr = dropDownItems.filter(item => !(item.title === "انضمام كصيدلي" || item.title === "إنشاء صيدلية" || item.title === "طلب دواء"))
     
-    const itemsToShow = user.user_type === "pharmacist" ? pharmaciesArr : user.user_type === "admin" ? adminArr : userArr;
+    const itemsToShow = user.role === "pharmacist" ? pharmaciesArr : user.role === "admin" ? adminArr : userArr;
     return(
         <div dir="rtl" className="bg-white rounded-[12px] py-4 p-3 w-[21.75rem]">
             <div className='flex flex-row justify-between  w-full border-b border-b-black-200 pb-5'>

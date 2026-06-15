@@ -31,6 +31,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     try {
       const data = await getMe();
       setUser(data);
+      // console.log(data)
     } catch (err: any) {
       if (err.response?.status === 401) {
         localStorage.removeItem("token");

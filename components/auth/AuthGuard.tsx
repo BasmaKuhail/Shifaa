@@ -37,7 +37,7 @@ export default function AuthGuard({ children }: AuthGuardProps) {
             return;
         }
 
-        const userRole = user.user_type as UserRole;
+        const userRole = user.role as UserRole;
 
         if (!matchedProtectedRoute.allowedRoles.includes(userRole)) {
             router.replace("/403"); //direct to 403 soon (user not allowed for this route)

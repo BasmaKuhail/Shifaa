@@ -13,6 +13,8 @@ import {switchToPharmasist} from "@/services/auth"
 import PetrolBtn from "../dashboard/PharmacyInfo/invitePopup/PetrolBtn";
 import { useRouter } from "next/router";
 import { showAlert } from "../alerts/AlertContainer";
+import HasPharmacistApplication from "./HasForm";
+import ErrorMsg from "../register/ErrorMsg";
 export default function PharmacistForm(){
 
     const [checkBoxChecked, setCheckBoxChecked] = useState(false)
@@ -28,7 +30,7 @@ export default function PharmacistForm(){
         fullName: user ? `${user.firstName} ${user.lastName}` : "",
         email: user?.email || "",
         identity_document: null as File | null,
-        license_number: "",
+        phone_number: "",
         license_certificate: null as File | null,
         personal_photo: null as File | null,
     });
@@ -48,7 +50,7 @@ export default function PharmacistForm(){
     
     const handleSubmitForm = async () => {
 
-        if (userInfo.identity_document === null || userInfo.license_certificate === null || userInfo.personal_photo === null) {
+        if (userInfo.phone_number === "" || userInfo.identity_document === null || userInfo.license_certificate === null || userInfo.personal_photo === null) {
             showAlert({
                 type: "Warning",
                 title: "تحذير",
@@ -69,14 +71,14 @@ export default function PharmacistForm(){
 
 
     try {
-        const res = await switchToPharmasist(userInfo.identity_document, userInfo.license_certificate, userInfo.personal_photo, userInfo.license_number);
+        const res = await switchToPharmasist(userInfo.identity_document, userInfo.phone_number, userInfo.license_certificate, userInfo.personal_photo);
         console.log(res);
         showAlert({
             type: "Success",
             title: "تم تقديم الطلب بنجاح",
             message: "سيتم مراجعة طلبك خلال 3-5 أيام عمل",
         });
-        router.push("/");
+        // router.push("/");
     } catch (err: any) {
         console.log(err.response?.data);
         showAlert({
@@ -88,6 +90,10 @@ export default function PharmacistForm(){
     }
 };
     const { crumbs } = useBreadcrumb()
+
+    if(user?.has_pharmacist_application){
+        return <HasPharmacistApplication/>
+    }
     return(
         <div className="flex flex-col gap-10">
                     <nav className="flex items-center gap-4">
@@ -112,41 +118,53 @@ export default function PharmacistForm(){
                             inputText={user? user.email : ""} 
                             value={userInfo.email} 
                             onChange={(value) => setUserInfo({ ...userInfo, email: typeof value === 'string' ? value : '' })} 
-                            isTrue={validateInput(userInfo.email, 'text').isValid} 
+                            isTrue={validateInput(userInfo.email, 'email').isValid} 
                             editable={false}
                         />
+                        <ErrorMsg text={validateInput(userInfo.email, 'email').errorMsg}/>
+                        <div className="relative flex flex-col gap-1">
+                            <Input 
+                                label="صورة الهوية"
+                                type="file"
+                                inputText=""
+                                value={userInfo.identity_document}
+                                onChange={(file) => setUserInfo({ ...userInfo, identity_document: file as File | null})} 
+                                isTrue={validateInput(userInfo.identity_document, 'file').isValid}
+                            /> 
+                            <ErrorMsg text={validateInput(userInfo.identity_document, 'file').errorMsg}/>  
+                        </div>    
+                        <div className="relative flex flex-col gap-1">                 
+                            <Input 
+                                label="مزاولة المهنة" 
+                                type="file" 
+                                inputText="" 
+                                value={userInfo.license_certificate} 
+                                onChange={(file) => setUserInfo({ ...userInfo, license_certificate: file as File | null})} 
+                                isTrue={validateInput(userInfo.license_certificate, 'file').isValid}
+                            />
+                            <ErrorMsg text={validateInput(userInfo.license_certificate, 'file').errorMsg}/>
+                        </div>
+                        <div className="relative flex flex-col gap-1">
+                            <Input 
+                                label="صورة شخصية" 
+                                type="file" 
+                                inputText="" 
+                                value={userInfo.personal_photo} 
+                                onChange={(file) => setUserInfo({ ...userInfo, personal_photo: file as File | null })} 
+                                isTrue={validateInput(userInfo.personal_photo, 'file').isValid}
+                            />
+                            <ErrorMsg text={validateInput(userInfo.personal_photo, 'file').errorMsg}/>
+                        </div>
+                        <div className="relative flex flex-col gap-1">
                         <Input 
-                            label="صورة الهوية"
-                            type="file"
-                            inputText=""
-                            value={userInfo.identity_document}
-                            onChange={(file) => setUserInfo({ ...userInfo, identity_document: file as File | null})} 
-                            isTrue={validateInput(userInfo.identity_document, 'file').isValid}
-                        />                        
-                        <Input 
-                            label="مزاولة المهنة" 
-                            type="file" 
-                            inputText="" 
-                            value={userInfo.license_certificate} 
-                            onChange={(file) => setUserInfo({ ...userInfo, license_certificate: file as File | null})} 
-                            isTrue={validateInput(userInfo.license_certificate, 'file').isValid}
-                        />
-                        <Input 
-                            label="صورة شخصية" 
-                            type="file" 
-                            inputText="" 
-                            value={userInfo.personal_photo} 
-                            onChange={(file) => setUserInfo({ ...userInfo, personal_photo: file as File | null })} 
-                            isTrue={validateInput(userInfo.personal_photo, 'file').isValid}
-                        />
-                        <Input 
-                            label="رقم الرخصة" 
+                            label="رقم الهاتف" 
                             type="text" 
-                            inputText="ادخل رقم رخصتك كصيدلي" 
-                            value={userInfo.license_number} 
-                            onChange={(value) => setUserInfo({ ...userInfo, license_number: typeof value === 'string' ? value : ''})}
-                            isTrue={validateInput(userInfo.license_number, 'text').isValid}
+                            inputText="ادخل رقم هاتفك" 
+                            value={userInfo.phone_number} 
+                            onChange={(value) => setUserInfo({ ...userInfo, phone_number: typeof value === 'string' ? value : ''})}
+                            isTrue={validateInput(userInfo.phone_number, 'mobile').isValid}
                         />
+                        <ErrorMsg text={validateInput(userInfo.phone_number, 'mobile').errorMsg}/></div>
                     </div>
                     <div className="flex items-center gap-2">
                         <input checked={checkBoxChecked} onChange={() => {setCheckBoxChecked(!checkBoxChecked)}} type="checkbox" id="confirm" name="confirm" className="w-4 h-4" />
@@ -154,7 +172,7 @@ export default function PharmacistForm(){
                     </div>
                     <div className="flex flex-row items-center gap-5 ">
                         <PetrolBtn text="تقديم الطلب" onClick={handleSubmitForm} />
-                            <Link href={"/"} className="underline text-sm text-gray-600"> إلغاء </Link>
+                        <Link href={"/"} className="underline text-sm text-gray-600"> إلغاء </Link>
                     </div>
                 </div>
 
