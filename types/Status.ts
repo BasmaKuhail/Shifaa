@@ -1,1 +1,1 @@
-export type StatusType = "accepted" | "rejected" | "unread" | "pending";
+export type StatusType = "active" | "rejected" | "unread" | "pending";

@@ -9,7 +9,7 @@ type breadcrumbProps = {
 
 export default function Breadcrumb({breadcrumbArr}:breadcrumbProps){
     const router = useRouter()
-    {console.log(breadcrumbArr)}
+    // {console.log(breadcrumbArr)}
     return(
         
         <nav

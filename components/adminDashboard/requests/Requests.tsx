@@ -10,9 +10,11 @@ export default function Requests() {
 
     const requestsCategory =[
         {text:"كل الطلبات", value:"all"}, 
-        {text:"طلبات الانضمام كصيدلي", value:"pharmacist"}, 
+        {text:"الطلبات المقبولة", value:"active"}, 
+        {text:"الطلبات المرفوضة", value:"rejected"}, 
+        {text:"طلبات الانضمام كصيدلي", value:"all"}, 
         {text:"طلبات انشاء صيدلية", value:"pharmacy"}, 
-        {text:"الطلبات قيد التنفيذ", value:"pending"}
+        {text:"الطلبات قيد الانتظار", value:"pending"}
     ];
 
     const router = useRouter();
@@ -45,7 +47,7 @@ export default function Requests() {
                                     customerName: "اسم العميل", 
                                     email: "البريد الإلكتروني", 
                                     date: "تاريخ الطلب", 
-                                    licenseNumber: "رقم الرخصة", 
+                                    phoneNumber: "رقم الهاتف", 
                                     status: "الحالة", 
                                     interact: "التفاعل"
                                 }} 
@@ -53,7 +55,7 @@ export default function Requests() {
                                     email: "flex-[2]",
                                     customerName: "flex-1",
                                     date: "flex-1",
-                                    licenseNumber: "flex-1",
+                                    phoneNumber: "flex-1",
                                     status: "flex-1",
                                     interact: "flex-1",
                                 }}/>
@@ -66,7 +68,7 @@ export default function Requests() {
                             <p className="py-6 text-center text-gray-500">لا توجد طلبات</p>
                         )}
                         {filteredResults.map((req) => (
-                            <div className="flex border-t border-gray-200 w-full items-center text-inpt" onClick={() => handleSeeDetails(req.id)}>
+                            <div className="flex border-t border-gray-200 w-full items-center text-inpt">
                                 <Row 
                                     key={req.id} 
                                     data={

@@ -1,5 +1,6 @@
 import api from "@/lib/api";
 import { ApplicationFile, PharmacistApplication } from "@/types/PharmacistApplication";
+import { StatusType } from "@/types/Status";
 import { File } from "buffer";
 
 type PharmacistApplicationResponse = {
@@ -34,7 +35,7 @@ export const pharmacistApplications = async ():Promise<PharmacistApplication[]> 
         role: application.user.role,
         date: new Date(application.created_at).toLocaleDateString("en-GB"),
         phone_number: application.phone_number,
-        status: application.employment_status as "accepted" | "rejected" | "unread" | "pending",
+        status: application.employment_status as StatusType,
         license_certificate: application.attachments[0], 
         personal_photo: application.attachments[1],
         identity_document: application.attachments[2]
@@ -57,8 +58,37 @@ export const acceptPharmacistApplication = async (id: number) => {
   }
 }
 
-export const rejectPharmacistApplication = async (id: number) => {
-  const response = await api.post(`/admin/pharmacists/${id}/reject`);
+export const rejectPharmacistApplication = async (
+  id: number,
+  rejectMsg: string
+) => {
+  try {
+    const response = await api.post(
+      `/admin/pharmacists/${id}/reject`,
+      {
+        rejection_reason: rejectMsg,
+      },
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error: any) {
+    console.error("Reject pharmacist application failed:", {
+      status: error.response?.status,
+      data: error.response?.data,
+    });
+
+    throw error;
+  }
+};
+
+export const deletePharmacistApplication = async (id: number) => {
+  const response = await api.delete(`/admin/pharmacists/${id}`);
 
   if (response.status !== 200) {
     throw new Error("Failed to reject pharmacist application");

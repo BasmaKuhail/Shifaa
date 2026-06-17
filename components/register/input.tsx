@@ -44,7 +44,7 @@ const Input = React.memo(({label, type, inputText, value, onChange, isTrue, edit
                         value={typeof value === 'string' ? value : ''}
                         placeholder={inputText}
                         onChange={(e) => {onChange(e.target.value)} }
-                        readOnly={editable?true : false}>
+                        readOnly={!editable}>
                     </textarea>
                 )  : type === 'file' ? (
                     <div className="relative border border-[#D1D1D1] rounded-inpt h-[52px] md:h-[45px] flex items-center justify-center cursor-pointer overflow-hidden">

@@ -5,11 +5,9 @@ import { useBreadcrumb } from "@/contexts/BreadcrumbContext";
 import { ApplicationFile, PharmacistApplication } from "@/types/PharmacistApplication";
 import { useEffect, useState } from "react";
 import PopUp from "./InteractRequestPopup";
-import leftAttow from "@/public/icons/arrowLeft.svg"
-import Image from "next/image";
-import Link from "next/link";
 import FileViewer from "./FileViewer";
 import EmptyPetrolBtn from "./EpmtyPetrolBtn";
+import Input from "@/components/register/input";
 type requestDetailsProps = {
     request?: PharmacistApplication
 }
@@ -24,8 +22,9 @@ export default function RequestDetails({request}: requestDetailsProps) {
         ])
     }, [request])
     const [showPopup, setShowPopup] = useState(false);
-    const [isAccept, setIsAccept] = useState(true);
+    const [popupType, setType] = useState<"reject" | "delete" | "accept" | null>(null);
 
+    const [rejectReason, setRejectReason] = useState("");
     const Columen = ({c1,c2}:{c1:string, c2:ApplicationFile | string | undefined}) => {
         return(
             <div className="flex flex-row gap-2 border-t border-black-200">
@@ -66,12 +65,17 @@ export default function RequestDetails({request}: requestDetailsProps) {
                             <Columen c1="الحالة" c2={request?.status} />
                         </div>
                     </div>
-                    {showPopup && request && <PopUp id={request.id} isAccept={isAccept} setShowPopup={setShowPopup}/>}
-                    
-                    <div className="flex flex-row gap-3 items-center">
-                        <PetrolBtn text="قبول الطلب" onClick={() => {setIsAccept(prev => true); setShowPopup(true)}}/>
-                        <EmptyPetrolBtn text="رفض الطلب" onClick={() => {setIsAccept(prev => false); setShowPopup(true)}}/>
-                    </div>
+                    {showPopup && request && <PopUp id={request.id} popupType={popupType} setShowPopup={setShowPopup} name={request.name} rejectMsg={String(rejectReason ?? "")}/>}
+                    {!(request?.status === "active") && <>
+                        <div className="flex flex-col">
+                            <Input editable={true} type="textarea" label="سبب الرفض" inputText="مثال: الصورة الهوية غير واضحة" value={rejectReason} isTrue={true} onChange={(value) => setRejectReason(String(value ?? ""))}/>
+                        </div>
+
+                        <div className="flex flex-row gap-3 items-center">
+                            <PetrolBtn text="قبول الطلب" onClick={() => {setType("accept"); setShowPopup(true)}}/>
+                            <EmptyPetrolBtn text="رفض الطلب" onClick={() => {setType("reject"); setShowPopup(true)}}/>
+                        </div>
+                    </>}
                     
                 </div>
 

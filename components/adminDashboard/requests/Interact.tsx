@@ -1,6 +1,6 @@
 import Delete from "@/public/icons/admin/Delete"
 import Eye from "@/public/icons/admin/Eye"
-import Check from "@/public/icons/admin/Check"
+import X from "@/public/icons/admin/X"
 import { useState } from "react";
 import { useRouter } from "next/router";
 import PopUp from "./InteractRequestPopup";
@@ -8,7 +8,7 @@ import PopUp from "./InteractRequestPopup";
 
 export default function Interact({status, id, name}: {status: string, id: number, name: string}) {
     const [showPopup, setShowPopup] = useState(false);
-    const [isAccept, setIsAccept] = useState(true);
+    const [popupType, setType] = useState<"reject" | "delete" | "accept" | null>(null);
     const router = useRouter();
 
     const handleSeeDetails = (id:number) => {
@@ -17,17 +17,28 @@ export default function Interact({status, id, name}: {status: string, id: number
     }
     return(
         <div className="w-full flex flex-row gap-3 items-center justify-start">
-            {/* <div onClick={() => {setIsAccept(prev => true); setShowPopup(true)}}>
-                <Check className={`${status === "pending" ? "text-black-400 cursor-pointer" : "text-black-200"}`}/>
-            </div> */}
-            <div onClick={() => {handleSeeDetails(id)}}>
-                <Eye className="text-black-400 cursor-pointer"/>
-            </div>
-            {showPopup && <PopUp id={id} isAccept={isAccept} setShowPopup={setShowPopup}/>}
-            <div 
-            onClick={(e) => {e.stopPropagation(); setIsAccept(prev => false); setShowPopup(true); }}>
-                <Delete className={`${status === "pending" ? "text-black-400 cursor-pointer" : "text-black-200"}`}/>
-            </div>
+            <button  type="button" title="عرض تفاصيل الطلب" onClick={() => {handleSeeDetails(id)}} aria-label="عرض تفاصيل الطلب">
+                <Eye className="text-black-400 cursor-pointer"  aria-hidden="true"/>
+            </button>
+            {showPopup && <PopUp id={id} popupType={popupType} setShowPopup={setShowPopup} name={name} rejectMsg=""/>}
+            <button
+                type="button" 
+                title="رفض الطلب" 
+                aria-label="رفض الطلب"
+                disabled={status === "rejected"}
+                onClick={(e) => {e.stopPropagation(); setType("reject"); setShowPopup(true); }}
+            >
+                <X className={`${status === "pending" ? "text-black-400 cursor-pointer" : "text-black-200"}`}/>
+            </button>
+            <button
+                type="button" 
+                title="حذف الطلب" 
+                aria-label="حذف الطلب"
+                disabled={(status === "active")}
+                onClick={(e) => {e.stopPropagation(); setType("delete"); setShowPopup(true); }}
+            >
+                <Delete className={`${status === "active" ? "text-black-200" : "text-black-400 cursor-pointer"}`}/>
+            </button>
             
         </div>
     )
