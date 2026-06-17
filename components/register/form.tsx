@@ -50,9 +50,15 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
         }));
     }, []);
 
-
+    const text = () =>{
+        if(isSubmitting) return "جاري الدخول"
+        if(isRegister)
+            return 'انشاء حساب'
+        else 
+            return'تسجيل دخول'
+    }
     return (
-        <div dir="rtl" className="flex flex-col gap-2 md:gap-5">
+        <div onSubmit={submit} dir="rtl" className="flex flex-col gap-2 md:gap-5">
             <div className="flex flex-col gap-1.5 items-center">
                 <Title title={isRegister ? 'انشاء حساب' : 'تسجيل الدخول'} />
                 {isRegister && <p className="mt-4 text-inpt">هل لديك حساب بالفعل؟ <Link href="/auth/login" className="font-bold hover:underline">تسجيل الدخول</Link></p>}
@@ -120,7 +126,11 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
             </div>
             <div className="flex flex-col items-center w-full gap-4">
                 <div className="w-full md:w-[70%] flex flex-col items-center gap-4 mt-2">
-                    <ButtonFull text={isRegister ? 'انشاء حساب' : 'تسجيل دخول'} onClick={submit} />
+                    <ButtonFull 
+                        text={text()} 
+                        onClick={submit} 
+                    />
+                    {errorMsg? <p>errorMsg</p> : <p></p>}
                     {/* <GoogleBtn text={isRegister ? "التسجيل باستخدام جوجل" : "المتابعة باستخدام جوجل"}/> */}
                     {!isRegister && <>
                         <div className="w-full flex items-center gap-3 mt-4"> 
@@ -132,7 +142,7 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
                 </div>
                 
                 {isRegister && <p className="text-xs md:text-12px text-center underline md:no-underline">بالاستمرار، فإنك توافق على شروط الاستخدام وسياسة الخصوصية</p>}
-
+                
             </div>
         </div>         
     )

@@ -1,6 +1,5 @@
 import api from "@/lib/api";
 import { ApplicationFile, PharmacistApplication } from "@/types/PharmacistApplication";
-import { File } from "buffer";
 
 type PharmacistApplicationResponse = {
   id: number;

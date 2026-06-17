@@ -21,23 +21,41 @@ type NextPageWithLayout = AppProps['Component'] & {
 }
 
 function MyApp({ Component, pageProps }: AppProps) {
+  const router = useRouter();
+  const isAdminRoute = router.pathname.startsWith("/admin");
   const getLayout =
     (Component as NextPageWithLayout).getLayout ||
     ((page) => page); // default layout (no wrapper)
-     return (
+  
+  if(isAdminRoute){
+    return (
+      <div className={`${tajawal.className} ${tajawal.variable}`}>   
+        <UserProvider>
+          <AuthGuard>
+            <BreadcrumbProvider>
+            <AdminRequestProvider>
+              {getLayout(<Component {...pageProps} />)}
+              <AppToastContainer/>
+              </AdminRequestProvider>
+            </BreadcrumbProvider>
+          </AuthGuard>
+        </UserProvider>
+        
+      </div>
+    );
+  }
+  return (
     <div className={`${tajawal.className} ${tajawal.variable}`}>   
       <UserProvider>
         <AuthGuard>
           <BreadcrumbProvider>
-          <AdminRequestProvider>
             {getLayout(<Component {...pageProps} />)}
             <AppToastContainer/>
-            </AdminRequestProvider>
           </BreadcrumbProvider>
         </AuthGuard>
       </UserProvider>
-      
-    </div>);
+    </div>
+  );
 }
 
 export default appWithTranslation(MyApp);
