@@ -68,9 +68,8 @@ export default function Requests() {
                             <p className="py-6 text-center text-gray-500">لا توجد طلبات</p>
                         )}
                         {filteredResults.map((req) => (
-                            <div className="flex border-t border-gray-200 w-full items-center text-inpt">
+                            <div key={req.id} className="flex border-t border-gray-200 w-full items-center text-inpt">
                                 <Row 
-                                    key={req.id} 
                                     data={
                                         {
                                             customerName: req.name,

@@ -50,7 +50,15 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
         }));
     }, []);
 
-
+    const btnText = () => {
+        if(isSubmitting)
+            return "جاري التسليم..."
+        if(isRegister)
+            return 'انشاء حساب'
+        else
+            return 'تسجيل دخول'
+        
+    }
     return (
         <div dir="rtl" className="flex flex-col gap-2 md:gap-5">
             <div className="flex flex-col gap-1.5 items-center">
@@ -120,7 +128,7 @@ export default function Form({ isRegister }: { isRegister: boolean }) {
             </div>
             <div className="flex flex-col items-center w-full gap-4">
                 <div className="w-full md:w-[70%] flex flex-col items-center gap-4 mt-2">
-                    <ButtonFull text={isRegister ? 'انشاء حساب' : 'تسجيل دخول'} onClick={submit} />
+                    <ButtonFull text={btnText()} onClick={submit} />
                     {/* <GoogleBtn text={isRegister ? "التسجيل باستخدام جوجل" : "المتابعة باستخدام جوجل"}/> */}
                     {!isRegister && <>
                         <div className="w-full flex items-center gap-3 mt-4"> 

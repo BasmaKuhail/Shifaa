@@ -3,20 +3,29 @@ import Card from "@/components/dashboard/PharmacyInfo/CardContainer";
 import PetrolBtn from "@/components/dashboard/PharmacyInfo/invitePopup/PetrolBtn";
 import { useBreadcrumb } from "@/contexts/BreadcrumbContext";
 import { ApplicationFile, PharmacistApplication } from "@/types/PharmacistApplication";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import PopUp from "./InteractRequestPopup";
 import FileViewer from "./FileViewer";
 import EmptyPetrolBtn from "./EpmtyPetrolBtn";
 import Input from "@/components/register/input";
 import { showAlert } from "@/components/alerts/AlertContainer";
 import { tr } from "framer-motion/client";
+import { AdminRequestContext } from "@/contexts/AdminPharmacistsRequestsContext";
 type requestDetailsProps = {
     request?: PharmacistApplication
 }
 
-export default function RequestDetails({request}: requestDetailsProps) {
-    {console.log(request)}
-    const { crumbs, setCrumbs } = useBreadcrumb()
+export default function RequestDetails({request : initialRequest }: requestDetailsProps) {
+    const { crumbs, setCrumbs } = useBreadcrumb();
+
+    const { getRequestById } = useContext(AdminRequestContext);
+
+    const request =
+        initialRequest?.id !== undefined
+        ? getRequestById(initialRequest.id) ?? initialRequest
+        : undefined;
+
+    
     useEffect(() => {
         setCrumbs([
             { title: "الطلبات", link: "/admin-dashboard/requests" },

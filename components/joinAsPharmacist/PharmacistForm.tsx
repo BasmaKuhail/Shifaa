@@ -47,8 +47,11 @@ export default function PharmacistForm(){
             { title: "انضمام كصيدلي", link: "/switch-to-pharmacist" }
         ])
     }, [])
+    const [submitLoading, setSubmitLoading] = useState(false);
+    const [isSubmited, setIsSubmited] = useState(false);
     
     const handleSubmitForm = async () => {
+        setSubmitLoading(true);
         if (
             !(validateInput(userInfo.identity_document, 'file').isValid &&
             validateInput(userInfo.license_certificate, 'file').isValid &&
@@ -92,12 +95,14 @@ export default function PharmacistForm(){
     try {
         const res = await switchToPharmasist(userInfo.identity_document, userInfo.phone_number, userInfo.license_certificate, userInfo.personal_photo);
         console.log(res);
+        setSubmitLoading(false);
         showAlert({
             type: "Success",
             title: "تم تقديم الطلب بنجاح",
             message: "سيتم مراجعة طلبك خلال 3-5 أيام عمل",
         });
-        // router.push("/");
+        setIsSubmited(true)
+        
     } catch (err: any) {
         console.log(err.response?.data);
         showAlert({
@@ -110,7 +115,7 @@ export default function PharmacistForm(){
 };
     const { crumbs } = useBreadcrumb()
 
-    if(user?.has_pharmacist_application){
+    if(user?.has_pharmacist_application || isSubmited){
         return <HasPharmacistApplication/>
     }
     return(
@@ -190,7 +195,7 @@ export default function PharmacistForm(){
                         <p className="text-12px">أؤكد أن هذه الوثائق تخصني وأن المعلومات دقيقة</p>
                     </div>
                     <div className="flex flex-row items-center gap-5 ">
-                        <PetrolBtn text="تقديم الطلب" onClick={handleSubmitForm} />
+                        <PetrolBtn text={submitLoading? "جاري التسليم": "تقديم الطلب"} onClick={handleSubmitForm} />
                         <Link href={"/"} className="underline text-sm text-gray-600"> إلغاء </Link>
                     </div>
                 </div>
