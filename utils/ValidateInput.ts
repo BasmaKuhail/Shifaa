@@ -12,7 +12,7 @@ export const validateInput = (value: string | File | null, type: 'text' | 'email
     if (typeof value !== "string") return {errorMsg: "يرجى ملأ جميع الحقول الفارغة", isValid: false};
     if (type === 'mobile') {
         //starts with 05 or +970 0r +972 followed by 7 digits
-        const isValid = /^(05|(\+970)|(\+972))\d{7}$/.test(value);
+        const isValid = /^(05|(\+970)|(\+972))\d{8}$/.test(value);
         return {errorMsg: isValid? "": "يرجى إدخال رقم هاتف يبدأ ب05", isValid};
     }
     if (type === 'text') {

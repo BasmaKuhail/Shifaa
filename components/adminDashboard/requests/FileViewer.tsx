@@ -75,7 +75,7 @@ export default function FileViewer({ file, label, id }: FileViewerProps) {
             <iframe
             src={objectUrl}
             title={file.name}
-            className="h-[500px] w-full rounded-lg border"
+            className="h-40 w-full rounded-lg border"
             />
         )}
 

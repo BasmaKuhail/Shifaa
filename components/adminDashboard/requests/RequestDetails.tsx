@@ -8,6 +8,8 @@ import PopUp from "./InteractRequestPopup";
 import FileViewer from "./FileViewer";
 import EmptyPetrolBtn from "./EpmtyPetrolBtn";
 import Input from "@/components/register/input";
+import { showAlert } from "@/components/alerts/AlertContainer";
+import { tr } from "framer-motion/client";
 type requestDetailsProps = {
     request?: PharmacistApplication
 }
@@ -41,6 +43,17 @@ export default function RequestDetails({request}: requestDetailsProps) {
         )
     }
     console.log(request?.identity_document)
+    const checkRejectMsg = () => {
+        if(rejectReason === ""){
+            showAlert({
+                type: "Warning",
+                title: "تحذير",
+                message: "يجب تعبئة خانة رسالة الرفض"
+            })
+            return false;
+        }
+        return true;
+    }
     return(
         <div dir="rtl" className="flex flex-col gap-10 mt-13 mb-40 xl:w-[80%] lg:w-full">
             <div className="flex flex-row gap-2 items-center">
@@ -73,7 +86,7 @@ export default function RequestDetails({request}: requestDetailsProps) {
 
                         <div className="flex flex-row gap-3 items-center">
                             <PetrolBtn text="قبول الطلب" onClick={() => {setType("accept"); setShowPopup(true)}}/>
-                            <EmptyPetrolBtn text="رفض الطلب" onClick={() => {setType("reject"); setShowPopup(true)}}/>
+                            <EmptyPetrolBtn text="رفض الطلب" onClick={() => {setType("reject"); checkRejectMsg() ? setShowPopup(true) : () => {}}}/>
                         </div>
                     </>}
                     

@@ -85,7 +85,7 @@ export default function PopUp ({id, popupType, setShowPopup, name, rejectMsg}:po
     }
         return(
             <PopupContainer onClose={onClose}>
-                <div className="flex flex-col items-center justify-center mt-5 z-50">
+                <div className="flex flex-col items-center justify-center mt-5">
                     <p className="text-btn font-semibold">{text()}{name}</p>
                     <div className="flex flex-row items-center gap-5 mt-5">
                         <PetrolBtn text="نعم" onClick={() => functionToCall()}/>

@@ -49,8 +49,27 @@ export default function PharmacistForm(){
     }, [])
     
     const handleSubmitForm = async () => {
-
-        if (userInfo.phone_number === "" || userInfo.identity_document === null || userInfo.license_certificate === null || userInfo.personal_photo === null) {
+        if (
+            !(validateInput(userInfo.identity_document, 'file').isValid &&
+            validateInput(userInfo.license_certificate, 'file').isValid &&
+            validateInput(userInfo.personal_photo, 'file').isValid &&
+            validateInput(userInfo.phone_number, 'mobile').isValid)  
+        ) {
+            console.log("sth went wrong")
+            showAlert({
+                type: "Error",
+                title: "خطأ",
+                message: "خطأ في البيانات المدخلة لأحد الحقول",
+            });
+            return
+        }
+        if (
+            userInfo.phone_number === "" || 
+            userInfo.identity_document === null || 
+            userInfo.license_certificate === null || 
+            userInfo.personal_photo === null
+             
+        ) {
             showAlert({
                 type: "Warning",
                 title: "تحذير",
