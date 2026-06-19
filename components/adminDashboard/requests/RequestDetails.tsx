@@ -79,7 +79,7 @@ export default function RequestDetails({request}: requestDetailsProps) {
                         </div>
                     </div>
                     {showPopup && request && <PopUp id={request.id} popupType={popupType} setShowPopup={setShowPopup} name={request.name} rejectMsg={String(rejectReason ?? "")}/>}
-                    {!(request?.status === "active") && <>
+                    {(request?.status === "pending") && <>
                         <div className="flex flex-col">
                             <Input editable={true} type="textarea" label="سبب الرفض" inputText="مثال: الصورة الهوية غير واضحة" value={rejectReason} isTrue={true} onChange={(value) => setRejectReason(String(value ?? ""))}/>
                         </div>
