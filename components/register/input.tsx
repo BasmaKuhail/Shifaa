@@ -109,9 +109,9 @@ const Input = React.memo(({label, type, inputText, value, onChange, isTrue, edit
                 }
       
             </div>
-                { type === 'password' && !errorMsg && label !== "تأكيد كلمة المرور" ? 
-                     <ErrorMsg text= "استخدم 8 أحرف انجليزية أو أكثر مع مزيج من الأرقام والرموز" isRed={false}/> 
-                    : label !== "تأكيد كلمة المرور" && <ErrorMsg text= {errorMsg || "\u00A0"} isRed={true}/> 
+                { type === 'password' && !errorMsg && !label.includes("تأكيد كلمة المرور") && label !== "كلمة المرور الحالية" ? 
+                    <ErrorMsg text= "استخدم 8 أحرف انجليزية أو أكثر مع مزيج من الأرقام والرموز" isRed={false}/> 
+                    : !label.includes("تأكيد كلمة المرور") && <ErrorMsg text= {errorMsg || "\u00A0"} isRed={true}/> 
                 }
 
         </div>
