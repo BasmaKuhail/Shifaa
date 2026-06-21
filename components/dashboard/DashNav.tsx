@@ -5,7 +5,7 @@ import { UserContext } from "@/contexts/UserContext";
 import ProNotContSkeleton from "../header/ProfileNotification/ProNotContSkeleton";
 import ProNotCont from "../header/ProfileNotification/ProfileNotificationsContainer";
 import Profile from "../header/Profile";
-import HeaderDeopDown from "@/components/header/DropDown"
+import HeaderDeopDown from "@/components/header/dropdown/DropDown"
 
 type mobileNavProps ={
     children:ReactNode,

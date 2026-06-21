@@ -102,9 +102,9 @@ export default function EditProfile() {
         <div dir="rtl" className="flex flex-col gap-5 md:gap-10 md:mt-0">
             <p className="font-semibold text-27px">إعدادات الحساب</p>
             <div className="flex flex-col w-full justify-center items-center gap-10">
-                <div className="flex flex-col gap-3">
+                {/* <div className="flex flex-col gap-3">
                     <ImageProfile userAvatar={user?.avatar ? user.avatar : null}/>
-                </div>
+                </div> */}
                         
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 w-full">
                     <Input 
@@ -184,7 +184,7 @@ export default function EditProfile() {
                                             onChange={(value) =>
                                                 setUpdatePasswordData((prev) => ({
                                                 ...prev,
-                                                current_password: typeof value === "string" ? value : "",
+                                                password: typeof value === "string" ? value : "",
                                                 }))
                                             }
                                             isTrue={validateInput(updatePasswordData.password, 'password').isValid} 
@@ -197,14 +197,14 @@ export default function EditProfile() {
                                             onChange={(value) =>
                                                 setUpdatePasswordData((prev) => ({
                                                 ...prev,
-                                                current_password: typeof value === "string" ? value : "",
+                                                password_confirmation: typeof value === "string" ? value : "",
                                                 }))
                                             }
                                             isTrue={validateInput(updatePasswordData.password_confirmation, 'password').isValid && validateConfirmPassword(updatePasswordData.password, updatePasswordData.password_confirmation)}
                                         />
                             </div>
                             <div className="flex flex-row items-center gap-5 w-full justify-start">
-                                <PetrolBtn text="تعير كلمة المرور" onClick={() => changePasswordOnClick()}/>
+                                <PetrolBtn text="تغير كلمة المرور" onClick={() => changePasswordOnClick()}/>
                             </div>
                         </div>
                     }

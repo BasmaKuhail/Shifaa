@@ -7,7 +7,7 @@ import mrKrabs from "@/public/images/mrKrabs.jpg"
 import IconHolder from "../IconHolder";
 import NotificationsDropDown from "../NotificationsDropDown";
 import Profile from "../Profile";
-import HeaderDeopDown from "../DropDown";
+import HeaderDeopDown from "../dropdown/DropDown";
 import { User } from "@/types/UserType";
 type ProNotContProps ={
     user: User
