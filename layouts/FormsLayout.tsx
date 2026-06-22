@@ -4,7 +4,6 @@ import { useBreadcrumb } from "@/contexts/BreadcrumbContext";
 
 export default function FormLayout({ children }: { children: React.ReactNode }) {
     const { crumbs } = useBreadcrumb()
-    {console.log(crumbs)}
     return (
         <div dir="rtl" className="bg-blue-100 w-full flex flex-col gap-10 pb-20 py-20 items-center justify-center min-h-screen px-4 md:px-15 lg:px-30 xl:px-50">
         

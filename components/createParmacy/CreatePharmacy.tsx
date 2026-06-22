@@ -8,18 +8,15 @@ import Image from "next/image";
 import arrowL from "@/public/icons/switchToPharmacist/arrowL.svg";
 import { useBreadcrumb } from "@/contexts/BreadcrumbContext"
 
-
-import {switchToPharmasist} from "@/services/switchToPharmacist"
 import PetrolBtn from "../dashboard/PharmacyInfo/invitePopup/PetrolBtn";
 import { useRouter } from "next/router";
 import { showAlert } from "../alerts/AlertContainer";
-import HasPharmacistApplication from "./HasForm";
 import ErrorMsg from "../register/ErrorMsg";
-export default function PharmacistForm(){
+import HasPharmacistApplication from "../joinAsPharmacist/HasForm";
+import { createPharm } from "@/services/createPharmacy";
+export default function CreatePharmacy(){
 
     const [checkBoxChecked, setCheckBoxChecked] = useState(false)
-    
-    const router = useRouter();
     
     const {user, loading} = useContext(UserContext);
     const handlePreviousPage = () => {
@@ -29,10 +26,11 @@ export default function PharmacistForm(){
     const getInitialUserInfo = () => ({
         fullName: user ? `${user.firstName} ${user.lastName}` : "",
         email: user?.email || "",
-        identity_document: null as File | null,
+        pharmacy_name: "",
         phone_number: "",
-        license_certificate: null as File | null,
-        personal_photo: null as File | null,
+        license_pharmacy: null as File | null,
+        logo: null as File | null,
+
     });
     const [userInfo, setUserInfo] = useState(getInitialUserInfo);
 
@@ -44,7 +42,7 @@ export default function PharmacistForm(){
     useEffect(() => {
         setCrumbs([
             { title: "الصفحة الرئيسية", link: "/" },
-            { title: "انضمام كصيدلي", link: "/switch-to-pharmacist" }
+            { title: "انشاء صيدلية", link: "/create-pharmacy" }
         ])
     }, [])
     const [submitLoading, setSubmitLoading] = useState(false);
@@ -52,25 +50,11 @@ export default function PharmacistForm(){
     
     const handleSubmitForm = async () => {
         setSubmitLoading(true);
-        if (
-            !(validateInput(userInfo.identity_document, 'file').isValid &&
-            validateInput(userInfo.license_certificate, 'file').isValid &&
-            validateInput(userInfo.personal_photo, 'file').isValid &&
-            validateInput(userInfo.phone_number, 'mobile').isValid)  
-        ) {
-            console.log("sth went wrong")
-            showAlert({
-                type: "Error",
-                title: "خطأ",
-                message: "خطأ في البيانات المدخلة لأحد الحقول",
-            });
-            return
-        }
+        
         if (
             userInfo.phone_number === "" || 
-            userInfo.identity_document === null || 
-            userInfo.license_certificate === null || 
-            userInfo.personal_photo === null
+            userInfo.license_pharmacy === null || 
+            userInfo.pharmacy_name === ""
              
         ) {
             showAlert({
@@ -90,10 +74,23 @@ export default function PharmacistForm(){
 
             return;
         }
-
+        if (
+            !(validateInput(userInfo.license_pharmacy, 'file').isValid &&
+            validateInput(userInfo.logo, 'file').isValid &&
+            validateInput(userInfo.pharmacy_name, 'text').isValid &&
+            validateInput(userInfo.phone_number, 'mobile').isValid)  
+        ) {
+            console.log("sth went wrong")
+            showAlert({
+                type: "Error",
+                title: "خطأ",
+                message: "خطأ في البيانات المدخلة لأحد الحقول",
+            });
+            return
+        }
 
     try {
-        const res = await switchToPharmasist(userInfo.identity_document, userInfo.phone_number, userInfo.license_certificate, userInfo.personal_photo);
+        const res = await createPharm(userInfo.pharmacy_name, userInfo.phone_number, userInfo.license_pharmacy,  userInfo.logo, );
         console.log(res);
         setSubmitLoading(false);
         showAlert({
@@ -115,16 +112,16 @@ export default function PharmacistForm(){
 };
     const { crumbs } = useBreadcrumb()
 
-    if(user?.has_pharmacist_application || isSubmited){
-        return <HasPharmacistApplication/>
-    }
+    // if(user?.has_pharmacist_application || isSubmited){
+    //     return <HasPharmacistApplication/>
+    // }
     return(
         <div className="flex flex-col gap-10">
                     <nav className="flex items-center gap-4">
                         <Image src={arrowL} alt="arrow left" className="transform rotate-180 cursor-pointer hidden md:block" onClick={handlePreviousPage}/>
-                        <p className="font-semibold text-27px">انضم كصيدلي</p>
+                        <p className="font-semibold text-27px">أنشئ صيدلية</p>
                     </nav>
-                    <p className="text-sm">قدم طلب للانضمام كصيدلي</p>
+                    <p className="text-sm">قدم طلب إنشاء صيدلية</p>
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-7 w-full">
                         <Input 
@@ -145,40 +142,39 @@ export default function PharmacistForm(){
                             isTrue={validateInput(userInfo.email, 'email').isValid} 
                             editable={false}
                         />
-                        <ErrorMsg text={validateInput(userInfo.email, 'email').errorMsg}/>
                         <div className="relative flex flex-col gap-1">
                             <Input 
-                                label="صورة الهوية"
+                                label="اسم الصيدلية" 
+                                type="text" 
+                                inputText="ادخل اسم الصيدلية" 
+                                value={userInfo.pharmacy_name} 
+                                onChange={(value) => setUserInfo({ ...userInfo, pharmacy_name: typeof value === 'string' ? value : ''})}
+                                isTrue={validateInput(userInfo.pharmacy_name, 'text').isValid}
+                            />
+                            <ErrorMsg text={validateInput(userInfo.pharmacy_name, 'text').errorMsg}/>
+                        </div>
+                        <div className="relative flex flex-col gap-1">
+                            <Input 
+                                label="ترخيص الصيدلية"
                                 type="file"
-                                inputText=""
-                                value={userInfo.identity_document}
-                                onChange={(file) => setUserInfo({ ...userInfo, identity_document: file as File | null})} 
-                                isTrue={validateInput(userInfo.identity_document, 'file').isValid}
+                                inputText="رخصة الصيدلية"
+                                value={userInfo.license_pharmacy}
+                                onChange={(file) => setUserInfo({ ...userInfo, license_pharmacy: file as File | null})} 
+                                isTrue={validateInput(userInfo.license_pharmacy, 'file').isValid}
                             /> 
-                            <ErrorMsg text={validateInput(userInfo.identity_document, 'file').errorMsg}/>  
+                            <ErrorMsg text={validateInput(userInfo.license_pharmacy, 'file').errorMsg}/>  
                         </div>    
-                        <div className="relative flex flex-col gap-1">                 
-                            <Input 
-                                label="مزاولة المهنة" 
-                                type="file" 
-                                inputText="" 
-                                value={userInfo.license_certificate} 
-                                onChange={(file) => setUserInfo({ ...userInfo, license_certificate: file as File | null})} 
-                                isTrue={validateInput(userInfo.license_certificate, 'file').isValid}
-                            />
-                            <ErrorMsg text={validateInput(userInfo.license_certificate, 'file').errorMsg}/>
-                        </div>
                         <div className="relative flex flex-col gap-1">
                             <Input 
-                                label="صورة شخصية" 
-                                type="file" 
-                                inputText="" 
-                                value={userInfo.personal_photo} 
-                                onChange={(file) => setUserInfo({ ...userInfo, personal_photo: file as File | null })} 
-                                isTrue={validateInput(userInfo.personal_photo, 'file').isValid}
-                            />
-                            <ErrorMsg text={validateInput(userInfo.personal_photo, 'file').errorMsg}/>
-                        </div>
+                                label="الشعار"
+                                type="file"
+                                inputText="ارفق صورة الشعار"
+                                value={userInfo.logo}
+                                onChange={(file) => setUserInfo({ ...userInfo, logo: file as File | null})} 
+                                isTrue={validateInput(userInfo.logo, 'file').isValid}
+                            /> 
+                            <ErrorMsg text={validateInput(userInfo.logo, 'file').errorMsg}/>  
+                        </div> 
                         <div className="relative flex flex-col gap-1">
                         <Input 
                             label="رقم الهاتف" 
