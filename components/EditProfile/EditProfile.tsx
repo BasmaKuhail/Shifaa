@@ -127,7 +127,7 @@ export default function EditProfile() {
                         label="البريد الالكتروني" 
                         type="text" inputText={user? user.email : ""} 
                         value={userInfo.email} onChange={(value) => setUserInfo({ ...userInfo, email: typeof value === 'string' ? value : '' })} 
-                        isTrue={validateInput(userInfo.email, 'text').isValid} 
+                        isTrue={validateInput(userInfo.email, 'email').isValid} 
                     />   
                             {/* <Input 
                                 label="رقم الهاتف" 
