@@ -27,7 +27,7 @@ export const createPharm = async (
   formData.append("pharmacy_name", pharmacy_name);
   formData.append("license_pharmacy", license_pharmacy);
   formData.append("phone_number", phone_number);
-  formData.append("logo", logo);
+  // formData.append("logo", logo);
 
 
   for (const [key, value] of formData.entries()) {
