@@ -11,6 +11,7 @@ import { BreadcrumbProvider } from '@/contexts/BreadcrumbContext';
 import AuthGuard from '@/components/auth/AuthGuard';
 import { AdminRequestProvider } from '@/contexts/AdminPharmacistsRequestsContext';
 import { AppToastContainer } from '@/components/alerts/AlertContainer';
+import Head from 'next/head';
 
 const tajawal = Tajawal({ subsets: ['arabic'], weight: ['400','500','700'], variable: "--font-tajawal"});
 
@@ -38,6 +39,10 @@ function MyApp({ Component, pageProps }: AppProps) {
   }, []);
      return (
     <div className={`${tajawal.className} ${tajawal.variable}`}>   
+    <Head>
+      <title>Shifaa</title>
+      <meta name="description" content="Shifaa web application" />
+    </Head>
       <UserProvider>
         <AuthGuard>
           <BreadcrumbProvider>
