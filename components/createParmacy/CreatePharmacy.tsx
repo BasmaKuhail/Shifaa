@@ -26,10 +26,11 @@ export default function CreatePharmacy(){
     const getInitialUserInfo = () => ({
         fullName: user ? `${user.firstName} ${user.lastName}` : "",
         email: user?.email || "",
-        pharmacy_name: "",
-        phone_number: "",
-        license_pharmacy: null as File | null,
+        name: "",
+        phone: "",
+        health_license: null as File | null,
         logo: null as File | null,
+        address: ""
 
     });
     const [userInfo, setUserInfo] = useState(getInitialUserInfo);
@@ -46,15 +47,16 @@ export default function CreatePharmacy(){
         ])
     }, [])
     const [submitLoading, setSubmitLoading] = useState(false);
-    const [isSubmited, setIsSubmited] = useState(false);
+    // const [isSubmited, setIsSubmited] = useState(false);
     
     const handleSubmitForm = async () => {
         setSubmitLoading(true);
         
         if (
-            userInfo.phone_number === "" || 
-            userInfo.license_pharmacy === null || 
-            userInfo.pharmacy_name === ""
+            userInfo.phone === "" || 
+            userInfo.health_license === null || 
+            userInfo.name === "" ||
+            userInfo.address === ""
              
         ) {
             showAlert({
@@ -75,10 +77,11 @@ export default function CreatePharmacy(){
             return;
         }
         if (
-            !(validateInput(userInfo.license_pharmacy, 'file').isValid &&
-            validateInput(userInfo.logo, 'file').isValid &&
-            validateInput(userInfo.pharmacy_name, 'text').isValid &&
-            validateInput(userInfo.phone_number, 'mobile').isValid)  
+            !(validateInput(userInfo.health_license, 'file').isValid &&
+            validateInput(userInfo.name, 'text').isValid &&
+            validateInput(userInfo.address, 'text').isValid &&
+            validateInput(userInfo.phone, 'mobile').isValid) &&
+            (userInfo.logo && validateInput(userInfo.logo, 'file').isValid )
         ) {
             console.log("sth went wrong")
             showAlert({
@@ -90,7 +93,7 @@ export default function CreatePharmacy(){
         }
 
     try {
-        const res = await createPharm(userInfo.pharmacy_name, userInfo.phone_number, userInfo.license_pharmacy,  userInfo.logo, );
+        const res = await createPharm(userInfo.name, userInfo.phone, userInfo.health_license, userInfo.address, userInfo.logo);
         console.log(res);
         setSubmitLoading(false);
         showAlert({
@@ -98,7 +101,7 @@ export default function CreatePharmacy(){
             title: "تم تقديم الطلب بنجاح",
             message: "سيتم مراجعة طلبك خلال 3-5 أيام عمل",
         });
-        setIsSubmited(true)
+        setSubmitLoading(true)
         
     } catch (err: any) {
         console.log(err.response?.data);
@@ -147,22 +150,22 @@ export default function CreatePharmacy(){
                                 label="اسم الصيدلية" 
                                 type="text" 
                                 inputText="ادخل اسم الصيدلية" 
-                                value={userInfo.pharmacy_name} 
-                                onChange={(value) => setUserInfo({ ...userInfo, pharmacy_name: typeof value === 'string' ? value : ''})}
-                                isTrue={validateInput(userInfo.pharmacy_name, 'text').isValid}
+                                value={userInfo.name} 
+                                onChange={(value) => setUserInfo({ ...userInfo, name: typeof value === 'string' ? value : ''})}
+                                isTrue={validateInput(userInfo.name, 'text').isValid}
                             />
-                            <ErrorMsg text={validateInput(userInfo.pharmacy_name, 'text').errorMsg}/>
+                            <ErrorMsg text={validateInput(userInfo.name, 'text').errorMsg}/>
                         </div>
                         <div className="relative flex flex-col gap-1">
                             <Input 
                                 label="ترخيص الصيدلية"
                                 type="file"
                                 inputText="رخصة الصيدلية"
-                                value={userInfo.license_pharmacy}
-                                onChange={(file) => setUserInfo({ ...userInfo, license_pharmacy: file as File | null})} 
-                                isTrue={validateInput(userInfo.license_pharmacy, 'file').isValid}
+                                value={userInfo.health_license}
+                                onChange={(file) => setUserInfo({ ...userInfo, health_license: file as File | null})} 
+                                isTrue={validateInput(userInfo.health_license, 'file').isValid}
                             /> 
-                            <ErrorMsg text={validateInput(userInfo.license_pharmacy, 'file').errorMsg}/>  
+                            <ErrorMsg text={validateInput(userInfo.health_license, 'file').errorMsg}/>  
                         </div>    
                         <div className="relative flex flex-col gap-1">
                             <Input 
@@ -180,12 +183,23 @@ export default function CreatePharmacy(){
                             label="رقم الهاتف" 
                             type="text" 
                             inputText="ادخل رقم هاتفك" 
-                            value={userInfo.phone_number} 
-                            onChange={(value) => setUserInfo({ ...userInfo, phone_number: typeof value === 'string' ? value : ''})}
-                            isTrue={validateInput(userInfo.phone_number, 'mobile').isValid}
+                            value={userInfo.phone} 
+                            onChange={(value) => setUserInfo({ ...userInfo, phone: typeof value === 'string' ? value : ''})}
+                            isTrue={validateInput(userInfo.phone, 'mobile').isValid}
                         />
-                        <ErrorMsg text={validateInput(userInfo.phone_number, 'mobile').errorMsg}/></div>
+                        <ErrorMsg text={validateInput(userInfo.phone, 'mobile').errorMsg}/></div>
+                        
                     </div>
+                    <div className="relative flex flex-col gap-1">
+                        <Input 
+                            label="العنوان" 
+                            type="text" 
+                            inputText="مثال: غزة- الرمال- دوار السرايا - مقابل بنك فلسطين" 
+                            value={userInfo.address} 
+                            onChange={(value) => setUserInfo({ ...userInfo, address: typeof value === 'string' ? value : ''})}
+                            isTrue={validateInput(userInfo.address, 'text').isValid}
+                        />
+                        <ErrorMsg text={validateInput(userInfo.address, 'text').errorMsg}/></div>
                     <div className="flex items-center gap-2">
                         <input checked={checkBoxChecked} onChange={() => {setCheckBoxChecked(!checkBoxChecked)}} type="checkbox" id="confirm" name="confirm" className="w-4 h-4" />
                         <p className="text-12px">أؤكد أن هذه الوثائق تخصني وأن المعلومات دقيقة</p>
