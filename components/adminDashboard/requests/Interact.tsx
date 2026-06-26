@@ -34,10 +34,10 @@ export default function Interact({status, id, name}: {status: string, id: number
                 type="button" 
                 title="حذف الطلب" 
                 aria-label="حذف الطلب"
-                disabled={(status === "active")}
+                // disabled={(status === "active")}
                 onClick={(e) => {e.stopPropagation(); setType("delete"); setShowPopup(true); }}
             >
-                <Delete className={`${status === "active" ? "text-black-200" : "text-black-400 cursor-pointer"}`}/>
+                <Delete className={`text-black-400 cursor-pointer"}`}/>
             </button>
             
         </div>
