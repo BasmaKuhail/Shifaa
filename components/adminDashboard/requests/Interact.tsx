@@ -37,7 +37,7 @@ export default function Interact({status, id, name}: {status: string, id: number
                 // disabled={(status === "active")}
                 onClick={(e) => {e.stopPropagation(); setType("delete"); setShowPopup(true); }}
             >
-                <Delete className={`text-black-400 cursor-pointer"`}/>
+                <Delete className={`text-black-400 cursor-pointer"}`}/>
             </button>
             
         </div>
