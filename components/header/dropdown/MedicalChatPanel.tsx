@@ -87,7 +87,7 @@ export default function MedicalChatPanel({ onClose }: Props) {
         <button
           type="button"
           onClick={onClose}
-          className="flex h-9 w-9 items-center justify-center rounded-full hover:bg-black-100"
+          className="flex h-9 w-9 items-center justify-center rounded-full bg-black-200 hover:bg-black-500"
           aria-label="إغلاق المحادثة"
         >
           <Image src={cross} alt="" width={13} />

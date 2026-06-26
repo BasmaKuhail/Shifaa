@@ -28,7 +28,7 @@ export default function MainMenu ({user, setIsSettingsOpen, setIsChatOpen}:props
             // {title: "الإشعارات", icon: notification, allowed:false, onclick: () => {router.push("/notifications")}},
             {title: "انضمام كصيدلي", icon: switchTo, opened:false, arrow: ArrowRight, onclick: () => {router.push("/switch-to-pharmacist")}},
             {title: "إنشاء صيدلية", icon: createPharm, opened:false, arrow: ArrowRight, onclick: () => {router.push("/create-pharmacy")}},
-            {title: "محادثة الدعم", icon: chatbot, opened:false, arrow: ArrowRight, onclick: () => {setIsChatOpen(true)}},
+            {title: "مساعدك الطبي الذكي", icon: chatbot, opened:false, arrow: ArrowRight, onclick: () => {setIsChatOpen(true)}},
             {title: "طلب دواء", icon:medication , opened:false, arrow: ArrowRight, onclick: () => {router.push("/request-medication")}},
             // {title: "العناصر المحفوظة", icon: saved, opened:false, arrow: ArrowRight, onclick: () => {router.push("/saved-items")}},
             {
