@@ -4,10 +4,12 @@ import "react-toastify/dist/ReactToastify.css";
 import type { AppProps } from 'next/app';
 import { Tajawal } from 'next/font/google';
 import { appWithTranslation } from 'next-i18next';
-import { UserProvider } from '@/contexts/UserContext';
+import { UserContext, UserProvider } from '@/contexts/UserContext';
 import { ReactElement, ReactNode, useContext, useEffect } from 'react';
 import { BreadcrumbProvider } from '@/contexts/BreadcrumbContext';
+import { useRouter } from 'next/router';
 
+import { protectedRoutes, guestOnlyRoutes } from "@/config/routeRules";
 import AuthGuard from '@/components/auth/AuthGuard';
 import { AdminRequestProvider } from '@/contexts/AdminPharmacistsRequestsContext';
 import { AppToastContainer } from '@/components/alerts/AlertContainer';
@@ -19,32 +21,25 @@ type NextPageWithLayout = AppProps['Component'] & {
 }
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const getLayout =
-    (Component as NextPageWithLayout).getLayout ||
-    ((page) => page); // default layout (no wrapper)
-    useEffect(() => {
-    if (!("serviceWorker" in navigator)) return;
+  const router = useRouter();
+   const getLayout =
+    (Component as NextPageWithLayout).getLayout || ((page) => page);
 
-    window.addEventListener("load", () => {
-      navigator.serviceWorker
-        .register("/sw.js")
-        .then((registration) => {
-          console.log("Service worker registered:", registration.scope);
-        })
-        .catch((error) => {
-          console.error("Service worker registration failed:", error);
-        });
-    });
-  }, []);
-     return (
+  const page = getLayout(<Component {...pageProps} />);
+
+  const isAdminRoute = router.pathname.startsWith("/admin");
+
+  return (
     <div className={`${tajawal.className} ${tajawal.variable}`}>   
       <UserProvider>
         <AuthGuard>
           <BreadcrumbProvider>
-          <AdminRequestProvider>
-            {getLayout(<Component {...pageProps} />)}
+          {isAdminRoute ? (
+              <AdminRequestProvider>{page}</AdminRequestProvider>
+            ) : (
+              page
+            )}
             <AppToastContainer/>
-            </AdminRequestProvider>
           </BreadcrumbProvider>
         </AuthGuard>
       </UserProvider>
