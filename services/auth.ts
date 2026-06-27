@@ -32,7 +32,7 @@ export const getMe = async ():Promise<User> => {
     },
   });
   const rawUser = response.data.data[0];
-  // console.log("Raw user data:", rawUser);
+  // console.log("Raw user data:", response.data);
   return {
     id: rawUser.id,
     firstName: rawUser.attributes.first_name,
@@ -42,6 +42,7 @@ export const getMe = async ():Promise<User> => {
     type: rawUser.type, 
     role:rawUser.attributes.role,
     has_pharmacist_application: rawUser.attributes.pharmacist_application.has_pharmacist_application,
+    has_pharmacy_application: rawUser.attributes.pharmacy_application.has_pharmacy_application,
   };
 }
 
