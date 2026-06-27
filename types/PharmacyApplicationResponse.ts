@@ -2,7 +2,8 @@ import { ApplicationFile } from "@/types/PharmacistApplication";
 
 export type PharmacyApplicationResponse = {
   id: number;
-  phone_number: string;
+  phone: string;
+  pharmacy_name:string;
   status: string;
   address: string;
   created_at: string;

@@ -23,6 +23,8 @@ export type PharmacistApplication = {
 
 export type PharmacyApplication = {
   id: number;
+  pharmacy_name:string;
+  pharmacist_name:string;
   date: string;
   phone_number:string;
   status:  StatusType;

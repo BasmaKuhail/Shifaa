@@ -109,10 +109,11 @@ export const pharmacyApplications = async ():Promise<PharmacyApplication[]> => {
     console.log(response.data);
     return response.data.data.map((application) => ({
         id: application.id,
-        name: application.pharmacist.name,
+        pharmacist_name: application.pharmacist.name,
+        pharmacy_name: application.pharmacy_name,
         address: application.address,
         date: new Date(application.created_at).toLocaleDateString("en-GB"),
-        phone_number: application.phone_number,
+        phone_number: application.phone,
         status: application.status as StatusType,
         health_license: application.health_license, 
         logo: application.logo,
