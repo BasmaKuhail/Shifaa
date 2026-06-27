@@ -115,9 +115,9 @@ export default function CreatePharmacy(){
 };
     const { crumbs } = useBreadcrumb()
 
-    // if(user?.has_pharmacist_application || isSubmited){
-    //     return <HasPharmacistApplication/>
-    // }
+    if(user?.has_pharmacy_application || submitLoading){
+        return <HasPharmacistApplication/>
+    }
     return(
         <div className="flex flex-col gap-10">
                     <nav className="flex items-center gap-4">
