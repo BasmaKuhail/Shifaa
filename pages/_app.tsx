@@ -13,6 +13,7 @@ import { protectedRoutes, guestOnlyRoutes } from "@/config/routeRules";
 import AuthGuard from '@/components/auth/AuthGuard';
 import { AdminRequestProvider } from '@/contexts/AdminPharmacistsRequestsContext';
 import { AppToastContainer } from '@/components/alerts/AlertContainer';
+import { AdminPharmacyRequestProvider } from '@/contexts/AdminPharmcyRequestsContext';
 
 const tajawal = Tajawal({ subsets: ['arabic'], weight: ['400','500','700'], variable: "--font-tajawal"});
 
@@ -35,7 +36,7 @@ function MyApp({ Component, pageProps }: AppProps) {
         <AuthGuard>
           <BreadcrumbProvider>
           {isAdminRoute ? (
-              <AdminRequestProvider>{page}</AdminRequestProvider>
+              <AdminRequestProvider><AdminPharmacyRequestProvider>{page}</AdminPharmacyRequestProvider></AdminRequestProvider>
             ) : (
               page
             )}

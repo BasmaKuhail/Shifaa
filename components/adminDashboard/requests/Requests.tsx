@@ -5,9 +5,12 @@ import { useContext, useEffect, useState } from "react";
 import Interact from "./Interact";
 import { AdminRequestContext } from "@/contexts/AdminPharmacistsRequestsContext";
 import { useRouter } from "next/router";
+import { AdminPharmacyRequestContext } from "@/contexts/AdminPharmcyRequestsContext";
 export default function Requests() {
     const { requests, loading, error } = useContext(AdminRequestContext);
+    const { pharmacyRequests, loadingPharm, errorPharm } = useContext(AdminPharmacyRequestContext);
 
+    // console.log(pharmacyRequests)
     const requestsCategory =[
         {text:"كل الطلبات", value:"all"}, 
         {text:"الطلبات المقبولة", value:"active"}, 
@@ -25,10 +28,7 @@ export default function Requests() {
     const filteredResults = requests.filter((request) => {
         return selectedCategory.value === "all" || request.status === selectedCategory.value;
     });
-    const handleSeeDetails = (id:number) => {
-        router.push(`/admin-dashboard/requests/${id}`);
-        console.log(`See details of request with id: ${id}`);
-    }
+
     return(
         <div className="flex flex-col gap-10 mt-13 mb-40 w-full">
             <p className="font-semibold text-27px">إدارة الدعوات</p>

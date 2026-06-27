@@ -1,26 +1,10 @@
 import api from "@/lib/api";
-import { ApplicationFile, PharmacistApplication } from "@/types/PharmacistApplication";
+import { PharmacistApplication, PharmacyApplication } from "@/types/PharmacistApplication";
+import { PharmacistApplicationResponse } from "@/types/PharmacistApplicationResponse";
+import { PharmacyApplicationResponse } from "@/types/PharmacyApplicationResponse";
 import { StatusType } from "@/types/Status";
-import { File } from "buffer";
 
-type PharmacistApplicationResponse = {
-  id: number;
-  phone_number: string;
-  employment_status: string;
-  created_at: string;
-  user: {
-    id: number;
-    name: string;
-    email: string;
-    role: string;
-  };
-    attachments: [
-    license_certificate: ApplicationFile ,
-    personal_photo: ApplicationFile,
-    identity_document: ApplicationFile 
-  ]
-};
-
+// pharmacist
 export const pharmacistApplications = async ():Promise<PharmacistApplication[]> => {
     const response = await 
         api.get<{
@@ -113,4 +97,24 @@ export const getAttachment = async (id:number):Promise<Blob>=> {
       },
     });
   return response.data ;
+}
+
+// pharmcy
+export const pharmacyApplications = async ():Promise<PharmacyApplication[]> => {
+    const response = await 
+        api.get<{
+            status: string;
+            data: PharmacyApplicationResponse[];
+        }>("/admin/pharmacy-applications");
+    console.log(response.data);
+    return response.data.data.map((application) => ({
+        id: application.id,
+        name: application.pharmacist.name,
+        address: application.address,
+        date: new Date(application.created_at).toLocaleDateString("en-GB"),
+        phone_number: application.phone_number,
+        status: application.status as StatusType,
+        health_license: application.health_license, 
+        logo: application.logo,
+    }))
 }

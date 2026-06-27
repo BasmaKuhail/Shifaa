@@ -20,3 +20,13 @@ export type PharmacistApplication = {
   personal_photo: ApplicationFile | undefined;
   identity_document: ApplicationFile | undefined;
 };
+
+export type PharmacyApplication = {
+  id: number;
+  date: string;
+  phone_number:string;
+  status:  StatusType;
+  address:string;
+  health_license: ApplicationFile | undefined;
+  logo: ApplicationFile | undefined;
+};
