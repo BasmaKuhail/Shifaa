@@ -64,13 +64,13 @@ export default function CreatePharmReq () {
                                 <Row 
                                     data={
                                         {
-                                            pharmacyName: req.pharmacist_name,
+                                            pharmacyName: req.pharmacy_name,
                                             pharmaciestName: req.pharmacist_name,
                                             address:req.address,
                                             date: req.date,
                                             phone_number: req.phone_number,
                                             status: <StatusHolder status={req.status} />,
-                                            interact: <Interact status={req.status} id={req.id} name={req.pharmacist_name}/>
+                                            interact: <Interact status={req.status} id={req.id} name={req.pharmacist_name} type="pharmacy"/>
                                         }}
                                     columnClassNames={{
                                         pharmacyName:"flex-1",

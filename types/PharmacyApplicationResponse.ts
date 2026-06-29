@@ -3,7 +3,7 @@ import { ApplicationFile } from "@/types/PharmacistApplication";
 export type PharmacyApplicationResponse = {
   id: number;
   phone: string;
-  pharmacy_name:string;
+  name:string;
   status: string;
   address: string;
   created_at: string;

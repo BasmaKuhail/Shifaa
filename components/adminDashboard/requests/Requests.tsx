@@ -7,7 +7,7 @@ import { AdminRequestContext } from "@/contexts/AdminPharmacistsRequestsContext"
 import { useRouter } from "next/router";
 import { AdminPharmacyRequestContext } from "@/contexts/AdminPharmcyRequestsContext";
 import PharmacistsRequests from "./JoinPharmacistRequests";
-import CreatePharmReq from "./CreatePharmacyRequests";
+import CreatePharmReq from "./PharmacyRequests";
 export default function Requests() {
     const { pharmacyRequests, loadingPharm, errorPharm } = useContext(AdminPharmacyRequestContext);
 

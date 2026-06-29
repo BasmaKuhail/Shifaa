@@ -110,7 +110,7 @@ export const pharmacyApplications = async ():Promise<PharmacyApplication[]> => {
     return response.data.data.map((application) => ({
         id: application.id,
         pharmacist_name: application.pharmacist.name,
-        pharmacy_name: application.pharmacy_name,
+        pharmacy_name: application.name,
         address: application.address,
         date: new Date(application.created_at).toLocaleDateString("en-GB"),
         phone_number: application.phone,
@@ -118,4 +118,65 @@ export const pharmacyApplications = async ():Promise<PharmacyApplication[]> => {
         health_license: application.health_license, 
         logo: application.logo,
     }))
+}
+
+export const acceptPharmacyApplication = async (application_id: number) => {
+  const response = await api.patch(`/admin/pharmacy/${application_id}/approve`);
+
+  if (response.status !== 200) {
+    throw new Error("Failed to accept pharmacist application");
+  }else if (response.status === 200) {
+    console.log("Pharmacist application accepted successfully");
+  }else if (response.status === 404) {
+    throw new Error("Pharmacist application not found");
+  }else if (response.status === 500) { 
+    throw new Error("Internal server error");
+  }else { 
+    throw new Error("Unexpected error");
+  }
+}
+
+export const rejectPharmacyApplication = async (
+  application_id: number,
+  rejectMsg: string
+) => {
+  try {
+    const response = await api.patch(
+      `/admin/pharmacy/${application_id}/reject`,
+      {
+        rejection_reason: rejectMsg,
+      },
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error: any) {
+    console.error("Reject pharmacist application failed:", {
+      status: error.response?.status,
+      data: error.response?.data,
+    });
+
+    throw error;
+  }
+};
+
+export const deletePharmacyApplication = async (application_id: number) => {
+  const response = await api.delete(`/admin/pharmacy/${application_id}`);
+
+  if (response.status !== 200) {
+    throw new Error("Failed to reject pharmacist application");
+  }else if (response.status === 200) {
+    console.log("Pharmacist application rejected successfully");
+  }else if (response.status === 404) {
+    throw new Error("Pharmacist application not found");
+  }else if (response.status === 500) { 
+    throw new Error("Internal server error");
+  }else { 
+    throw new Error("Unexpected error");
+  }
 }

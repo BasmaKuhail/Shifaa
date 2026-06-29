@@ -18,8 +18,8 @@ type PharmacistApplicationContextType = {
   pharmacyRequests: PharmacyApplication[];
   loadingPharm: boolean;
   errorPharm: string | null;
-  refreshRequests: () => Promise<void>;
-  getRequestById: (id: number) => PharmacyApplication | undefined;
+  refreshPharmRequests: () => Promise<void>;
+  getPharmRequestById: (id: number) => PharmacyApplication | undefined;
   removeRequest: (id: number) => void;
   updateRequestStatus: (id: number, status: RequestStatus) => void;
 };
@@ -28,8 +28,8 @@ export const AdminPharmacyRequestContext = createContext<PharmacistApplicationCo
   pharmacyRequests: [],
   loadingPharm: true,
   errorPharm: null,
-  refreshRequests: async () => {},
-  getRequestById: () => undefined,
+  refreshPharmRequests: async () => {},
+  getPharmRequestById: () => undefined,
   removeRequest: () => {},
   updateRequestStatus: () => {},
 });
@@ -39,7 +39,7 @@ export const AdminPharmacyRequestProvider = ({ children }: { children: ReactNode
   const [loadingPharm, setLoadingPharm] = useState(true);
   const [errorPharm, setErrorPharm] = useState<string | null>(null);
 
-  const refreshRequests = useCallback(async () => {
+  const refreshPharmRequests = useCallback(async () => {
     try {
       setLoadingPharm(true);
       setErrorPharm(null);
@@ -77,23 +77,25 @@ export const AdminPharmacyRequestProvider = ({ children }: { children: ReactNode
     );
   }, []);
 
-  const getRequestById = useCallback(
+  const getPharmRequestById = useCallback(
     (id: number) => {
+          console.log(id)
+
       return pharmacyRequests.find((request) => request.id === id);
     },
     [pharmacyRequests]
   );
   useEffect(() => {
-  refreshRequests();
-}, [refreshRequests]);
+  refreshPharmRequests();
+}, [refreshPharmRequests]);
 
   const value = useMemo(
     () => ({
       pharmacyRequests,
       loadingPharm,
       errorPharm,
-      refreshRequests,
-      getRequestById,
+      refreshPharmRequests,
+      getPharmRequestById,
       removeRequest,
       updateRequestStatus,
     }),
@@ -101,8 +103,8 @@ export const AdminPharmacyRequestProvider = ({ children }: { children: ReactNode
       pharmacyRequests,
       loadingPharm,
       errorPharm,
-      refreshRequests,
-      getRequestById,
+      refreshPharmRequests,
+      getPharmRequestById,
       removeRequest,
       updateRequestStatus,
     ]

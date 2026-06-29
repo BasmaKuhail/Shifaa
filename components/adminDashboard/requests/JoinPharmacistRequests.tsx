@@ -64,7 +64,7 @@ export default function PharmacistsRequests () {
                                             date: req.date,
                                             phone_number: req.phone_number,
                                             status: <StatusHolder status={req.status} />,
-                                            interact: <Interact status={req.status} id={req.id} name={req.name}/>
+                                            interact: <Interact status={req.status} id={req.id} name={req.name} type="pharmacist"/>
                                         }}
                                     columnClassNames={{
                                         email: "flex-[2]",
