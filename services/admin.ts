@@ -1,26 +1,10 @@
 import api from "@/lib/api";
-import { ApplicationFile, PharmacistApplication } from "@/types/PharmacistApplication";
+import { PharmacistApplication, PharmacyApplication } from "@/types/PharmacistApplication";
+import { PharmacistApplicationResponse } from "@/types/PharmacistApplicationResponse";
+import { PharmacyApplicationResponse } from "@/types/PharmacyApplicationResponse";
 import { StatusType } from "@/types/Status";
-import { File } from "buffer";
 
-type PharmacistApplicationResponse = {
-  id: number;
-  phone_number: string;
-  employment_status: string;
-  created_at: string;
-  user: {
-    id: number;
-    name: string;
-    email: string;
-    role: string;
-  };
-    attachments: [
-    license_certificate: ApplicationFile ,
-    personal_photo: ApplicationFile,
-    identity_document: ApplicationFile 
-  ]
-};
-
+// pharmacist
 export const pharmacistApplications = async ():Promise<PharmacistApplication[]> => {
     const response = await 
         api.get<{
@@ -113,4 +97,86 @@ export const getAttachment = async (id:number):Promise<Blob>=> {
       },
     });
   return response.data ;
+}
+
+// pharmcy
+export const pharmacyApplications = async ():Promise<PharmacyApplication[]> => {
+    const response = await 
+        api.get<{
+            status: string;
+            data: PharmacyApplicationResponse[];
+        }>("/admin/pharmacy-applications");
+    console.log(response.data);
+    return response.data.data.map((application) => ({
+        id: application.id,
+        pharmacist_name: application.pharmacist.name,
+        pharmacy_name: application.name,
+        address: application.address,
+        date: new Date(application.created_at).toLocaleDateString("en-GB"),
+        phone_number: application.phone,
+        status: application.status as StatusType,
+        health_license: application.health_license, 
+        logo: application.logo,
+    }))
+}
+
+export const acceptPharmacyApplication = async (application_id: number) => {
+  const response = await api.patch(`/admin/pharmacy/${application_id}/approve`);
+
+  if (response.status !== 200) {
+    throw new Error("Failed to accept pharmacist application");
+  }else if (response.status === 200) {
+    console.log("Pharmacist application accepted successfully");
+  }else if (response.status === 404) {
+    throw new Error("Pharmacist application not found");
+  }else if (response.status === 500) { 
+    throw new Error("Internal server error");
+  }else { 
+    throw new Error("Unexpected error");
+  }
+}
+
+export const rejectPharmacyApplication = async (
+  application_id: number,
+  rejectMsg: string
+) => {
+  try {
+    const response = await api.patch(
+      `/admin/pharmacy/${application_id}/reject`,
+      {
+        rejection_reason: rejectMsg,
+      },
+      {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+      }
+    );
+
+    return response.data;
+  } catch (error: any) {
+    console.error("Reject pharmacist application failed:", {
+      status: error.response?.status,
+      data: error.response?.data,
+    });
+
+    throw error;
+  }
+};
+
+export const deletePharmacyApplication = async (application_id: number) => {
+  const response = await api.delete(`/admin/pharmacy/${application_id}`);
+
+  if (response.status !== 200) {
+    throw new Error("Failed to reject pharmacist application");
+  }else if (response.status === 200) {
+    console.log("Pharmacist application rejected successfully");
+  }else if (response.status === 404) {
+    throw new Error("Pharmacist application not found");
+  }else if (response.status === 500) { 
+    throw new Error("Internal server error");
+  }else { 
+    throw new Error("Unexpected error");
+  }
 }
