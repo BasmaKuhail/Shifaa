@@ -115,8 +115,8 @@ export const pharmacyApplications = async ():Promise<PharmacyApplication[]> => {
         date: new Date(application.created_at).toLocaleDateString("en-GB"),
         phone_number: application.phone,
         status: application.status as StatusType,
-        health_license: application.health_license, 
-        logo: application.logo,
+        health_license: application.attachments[0],
+        logo: application.attachments[1],
     }))
 }
 
