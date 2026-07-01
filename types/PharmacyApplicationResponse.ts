@@ -11,7 +11,8 @@ export type PharmacyApplicationResponse = {
     id:number;
     name:string;
   };
-  health_license: ApplicationFile ;
-  logo: ApplicationFile;
-  
+  attachments: [
+    health_license: ApplicationFile,
+    logo: ApplicationFile
+  ];
 };

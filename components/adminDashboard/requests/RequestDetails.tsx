@@ -95,18 +95,17 @@ export default function RequestDetails({request : initialRequest, type }: reques
                                 <Columen c1="الحالة" c2={pharmacistRequest?.status} />
                             </div>)
                             :(
-                            <div>
-                                
-
-                                <Columen c1="اسم الصيدلية" c2={pharmacyRequest?.pharmacy_name} />
-                                <Columen c1="اسم الصيدلي" c2={pharmacyRequest?.pharmacist_name} />
-                                <Columen c1="تاريخ الطلب" c2={pharmacyRequest?.date} />
-                                <Columen c1="رقم الهاتف" c2={pharmacyRequest?.phone_number} />
-                                <Columen c1="العنوان" c2={pharmacyRequest?.address} />
-                                <Columen c1="ترخيص الصيدلية" c2={pharmacyRequest?.health_license} />
-                                <Columen c1="شعار الصيدلية" c2={pharmacyRequest?.logo} />
-                                <Columen c1="الحالة" c2={pharmacyRequest?.status} />
-                            </div>)
+                                <div>
+                                    <Columen c1="اسم الصيدلية" c2={pharmacyRequest?.pharmacy_name} />
+                                    <Columen c1="اسم الصيدلي" c2={pharmacyRequest?.pharmacist_name} />
+                                    <Columen c1="تاريخ الطلب" c2={pharmacyRequest?.date} />
+                                    <Columen c1="رقم الهاتف" c2={pharmacyRequest?.phone_number} />
+                                    <Columen c1="العنوان" c2={pharmacyRequest?.address} />
+                                    <Columen c1="ترخيص الصيدلية" c2={pharmacyRequest?.health_license} />
+                                    <Columen c1="شعار الصيدلية" c2={pharmacyRequest?.logo} />
+                                    <Columen c1="الحالة" c2={pharmacyRequest?.status} />
+                                </div>
+                            )
                             }
 
                     </div>
