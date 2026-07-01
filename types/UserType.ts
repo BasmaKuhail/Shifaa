@@ -9,4 +9,5 @@ export type User = {
     location?: string;
     role: "user" | "pharmacist" | "admin"; 
     has_pharmacist_application: boolean;
+    has_pharmacy_application: boolean;
 }
