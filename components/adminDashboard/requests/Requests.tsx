@@ -1,6 +1,6 @@
-import StatusHolder from "@/components/dashboard/MedicineRequests/StatusHolder";
-import Card from "@/components/dashboard/PharmacyInfo/CardContainer";
-import Row from "@/components/dashboard/PharmacyInfo/pharmacistsTable/Row";
+import StatusHolder from "@/components/pharmacyDashboard/MedicineRequests/StatusHolder";
+import Card from "@/components/pharmacyDashboard/PharmacyInfo/CardContainer";
+import Row from "@/components/pharmacyDashboard/PharmacyInfo/pharmacistsTable/Row";
 import { useContext, useEffect, useState } from "react";
 import Interact from "./Interact";
 import { AdminRequestContext } from "@/contexts/AdminPharmacistsRequestsContext";

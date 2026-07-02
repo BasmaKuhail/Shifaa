@@ -1,5 +1,5 @@
 import DashboardLayout from "@/layouts/DashboardLayout";
-import MedicineReq from "@/components/dashboard/MedicineRequests/MedReq";
+import MedicineReq from "@/components/pharmacyDashboard/MedicineRequests/MedReq";
 
 import Add from "@/public/icons/dashboard/add";
 import Dash from "@/public/icons/dashboard/dashboard";

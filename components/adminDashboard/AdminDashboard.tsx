@@ -1,6 +1,6 @@
 import { UserContext } from "@/contexts/UserContext";
 import { useContext } from "react";
-import Card from "../dashboard/PharmacyInfo/CardContainer";
+import Card from "../pharmacyDashboard/PharmacyInfo/CardContainer";
 import { number } from "react-i18next/icu.macro";
 
 import comment from "@/public/icons/adminDashboard/comment.svg"

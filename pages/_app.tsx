@@ -14,6 +14,7 @@ import AuthGuard from '@/components/auth/AuthGuard';
 import { AdminRequestProvider } from '@/contexts/AdminPharmacistsRequestsContext';
 import { AppToastContainer } from '@/components/alerts/AlertContainer';
 import { AdminPharmacyRequestProvider } from '@/contexts/AdminPharmcyRequestsContext';
+import { PharmacyProvider } from '@/contexts/PharmacyDataContext';
 
 const tajawal = Tajawal({ subsets: ['arabic'], weight: ['400','500','700'], variable: "--font-tajawal"});
 
@@ -35,12 +36,14 @@ function MyApp({ Component, pageProps }: AppProps) {
       <UserProvider>
         <AuthGuard>
           <BreadcrumbProvider>
+          <PharmacyProvider>
           {isAdminRoute ? (
               <AdminRequestProvider><AdminPharmacyRequestProvider>{page}</AdminPharmacyRequestProvider></AdminRequestProvider>
             ) : (
               page
             )}
             <AppToastContainer/>
+          </PharmacyProvider>
           </BreadcrumbProvider>
         </AuthGuard>
       </UserProvider>

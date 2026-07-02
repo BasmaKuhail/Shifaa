@@ -1,6 +1,6 @@
 import { showAlert } from "@/components/alerts/AlertContainer";
-import PetrolBtn from "@/components/dashboard/PharmacyInfo/invitePopup/PetrolBtn";
-import PopupContainer from "@/components/dashboard/PharmacyInfo/PopUpContainer";
+import PetrolBtn from "@/components/pharmacyDashboard/PharmacyInfo/invitePopup/PetrolBtn";
+import PopupContainer from "@/components/pharmacyDashboard/PharmacyInfo/PopUpContainer";
 import { AdminRequestContext } from "@/contexts/AdminPharmacistsRequestsContext";
 import { AdminPharmacyRequestContext } from "@/contexts/AdminPharmcyRequestsContext";
 import { 

@@ -1,6 +1,6 @@
 import Breadcrumb from "@/components/Breadcrumb";
-import Card from "@/components/dashboard/PharmacyInfo/CardContainer";
-import PetrolBtn from "@/components/dashboard/PharmacyInfo/invitePopup/PetrolBtn";
+import Card from "@/components/pharmacyDashboard/PharmacyInfo/CardContainer";
+import PetrolBtn from "@/components/pharmacyDashboard/PharmacyInfo/invitePopup/PetrolBtn";
 import { useBreadcrumb } from "@/contexts/BreadcrumbContext";
 import { ApplicationFile, PharmacistApplication, PharmacyApplication } from "@/types/PharmacistApplication";
 import { useContext, useEffect, useState } from "react";
