@@ -8,7 +8,7 @@ import Image from "next/image";
 import arrowL from "@/public/icons/switchToPharmacist/arrowL.svg";
 import { useBreadcrumb } from "@/contexts/BreadcrumbContext"
 
-import PetrolBtn from "../dashboard/PharmacyInfo/invitePopup/PetrolBtn";
+import PetrolBtn from "../pharmacyDashboard/PharmacyInfo/invitePopup/PetrolBtn";
 import { useRouter } from "next/router";
 import { showAlert } from "../alerts/AlertContainer";
 import ErrorMsg from "../register/ErrorMsg";

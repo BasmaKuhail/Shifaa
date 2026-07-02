@@ -1,9 +1,9 @@
-import SideNav from "@/components/dashboard/SideNav";
+import SideNav from "@/components/pharmacyDashboard/SideNav";
 import ProNotCont from "@/components/header/ProfileNotification/ProfileNotificationsContainer";
 import { UserContext } from "@/contexts/UserContext";
 import { useContext} from "react";
 import ProNotContSkeleton from "@/components/header/ProfileNotification/ProNotContSkeleton";
-import MobileNav from "@/components/dashboard/MobileNav";
+import MobileNav from "@/components/pharmacyDashboard/MobileNav";
 import {NavItem} from "@/types/NavItemType"
 
 export default function DashboardLayout({ children, sideNavArr }: { children: React.ReactNode, sideNavArr: NavItem[] }) {

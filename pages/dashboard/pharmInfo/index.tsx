@@ -1,5 +1,5 @@
-import Dashboard from "@/components/dashboard/Dashboard";
-import PharmInfo from "@/components/dashboard/PharmacyInfo/PharmacyInfo";
+import Dashboard from "@/components/pharmacyDashboard/Dashboard";
+import PharmInfo from "@/components/pharmacyDashboard/PharmacyInfo/PharmacyInfo";
 import DashboardLayout from "@/layouts/DashboardLayout";
 
 import Add from "@/public/icons/dashboard/add";

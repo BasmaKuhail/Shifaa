@@ -1,5 +1,5 @@
-import StatusHolder from "@/components/dashboard/MedicineRequests/StatusHolder";
-import Row from "@/components/dashboard/PharmacyInfo/pharmacistsTable/Row";
+import StatusHolder from "@/components/pharmacyDashboard/MedicineRequests/StatusHolder";
+import Row from "@/components/pharmacyDashboard/PharmacyInfo/pharmacistsTable/Row";
 import Interact from "./Interact";
 import { useContext, useState } from "react";
 import { AdminRequestContext } from "@/contexts/AdminPharmacistsRequestsContext";

@@ -4,9 +4,10 @@ import deleteIcon from "@/public/icons/editProfile/delete.svg"
 
 import { useEffect, useRef, useState } from "react";
 import Cropper, { Area } from "react-easy-crop";
-import Btn from "../dashboard/PharmacyInfo/Btn";
+import Btn from "../pharmacyDashboard/PharmacyInfo/Btn";
+import { ApplicationFile } from "@/types/PharmacistApplication";
 type ImageProfileProps = {
-  userAvatar: string | null;
+  userAvatar: ApplicationFile | null;
 };
 export default function ImageProfile({ userAvatar }: ImageProfileProps) {
     const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -130,7 +131,7 @@ export default function ImageProfile({ userAvatar }: ImageProfileProps) {
                 </div>
                 )}
             <ProfileIcon 
-                imageUrl={preview || userAvatar} 
+                imageUrl={preview || userAvatar?.url || null} 
                 width={150}
                 isCircle={true}
             />

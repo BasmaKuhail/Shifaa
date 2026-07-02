@@ -8,7 +8,7 @@ import EditProfileSkeleton from "../Skeleton/EditProfileSkeleton";
 
 import { useBreadcrumb } from "@/contexts/BreadcrumbContext"
 import Link from "next/link";
-import PetrolBtn from "../dashboard/PharmacyInfo/invitePopup/PetrolBtn";
+import PetrolBtn from "../pharmacyDashboard/PharmacyInfo/invitePopup/PetrolBtn";
 import { showAlert } from "../alerts/AlertContainer";
 import { changePassword, updateProfile } from "@/services/editProfile";
 import axios from "axios";

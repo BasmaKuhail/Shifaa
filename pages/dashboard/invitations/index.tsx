@@ -1,4 +1,4 @@
-import Invitations from "@/components/dashboard/invitations/Invitations";
+import Invitations from "@/components/pharmacyDashboard/invitations/Invitations";
 import DashboardLayout from "@/layouts/DashboardLayout";
 
 import Add from "@/public/icons/dashboard/add";

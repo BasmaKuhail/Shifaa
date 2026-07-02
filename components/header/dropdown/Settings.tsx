@@ -1,5 +1,5 @@
 import { showAlert } from "@/components/alerts/AlertContainer";
-import PetrolBtn from "@/components/dashboard/PharmacyInfo/invitePopup/PetrolBtn";
+import PetrolBtn from "@/components/pharmacyDashboard/PharmacyInfo/invitePopup/PetrolBtn";
 import Input from "@/components/register/input";
 import { changePassword, updateProfile } from "@/services/editProfile";
 import { getApiErrorMessage } from "@/utils/getApiErrorMessage";

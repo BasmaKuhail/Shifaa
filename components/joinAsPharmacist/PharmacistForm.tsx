@@ -10,7 +10,7 @@ import { useBreadcrumb } from "@/contexts/BreadcrumbContext"
 
 
 import {switchToPharmasist} from "@/services/switchToPharmacist"
-import PetrolBtn from "../dashboard/PharmacyInfo/invitePopup/PetrolBtn";
+import PetrolBtn from "../pharmacyDashboard/PharmacyInfo/invitePopup/PetrolBtn";
 import { useRouter } from "next/router";
 import { showAlert } from "../alerts/AlertContainer";
 import HasPharmacistApplication from "./HasForm";

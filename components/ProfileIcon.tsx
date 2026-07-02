@@ -1,4 +1,5 @@
 import UserIcon from "@/public/icons/editProfile/user";
+import { ApplicationFile } from "@/types/PharmacistApplication";
 
 type ProfileIconProps = {
   imageUrl: string | null;

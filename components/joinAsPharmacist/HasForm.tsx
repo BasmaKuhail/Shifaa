@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import PetrolBtn from "../dashboard/PharmacyInfo/invitePopup/PetrolBtn";
+import PetrolBtn from "../pharmacyDashboard/PharmacyInfo/invitePopup/PetrolBtn";
 import Image from "next/image";
 import Success from "@/public/icons/submited/success";
 export default function HasPharmacistApplication() {
