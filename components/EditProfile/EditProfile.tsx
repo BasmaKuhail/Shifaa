@@ -103,7 +103,7 @@ export default function EditProfile() {
             <p className="font-semibold text-27px">إعدادات الحساب</p>
             <div className="flex flex-col w-full justify-center items-center gap-10">
                 {/* <div className="flex flex-col gap-3">
-                    <ImageProfile userAvatar={user?.avatar ? user.avatar : null}/>
+                    <ImageProfile avatar={user?.avatar ? user.avatar : null}/>
                 </div> */}
                         
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 w-full">

@@ -49,7 +49,7 @@ export default function FileViewer({ file, label, id }: FileViewerProps) {
         return (
         <div className="flex flex-col gap-2">
             <p className="font-semibold">{label}</p>
-            <p className="text-black-300">لا يوجد ملف</p>
+            <p className="text-black-300 text-center">لا يوجد ملف</p>
         </div>
         );
     }
@@ -58,7 +58,7 @@ export default function FileViewer({ file, label, id }: FileViewerProps) {
     const isPdf = file.mime_type === "application/pdf";
 
     if(isLoading){
-        return<p className="text-inpt text-black-500">جاري تحميل الملف...</p>
+        return<p className="text-inpt text-black-500 text-center">جاري تحميل الملف...</p>
     }
     return (
         <div className="flex flex-col gap-2">

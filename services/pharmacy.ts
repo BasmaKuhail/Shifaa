@@ -13,6 +13,6 @@ export const getPharmacyById = async (pharmacyId: number):Promise<Pharmacy> => {
     address: response.data.data.address,
     phone: response.data.data.phone,
     owner: response.data.data.pharmacist,
-    logo: response.data.data.attachments[0],
+    logo: response.data.data.attachments[1],
   };
 }
