@@ -49,7 +49,7 @@ export default function MainMenu ({user, profileOpened, setProfileOpened, setIsS
                 }
             } ,
         ]
-        const pharmaciesArr = dropDownItems.filter(item => !(item.title === "انضمام كصيدلي"))
+            const pharmaciesArr = dropDownItems.filter(item => !(item.title === "انضمام كصيدلي"))
             const userArr = dropDownItems.filter(item => !(item.title === "إنشاء صيدلية"))
             const adminArr = dropDownItems.filter(item => !(item.title === "انضمام كصيدلي" || item.title === "إنشاء صيدلية" || item.title === "طلب دواء"))
             
@@ -59,7 +59,7 @@ export default function MainMenu ({user, profileOpened, setProfileOpened, setIsS
         <div>
             <div className='flex flex-row justify-between  w-full border-b border-b-black-200 pb-5'>
                 <div className='flex flex-row items-center gap-4'>
-                    <ProfileIcon imageUrl={user.avatar} width={40} isCircle={false}/>
+                    <ProfileIcon imageObj={user.avatar} width={40} isCircle={false}/>
 
                     <div dir="rtl" className='flex flex-col'>
                         <p className='font-semibold text-sm'>{user.firstName}</p>

@@ -1,6 +1,7 @@
 import { ApplicationFile } from "@/types/PharmacistApplication";
 import { getAttachment } from "@/services/admin";
 import { useEffect, useState } from "react";
+import { s } from "framer-motion/client";
 
 type FileViewerProps = {
     file: ApplicationFile | null;
@@ -11,7 +12,7 @@ type FileViewerProps = {
 export default function FileViewer({ file, label, id }: FileViewerProps) {
     const [objectUrl, setObjectUrl] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
-
+    const [error, setError] = useState<string | null>(null);
     useEffect(() => {
         setIsLoading(true)
         if (!file) return;
@@ -32,6 +33,7 @@ export default function FileViewer({ file, label, id }: FileViewerProps) {
                 setObjectUrl(objectUrl);
                 setIsLoading(false)
             } catch (error) {
+                setError("فشل تحميل الملف")
                 console.error("Failed to load attachment:", error);
             }
         };
@@ -54,6 +56,13 @@ export default function FileViewer({ file, label, id }: FileViewerProps) {
         );
     }
 
+    if(error){
+        return (
+            <div className="flex flex-col gap-2">
+                <p className="text-red-500 text-center">{error}</p>
+            </div>
+        );
+    }
     const isImage = file.mime_type.startsWith("image/");
     const isPdf = file.mime_type === "application/pdf";
 

@@ -8,11 +8,11 @@ type ProfileProps = {
 
 export default function Profile({user}:ProfileProps){
     return(
-        <div dir="ltr" className="flex flex-row items-center  gap-5 mr-[12px]">
+        <div dir="rtl" className="flex flex-row items-center  gap-5 mr-[12px]">
             <div className="flex flex-row items-center gap-2">
                 <div className="relative">
                     <div className="flex flex-col cursor-pointer">
-                        <ProfileIcon imageUrl={user.avatar} width={40} isCircle={false}/>
+                        <ProfileIcon imageObj={user.avatar} width={40} isCircle={false}/>
                     </div>
                     <div className="bg-online p-1 w-[11px] h-[11px] rounded-full absolute right-0 bottom-0"></div>
                 </div>

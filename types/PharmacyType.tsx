@@ -21,3 +21,10 @@ export type pharmacyResponseType = {
     ]
     
 }
+
+export type PharmacyDataToUpdate = {
+  name: string;
+  address: string;
+  phone: string;
+  // logo: ApplicationFile | null;
+}

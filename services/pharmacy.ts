@@ -1,5 +1,5 @@
 import api from "@/lib/api";
-import { Pharmacy, pharmacyResponseType } from "@/types/PharmacyType";
+import { Pharmacy, PharmacyDataToUpdate, pharmacyResponseType } from "@/types/PharmacyType";
 
 export const getPharmacyById = async (pharmacyId: number):Promise<Pharmacy> => {
   const response = await api.get(`/pharmacy/${pharmacyId}`, {
@@ -15,4 +15,8 @@ export const getPharmacyById = async (pharmacyId: number):Promise<Pharmacy> => {
     owner: response.data.data.pharmacist,
     logo: response.data.data.attachments[1],
   };
+}
+export const updatePharmacyData = async (pharmacyId: number, pharmacyData: PharmacyDataToUpdate) => {
+  const response = await api.patch(`/pharmacy/${pharmacyId}`, pharmacyData);
+  return response.data;
 }

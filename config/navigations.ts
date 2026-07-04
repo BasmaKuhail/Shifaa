@@ -45,7 +45,7 @@ export const headerItems = [
     //     bold: false
     // }
 ]
-export const pharmacistNav = [
+export const pharmacytNav = [
     {
         id:1,
         icon:Home,
@@ -56,31 +56,31 @@ export const pharmacistNav = [
         id: 2,
         icon: Dash,
         label: "لوحة التحكم",
-        link: "/dashboard"
+        link: "/pharmacy-dashboard"
     },
     {
         id: 3,
         icon: Pharm,
         label: "معلومات الصيدلية",
-        link: "/dashboard/pharmInfo"
+        link: "/pharmacy-dashboard/pharmInfo"
     },
     {
         id: 4,
         icon: Request,
         label: "الطلبات",
-        link: "/dashboard/medicine-requests"
+        link: "/pharmacy-dashboard/medicine-requests"
     },
     {
         id: 5,
         icon: Add,
         label: "إضافة دواء",
-        link: "/dashboard/add"
+        link: "/pharmacy-dashboard/add"
     },
     {
         id: 6,
         icon: Request,
         label:"الدعوات",
-        link: "/dashboard/invitations"
+        link: "/pharmacy-dashboard/invitations"
     }
 ];
 

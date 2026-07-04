@@ -9,6 +9,7 @@ interface PharmacyrContextType {
   pharmacy: Pharmacy | null;
   setPharmacy: (pharmacy: Pharmacy | null) => void;
   loading: boolean;
+  
 }
 
 export const PharmacyContext = createContext<PharmacyrContextType>({
