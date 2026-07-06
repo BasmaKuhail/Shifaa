@@ -2,20 +2,28 @@ import { showAlert } from "@/components/alerts/AlertContainer";
 import PetrolBtn from "@/components/dashboard/PharmacyInfo/invitePopup/PetrolBtn";
 import PopupContainer from "@/components/dashboard/PharmacyInfo/PopUpContainer";
 import { AdminRequestContext } from "@/contexts/AdminPharmacistsRequestsContext";
-import { acceptPharmacistApplication, deletePharmacistApplication, rejectPharmacistApplication } from "@/services/admin";
-import { useRouter } from "next/router";
+import { AdminPharmacyRequestContext } from "@/contexts/AdminPharmcyRequestsContext";
+import { 
+    acceptPharmacistApplication, 
+    deletePharmacistApplication, 
+    rejectPharmacistApplication,
+    acceptPharmacyApplication,
+    deletePharmacyApplication,
+    rejectPharmacyApplication
+} from "@/services/admin";
 import { Dispatch, SetStateAction, useContext, useState } from "react";
 
 type popUpProps = {
     id:number, 
     popupType: "reject" | "delete" | "accept" | null, 
+    type: "pharmacist" | "pharmacy"
     setShowPopup:Dispatch<SetStateAction<boolean>>, 
-    name:string, 
+    name:string | undefined, 
     rejectMsg:string
 }
-export default function PopUp ({id, popupType, setShowPopup, name, rejectMsg}:popUpProps){
-    const router = useRouter();
-    const { refreshRequests, updateRequestStatus, removeRequest } =useContext(AdminRequestContext);
+export default function PopUp ({id, popupType, type, setShowPopup, name, rejectMsg}:popUpProps){
+    const { refreshRequests} =useContext(AdminRequestContext);
+    const { refreshPharmRequests} =useContext(AdminPharmacyRequestContext);
     const [ isSubmitting, setIsSubmited] = useState(false);
 
     const onClose = () => {
@@ -24,9 +32,13 @@ export default function PopUp ({id, popupType, setShowPopup, name, rejectMsg}:po
     const handleAccept = async () => {
         setIsSubmited(true);
             try {
-                await acceptPharmacistApplication(id);
-                await refreshRequests();
-
+                if(type === "pharmacist"){ 
+                    await acceptPharmacistApplication(id);
+                    await refreshRequests()
+                }else{
+                    await acceptPharmacyApplication(id);
+                    await refreshPharmRequests()
+                }
                 showAlert({
                     type:"Success",
                     title:"Success",
@@ -50,8 +62,13 @@ export default function PopUp ({id, popupType, setShowPopup, name, rejectMsg}:po
     const handleReject = async (rejectMsg:string) => {
         setIsSubmited(true);
         try {
-            await rejectPharmacistApplication(id, rejectMsg);
-            await refreshRequests();
+            if(type === "pharmacist"){ 
+                await rejectPharmacistApplication(id, rejectMsg);
+                await refreshRequests();
+            }else{
+               await rejectPharmacyApplication(id, rejectMsg);
+                await refreshPharmRequests(); 
+            }
             showAlert({
                     type:"Success",
                     title:"Success",
@@ -71,12 +88,16 @@ export default function PopUp ({id, popupType, setShowPopup, name, rejectMsg}:po
         }
     }
     
-
         const handleDelete = async () => {
             setIsSubmited(true);
             try {
-                await deletePharmacistApplication(id);
-                await refreshRequests();
+                if(type === "pharmacist"){ 
+                    await deletePharmacistApplication(id);
+                    await refreshRequests();
+                }else{
+                    await deletePharmacyApplication(id);
+                    await refreshPharmRequests();
+                }
 
                 showAlert({
                     type:"Success",

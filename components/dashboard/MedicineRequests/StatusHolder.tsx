@@ -1,6 +1,7 @@
 const StatusHolder = ({status}:{status:string}) => {
     const statusStyles: Record<string, string> = {
         active: "bg-accepted",
+        approved: "bg-accepted",
         pending: "bg-pending",
         rejected: "bg-rejected",
         expired: "bg-rejected",

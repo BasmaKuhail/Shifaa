@@ -4,8 +4,9 @@ import { adminNav } from "@/config/navigations";
 import RequestDetails from "@/components/adminDashboard/requests/RequestDetails";
 import { useContext, useEffect, useState } from "react";
 import { AdminRequestContext } from "@/contexts/AdminPharmacistsRequestsContext";
+import { AdminPharmacyRequestContext } from "@/contexts/AdminPharmcyRequestsContext";
 export default function RequestsPage() {
-    const { getRequestById } = useContext(AdminRequestContext);
+    const { getPharmRequestById } = useContext(AdminPharmacyRequestContext);
     const [id, setId] = useState<string>("");
 
     useEffect(() => {   
@@ -15,7 +16,7 @@ export default function RequestsPage() {
     }, []);
     return(
         <DashboardLayout sideNavArr={adminNav}>
-            <RequestDetails request={getRequestById(Number(id))}/>
+            <RequestDetails request={getPharmRequestById(Number(id))} type="pharmacy"/>
         </DashboardLayout>
     )
 }

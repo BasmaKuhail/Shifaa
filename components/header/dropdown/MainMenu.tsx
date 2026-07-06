@@ -1,12 +1,14 @@
-import Image from 'next/image';
+import Image, { StaticImageData } from 'next/image';
+import cross from "@/public/icons/profile/cross.svg"
 
 import profile from "@/public/icons/profile/profile.svg"
 import logout from "@/public/icons/profile/logout.svg"
 import medication from "@/public/icons/profile/medication.svg"
+import notification from "@/public/icons/profile/notifications.svg"
+import saved from "@/public/icons/profile/saved.svg"
 import settings from "@/public/icons/profile/settings.svg"
 import switchTo from "@/public/icons/profile/switch.svg"
 import createPharm from "@/public/icons/profile/createPharm.svg"
-import chatbot from "@/public/icons/chatbot.svg"
 import ArrowRight from "@/public/icons/profile/arrowRight.svg"
 
 import { logout as logoutService } from '@/services/auth';
@@ -17,10 +19,11 @@ import { Dispatch } from 'react';
 
 type props ={
     user: User
+    profileOpened:boolean,
+    setProfileOpened:Dispatch<React.SetStateAction<boolean>>,
     setIsSettingsOpen:Dispatch<React.SetStateAction<boolean>>,
-    setIsChatOpen:Dispatch<React.SetStateAction<boolean>>,
 }
-export default function MainMenu ({user, setIsSettingsOpen, setIsChatOpen}:props) {
+export default function MainMenu ({user, profileOpened, setProfileOpened, setIsSettingsOpen}:props) {
     const router = useRouter();
     const dropDownItems =[
             {title: "حسابي", icon: profile, opened:true, arrow: ArrowRight, onclick: () => {router.push("/editProfile")}},
@@ -28,7 +31,6 @@ export default function MainMenu ({user, setIsSettingsOpen, setIsChatOpen}:props
             // {title: "الإشعارات", icon: notification, allowed:false, onclick: () => {router.push("/notifications")}},
             {title: "انضمام كصيدلي", icon: switchTo, opened:false, arrow: ArrowRight, onclick: () => {router.push("/switch-to-pharmacist")}},
             {title: "إنشاء صيدلية", icon: createPharm, opened:false, arrow: ArrowRight, onclick: () => {router.push("/create-pharmacy")}},
-            {title: "مساعدك الطبي الذكي", icon: chatbot, opened:false, arrow: ArrowRight, onclick: () => {setIsChatOpen(true)}},
             {title: "طلب دواء", icon:medication , opened:false, arrow: ArrowRight, onclick: () => {router.push("/request-medication")}},
             // {title: "العناصر المحفوظة", icon: saved, opened:false, arrow: ArrowRight, onclick: () => {router.push("/saved-items")}},
             {
