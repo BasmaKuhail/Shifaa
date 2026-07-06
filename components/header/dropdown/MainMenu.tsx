@@ -1,91 +1,143 @@
-import Image, { StaticImageData } from 'next/image';
-import cross from "@/public/icons/profile/cross.svg"
+import Image from "next/image";
+import { Dispatch } from "react";
+import { useRouter } from "next/router";
 
-import profile from "@/public/icons/profile/profile.svg"
-import logout from "@/public/icons/profile/logout.svg"
-import medication from "@/public/icons/profile/medication.svg"
-import notification from "@/public/icons/profile/notifications.svg"
-import saved from "@/public/icons/profile/saved.svg"
-import settings from "@/public/icons/profile/settings.svg"
-import switchTo from "@/public/icons/profile/switch.svg"
-import createPharm from "@/public/icons/profile/createPharm.svg"
-import ArrowRight from "@/public/icons/profile/arrowRight.svg"
+import ProfileIcon from "@/components/ProfileIcon";
+import profile from "@/public/icons/profile/profile.svg";
+import logout from "@/public/icons/profile/logout.svg";
+import medication from "@/public/icons/profile/medication.svg";
+import settings from "@/public/icons/profile/settings.svg";
+import switchTo from "@/public/icons/profile/switch.svg";
+import createPharm from "@/public/icons/profile/createPharm.svg";
+import Chatbot from "@/public/icons/chatbot";
+import ArrowRight from "@/public/icons/profile/arrowRight.svg";
+import { logout as logoutService } from "@/services/auth";
+import { User } from "@/types/UserType";
 
-import { logout as logoutService } from '@/services/auth';
-import { User } from '@/types/UserType';
-import { useRouter } from 'next/router';
-import ProfileIcon from '@/components/ProfileIcon';
-import { Dispatch } from 'react';
+type Props = {
+  user: User;
+  setIsSettingsOpen: Dispatch<React.SetStateAction<boolean>>;
+  setIsChatOpen: Dispatch<React.SetStateAction<boolean>>;
+};
 
-type props ={
-    user: User
-    profileOpened:boolean,
-    setProfileOpened:Dispatch<React.SetStateAction<boolean>>,
-    setIsSettingsOpen:Dispatch<React.SetStateAction<boolean>>,
-}
-export default function MainMenu ({user, profileOpened, setProfileOpened, setIsSettingsOpen}:props) {
-    const router = useRouter();
-    const dropDownItems =[
-            {title: "حسابي", icon: profile, opened:true, arrow: ArrowRight, onclick: () => {router.push("/editProfile")}},
-            {title: "تغير كلمة المرور", icon: settings, opened:false, arrow: ArrowRight, onclick: () => setIsSettingsOpen(true)},
-            // {title: "الإشعارات", icon: notification, allowed:false, onclick: () => {router.push("/notifications")}},
-            {title: "انضمام كصيدلي", icon: switchTo, opened:false, arrow: ArrowRight, onclick: () => {router.push("/switch-to-pharmacist")}},
-            {title: "إنشاء صيدلية", icon: createPharm, opened:false, arrow: ArrowRight, onclick: () => {router.push("/create-pharmacy")}},
-            {title: "طلب دواء", icon:medication , opened:false, arrow: ArrowRight, onclick: () => {router.push("/request-medication")}},
-            // {title: "العناصر المحفوظة", icon: saved, opened:false, arrow: ArrowRight, onclick: () => {router.push("/saved-items")}},
-            {
-                title: "تسجيل خروج", 
-                icon:logout , 
-                opened:false, 
-                onclick: async () => {
-                    try {
-                        await logoutService(); // call API FIRST
-                    } catch (e) {
-                        console.error(e);
-                    } 
-                    localStorage.removeItem("token"); 
-                    localStorage.removeItem("user"); 
-                    window.location.href = "/auth/login"; 
-                }
-            } ,
-        ]
-        const pharmaciesArr = dropDownItems.filter(item => !(item.title === "انضمام كصيدلي"))
-            const userArr = dropDownItems.filter(item => !(item.title === "إنشاء صيدلية"))
-            const adminArr = dropDownItems.filter(item => !(item.title === "انضمام كصيدلي" || item.title === "إنشاء صيدلية" || item.title === "طلب دواء"))
-            
-            const itemsToShow = user.role === "pharmacist" ? pharmaciesArr : user.role === "admin" ? adminArr : userArr;
-        
-    return(
-        <div>
-            <div className='flex flex-row justify-between  w-full border-b border-b-black-200 pb-5'>
-                <div className='flex flex-row items-center gap-4'>
-                    <ProfileIcon imageUrl={user.avatar} width={40} isCircle={false}/>
+export default function MainMenu({ user, setIsSettingsOpen, setIsChatOpen }: Props) {
+  const router = useRouter();
 
-                    <div dir="rtl" className='flex flex-col'>
-                        <p className='font-semibold text-sm'>{user.firstName}</p>
-                        <p className='text-sm text-black-500'>{user.email}</p>
-                    </div>
-                </div>
-                {/* <div  onClick={() => {setProfileOpened(false); console.log(profileOpened)}} className='bg-red p-2 rounded-[10px] w-fit h-fit hover:bg-[#c73030]'>
-                    <Image src={cross} alt="x" width={13}/>
-                </div> */}
-            </div>   
-            <div className='flex flex-col gap-2 pt-5'>
-                {itemsToShow.map((item, index) =>
-                    <div 
-                        key={index} 
-                        className='flex flex-row justify-between items-center cursor-pointer hover:bg-black-100 p-2 px-6'
-                        onClick={item.onclick}
-                    >
-                        <div className='flex flex-row gap-4'>
-                            <Image  src={item.icon} alt='icon' width={24}/>
-                            <p className='font-[500] text-sm'>{item.title}</p>
-                        </div>
-                        {item.arrow && <Image className="scale-x-[-1]" src={item.arrow} alt="arrow"/>}
-                        {/* {item.allowed == true || item.allowed == false && <p className='text-12px text-black-400'>{(item.allowed) ? "مُفعَل" : "مكتوم"}</p>} */}
-                    </div>
-                )}     
-            </div>
+  const dropDownItems = [
+    {
+      title: "حسابي",
+      icon: profile,
+      opened: true,
+      arrow: ArrowRight,
+      onclick: () => {
+        router.push("/editProfile");
+      },
+    },
+    {
+      title: "تغيير كلمة المرور",
+      icon: settings,
+      opened: false,
+      arrow: ArrowRight,
+      onclick: () => setIsSettingsOpen(true),
+    },
+    {
+      title: "انضمام كصيدلي",
+      icon: switchTo,
+      opened: false,
+      arrow: ArrowRight,
+      onclick: () => {
+        router.push("/switch-to-pharmacist");
+      },
+    },
+    {
+      title: "إنشاء صيدلية",
+      icon: createPharm,
+      opened: false,
+      arrow: ArrowRight,
+      onclick: () => {
+        router.push("/create-pharmacy");
+      },
+    },
+    {
+      title: "مساعدك الطبي الذكي",
+      icon: Chatbot,
+      isComponentIcon: true,
+      opened: false,
+      arrow: ArrowRight,
+      onclick: () => {
+        setIsChatOpen(true);
+      },
+    },
+    {
+      title: "طلب دواء",
+      icon: medication,
+      opened: false,
+      arrow: ArrowRight,
+      onclick: () => {
+        router.push("/request-medication");
+      },
+    },
+    {
+      title: "تسجيل خروج",
+      icon: logout,
+      opened: false,
+      onclick: async () => {
+        try {
+          await logoutService();
+        } catch (e) {
+          console.error(e);
+        }
+
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        window.location.href = "/auth/login";
+      },
+    },
+  ];
+
+  const pharmaciesArr = dropDownItems.filter((item) => item.title !== "انضمام كصيدلي");
+  const userArr = dropDownItems.filter((item) => item.title !== "إنشاء صيدلية");
+  const adminArr = dropDownItems.filter(
+    (item) =>
+      item.title !== "انضمام كصيدلي" &&
+      item.title !== "إنشاء صيدلية" &&
+      item.title !== "طلب دواء"
+  );
+
+  const itemsToShow =
+    user.role === "pharmacist" ? pharmaciesArr : user.role === "admin" ? adminArr : userArr;
+
+  return (
+    <div>
+      <div className="flex w-full flex-row justify-between border-b border-b-black-200 pb-5">
+        <div className="flex flex-row items-center gap-4">
+          <ProfileIcon imageUrl={user.avatar} width={40} isCircle={false} />
+
+          <div dir="rtl" className="flex flex-col">
+            <p className="text-sm font-semibold">{user.firstName}</p>
+            <p className="text-sm text-black-500">{user.email}</p>
+          </div>
         </div>
-    )
+      </div>
+      <div className="flex flex-col gap-2 pt-5">
+        {itemsToShow.map((item, index) => (
+          <div
+            key={index}
+            className="flex cursor-pointer flex-row items-center justify-between p-2 px-6 hover:bg-black-100"
+            onClick={item.onclick}
+          >
+            <div className="flex flex-row gap-4">
+              {item.isComponentIcon ? (
+                <item.icon className="h-6 w-6 text-black-800" />
+              ) : (
+                <Image src={item.icon} alt="icon" width={24} />
+              )}
+              <p className="text-sm font-[500]">{item.title}</p>
+            </div>
+            {item.arrow && <Image className="scale-x-[-1]" src={item.arrow} alt="arrow" />}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
