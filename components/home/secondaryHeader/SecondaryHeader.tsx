@@ -13,7 +13,7 @@ export default function SecondaryHeader(){
     
     const dashboardBtn = () => {
         if (user && user?.role === "pharmacist"){
-            return <BtnEmpty onClick={() => {router.push("/dashboard")}}>لوحة التحكم</BtnEmpty>
+            return <BtnEmpty onClick={() => {router.push("/pharmacy-dashboard")}}>لوحة التحكم</BtnEmpty>
         } else if (user && user?.role === "admin"){
             return <BtnEmpty onClick={() => {router.push("/admin-dashboard")}}>لوحة التحكم</BtnEmpty>
         }else{

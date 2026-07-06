@@ -20,7 +20,7 @@ function handleSearch (){
 export default function SearchInput({label, value, onChange}:SearchInputProps){
     const [isFilterOpened, setIsFilterOpened] = useState(false);
     return(<>
-        <div dir="rtl" className="relative">
+        <div dir="rtl" className="relative w-full">
             <Image 
                 alt=""
                 width={15}
