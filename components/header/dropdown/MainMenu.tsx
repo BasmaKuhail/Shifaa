@@ -128,7 +128,7 @@ export default function MainMenu({ user, setIsSettingsOpen, setIsChatOpen }: Pro
           >
             <div className="flex flex-row gap-4">
               {item.isComponentIcon ? (
-                <item.icon className="h-6 w-6 text-black" />
+                <item.icon className="h-6 w-6 text-black-800" />
               ) : (
                 <Image src={item.icon} alt="icon" width={24} />
               )}

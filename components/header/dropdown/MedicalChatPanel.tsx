@@ -127,7 +127,7 @@ export default function MedicalChatPanel({ onClose }: Props) {
       <div className="flex items-center justify-between border-b border-b-black-200 pb-4">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-lightBlue">
-            <Chatbot className="h-6 w-6 text-black-500" />
+            <Chatbot className="h-6 w-6 text-black-800" />
           </div>
           <div>
             <p className="text-sm font-semibold">محادثة الدعم</p>
