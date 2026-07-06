@@ -9,7 +9,7 @@ import medication from "@/public/icons/profile/medication.svg";
 import settings from "@/public/icons/profile/settings.svg";
 import switchTo from "@/public/icons/profile/switch.svg";
 import createPharm from "@/public/icons/profile/createPharm.svg";
-import chatbot from "@/public/icons/chatbot.svg";
+import Chatbot from "@/public/icons/chatbot";
 import ArrowRight from "@/public/icons/profile/arrowRight.svg";
 import { logout as logoutService } from "@/services/auth";
 import { User } from "@/types/UserType";
@@ -60,7 +60,8 @@ export default function MainMenu({ user, setIsSettingsOpen, setIsChatOpen }: Pro
     },
     {
       title: "مساعدك الطبي الذكي",
-      icon: chatbot,
+      icon: Chatbot,
+      isComponentIcon: true,
       opened: false,
       arrow: ArrowRight,
       onclick: () => {
@@ -126,7 +127,11 @@ export default function MainMenu({ user, setIsSettingsOpen, setIsChatOpen }: Pro
             onClick={item.onclick}
           >
             <div className="flex flex-row gap-4">
-              <Image src={item.icon} alt="icon" width={24} />
+              {item.isComponentIcon ? (
+                <item.icon className="h-6 w-6 text-black" />
+              ) : (
+                <Image src={item.icon} alt="icon" width={24} />
+              )}
               <p className="text-sm font-[500]">{item.title}</p>
             </div>
             {item.arrow && <Image className="scale-x-[-1]" src={item.arrow} alt="arrow" />}

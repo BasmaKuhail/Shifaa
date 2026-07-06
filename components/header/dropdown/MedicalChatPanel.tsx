@@ -1,6 +1,6 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
 import Image from "next/image";
-import chatbot from "@/public/icons/chatbot.svg";
+import Chatbot from "@/public/icons/chatbot";
 import cross from "@/public/icons/profile/cross.svg";
 
 type ChatMessage = {
@@ -50,6 +50,16 @@ function loadStoredMessages(): ChatMessage[] {
   } catch {
     return [introMessage];
   }
+}
+
+function renderMessageContent(content: string) {
+  return content.split(/(\*\*[^*]+\*\*)/g).map((part, index) => {
+    if (part.startsWith("**") && part.endsWith("**")) {
+      return <strong key={index}>{part.slice(2, -2)}</strong>;
+    }
+
+    return part;
+  });
 }
 
 export default function MedicalChatPanel({ onClose }: Props) {
@@ -117,7 +127,7 @@ export default function MedicalChatPanel({ onClose }: Props) {
       <div className="flex items-center justify-between border-b border-b-black-200 pb-4">
         <div className="flex items-center gap-3">
           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-lightBlue">
-            <Image src={chatbot} alt="chat bot" width={24} />
+            <Chatbot className="h-6 w-6 text-black-500" />
           </div>
           <div>
             <p className="text-sm font-semibold">محادثة الدعم</p>
@@ -147,7 +157,7 @@ export default function MedicalChatPanel({ onClose }: Props) {
                   : "bg-black-100 text-black-700"
               }`}
             >
-              {message.content}
+              {renderMessageContent(message.content)}
             </div>
           </div>
         ))}
