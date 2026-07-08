@@ -27,7 +27,7 @@ export const pharmacistApplications = async ():Promise<PharmacistApplication[]> 
 }
 
 export const acceptPharmacistApplication = async (id: number) => {
-  const response = await api.post(`/admin/pharmacists/${id}/approve`);
+  const response = await api.patch(`/admin/pharmacists/${id}/approve`);
 
   if (response.status !== 200) {
     throw new Error("Failed to accept pharmacist application");
@@ -47,7 +47,7 @@ export const rejectPharmacistApplication = async (
   rejectMsg: string
 ) => {
   try {
-    const response = await api.post(
+    const response = await api.patch(
       `/admin/pharmacists/${id}/reject`,
       {
         rejection_reason: rejectMsg,

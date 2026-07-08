@@ -25,6 +25,22 @@ export default function Settings (){
                 })
                 return
             }
+            if(!validateConfirmPassword(updatePasswordData.password, updatePasswordData.password_confirmation)){
+                showAlert({
+                    type:"Warning",
+                    title:"تحذير",
+                    message: "يرجى التأكد من تطابق كلمتي المرور"
+                })
+                return
+            }
+            if(updatePasswordData.current_password === updatePasswordData.password){
+                showAlert({
+                    type:"Warning", 
+                    title:"تحذير",
+                    message: "كلمة المرور الجديدة يجب أن تكون مختلفة عن كلمة المرور الحالية"
+                })
+                return
+            }
             try{
                 console.log(updatePasswordData);
                 await changePassword(updatePasswordData);
