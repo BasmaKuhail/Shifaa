@@ -41,7 +41,7 @@ export default function RequestDetails({request : initialRequest, type }: reques
                 link: "/admin-dashboard/requests" 
             },
             { 
-                title:  `تفاصيل الطلب رقم ${request?.id}`, 
+                title:  type === "pharmacist" ? `تفاصيل طلب الصيدلي رقم ${request?.id}` : `تفاصيل طلب  الصيدلية رقم ${request?.id}`,
                 link: type === "pharmacist" ? `/admin-dashboard/requests/pharmacist-request-details/${request?.id}` : `/admin-dashboard/requests/pharmacy-request-details/${request?.id}`
             }
         ])
