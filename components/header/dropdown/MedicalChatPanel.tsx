@@ -2,6 +2,7 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Chatbot from "@/public/icons/chatbot";
 import cross from "@/public/icons/profile/cross.svg";
+import { User } from "@/types/UserType";
 
 type ChatMessage = {
   role: "user" | "assistant";
@@ -9,10 +10,15 @@ type ChatMessage = {
 };
 
 type Props = {
+  user: User;
   onClose: () => void;
 };
 
-const chatStorageKey = "shifaa-medical-chat-messages";
+const legacyChatStorageKey = "shifaa-medical-chat-messages";
+
+function getChatStorageKey(userId: number) {
+  return `${legacyChatStorageKey}-${userId}`;
+}
 
 const introMessage: ChatMessage = {
   role: "assistant",
@@ -33,13 +39,13 @@ function isChatMessage(message: unknown): message is ChatMessage {
   );
 }
 
-function loadStoredMessages(): ChatMessage[] {
+function loadStoredMessages(storageKey: string): ChatMessage[] {
   if (typeof window === "undefined") {
     return [introMessage];
   }
 
   try {
-    const storedMessages = JSON.parse(localStorage.getItem(chatStorageKey) || "[]");
+    const storedMessages = JSON.parse(localStorage.getItem(storageKey) || "[]");
 
     if (!Array.isArray(storedMessages)) {
       return [introMessage];
@@ -62,8 +68,9 @@ function renderMessageContent(content: string) {
   });
 }
 
-export default function MedicalChatPanel({ onClose }: Props) {
-  const [messages, setMessages] = useState<ChatMessage[]>(loadStoredMessages);
+export default function MedicalChatPanel({ user, onClose }: Props) {
+  const chatStorageKey = getChatStorageKey(user.id);
+  const [messages, setMessages] = useState<ChatMessage[]>(() => loadStoredMessages(chatStorageKey));
   const [input, setInput] = useState("");
   const [isSending, setIsSending] = useState(false);
   const [error, setError] = useState("");
@@ -71,7 +78,7 @@ export default function MedicalChatPanel({ onClose }: Props) {
 
   useEffect(() => {
     localStorage.setItem(chatStorageKey, JSON.stringify(messages.slice(-30)));
-  }, [messages]);
+  }, [chatStorageKey, messages]);
 
   useEffect(() => {
     scrollRef.current?.scrollIntoView({ behavior: "smooth" });

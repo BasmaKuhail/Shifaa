@@ -90,6 +90,7 @@ export default function MainMenu({ user, setIsSettingsOpen, setIsChatOpen }: Pro
 
         localStorage.removeItem("token");
         localStorage.removeItem("user");
+        localStorage.removeItem("shifaa-medical-chat-messages");
         window.location.href = "/auth/login";
       },
     },

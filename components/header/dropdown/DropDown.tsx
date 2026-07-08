@@ -19,7 +19,7 @@ export default function HeaderDropDown({user}:headerProps){
     const contentToShow = () => {
         if(isChatOpen){
             return(
-                <MedicalChatPanel onClose={() => setIsChatOpen(false)}/>
+                <MedicalChatPanel key={user.id} user={user} onClose={() => setIsChatOpen(false)}/>
             )
         }else if(isSettingsOpen){
             return(
