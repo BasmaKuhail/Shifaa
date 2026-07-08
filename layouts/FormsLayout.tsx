@@ -1,5 +1,6 @@
 import Breadcrumb from "@/components/Breadcrumb";
 import Header from "@/components/header/Header";
+import MobileHeader from "@/components/header/MobileHeader";
 import { useBreadcrumb } from "@/contexts/BreadcrumbContext";
 
 export default function FormLayout({ children }: { children: React.ReactNode }) {
@@ -11,7 +12,10 @@ export default function FormLayout({ children }: { children: React.ReactNode }) 
         <div className="fixed top-0 left-0 w-full z-50 hidden lg:block">
             <Header />
         </div>
-
+        {/* mobile view */}
+        <div className="absolute inset-0 -top-full block lg:hidden w-full flex items-center justify-center">
+            <MobileHeader/>
+        </div>
         <div className="flex w-full mt-5">
             <Breadcrumb breadcrumbArr={crumbs}/>
         </div>
@@ -19,7 +23,8 @@ export default function FormLayout({ children }: { children: React.ReactNode }) 
             <div 
                 className="
                     bg-white rounded-normal w-full
-                    p-20
+                    p-10 
+                    md:p-20
                     flex flex-col gap-5 md:gap-10
                     md:mt-0
                     shadow-lg"
