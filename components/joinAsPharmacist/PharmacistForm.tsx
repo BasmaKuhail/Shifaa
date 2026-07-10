@@ -65,6 +65,7 @@ export default function PharmacistForm(){
                 title: "تحذير",
                 message: "يجب تعبئة البيانات المطلوبة",
             });
+            setSubmitLoading(false)
             return;
         }
         if (!checkBoxChecked) {
@@ -73,6 +74,7 @@ export default function PharmacistForm(){
                 title: "تحذير",
                 message: "يجب التأكيد على أن هذه الوثائق تخصك",
             });
+            setSubmitLoading(false)
             console.log(userInfo);
 
             return;
@@ -90,6 +92,7 @@ export default function PharmacistForm(){
                 title: "خطأ",
                 message: "خطأ في البيانات المدخلة لأحد الحقول",
             });
+            setSubmitLoading(false)
             return
         }
     try {
