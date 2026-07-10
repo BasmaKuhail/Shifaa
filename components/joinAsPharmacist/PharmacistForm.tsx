@@ -52,20 +52,7 @@ export default function PharmacistForm(){
     
     const handleSubmitForm = async () => {
         setSubmitLoading(true);
-        if (
-            !(validateInput(userInfo.identity_document, 'file').isValid &&
-            validateInput(userInfo.license_certificate, 'file').isValid &&
-            validateInput(userInfo.personal_photo, 'file').isValid &&
-            validateInput(userInfo.phone_number, 'mobile').isValid)  
-        ) {
-            console.log("sth went wrong")
-            showAlert({
-                type: "Error",
-                title: "خطأ",
-                message: "خطأ في البيانات المدخلة لأحد الحقول",
-            });
-            return
-        }
+        
         if (
             userInfo.phone_number === "" || 
             userInfo.identity_document === null || 
@@ -91,7 +78,20 @@ export default function PharmacistForm(){
             return;
         }
 
-
+        if (
+            !(validateInput(userInfo.identity_document, 'file').isValid &&
+            validateInput(userInfo.license_certificate, 'file').isValid &&
+            validateInput(userInfo.personal_photo, 'file').isValid &&
+            validateInput(userInfo.phone_number, 'mobile').isValid)  
+        ) {
+            console.log("sth went wrong")
+            showAlert({
+                type: "Error",
+                title: "خطأ",
+                message: "خطأ في البيانات المدخلة لأحد الحقول",
+            });
+            return
+        }
     try {
         const res = await switchToPharmasist(userInfo.identity_document, userInfo.phone_number, userInfo.license_certificate, userInfo.personal_photo);
         console.log(res);
