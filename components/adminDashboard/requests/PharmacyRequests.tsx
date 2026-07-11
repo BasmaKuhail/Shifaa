@@ -8,7 +8,7 @@ import { AdminPharmacyRequestContext } from "@/contexts/AdminPharmcyRequestsCont
 export default function CreatePharmReq () {
     const requestsCategory =[
         {text:"كل الطلبات", value:"all"}, 
-        {text:"الطلبات المقبولة", value:"active"}, 
+        {text:"الطلبات المقبولة", value:"approved"}, 
         {text:"الطلبات المرفوضة", value:"rejected"}, 
         {text:"الطلبات قيد الانتظار", value:"pending"}
     ];
@@ -45,7 +45,7 @@ export default function CreatePharmReq () {
                                 columnClassNames={{
                                     pharmacyName: "flex-1",
                                     pharmaciestName: "flex-1",
-                                    address:"flex-1",
+                                    address:"flex-2",
                                     date: "flex-1",
                                     phoneNumber: "flex-1",
                                     status: "flex-1",
@@ -75,7 +75,7 @@ export default function CreatePharmReq () {
                                     columnClassNames={{
                                         pharmacyName:"flex-1",
                                         pharmaciestName: "flex-1",
-                                        address: "flex-1",
+                                        address: "flex-2",
                                         date: "flex-1",
                                         phone_number: "flex-1",
                                         status: "flex-1",
