@@ -2,10 +2,11 @@ import { StatusType } from "./Status";
 
 export type ApplicationFile = {
   id: number;
-  name: string;
   type: string;
-  mime_type: "image/jpeg" | "image/jpg" | "image/png" | "application/pdf";
-  url: string;
+  mime_type: string;
+  name: string;
+  url?: string;
+  view_url?: string;
 };
 
 export type PharmacistApplication = {
