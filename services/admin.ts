@@ -86,10 +86,10 @@ export const deletePharmacistApplication = async (id: number) => {
     throw new Error("Unexpected error");
   }
 }
-export const getAttachment = async (id:number):Promise<Blob>=> {
+export const getAttachment = async (url:string):Promise<Blob>=> {
     const token = localStorage.getItem("token");
 
-    const response = await api.get(`/admin/attachments/${id}` ,{
+    const response = await api.get(`${url}`,{
       responseType: "blob",
       headers: {
         Authorization: `Bearer ${token}`,

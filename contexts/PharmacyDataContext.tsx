@@ -1,6 +1,4 @@
 import { createContext, useState, useEffect, ReactNode } from "react";
-import { getMe } from "@/services/auth";
-import { User } from "@/types/UserType";
 import { Pharmacy } from "@/types/PharmacyType";
 import { getPharmacyById } from "@/services/pharmacy";
 
@@ -25,7 +23,7 @@ export const PharmacyProvider = ({ children }: { children: ReactNode }) => {
   const fetchPharmacy = async () => {
    
     try {
-      const data = await getPharmacyById(8); 
+      const data = await getPharmacyById(9); 
       setPharmacy(data);
       console.log(data)
     } catch (err: any) {

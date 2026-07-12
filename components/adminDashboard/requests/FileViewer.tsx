@@ -4,24 +4,23 @@ import { useEffect, useState } from "react";
 import { s } from "framer-motion/client";
 
 type FileViewerProps = {
-    file: ApplicationFile | null;
+    imageUrl: string | null;
     label: string;
-    id: number;
 };
 
-export default function FileViewer({ file, label, id }: FileViewerProps) {
+export default function FileViewer({ imageUrl, label }: FileViewerProps) {
     const [objectUrl, setObjectUrl] = useState<string | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
     useEffect(() => {
         setIsLoading(true)
-        if (!file) return;
+        if (!imageUrl) return;
 
         let objectUrlToRevoke: string | null = null;
 
         const fetchAttachment = async () => {
             try {
-                const blob = await getAttachment(id);
+                const blob = await getAttachment(imageUrl);
 
                 if (!(blob instanceof Blob)) {
                     console.error("Expected Blob, received:", blob);
@@ -45,9 +44,9 @@ export default function FileViewer({ file, label, id }: FileViewerProps) {
                 URL.revokeObjectURL(objectUrlToRevoke);
             }
         };
-    }, [id, file]);
+    }, [ imageUrl]);
 
-    if (!file) {
+    if (!imageUrl) {
         return (
         <div className="flex flex-col gap-2">
             <p className="font-semibold">{label}</p>
@@ -63,8 +62,8 @@ export default function FileViewer({ file, label, id }: FileViewerProps) {
             </div>
         );
     }
-    const isImage = file.mime_type.startsWith("image/");
-    const isPdf = file.mime_type === "application/pdf";
+    const isImage = imageUrl?.startsWith("image/");
+    const isPdf = imageUrl?.endsWith("application/pdf");
 
     if(isLoading){
         return<p className="text-inpt text-black-500 text-center">جاري تحميل الملف...</p>
@@ -75,16 +74,16 @@ export default function FileViewer({ file, label, id }: FileViewerProps) {
         {objectUrl && isImage && (
             <img
             src={objectUrl}
-            alt={file.name}
+            // alt={file.name}
             className="h-20 w-full rounded-lg border object-cover"
             />
         )}
 
         {objectUrl && isPdf && (
             <iframe
-            src={objectUrl}
-            title={file.name}
-            className="h-40 w-full rounded-lg border"
+                src={objectUrl}
+                // title={file.name}
+                className="h-40 w-full rounded-lg border"
             />
         )}
 

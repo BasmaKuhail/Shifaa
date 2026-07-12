@@ -1,4 +1,5 @@
 import ProfileIcon from "../ProfileIcon";
+import AttachmentProfileIcon from "../AttachmentProfileIcon";
 import editIcon from "@/public/icons/editProfile/edit.svg";
 import deleteIcon from "@/public/icons/editProfile/delete.svg";
 import pharmLogo from "@/public/icons/pharmInfo/pharmacyLogo.svg";
@@ -6,10 +7,9 @@ import pharmLogo from "@/public/icons/pharmInfo/pharmacyLogo.svg";
 import { useCallback, useEffect, useRef, useState } from "react";
 import Cropper, { Area } from "react-easy-crop";
 import Btn from "../pharmacyDashboard/PharmacyInfo/Btn";
-import { ApplicationFile } from "@/types/PharmacistApplication";
 
 type ImageProfileProps = {
-  imageObj: ApplicationFile | null;
+  imageUrl: string | null;
   isUser?: boolean;
   width?: number;
   isCircle?: boolean;
@@ -18,7 +18,7 @@ type ImageProfileProps = {
 };
 
 export default function ImageProfile({
-  imageObj,
+  imageUrl,
   isUser = true,
   width = 150,
   isCircle = true,
@@ -108,7 +108,7 @@ export default function ImageProfile({
     onDeleteImage?.();
   };
 
-  const imageUrl = previewUrl || imageObj?.url || null;
+  // const imageUrl = previewUrl || imageObj?.url || null;
 
   return (
     <div className="flex flex-col items-center gap-3 justify-center">
@@ -159,12 +159,21 @@ export default function ImageProfile({
         </div>
       )}
 
-      <ProfileIcon
-        imageObj={imageObj}
-        width={width}
-        isCircle={isCircle}
-        fallbackImage={isUser ? undefined : pharmLogo}
-      />
+      {previewUrl ? (
+        <ProfileIcon
+          imageUrl={previewUrl}
+          width={width}
+          isCircle={isCircle}
+          fallbackImage={isUser ? undefined : pharmLogo}
+        />
+      ) : (
+        <AttachmentProfileIcon
+          imageUrl={imageUrl}
+          width={width}
+          isCircle={isCircle}
+          fallbackImage={isUser ? undefined : pharmLogo}
+        />
+      )}
 
       <input
         type="file"
@@ -181,7 +190,7 @@ export default function ImageProfile({
           onClick={() => fileInputRef.current?.click()}
         />
 
-        {(imageObj || previewUrl) && (
+        {(imageUrl || previewUrl) && (
           <Btn
             text="حذف الصورة"
             icon={deleteIcon}

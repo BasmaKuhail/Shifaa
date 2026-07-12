@@ -6,7 +6,7 @@ export type Pharmacy = {
   address: string;
   owner: {id:number, name: string};
   phone: string;
-  logo: ApplicationFile;
+  logo: string | null;
 }
 
 export type pharmacyResponseType = {

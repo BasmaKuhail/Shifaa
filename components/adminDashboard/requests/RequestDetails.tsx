@@ -16,6 +16,25 @@ type requestDetailsProps = {
     type: "pharmacist" | "pharmacy"
 }
 
+type ColumnProps = {
+    c1: string;
+    c2: ApplicationFile | string | undefined;
+};
+
+function Columen({c1,c2}: ColumnProps) {
+    return(
+        <div className="flex flex-row gap-2 border-t border-black-200">
+            <div className="p-2 px-3 border-l border-black-200 w-[20%]">
+                <p className="text-btn font-[500]">{c1}</p>
+            </div>
+            <div className="p-2">
+                {typeof c2 === "string" && <p className="text-btn">{c2}</p>}
+                {typeof c2 === "object" && <FileViewer imageUrl={c2.url} label={c1} />}
+            </div>
+        </div>
+    )
+}
+
 export default function RequestDetails({request : initialRequest, type }: requestDetailsProps) {
     const { crumbs, setCrumbs } = useBreadcrumb();
 
@@ -50,21 +69,6 @@ export default function RequestDetails({request : initialRequest, type }: reques
     const [popupType, setType] = useState<"reject" | "delete" | "accept" | null>(null);
 
     const [rejectReason, setRejectReason] = useState("");
-    const Columen = ({c1,c2}:{c1:string, c2:ApplicationFile | string | undefined}) => {
-        return(
-            <div className="flex flex-row gap-2 border-t border-black-200">
-                <div className="p-2 px-3 border-l border-black-200 w-[20%]">
-                    <p className="text-btn font-[500]">{c1}</p>
-                </div>
-                <div className="p-2">
-                    {typeof c2 === "string" && <p className="text-btn">{c2}</p>}
-                    {typeof c2 === "object" && <FileViewer file={c2} label={c1} id={c2.id} />}
-                </div>
-
-
-            </div>
-        )
-    }
     const checkRejectMsg = () => {
         if(rejectReason === ""){
             showAlert({

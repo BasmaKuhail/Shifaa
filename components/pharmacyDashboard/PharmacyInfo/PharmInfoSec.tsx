@@ -7,17 +7,38 @@ import Link from "next/link";
 import ImageProfile from "@/components/EditProfile/Image";
 import Input from "@/components/register/input";
 import { PharmacyContext } from "@/contexts/PharmacyDataContext";
-import { updatePharmacyData } from "@/services/pharmacy";
+import { deletePharmacy, updatePharmacyData } from "@/services/pharmacy";
 import { showAlert } from "@/components/alerts/AlertContainer";
 import { getApiErrorMessage } from "@/utils/getApiErrorMessage";
 import { validateInput } from "@/utils/ValidateInput";
 import phamBg from "@/public/images/pharmBg.png"
 import Image from "next/image";
 import { ApplicationFile } from "@/types/PharmacistApplication";
+import PopUp from "@/components/adminDashboard/requests/InteractRequestPopup";
+import PopupContainer from "./PopUpContainer";
 export default function PharmInfoSec (){
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const {pharmacy, loading} = useContext(PharmacyContext);
 
+    const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+    const handleDeletePharmacy = async () => {
+        setShowDeleteConfirmation(false);
+        if(pharmacy){
+            try{
+                await deletePharmacy(pharmacy.id);
+                showAlert({
+                    type:"Success",
+                    title:"Success",
+                    message: "تم حذف الصيدلية بنجاح!"
+                })
+            }catch (error: unknown) {
+                showAlert({
+                type: "Error",
+                title: "خطأ",
+                message: getApiErrorMessage(error),
+            });
+        }
+    }}
     const getInitialPharmacyInfo = () => ({
         logo : pharmacy?.logo || null,
         name:  pharmacy?.name || '',
@@ -55,11 +76,31 @@ export default function PharmInfoSec (){
                 message: getApiErrorMessage(error),
                 });
             }
-        }   
+        } 
     }
     console.log(pharmacy)
     return(
         <Card title="معلومات حساب الصيدلية">
+            {showDeleteConfirmation && (
+                <PopupContainer onClose={() => setShowDeleteConfirmation(false)}>
+                        <p className="text-lg font-semibold m-4 mt-6">هل أنت متأكد أنك تريد حذف الصيدلية؟</p>
+                        <p className="text-sm text-gray-600 mb-6">لن تتمكن من التراجع عن هذا الإجراء.</p>
+                        <div className="flex justify-end gap-4">
+                            <button
+                                onClick={handleDeletePharmacy}
+                                className="cursor-pointer px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors duration-300"
+                            >
+                                حذف
+                            </button>
+                            <button
+                                onClick={() => setShowDeleteConfirmation(false)}
+                                className="cursor-pointer px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 transition-colors duration-300"
+                            >
+                                إلغاء   
+                            </button>
+                        </div>
+                </PopupContainer>
+            )}
             {loading ? (
                 <div className="flex flex-col w-full gap-10 items-center">
                     جاري تحميل البيانات...
@@ -77,7 +118,7 @@ export default function PharmInfoSec (){
 
                         <div className="absolute left-1/2 -translate-x-1/2 top-[110px]">
                             <ImageProfile
-                                imageObj={pharmacy?.logo || null}
+                                imageUrl={pharmacy?.logo || null}
                                 width={150}
                                 isUser={false}
                                 isCircle={true}
@@ -127,11 +168,19 @@ export default function PharmInfoSec (){
                         />
                     </div>
                 </div>
-                <div className="flex flex-row items-center gap-5 ">
-                    <PetrolBtn text="تحديث البيانات" onClick={() => updatePharmacyInfo()} />
-                    <p onClick={() => setPharmacyInfo(getInitialPharmacyInfo())} className="underline text-sm text-gray-600 cursor-pointer"> إلغاء </p>
+                <div className="flex flex-row justify-between items-center mt-5">
+                    <div className="flex flex-row items-center gap-5 ">
+                        <PetrolBtn text="تحديث البيانات" onClick={() => updatePharmacyInfo()} />
+                        <p onClick={() => setPharmacyInfo(getInitialPharmacyInfo())} className="underline text-sm text-gray-600 cursor-pointer"> إلغاء </p>
+                    </div>
+                    <button
+                        onClick={() => setShowDeleteConfirmation(true)}
+                        dir="rtl"
+                        className="w-fit px-5 bg-red-500 rounded-[12px] text-white flex flex-row items-center justify-center gap-2 px-4 py-2 hover:bg-red-600 transition-colors duration-300 cursor-pointer" 
+                    >
+                        <p className="text-inpt font-[500]">حذف الصيدلية</p>
+                    </button>
                 </div>
-                  
             </div></>)}
         </Card>
     )

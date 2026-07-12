@@ -1,17 +1,15 @@
 import Image, { StaticImageData } from "next/image";
 import UserIcon from "@/public/icons/editProfile/user";
-import FileViewer from "./adminDashboard/requests/FileViewer";
-import { ApplicationFile } from "@/types/PharmacistApplication";
 
 type ProfileIconProps = {
-  imageObj: ApplicationFile | null;
+  imageUrl: string | null;
   width: number;
   isCircle?: boolean;
   fallbackImage?: StaticImageData;
 };
 
 export default function ProfileIcon({
-  imageObj,
+  imageUrl,
   width,
   isCircle = true,
   fallbackImage,
@@ -23,17 +21,20 @@ export default function ProfileIcon({
       style={{ width: `${width}px` }}
       className={`${shapeClass} aspect-square overflow-hidden bg-gray-200 flex items-center justify-center`}
     >
-      {imageObj ? (
-        <FileViewer
-            file={imageObj}
-            label="Profile Image"
-            id={imageObj.id} // Replace with the actual ID of the image
+      {imageUrl ? (
+        <Image
+          src={imageUrl}
+          alt="Profile image"
+          width={width}
+          height={width}
+          unoptimized
+          className="h-full w-full object-cover"
         />
       ) : fallbackImage ? (
         <Image
           src={fallbackImage}
           alt="Default profile"
-          className={`${imageObj === null ? "w-[30%]" : "w-full h-full"}  object-cover`}
+          className={`${imageUrl === null ? "w-[30%]" : "w-full h-full"}  object-cover`}
         />
       ) : (
         <UserIcon className="w-full h-full text-[#9C9EA1]" />

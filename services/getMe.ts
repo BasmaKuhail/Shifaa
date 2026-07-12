@@ -55,7 +55,7 @@ export const getMe = async (): Promise<User> => {
     if (!attributes) {
       throw new Error("The /me response is missing user attributes");
     }
-
+    // console.log("Raw user data:", rawUser);
     return {
       id: rawUser.id,
       firstName: attributes.first_name,

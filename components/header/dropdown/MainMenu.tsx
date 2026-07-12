@@ -2,7 +2,7 @@ import Image from "next/image";
 import { Dispatch } from "react";
 import { useRouter } from "next/router";
 
-import ProfileIcon from "@/components/ProfileIcon";
+import AttachmentProfileIcon from "@/components/AttachmentProfileIcon";
 import profile from "@/public/icons/profile/profile.svg";
 import logout from "@/public/icons/profile/logout.svg";
 import medication from "@/public/icons/profile/medication.svg";
@@ -20,54 +20,8 @@ type Props = {
   setIsChatOpen: Dispatch<React.SetStateAction<boolean>>;
 };
 
-<<<<<<< HEAD
-type props ={
-    user: User
-    profileOpened:boolean,
-    setProfileOpened:Dispatch<React.SetStateAction<boolean>>,
-    setIsSettingsOpen:Dispatch<React.SetStateAction<boolean>>,
-}
-export default function MainMenu ({user, profileOpened, setProfileOpened, setIsSettingsOpen}:props) {
-    const router = useRouter();
-    const dropDownItems =[
-            {title: "حسابي", icon: profile, opened:true, arrow: ArrowRight, onclick: () => {router.push("/editProfile")}},
-            {title: "تغير كلمة المرور", icon: settings, opened:false, arrow: ArrowRight, onclick: () => setIsSettingsOpen(true)},
-            // {title: "الإشعارات", icon: notification, allowed:false, onclick: () => {router.push("/notifications")}},
-            {title: "انضمام كصيدلي", icon: switchTo, opened:false, arrow: ArrowRight, onclick: () => {router.push("/switch-to-pharmacist")}},
-            {title: "إنشاء صيدلية", icon: createPharm, opened:false, arrow: ArrowRight, onclick: () => {router.push("/create-pharmacy")}},
-            {title: "طلب دواء", icon:medication , opened:false, arrow: ArrowRight, onclick: () => {router.push("/request-medication")}},
-            // {title: "العناصر المحفوظة", icon: saved, opened:false, arrow: ArrowRight, onclick: () => {router.push("/saved-items")}},
-            {
-                title: "تسجيل خروج", 
-                icon:logout , 
-                opened:false, 
-                onclick: async () => {
-                    try {
-                        await logoutService(); // call API FIRST
-                    } catch (e) {
-                        console.error(e);
-                    } 
-                    localStorage.removeItem("token"); 
-                    localStorage.removeItem("user"); 
-                    window.location.href = "/auth/login"; 
-                }
-            } ,
-        ]
-            const pharmaciesArr = dropDownItems.filter(item => !(item.title === "انضمام كصيدلي"))
-            const userArr = dropDownItems.filter(item => !(item.title === "إنشاء صيدلية"))
-            const adminArr = dropDownItems.filter(item => !(item.title === "انضمام كصيدلي" || item.title === "إنشاء صيدلية" || item.title === "طلب دواء"))
-            
-            const itemsToShow = user.role === "pharmacist" ? pharmaciesArr : user.role === "admin" ? adminArr : userArr;
-        
-    return(
-        <div>
-            <div className='flex flex-row justify-between  w-full border-b border-b-black-200 pb-5'>
-                <div className='flex flex-row items-center gap-4'>
-                    <ProfileIcon imageObj={user.avatar} width={40} isCircle={false}/>
-=======
 export default function MainMenu({ user, setIsSettingsOpen, setIsChatOpen }: Props) {
   const router = useRouter();
->>>>>>> main
 
   const dropDownItems = [
     {
@@ -158,7 +112,7 @@ export default function MainMenu({ user, setIsSettingsOpen, setIsChatOpen }: Pro
     <div>
       <div className="flex w-full flex-row justify-between border-b border-b-black-200 pb-5">
         <div className="flex flex-row items-center gap-4">
-          <ProfileIcon imageUrl={user.avatar} width={40} isCircle={false} />
+          <AttachmentProfileIcon imageUrl={user.avatar?.url ?? null} width={40} isCircle={false} />
 
           <div dir="rtl" className="flex flex-col">
             <p className="text-sm font-semibold">{user.firstName}</p>
