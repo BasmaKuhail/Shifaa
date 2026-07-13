@@ -23,6 +23,7 @@ import Work from "./howItWorks/HowItWorks";
 import Features from "./FeaturesSec/FeaturesSec";
 import ContatcSec from "./contactForm/ContactFormSec";
 import MobileHeader from "../header/MobileHeader";
+import { useRouter } from "next/navigation";
 
 const services =[
     {
@@ -43,25 +44,7 @@ const services =[
     },
 ]
 
-const textSec =[
-    {
-        secTitle:"من نحن", 
-        header: [{text: "بالشفاء..",color:"black"}, {text:"تكتمل الحكاية", color:"blue"}],
-        paragraphText: "نحن منصة رقمية متخصصة تهدف إلى تنظيم الوصول للمعلومة الدوائية في قطاع غزة. نعمل على توحيد ومركزية بيانات الصيدليات لتمكين المستخدم من البحث والمقارنة والتحقق من التوفر بضغطة زر واحدة. نحن هنا لنحول عناء البحث إلى سهولة الوصول، ولنكون شريكك الموثوق في رحلة التعافي وتوفير التكاليف.",
-        button:{btnText:"التعرف على المزيد", onClick:() => console.log("j")},
-        image:whoAreWe,
-        dir:"rtl"
-    },
-    {
-        secTitle:"طلب الدواء",
-        header:[{text: "اطلب دواءك الآن", color:"black"}],
-        paragraphText:" إذا لم تجد دواءك، يمكنك تقديم طلب وسوف تعمل أقرب الصيدليات على توفيره لك.",
-        button:{btnText:"اطلب الدواء", onClick:() => console.log("j")},
-        image:RequestMed,
-        dir:"ltr"
-    }
-    
-]
+
 
 const tipsArr =[
     {num: 1, title: "البحث بالاسم", text: "أدخل الاسم التجاري أو العلمي للدواء الذي تحتاجه."},
@@ -76,7 +59,26 @@ const featuresArr =[
     {logo:time, text: "اعثر على الأدوية بسرعة، ودعك من عناء التنقل الطويل بين الصيدليات."},
 ]
 export default function Home (){
+    const router = useRouter()
+    const textSec =[
+    {
+        secTitle:"من نحن", 
+        header: [{text: "بالشفاء..",color:"black"}, {text:"تكتمل الحكاية", color:"blue"}],
+        paragraphText: "نحن منصة رقمية متخصصة تهدف إلى تنظيم الوصول للمعلومة الدوائية في قطاع غزة. نعمل على توحيد ومركزية بيانات الصيدليات لتمكين المستخدم من البحث والمقارنة والتحقق من التوفر بضغطة زر واحدة. نحن هنا لنحول عناء البحث إلى سهولة الوصول، ولنكون شريكك الموثوق في رحلة التعافي وتوفير التكاليف.",
+        button:{btnText:"التعرف على المزيد", onClick:() => router.push("/about-us")},
+        image:whoAreWe,
+        dir:"rtl"
+    },
+    {
+        secTitle:"طلب الدواء",
+        header:[{text: "اطلب دواءك الآن", color:"black"}],
+        paragraphText:" إذا لم تجد دواءك، يمكنك تقديم طلب وسوف تعمل أقرب الصيدليات على توفيره لك.",
+        button:{btnText:"اطلب الدواء", onClick:() => router.push("/request-medication")},
+        image:RequestMed,
+        dir:"ltr"
+    }
     
+]
     return(
         <div className='w-full flex flex-col overflow-x-hidden'>
             <div className="bg-blue-100 relative inline-block ">

@@ -17,7 +17,9 @@ const systemPrompt = `
 You are Shifaa's medical support AI assistant.
 Answer only medical, medicine, pharmacy, symptoms, health, wellness, first-aid, and healthcare access questions.
 Use the previous chat messages as context. Do not treat each message as a new conversation.
-Reply in the same language as the user's latest message. If the latest message is in English, reply in clear English. If it is in Arabic, reply in Arabic.
+Choose the response language from the user's latest message, not from earlier chat history.
+If the user's latest message is clearly in English, reply in clear English.
+Otherwise, reply in Arabic.
 If the user asks about anything outside the medical context, politely say in the user's language that you cannot answer that type of question because you only answer medical questions.
 When answering a medical question:
 - Be helpful, careful, and concise.
@@ -52,25 +54,41 @@ function normalizeMessages(messages: unknown): ChatMessage[] {
     }));
 }
 
+function getLatestUserMessage(messages: ChatMessage[]) {
+  return [...messages].reverse().find((message) => message.role === "user");
+}
+
+function isClearlyEnglish(content: string) {
+  const englishLetters = content.match(/[A-Za-z]/g)?.length ?? 0;
+  const arabicLetters = content.match(/[\u0600-\u06FF]/g)?.length ?? 0;
+
+  return englishLetters > 0 && englishLetters >= arabicLetters * 2;
+}
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ChatResponse>
 ) {
   if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
+    return res.status(405).json({ error: "طريقة الطلب غير مسموحة" });
   }
 
   const apiKey = process.env.OPEN_ROUTE_AI_KEY || process.env.OPENROUTER_API_KEY;
 
   if (!apiKey) {
-    return res.status(500).json({ error: "OpenRouter API key is not configured" });
+    return res.status(500).json({ error: "خدمة المساعد الطبي غير مهيأة حالياً" });
   }
 
   const messages = normalizeMessages(req.body?.messages);
+  const latestUserMessage = getLatestUserMessage(messages);
 
-  if (!messages.some((message) => message.role === "user")) {
-    return res.status(400).json({ error: "Message is required" });
+  if (!latestUserMessage) {
+    return res.status(400).json({ error: "يرجى كتابة رسالة قبل الإرسال" });
   }
+
+  const responseLanguagePrompt = isClearlyEnglish(latestUserMessage.content)
+    ? "The user's latest message is in English. You must answer in English, even if previous messages are Arabic."
+    : "The user's latest message is not clearly English. You must answer in Arabic.";
 
   try {
     const response = await fetch(OPENROUTER_URL, {
@@ -84,26 +102,31 @@ export default async function handler(
       body: JSON.stringify({
         model: process.env.OPENROUTER_MODEL || DEFAULT_MODEL,
         temperature: 0.2,
-        messages: [{ role: "system", content: systemPrompt }, ...messages],
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "system", content: responseLanguagePrompt },
+          ...messages,
+        ],
       }),
     });
 
     if (!response.ok) {
       const errorText = await response.text();
       console.error("OpenRouter error:", errorText);
-      return res.status(502).json({ error: "Unable to get an AI response" });
+      return res.status(502).json({ error: "تعذر الحصول على رد من المساعد الطبي" });
     }
 
     const data = await response.json();
     const answer = data?.choices?.[0]?.message?.content;
 
     if (typeof answer !== "string" || !answer.trim()) {
-      return res.status(502).json({ error: "AI response was empty" });
+      return res.status(502).json({ error: "لم يصل رد واضح من المساعد الطبي" });
     }
 
     return res.status(200).json({ answer });
   } catch (error) {
     console.error(error);
-    return res.status(500).json({ error: "Unexpected server error" });
+    return res.status(500).json({ error: "حدث خطأ في الخادم، حاول مرة أخرى" });
   }
 }
+

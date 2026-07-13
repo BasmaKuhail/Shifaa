@@ -32,7 +32,10 @@ function MyApp({ Component, pageProps }: AppProps) {
   const isAdminRoute = router.pathname.startsWith("/admin");
 
   return (
-    <div className={`${tajawal.className} ${tajawal.variable}`}>        
+    <div className={`${tajawal.className} ${tajawal.variable}`}>   
+      <head>
+        <title>Shifaa</title>
+      </head>     
       <UserProvider>
         <AuthGuard>
           <BreadcrumbProvider>
