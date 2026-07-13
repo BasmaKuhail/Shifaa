@@ -1,8 +1,10 @@
-import Add from "@/public/icons/dashboard/add";
+import Add from "@/public/icons/dashboard/add"
 import Dash from "@/public/icons/dashboard/dashboard";
 import Pharm from "@/public/icons/dashboard/pharmacy";
 import Request from "@/public/icons/dashboard/request";
+import Requests from "@/public/icons/dashboard/requests";
 import Home from "@/public/icons/dashboard/home";
+import Med from "@/public/icons/dashboard/Med";
 import Settings from "@/public/icons/dashboard/settings";
 import Help from "@/public/icons/dashboard/help";
 
@@ -52,12 +54,12 @@ export const pharmacytNav = [
         label:"الرئيسية",
         link:"/"
     },
-    {
-        id: 2,
-        icon: Dash,
-        label: "لوحة التحكم",
-        link: "/pharmacy-dashboard"
-    },
+    // {
+    //     id: 2,
+    //     icon: Dash,
+    //     label: "لوحة التحكم",
+    //     link: "/pharmacy-dashboard"
+    // },
     {
         id: 3,
         icon: Pharm,
@@ -66,7 +68,7 @@ export const pharmacytNav = [
     },
     {
         id: 4,
-        icon: Request,
+        icon: Requests,
         label: "الطلبات",
         link: "/pharmacy-dashboard/medicine-requests"
     },
@@ -81,6 +83,12 @@ export const pharmacytNav = [
         icon: Request,
         label:"الدعوات",
         link: "/pharmacy-dashboard/invitations"
+    },
+    {
+        id: 7,
+        icon:Med,
+        label:"الأدوية",
+        link:"/pharmacy-dashboard/medicines"
     }
 ];
 
@@ -91,12 +99,12 @@ export const adminNav =[
             label:"الرئيسية",
             link:"/"
         },
-        {
-            id: 2,
-            icon: Dash,
-            label: "لوحة التحكم",
-            link: "/admin-dashboard"
-        },
+        // {
+        //     id: 2,
+        //     icon: Dash,
+        //     label: "لوحة التحكم",
+        //     link: "/admin-dashboard"
+        // },
         // {
         //     id: 3,
         //     icon: Pharm,

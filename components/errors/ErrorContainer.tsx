@@ -4,12 +4,12 @@ import bg from "@/public/images/errors/bg.svg"
 import arrow from "@/public/icons/error/arrowRight.svg"
 export default function ErrorContatiner ({image, title, message}:{image:StaticImageData, title:string, message:string}){
     return(
-        <div dir="rtl" className="flex flex-col items-center justify-center w-full min-h-screen p-10 md:p-0">
-            <Image src={image} alt="Error 403"/>
-            <Image src={bg} alt="Error Background" className="absolute inset-0 z-[-1] h-full"/>
+        <div dir="rtl" className="flex flex-col items-center justify-start w-full min-h-screen  md:p-0">
+            <Image src={image} alt="Error"/>
+            {/* <Image src={bg} alt="Error Background" className="absolute inset-0 z-[-1] h-full"/> */}
             <div className="flex flex-col gap-1 items-center justify-center">
-                <p className="font-bold text-24px md:text-64px text-center">{title}</p>
-                <p className="font-[500] text-inpt md:text-21px text-center">{message}</p>
+                <p className="font-bold text-24px lg:text-47px text-center">{title}</p>
+                <p className="font-[500] text-inpt lg:text-21px text-center">{message}</p>
             </div>
 
             <Link
