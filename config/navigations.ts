@@ -19,7 +19,7 @@ export const headerItems = [
     {
         id: 2,
         title: "من نحن",
-        link: "/whoAreWe",
+        link: "/about-us",
         bold: false,
     },
     {

@@ -22,7 +22,7 @@ export default function HomeNav({isMenuOpened, setIsMenuOpened}:mobileNavProps){
         if(user?.role === "user"){
             router.push("/request-medicen")
         }else if (user?.role === "pharmacist"){
-            router.push("/dashboard")
+            router.push("/pharmacy-dashboard/pharmInfo")
         }else if (user?.role === "admin"){
             router.push("/admin-dashboard")
         }

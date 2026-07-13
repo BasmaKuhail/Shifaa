@@ -9,7 +9,6 @@ import medication from "@/public/icons/profile/medication.svg";
 import settings from "@/public/icons/profile/settings.svg";
 import switchTo from "@/public/icons/profile/switch.svg";
 import createPharm from "@/public/icons/profile/createPharm.svg";
-import Chatbot from "@/public/icons/chatbot";
 import ArrowRight from "@/public/icons/profile/arrowRight.svg";
 import { logout as logoutService } from "@/services/auth";
 import { User } from "@/types/UserType";
@@ -17,10 +16,9 @@ import { User } from "@/types/UserType";
 type Props = {
   user: User;
   setIsSettingsOpen: Dispatch<React.SetStateAction<boolean>>;
-  setIsChatOpen: Dispatch<React.SetStateAction<boolean>>;
 };
 
-export default function MainMenu({ user, setIsSettingsOpen, setIsChatOpen }: Props) {
+export default function MainMenu({ user, setIsSettingsOpen }: Props) {
   const router = useRouter();
 
   const dropDownItems = [
@@ -59,16 +57,6 @@ export default function MainMenu({ user, setIsSettingsOpen, setIsChatOpen }: Pro
       },
     },
     {
-      title: "مساعدك الطبي الذكي",
-      icon: Chatbot,
-      isComponentIcon: true,
-      opened: false,
-      arrow: ArrowRight,
-      onclick: () => {
-        setIsChatOpen(true);
-      },
-    },
-    {
       title: "طلب دواء",
       icon: medication,
       opened: false,
@@ -91,13 +79,18 @@ export default function MainMenu({ user, setIsSettingsOpen, setIsChatOpen }: Pro
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         localStorage.removeItem("shifaa-medical-chat-messages");
+        localStorage.removeItem(`shifaa-medical-chat-v2-${user.id}`);
         window.location.href = "/auth/login";
       },
     },
   ];
 
-  const pharmaciesArr = dropDownItems.filter((item) => item.title !== "انضمام كصيدلي");
-  const userArr = dropDownItems.filter((item) => item.title !== "إنشاء صيدلية");
+  const pharmaciesArr = dropDownItems.filter(
+    (item) => item.title !== "انضمام كصيدلي"
+  );
+  const userArr = dropDownItems.filter(
+    (item) => item.title !== "إنشاء صيدلية"
+  );
   const adminArr = dropDownItems.filter(
     (item) =>
       item.title !== "انضمام كصيدلي" &&
@@ -128,11 +121,7 @@ export default function MainMenu({ user, setIsSettingsOpen, setIsChatOpen }: Pro
             onClick={item.onclick}
           >
             <div className="flex flex-row gap-4">
-              {item.isComponentIcon ? (
-                <item.icon className="h-6 w-6 text-black-800" />
-              ) : (
-                <Image src={item.icon} alt="icon" width={24} />
-              )}
+              <Image src={item.icon} alt="icon" width={24} />
               <p className="text-sm font-[500]">{item.title}</p>
             </div>
             {item.arrow && <Image className="scale-x-[-1]" src={item.arrow} alt="arrow" />}
