@@ -12,7 +12,7 @@ export default function SecondaryHeader(){
     const {user, loading} = useContext(UserContext);
     
     const dashboardBtn = () => {
-        if (user && user?.role === "pharmacist"){
+        if (user && user?.role === "pharmacist" && user?.pharmacy_id){
             return <BtnEmpty onClick={() => {router.push("/pharmacy-dashboard/pharmInfo")}}>لوحة التحكم</BtnEmpty>
         } else if (user && user?.role === "admin"){
             return <BtnEmpty onClick={() => {router.push("/admin-dashboard")}}>لوحة التحكم</BtnEmpty>

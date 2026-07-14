@@ -13,4 +13,5 @@ export type User = {
     has_pharmacist_application: boolean;
     has_pharmacy_application: boolean;
     has_pharmacy: boolean;
+    pharmacy_id: number | undefined;
 }

@@ -21,6 +21,7 @@ type ApiUser = {
     pharmacy_application?: {
       has_pharmacy_application?: boolean;
       is_approved?: boolean;
+      pharmacy_id?:number;
     } | null;
     
   };
@@ -70,6 +71,7 @@ export const getMe = async (): Promise<User> => {
       has_pharmacy_application:
         attributes.pharmacy_application?.has_pharmacy_application ?? false,
       has_pharmacy: attributes.pharmacy_application?.is_approved ?? false,
+      pharmacy_id:attributes.pharmacy_application?.pharmacy_id ?? undefined,
 
     };
   } catch (error) {
