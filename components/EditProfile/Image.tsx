@@ -4,9 +4,15 @@ import editIcon from "@/public/icons/editProfile/edit.svg";
 import deleteIcon from "@/public/icons/editProfile/delete.svg";
 import pharmLogo from "@/public/icons/pharmInfo/pharmacyLogo.svg";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from "react";
 import Cropper, { Area } from "react-easy-crop";
 import Btn from "../pharmacyDashboard/PharmacyInfo/Btn";
+type PharmacyInfo = {
+  logo: File | string | null;
+  name: string;
+  address: string;
+  phone: string;
+};
 
 type ImageProfileProps = {
   imageUrl: string | null;
@@ -15,7 +21,9 @@ type ImageProfileProps = {
   isCircle?: boolean;
   onImageChange?: (file: File) => void;
   onDeleteImage?: () => void;
+  setPharmacyInfo?: Dispatch<SetStateAction<PharmacyInfo>>;
 };
+
 
 export default function ImageProfile({
   imageUrl,
@@ -24,6 +32,8 @@ export default function ImageProfile({
   isCircle = true,
   onImageChange,
   onDeleteImage,
+  setPharmacyInfo,
+
 }: ImageProfileProps) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
@@ -77,10 +87,16 @@ export default function ImageProfile({
     setZoom(1);
   };
 
-  const handleCropSave = async () => {
-    if (!cropModalImageUrl || !croppedAreaPixels) return;
+const handleCropSave = async () => {
+  if (!cropModalImageUrl || !croppedAreaPixels) {
+    return;
+  }
 
-    const croppedFile = await getCroppedImg(cropModalImageUrl, croppedAreaPixels);
+  try {
+    const croppedFile = await getCroppedImg(
+      cropModalImageUrl,
+      croppedAreaPixels
+    );
 
     const nextPreviewUrl = URL.createObjectURL(croppedFile);
 
@@ -96,8 +112,16 @@ export default function ImageProfile({
     setCrop({ x: 0, y: 0 });
     setZoom(1);
 
+    setPharmacyInfo?.((currentInfo) => ({
+      ...currentInfo,
+      logo: croppedFile,
+    }));
+
     onImageChange?.(croppedFile);
-  };
+  } catch (error) {
+    console.error("Failed to crop image:", error);
+  }
+};
 
   const handleDeleteImage = () => {
     if (previewUrl) {

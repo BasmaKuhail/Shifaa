@@ -18,7 +18,12 @@ import PopUp from "@/components/adminDashboard/requests/InteractRequestPopup";
 import PopupContainer from "./PopUpContainer";
 import { useRouter } from "next/router";
 export default function PharmInfoSec (){
-    const fileInputRef = useRef<HTMLInputElement | null>(null);
+    type PharmacyInfo = {
+        logo: string | File | null;
+        name: string;
+        address: string;
+        phone: string;
+    };
     const {pharmacy, loading} = useContext(PharmacyContext);
 
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
@@ -42,11 +47,11 @@ export default function PharmInfoSec (){
             });
         }
     }}
-    const getInitialPharmacyInfo = () => ({
-        logo : pharmacy?.logo || null,
-        name:  pharmacy?.name || '',
-        address: pharmacy?.address || '',
-        phone: pharmacy?.phone || '',
+    const getInitialPharmacyInfo = (): PharmacyInfo => ({
+        logo: pharmacy?.logo ?? null,
+        name: pharmacy?.name ?? "",
+        address: pharmacy?.address ?? "",
+        phone: pharmacy?.phone ?? "",
     });
 
     useEffect(() => {
@@ -57,7 +62,26 @@ export default function PharmInfoSec (){
 
     const [pharmacyInfo, setPharmacyInfo] = useState(getInitialPharmacyInfo());
     const updatePharmacyInfo = async() => {
+        
         if(pharmacy){
+            // if no change show alert
+            const hasChanges =
+                pharmacyInfo.name.trim() !== pharmacy.name.trim() ||
+                pharmacyInfo.address.trim() !== pharmacy.address.trim() ||
+                pharmacyInfo.phone.trim() !== pharmacy.phone.trim() ||
+                pharmacyInfo.logo instanceof File ||
+                pharmacyInfo.logo !== pharmacy.logo;
+
+            if (!hasChanges) {
+                showAlert({
+                type: "Warning",
+                title: "تنبيه",
+                message: "لم يتم إجراء أي تغييرات.",
+                });
+
+                return;
+            }
+            // if change update
             try{
                 await updatePharmacyData(
                     pharmacy?.id, 
@@ -130,6 +154,7 @@ export default function PharmInfoSec (){
                                 onDeleteImage={() => {
                                     console.log("Delete pharmacy logo");
                                 }}
+                                setPharmacyInfo={setPharmacyInfo}
                             />
                         </div>
                 </div> 
