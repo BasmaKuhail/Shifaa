@@ -22,6 +22,7 @@ type ImageProfileProps = {
   onImageChange?: (file: File) => void;
   onDeleteImage?: () => void;
   setPharmacyInfo?: Dispatch<SetStateAction<PharmacyInfo>>;
+  showBtns?:boolean
 };
 
 
@@ -33,6 +34,7 @@ export default function ImageProfile({
   onImageChange,
   onDeleteImage,
   setPharmacyInfo,
+  showBtns = true
 
 }: ImageProfileProps) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -130,6 +132,10 @@ const handleCropSave = async () => {
 
     setPreviewUrl(null);
     onDeleteImage?.();
+    setPharmacyInfo?.((currentInfo) => ({
+      ...currentInfo,
+      logo: "",
+    }));
   };
 
   // const imageUrl = previewUrl || imageObj?.url || null;
@@ -206,7 +212,7 @@ const handleCropSave = async () => {
         className="hidden"
         onChange={handleImageChange}
       />
-
+      {showBtns && 
       <div className="flex flex-row gap-3">
         <Btn
           text="تعديل الصورة"
@@ -214,14 +220,14 @@ const handleCropSave = async () => {
           onClick={() => fileInputRef.current?.click()}
         />
 
-        {(imageUrl || previewUrl) && (
+        {/* {(imageUrl || previewUrl) && (
           <Btn
             text="حذف الصورة"
             icon={deleteIcon}
             onClick={handleDeleteImage}
           />
-        )}
-      </div>
+        )} */}
+      </div>}
     </div>
   );
 }
