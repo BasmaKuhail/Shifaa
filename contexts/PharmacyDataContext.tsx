@@ -1,6 +1,7 @@
-import { createContext, useState, useEffect, ReactNode } from "react";
+import { createContext, useState, useEffect, ReactNode, useContext, useCallback } from "react";
 import { Pharmacy } from "@/types/PharmacyType";
 import { getPharmacyById } from "@/services/pharmacy";
+import { UserContext } from "./UserContext";
 
 
 interface PharmacyrContextType {
@@ -20,10 +21,19 @@ export const PharmacyProvider = ({ children }: { children: ReactNode }) => {
   const [pharmacy, setPharmacy] = useState<Pharmacy | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchPharmacy = async () => {
-   
+  const {user, loading:userLoading} = useContext(UserContext);
+
+  const pharmId = user?.pharmacy_id;
+  const fetchPharmacy = useCallback(async () => {
+    if (!pharmId) {
+      setPharmacy(null);
+      setLoading(false);
+      return;
+    }
+
+    setLoading(true);
     try {
-      const data = await getPharmacyById(9); 
+      const data = await getPharmacyById(pharmId); 
       setPharmacy(data);
       console.log(data)
     } catch (err: any) {
@@ -31,11 +41,15 @@ export const PharmacyProvider = ({ children }: { children: ReactNode }) => {
     } finally {
       setLoading(false);
     }
-  };
+  },[pharmId]);
 
   useEffect(() => {
-    fetchPharmacy();
-  }, []);
+    if (userLoading) {
+      return;
+    }
+
+    void fetchPharmacy();
+  }, [userLoading, fetchPharmacy]);
 
   useEffect(() => {
     const handleOnline = () => {

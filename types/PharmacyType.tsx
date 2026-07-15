@@ -26,5 +26,5 @@ export type PharmacyDataToUpdate = {
   name: string;
   address: string;
   phone: string;
-  // logo: ApplicationFile | null;
+  logo: File | null | string;
 }

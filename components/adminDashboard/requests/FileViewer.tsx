@@ -94,8 +94,7 @@ export default function FileViewer({ file, label, id }: FileViewerProps) {
   if (error) {
     return (
       <div className="flex flex-col gap-2">
-        <p className="font-semibold">{label}</p>
-        <p className="text-center text-red-500">{error}</p>
+        <p className="text-btn text-center text-red-500">{error}</p>
       </div>
     );
   }
@@ -105,7 +104,6 @@ export default function FileViewer({ file, label, id }: FileViewerProps) {
 
   return (
     <div className="flex flex-col gap-2">
-      <p className="font-semibold">{label}</p>
 
       {objectUrl && isImage && (
         <img

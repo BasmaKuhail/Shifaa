@@ -16,11 +16,13 @@ import Image from "next/image";
 import { ApplicationFile } from "@/types/PharmacistApplication";
 import PopUp from "@/components/adminDashboard/requests/InteractRequestPopup";
 import PopupContainer from "./PopUpContainer";
+import { useRouter } from "next/router";
 export default function PharmInfoSec (){
     const fileInputRef = useRef<HTMLInputElement | null>(null);
     const {pharmacy, loading} = useContext(PharmacyContext);
 
     const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
+    const route = useRouter();
     const handleDeletePharmacy = async () => {
         setShowDeleteConfirmation(false);
         if(pharmacy){
@@ -31,6 +33,7 @@ export default function PharmInfoSec (){
                     title:"Success",
                     message: "تم حذف الصيدلية بنجاح!"
                 })
+            route.push("/")
             }catch (error: unknown) {
                 showAlert({
                 type: "Error",
@@ -62,7 +65,7 @@ export default function PharmInfoSec (){
                         name: pharmacyInfo.name, 
                         address: pharmacyInfo.address, 
                         phone: pharmacyInfo.phone,
-                        // logo: pharmacyInfo.logo
+                        logo: pharmacyInfo.logo
                     });
                 showAlert({
                     type:"Success",
@@ -107,16 +110,15 @@ export default function PharmInfoSec (){
                 </div>
             ) : (<>
                 <div className="flex flex-col w-full gap-10 pb-5">
-                    <div className="relative w-full h-[260px]">
-                        <div className="relative rounded-[12px] w-full bg-black-50 h-[200px]">
-                            {/* fit image only to the hight of it's container */}
+                    <div className="relative w-full h-[150px]">
+                        {/* <div className="relative rounded-[12px] w-full bg-black-50 h-[200px]">
                             <Image src={phamBg} alt="defult bg"className="h-[200px] w-full opacity-[20%] relative rounded-[12px] w-full"/>
                         </div>
                             <div className="absolute top-3 right-3 ">
                                 <Btn text="تعديل الصورة" icon={editIcon} onClick={() => fileInputRef.current?.click()} />
-                            </div>
+                            </div> */}
 
-                        <div className="absolute left-1/2 -translate-x-1/2 top-[110px]">
+                        <div className="absolute left-1/2 -translate-x-1/2 top-[0px] w-full">
                             <ImageProfile
                                 imageUrl={pharmacy?.logo || null}
                                 width={150}

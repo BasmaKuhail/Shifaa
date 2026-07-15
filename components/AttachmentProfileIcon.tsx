@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { StaticImageData } from "next/image";
+import axios from "axios";
+
 import ProfileIcon from "./ProfileIcon";
 import { getAttachment } from "@/services/admin";
 
@@ -16,56 +18,66 @@ export default function AttachmentProfileIcon({
   isCircle = true,
   fallbackImage,
 }: AttachmentProfileIconProps) {
-  const [loadedImage, setLoadedImage] = useState<{
-    sourceUrl: string;
-    objectUrl: string;
-  } | null>(null);
+  const [objectUrl, setObjectUrl] = useState<string | null>(null);
 
   useEffect(() => {
     if (!imageUrl) {
+      setObjectUrl(null);
       return;
     }
 
-    let objectUrlToRevoke: string | null = null;
-    let isMounted = true;
+    let isActive = true;
+    let generatedObjectUrl: string | null = null;
 
     const fetchImage = async () => {
       try {
         const blob = await getAttachment(imageUrl);
-        const nextObjectUrl = URL.createObjectURL(blob);
-        objectUrlToRevoke = nextObjectUrl;
 
-        if (isMounted) {
-          setLoadedImage({
-            sourceUrl: imageUrl,
-            objectUrl: nextObjectUrl,
-          });
+        if (!blob.type.startsWith("image/")) {
+          throw new Error(
+            `Expected an image response, but received ${blob.type || "unknown type"}`
+          );
+        }
+
+        generatedObjectUrl = URL.createObjectURL(blob);
+
+        if (isActive) {
+          setObjectUrl(generatedObjectUrl);
         } else {
-          URL.revokeObjectURL(nextObjectUrl);
+          URL.revokeObjectURL(generatedObjectUrl);
         }
       } catch (error) {
-        console.error("Failed to load profile image:", error);
+        if (isActive) {
+          setObjectUrl(null);
+        }
+
+        if (axios.isAxiosError(error)) {
+          console.error("Failed to fetch attachment", {
+            requestedUrl: error.config?.url,
+            baseUrl: error.config?.baseURL,
+            status: error.response?.status,
+            data: error.response?.data,
+          });
+        } else {
+          console.error("Failed to display attachment:", error);
+        }
       }
     };
 
-    fetchImage();
+    void fetchImage();
 
     return () => {
-      isMounted = false;
-      if (objectUrlToRevoke) {
-        URL.revokeObjectURL(objectUrlToRevoke);
+      isActive = false;
+
+      if (generatedObjectUrl) {
+        URL.revokeObjectURL(generatedObjectUrl);
       }
     };
   }, [imageUrl]);
 
-  const displayUrl =
-    imageUrl && loadedImage?.sourceUrl === imageUrl
-      ? loadedImage.objectUrl
-      : null;
-
   return (
     <ProfileIcon
-      imageUrl={displayUrl}
+      imageUrl={objectUrl}
       width={width}
       isCircle={isCircle}
       fallbackImage={fallbackImage}

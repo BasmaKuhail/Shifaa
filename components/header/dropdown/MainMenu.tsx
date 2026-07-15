@@ -85,9 +85,17 @@ export default function MainMenu({ user, setIsSettingsOpen }: Props) {
     },
   ];
 
-  const pharmaciesArr = dropDownItems.filter(
-    (item) => item.title !== "انضمام كصيدلي"
-  );
+  const pharmacistArr = dropDownItems.filter((item) => {
+    if (item.title === "انضمام كصيدلي") {
+      return false;
+    }
+
+    if (user?.has_pharmacy && item.title === "إنشاء صيدلية") {
+      return false;
+    }
+
+    return true;
+  });
   const userArr = dropDownItems.filter(
     (item) => item.title !== "إنشاء صيدلية"
   );
@@ -99,7 +107,7 @@ export default function MainMenu({ user, setIsSettingsOpen }: Props) {
   );
 
   const itemsToShow =
-    user.role === "pharmacist" ? pharmaciesArr : user.role === "admin" ? adminArr : userArr;
+    user.role === "pharmacist" ? pharmacistArr : user.role === "admin" ? adminArr : userArr;
 
   return (
     <div>

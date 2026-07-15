@@ -28,6 +28,7 @@ type ColumnProps = {
                     <p className="text-btn font-[500]">{c1}</p>
                 </div>
                 <div className="p-2">
+                    {!c2 && <p className="text-btn">لا يوجد مرفق</p>}
                     {typeof c2 === "string" && <p className="text-btn">{c2}</p>}
                     {typeof c2 === "object" && <FileViewer file={c2} label={c1} id={c2.id} />}
                 </div>

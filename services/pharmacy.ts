@@ -8,7 +8,7 @@ export const getPharmacyById = async (pharmacyId: number):Promise<Pharmacy> => {
     responseType: 'json',
 
   });
-  // console.log(response);
+  console.log(response);
   return {
     id: response.data.data.id,
     name: response.data.data.name,
@@ -30,10 +30,25 @@ export const getPharmacyById = async (pharmacyId: number):Promise<Pharmacy> => {
   }
   
 }
-export const updatePharmacyData = async (pharmacyId: number, pharmacyData: PharmacyDataToUpdate) => {
-  const response = await api.patch(`/pharmacy/${pharmacyId}`, pharmacyData);
+export const updatePharmacyData = async (
+  pharmacyId: number,
+  pharmacyData: PharmacyDataToUpdate
+) => {
+  const formData = new FormData();
+
+  formData.append("_method", "PATCH");
+  formData.append("name", pharmacyData.name);
+  formData.append("address", pharmacyData.address);
+  formData.append("phone", pharmacyData.phone);
+
+  if (pharmacyData.logo instanceof File) {
+    formData.append("logo", pharmacyData.logo);
+  }
+
+  const response = await api.post(`/pharmacy/${pharmacyId}`, formData);
+
   return response.data;
-}
+};
 
 export const deletePharmacy = async (pharmacyId: number) => {
   const response = await api.delete(`/pharmacy/${pharmacyId}`);

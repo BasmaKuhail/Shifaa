@@ -14,6 +14,7 @@ import { showAlert } from "../alerts/AlertContainer";
 import ErrorMsg from "../register/ErrorMsg";
 import HasPharmacistApplication from "../joinAsPharmacist/HasForm";
 import { createPharm } from "@/services/createPharmacy";
+import HasPharm from "./HasPharm";
 export default function CreatePharmacy(){
 
     const [checkBoxChecked, setCheckBoxChecked] = useState(false)
@@ -114,10 +115,16 @@ export default function CreatePharmacy(){
     }
 };
     const { crumbs } = useBreadcrumb()
-
+    if(user?.has_pharmacy){
+        return(
+            <HasPharm/>
+        )
+    }
     if(user?.has_pharmacy_application || submitLoading){
         return <HasPharmacistApplication/>
     }
+
+    
     return(
         <div className="flex flex-col gap-10">
                     <nav className="flex items-center gap-4">
