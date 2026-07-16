@@ -10,7 +10,7 @@ export default function PharmInfo(){
             <PharmInfoSec/>
             {/* <ContactInfo/> */}
             <PharmacistsSec pharmacyName="شنن" />
-            <Branches/>
+            {/* <Branches/> */}
         </div>
     )
 }

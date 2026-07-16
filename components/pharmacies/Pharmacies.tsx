@@ -16,7 +16,7 @@ export default function Pharmacies() {
     const [userInput, setUserInput] = useState("");
     return (
         <div dir="rtl" className='w-full flex flex-col overflow-x-hidden '>
-            <div className="bg-blue-100 relative inline-block ">
+            <div className="bg-blue-100 relative inline-block w-full">
                 <div className="pt-[75px] hidden lg:block">
                     <div className="px-4 md:px-8 lg:px-20 xl:px-30 pt-4 relative z-40"><SecondaryHeader/></div>
                 </div>
@@ -34,10 +34,12 @@ export default function Pharmacies() {
                         >
                             <Image src={left} alt=""/>
                         </motion.div>
-                        <div className="flex flex-col text-center justify-center items-center lg:px-30 md:px-15 sm:px-5 w-full">
-                            <div className="flex flex-col gap-4 mb-10  ">
+                        <div className="flex flex-col text-center justify-center items-center w-full">
+                            <div className="flex flex-col gap-4 mb-10">
                                 <HeaderText text="شبكة صيدليات شفاء" color="black"/>
-                                <SubHeader text="تصفح قائمتنا الشاملة للصيدليات المعتمدة في جميع أنحاء قطاع غزة. هنا، يمكنك العثور على تفاصيل الاتصال، واستعراض المواقع، ومعرفة الصيدليات النشطة حاليًا في شبكتنا لتلبية احتياجاتك الصحية." color="black"/>
+                                <div className="flex lg:px-20">
+                                    <SubHeader text="تصفح قائمتنا الشاملة للصيدليات المعتمدة في جميع أنحاء قطاع غزة. هنا، يمكنك العثور على تفاصيل الاتصال، واستعراض المواقع، ومعرفة الصيدليات النشطة حاليًا في شبكتنا لتلبية احتياجاتك الصحية." color="black"/>
+                                </div>
                             </div>
                             <div className="flex w-full items-center justify-center">
                                 <SearchInput label=" ابحث عن صيدليات" value= {userInput} onChange={(value) => setUserInput(value)}/>
@@ -53,7 +55,7 @@ export default function Pharmacies() {
                         </motion.div>
                     </div>
                 </div>
-                <div className="flex flex-wrap flex-row items-center gap-5 px-30 justify-between mt-20 mb-20">
+                <div className="px-4 md:px-8 lg:px-20 xl:px-30 flex w-full flex-col flex-wrap md:flex-row items-center gap-5 justify-center md:justify-between mt-20 mb-20">
                     <PharmCard/>
                     <PharmCard/>
                     <PharmCard/>

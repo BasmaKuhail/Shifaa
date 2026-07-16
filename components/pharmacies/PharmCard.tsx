@@ -16,18 +16,23 @@ const Btn = ({image, text}: {image:StaticImageData, text:string}) => {
 }
 export default function PharmCard(){
     return(
-        <div className="bg-white flex flex-col gap-5 pb-7 rounded-[14px] items-center justify-center5 p-1 cursor-pointer hover:shadow-lg transition-shadow duration-300 ease-in-out w-full md:w-[45%] lg:w-[30%] xl:w-[23%]">
+        <div className="
+            bg-white flex flex-col gap-5 pb-7 rounded-[14px] 
+            items-center justify-center p-1 cursor-pointer 
+            hover:shadow-lg transition-shadow duration-300 ease-in-out 
+            w-full md:w-[45%] lg:w-[30%] xl:w-[23%]"
+        >
             {/* Apply a blue filter and reduce contrast using CSS styles */}
             <div className="relative w-full">
                 <Image className="rounded-[14px] w-full filter contrast-60" src={pharm} alt="" />
                 <div className="absolute inset-0 bg-blue-200 opacity-50 rounded-[14px]"></div>
             </div>
             <p className="font-semibold text-lg mt-2">صيدلية شفاء</p>
-            <div className="w-[90%] flex flex-row gap-2 items-center justify-center text-center">
+            <div className="flex flex-row gap-2 items-center justify-center text-center">
                 <Image src={location} alt="" width={15}/>
                 <p className="text-black-500 text-sm">غزة - شارع الوحدة</p>
             </div>
-            <div className="w-[90%]  flex flex-row items-center justify-between gap-2 items-center">
+            <div className="flex flex-row items-center justify-between gap-2 items-center">
                 <Btn image={view} text="عرض"/>
                 <Btn image={contact} text="تواصل"/>
             </div>
