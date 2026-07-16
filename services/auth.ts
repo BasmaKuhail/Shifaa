@@ -1,5 +1,4 @@
 import api from "@/lib/api";
-import { User } from "@/types/UserType";
 
 export const register = async (data: {
   first_name: string;
@@ -48,7 +47,6 @@ export const login = async (data: {
 
 export const logout = async () => {
   const token = localStorage.getItem("token");
-  console.log(token)
   if (!token) throw new Error("No token found");
 
   const response = await api.post("/logout", null, {

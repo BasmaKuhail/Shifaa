@@ -1,9 +1,12 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useRouter } from "next/router";
 import { login, register } from "@/services/auth";
+import { getMe, normalizeUser } from "@/services/getMe";
 import { validateLogin, validateRegister } from "@/utils/ValidateForms"
 import {RegisterData} from "@/types/RegisterFormData"
 import { showAlert } from "@/components/alerts/AlertContainer";
+import { UserContext } from "@/contexts/UserContext";
+import axios from "axios";
 
 const initialFormData: RegisterData = {
     firstName: "",
@@ -15,6 +18,7 @@ const initialFormData: RegisterData = {
 
 export const useAuthForm = (isRegister: boolean) => {
     const router = useRouter();
+    const { setUser } = useContext(UserContext);
 
     const [formData, setFormData] = useState<RegisterData>(initialFormData);
     const [errorMsg, setErrorMsg] = useState("");
@@ -65,31 +69,45 @@ export const useAuthForm = (isRegister: boolean) => {
                     email: formData.email,
                     password: formData.password,
                 });
-            console.log("Success:", response);
+            const token = response.data.token;
+            if (typeof token !== "string" || !token) {
+                throw new Error("The authentication response did not include a token");
+            }
 
-            localStorage.setItem("token", response.data.token);
+            // Avoid ever showing a previous account with a newly issued token.
+            setUser(null);
+            localStorage.setItem("token", token);
 
-            if (response.data.user) {
-                localStorage.setItem("user", JSON.stringify(response.data.user));
+            try {
+                const responseUser = normalizeUser(response.data.user);
+                setUser(responseUser ?? await getMe());
+            } catch (profileError) {
+                localStorage.removeItem("token");
+                setUser(null);
+                throw profileError;
             }
 
             router.push("/");
 
-        } catch (error: any) {
-            if (error.response?.status === 422 || error.response?.status === 401) {
+        } catch (caughtError: unknown) {
+            const response = axios.isAxiosError(caughtError)
+                ? caughtError.response
+                : undefined;
+
+            if (response?.status === 422 || response?.status === 401) {
                 showAlert({
                     type: "Error",
                     title: "خطأ في التحقق",
-                    message: error.response.data.message,
+                    message: response.data.message,
                 });
-                console.log("Validation Errors:", error.response.data.errors);
-            } else if (error.response?.status === 500) {
+                console.log("Validation Errors:", response.data.errors);
+            } else if (response?.status === 500) {
                 showAlert({
                     type: "Error",
                     title: "خطأ في الخادم",
                     message: "حدث خطأ في الخادم، حاول مرة أخرى",
                 });
-                console.log("Validation Errors:", error.response.data.errors);
+                console.log("Validation Errors:", response.data.errors);
             } else {
                 showAlert({
                     type: "Error",
@@ -97,9 +115,9 @@ export const useAuthForm = (isRegister: boolean) => {
                     message: "حدث خطأ غير متوقع، حاول مرة أخرى",
                 });
             }
-            console.log("Error:", error.response?.data);
+            console.log("Error:", response?.data);
             setErrorMsg(
-                error.response?.data?.message || "حدث خطأ غير متوقع، حاول مرة أخرى"
+                response?.data?.message || "حدث خطأ غير متوقع، حاول مرة أخرى"
             );
         } finally {
             setIsSubmitting(false);

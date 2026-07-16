@@ -15,7 +15,7 @@ import axios from "axios";
 import { getApiErrorMessage } from "@/utils/getApiErrorMessage";
 
 export default function EditProfile() {
-    const {user, loading} = useContext(UserContext);
+    const {user, setUser, loading} = useContext(UserContext);
 
     if(loading){
         return <EditProfileSkeleton/>
@@ -85,6 +85,14 @@ export default function EditProfile() {
     const updateProfileOnClick = async() => {
         try{
             await updateProfile({first_name: userInfo.firstName, last_name: userInfo.lastName, email: userInfo.email});
+            if (user) {
+                setUser({
+                    ...user,
+                    firstName: userInfo.firstName,
+                    lastName: userInfo.lastName,
+                    email: userInfo.email,
+                });
+            }
             showAlert({
                 type:"Success",
                 title:"Success",

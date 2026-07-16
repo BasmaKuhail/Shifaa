@@ -1,8 +1,13 @@
 "use client";
-import { createContext, useState, useEffect, ReactNode } from "react";
+import { createContext, useState, useEffect, ReactNode, useCallback } from "react";
 import { User } from "@/types/UserType";
 import { getMe } from "@/services/getMe";
-
+import {
+  clearCachedUser,
+  readCachedUser,
+  writeCachedUser,
+} from "@/lib/userCache";
+import axios from "axios";
 
 interface UserContextType {
   user: User | null;
@@ -20,48 +25,72 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
 
-  const fetchUser = async () => {
+  const updateUser = useCallback((nextUser: User | null) => {
+    setUser(nextUser);
+
+    if (nextUser) {
+      writeCachedUser(nextUser);
+    } else {
+      clearCachedUser();
+    }
+  }, []);
+
+  const fetchUser = useCallback(async () => {
     const token = localStorage.getItem("token");
-    console.log("Fetching user with token:", token);
     if (!token) {
+      updateUser(null);
       setLoading(false);
       return;
     }
 
     try {
       const data = await getMe();
-      setUser(data);
-      // console.log(data)
-    } catch (err: any) {
-      if (err.response?.status === 401) {
+      updateUser(data);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error) && error.response?.status === 401) {
         localStorage.removeItem("token");
-        setUser(null);
+        updateUser(null);
       } else {
-        console.log("Network error, keeping session");
+        console.warn("Could not refresh the user profile; using the cached profile.");
       }
     } finally {
       setLoading(false);
     }
-  };
+  }, [updateUser]);
 
   useEffect(() => {
-    fetchUser();
-  }, []);
+    const token = localStorage.getItem("token");
+    if (!token) {
+      updateUser(null);
+      setLoading(false);
+      return;
+    }
+
+    const cachedUser = readCachedUser();
+    if (cachedUser) {
+      setUser(cachedUser);
+      setLoading(false);
+    }
+
+    if (!navigator.onLine) {
+      setLoading(false);
+      return;
+    }
+
+    void fetchUser();
+  }, [fetchUser, updateUser]);
 
   useEffect(() => {
     const handleOnline = () => {
-      const token = localStorage.getItem("token");
-      if (token && !user) {
-        fetchUser();
-      }
+      void fetchUser();
     };
 
     window.addEventListener("online", handleOnline);
     return () => window.removeEventListener("online", handleOnline);
-  }, [user]);
+  }, [fetchUser]);
 
   return (
-    <UserContext.Provider value={{ user, setUser, loading }}>
+    <UserContext.Provider value={{ user, setUser: updateUser, loading }}>
       {children}
     </UserContext.Provider>
   );

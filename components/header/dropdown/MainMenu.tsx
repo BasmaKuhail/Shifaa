@@ -12,6 +12,7 @@ import createPharm from "@/public/icons/profile/createPharm.svg";
 import ArrowRight from "@/public/icons/profile/arrowRight.svg";
 import { logout as logoutService } from "@/services/auth";
 import { User } from "@/types/UserType";
+import { clearCachedUser } from "@/lib/userCache";
 
 type Props = {
   user: User;
@@ -77,7 +78,7 @@ export default function MainMenu({ user, setIsSettingsOpen }: Props) {
         }
 
         localStorage.removeItem("token");
-        localStorage.removeItem("user");
+        clearCachedUser();
         localStorage.removeItem("shifaa-medical-chat-messages");
         localStorage.removeItem(`shifaa-medical-chat-v2-${user.id}`);
         window.location.href = "/auth/login";
