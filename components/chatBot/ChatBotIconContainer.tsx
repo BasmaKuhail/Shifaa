@@ -55,7 +55,7 @@ export default function ChatIconContainer({
         <button
           type="button"
           aria-label="إغلاق المحادثة"
-          className="fixed inset-0 z-[60] cursor-default bg-black/45"
+          className="fixed inset-0 z-[110] cursor-default bg-black/45"
           onClick={() => setIsChatOpen(false)}
         />
       )}
@@ -64,8 +64,8 @@ export default function ChatIconContainer({
         ref={containerRef} 
         className={
           mobileCompact
-            ? "relative z-[70] lg:fixed lg:bottom-6 lg:left-10"
-            : "fixed bottom-6 left-10 z-[70]"
+            ? "relative z-[120] lg:fixed lg:bottom-6 lg:left-10"
+            : "fixed bottom-6 left-10 z-[120]"
         }
         >
         {isChatOpen && user && (

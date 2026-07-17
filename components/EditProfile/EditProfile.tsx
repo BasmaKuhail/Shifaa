@@ -13,9 +13,10 @@ import { showAlert } from "../alerts/AlertContainer";
 import { changePassword, updateProfile } from "@/services/editProfile";
 import axios from "axios";
 import { getApiErrorMessage } from "@/utils/getApiErrorMessage";
+import { addUserNotification } from "@/lib/notifications";
 
 export default function EditProfile() {
-    const {user, loading} = useContext(UserContext);
+    const {user, setUser, loading} = useContext(UserContext);
 
     if(loading){
         return <EditProfileSkeleton/>
@@ -68,6 +69,14 @@ export default function EditProfile() {
         try{
             console.log(updatePasswordData);
             await changePassword(updatePasswordData);
+            if (user) {
+                addUserNotification(user.id, {
+                    type: "success",
+                    title: "تم تغيير كلمة المرور",
+                    message: "تم تغيير كلمة المرور بنجاح.",
+                    href: "/editProfile",
+                });
+            }
             showAlert({
                 type:"Success",
                 title:"Success",
@@ -85,6 +94,15 @@ export default function EditProfile() {
     const updateProfileOnClick = async() => {
         try{
             await updateProfile({first_name: userInfo.firstName, last_name: userInfo.lastName, email: userInfo.email});
+            if (user) {
+                setUser({ ...user, firstName: userInfo.firstName, lastName: userInfo.lastName, email: userInfo.email });
+                addUserNotification(user.id, {
+                    type: "success",
+                    title: "تم تحديث الملف الشخصي",
+                    message: "تم تحديث معلومات الملف الشخصي بنجاح.",
+                    href: "/editProfile",
+                });
+            }
             showAlert({
                 type:"Success",
                 title:"Success",

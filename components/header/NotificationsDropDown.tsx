@@ -1,46 +1,50 @@
-import Image, { StaticImageData } from "next/image";
-import profileContainer from "@/public/icons/profileContainer.svg"
-type notificationsDropDownProps = {
-    notifications: {sender:{name:string, avatar:string | null}, msg: string, date: Date, action?:{title:string, onClick:() => void}}[]
-}
-export default function NotificationsDropDown ({notifications}: notificationsDropDownProps){
-    return (
-        <div dir="rtl" className="bg-white rounded-[12px] p-4 pb-10 w-[21.75rem] flex flex-col gap-1">
-            <p className="text-sm font-[500]">الاشعارات</p>
-            <div className='flex flex-row justify-between  w-full border-t border-t-black-200 pt-5 mt-5 text-12px font-[500]'>
-                <p className="">غير مقروء</p>
-                <p className="p-1 px-3 bg-[#E5F7FF] hover:bg-[#cae2ed] cursor-pointer">تميز كمقروءة</p>
-            </div>
-            <div className="flex flex-col">
-                {notifications.map((ntf, indx) => 
-                    <div key={indx} className="border border-black-200 bg-black-100 p-2 px-4 flex py-3 flex-row gap-2 justify-start">
-                        <Image className="w-[3rem] rounded-full h-[3rem]" src={ntf.sender.avatar ? ntf.sender.avatar : profileContainer} alt="avatar"/> 
-                        <div className="flex flex-col gap-3 text-inpt">
-                            <p><b>{ntf.sender.name} </b>{ntf.msg}</p>
-                            <nav className="flex flex-row items-center justify-between">
-                                <p>{ntf.date.toLocaleDateString()}</p>
-                                {ntf.action && <div
-                                    className="
-                                        h-full rounded-[6px] px-5 py-1
-                                        bg-gradient-to-b from-[#3E94B9] to-[#04B6FF]
-                                        flex items-center justify-center
-                                        text-white text-inpt
-                                        cursor-pointer
-                                        
-                                        hover:bg-gradient-to-b                    
-                                        hover:from-[#356A82]
-                                        hover:to-[#1689B8]
-                                        "
-                                    onClick={ntf.action.onClick}
-                                >
-                                {ntf.action.title}
-                            </div>}
-                            </nav>
-                            
-                        </div>
-                    </div>
-                )}
-            </div>
-        </div>
-    )
+import { UserNotification } from "@/lib/notifications";
+
+type NotificationsDropDownProps = {
+  notifications: UserNotification[];
+  onNotificationClick: (notification: UserNotification) => void;
+  onMarkAllRead: () => void;
+};
+
+export default function NotificationsDropDown({
+  notifications,
+  onNotificationClick,
+  onMarkAllRead,
+}: NotificationsDropDownProps) {
+  const unreadCount = notifications.filter((notification) => !notification.read).length;
+
+  return (
+    <div dir="rtl" className="bg-white rounded-[12px] p-4 pb-5 w-[21.75rem] max-w-[calc(100vw-2rem)] max-h-[calc(100vh-7rem)] overflow-y-auto flex flex-col gap-1 shadow-lg border border-black-200">
+      <div className="flex items-center justify-between">
+        <p className="text-sm font-[500]">الإشعارات</p>
+        {unreadCount > 0 && (
+          <button type="button" className="text-xs text-blue-600 hover:underline" onClick={onMarkAllRead}>
+            تحديد الكل كمقروء
+          </button>
+        )}
+      </div>
+      <div className="flex flex-row justify-between w-full border-t border-t-black-200 pt-5 mt-5 text-12px font-[500]">
+        <p>{unreadCount} غير مقروءة</p>
+      </div>
+      <div className="flex flex-col">
+        {notifications.length === 0 ? (
+          <p className="py-8 text-center text-sm text-black-500">لا توجد إشعارات</p>
+        ) : notifications.map((notification) => (
+          <button
+            type="button"
+            key={notification.id}
+            className={`text-right border border-black-200 p-3 flex flex-col gap-2 hover:bg-black-100 ${notification.read ? "bg-white" : "bg-blue-50"}`}
+            onClick={() => onNotificationClick(notification)}
+          >
+            <span className="flex items-center justify-between gap-2">
+              <strong className="text-sm">{notification.title}</strong>
+              {!notification.read && <span className="h-2 w-2 rounded-full bg-red shrink-0" aria-label="Unread" />}
+            </span>
+            <span className="text-inpt text-black-500">{notification.message}</span>
+            <span className="text-xs text-black-500">{new Date(notification.createdAt).toLocaleDateString()}</span>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
 }

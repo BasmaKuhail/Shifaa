@@ -22,7 +22,7 @@ export default function LandingLayout({ children }: { children: React.ReactNode 
       
       {showArrow && <UpArrow />}
 
-      <div className="fixed top-0 left-0 w-full z-50 hidden lg:block">
+      <div className="fixed top-0 left-0 w-full z-[90] hidden lg:block">
         <Header />
       </div>
       <div className="bg-blue-100 relative inline-block ">

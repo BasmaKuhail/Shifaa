@@ -1,12 +1,15 @@
 import { showAlert } from "@/components/alerts/AlertContainer";
 import PetrolBtn from "@/components/pharmacyDashboard/PharmacyInfo/invitePopup/PetrolBtn";
 import Input from "@/components/register/input";
-import { changePassword, updateProfile } from "@/services/editProfile";
+import { changePassword } from "@/services/editProfile";
 import { getApiErrorMessage } from "@/utils/getApiErrorMessage";
 import { validateConfirmPassword, validateInput } from "@/utils/ValidateInput";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { UserContext } from "@/contexts/UserContext";
+import { addUserNotification } from "@/lib/notifications";
 
 export default function Settings (){
+    const { user } = useContext(UserContext);
     const [updatePasswordData, setUpdatePasswordData] = useState({
             current_password: '',
             password:'',
@@ -42,8 +45,15 @@ export default function Settings (){
                 return
             }
             try{
-                console.log(updatePasswordData);
                 await changePassword(updatePasswordData);
+                if (user) {
+                    addUserNotification(user.id, {
+                        type: "success",
+                        title: "تم تغيير كلمة المرور",
+                        message: "تم تغيير كلمة المرور بنجاح.",
+                        href: "/editProfile",
+                    });
+                }
                 showAlert({
                     type:"Success",
                     title:"Success",

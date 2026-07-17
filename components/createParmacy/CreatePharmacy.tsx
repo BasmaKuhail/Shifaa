@@ -15,6 +15,7 @@ import ErrorMsg from "../register/ErrorMsg";
 import HasPharmacistApplication from "../joinAsPharmacist/HasForm";
 import { createPharm } from "@/services/createPharmacy";
 import HasPharm from "./HasPharm";
+import { addUserNotification } from "@/lib/notifications";
 export default function CreatePharmacy(){
 
     const [checkBoxChecked, setCheckBoxChecked] = useState(false)
@@ -96,6 +97,14 @@ export default function CreatePharmacy(){
     try {
         const res = await createPharm(userInfo.name, userInfo.phone, userInfo.health_license, userInfo.address, userInfo.logo);
         console.log(res);
+        if (user) {
+            addUserNotification(user.id, {
+                type: "success",
+                title: "تم تقديم طلب الصيدلية",
+                message: "تم تقديم طلب إنشاء الصيدلية للمراجعة.",
+                href: "/create-pharmacy",
+            });
+        }
         setSubmitLoading(false);
         showAlert({
             type: "Success",
