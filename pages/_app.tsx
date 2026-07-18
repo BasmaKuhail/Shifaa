@@ -48,7 +48,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           ): (
             page
           )}
-          {isAdminRoute ? (
+          {/* {isAdminRoute ? (
               <AdminRequestProvider>
                 <AdminPharmacyRequestProvider>
                   {page}
@@ -56,7 +56,7 @@ function MyApp({ Component, pageProps }: AppProps) {
               </AdminRequestProvider>
             ) : (
               page
-            )}
+            )} */}
             <AppToastContainer/>
           
           </BreadcrumbProvider>
