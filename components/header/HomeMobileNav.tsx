@@ -18,15 +18,15 @@ type mobileNavProps ={
 export default function HomeNav({isMenuOpened, setIsMenuOpened}:mobileNavProps){
     const {user, loading} = useContext(UserContext);
     const router = useRouter();
-    const handleBtnRedirect = () => {
-        if(user?.role === "user"){
-            router.push("/request-medicen")
-        }else if (user?.role === "pharmacist"){
-            router.push("/pharmacy-dashboard/pharmInfo")
-        }else if (user?.role === "admin"){
-            router.push("/admin-dashboard")
+    const dashboardBtn = () => {
+            if (user && user?.role === "pharmacist" && user?.has_pharmacy){
+                return <BtnEmpty onClick={() => {router.push("/pharmacy-dashboard/pharmInfo")}}>لوحة التحكم</BtnEmpty>
+            } else if (user && user?.role === "admin"){
+                return <BtnEmpty onClick={() => {router.push("/admin-dashboard")}}>لوحة التحكم</BtnEmpty>
+            }else{
+                return <div className="px-20"></div>
+            }
         }
-    }
     return(
         <div className="flex flex-col  p-6 rounded-r-[14px] gap-8">
             <div className="w-fit" onClick={() => setIsMenuOpened(!isMenuOpened)}>
@@ -47,13 +47,7 @@ export default function HomeNav({isMenuOpened, setIsMenuOpened}:mobileNavProps){
                 <div 
                     className={`w-full mt-10 flex items-center justify-center `}
                 >
-                    <GradientBtn 
-                        w="full" 
-                        text={user && (user?.role === "pharmacist" || user?.role === "admin") ? "لوحة التحكم" :"طلب دواء"}
-                        onClick={handleBtnRedirect} 
-                        px={10} 
-                        rounded="30"
-                    />
+                    {dashboardBtn()}
                 </div>
 
             </div>
