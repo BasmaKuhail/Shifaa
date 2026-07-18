@@ -116,3 +116,13 @@ export const deletePharmacy = async (pharmacyId: number) => {
   const response = await api.delete(`/pharmacy/${pharmacyId}`);
   return response.data;
 }
+
+export const invitePharmacist = async (pharmId:number, pharmaciestId:number, message?:string) => {
+  const response = await api.post("pharmacies/invite",
+    {
+      pharmacy_id:pharmId,
+      pharmacist_id:pharmaciestId,
+      message: message?.trim() || null,
+    }
+  )
+}

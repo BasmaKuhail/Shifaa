@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { FormEvent, useRef, useState } from "react";
+import { FormEvent, useContext, useRef, useState } from "react";
 import axios from "axios";
 import invite from "@/public/icons/phcyInfo/invite.svg";
 import searchIcon from "@/public/icons/search.svg";
@@ -7,8 +7,12 @@ import Result from "./SearchResults";
 import PopupContainer from "../PopUpContainer";
 import { searchPharmacists } from "@/services/pharmacist";
 import { Pharmacist } from "@/types/Pharmacist";
+import { invitePharmacist } from "@/services/pharmacy";
+import { PharmacyContext } from "@/contexts/PharmacyDataContext";
+import { showAlert } from "@/components/alerts/AlertContainer";
 
 export default function InvitePopup({onClose}: {onClose: () => void}) {
+  const {pharmacy, loading} = useContext(PharmacyContext)
   const [searchInput, setSearchInput] = useState("");
   const [results, setResults] = useState<Pharmacist[]>([]);
   const [isSearching, setIsSearching] = useState(false);
@@ -88,22 +92,44 @@ const handleInvite = async (pharmacistId: number) => {
     return;
   }
 
+  if (!pharmacy) {
+    setErrorMessage("تعذر تحديد الصيدلية");
+    return;
+  }
+
   try {
     setInvitingPharmacistId(pharmacistId);
     setErrorMessage("");
 
-    // Replace this with your actual invitation service.
-    // await invitePharmacist(pharmacistId);
+    await invitePharmacist(
+      pharmacy.id,
+      pharmacistId,
+    );
 
-    console.log("Invite pharmacist:", pharmacistId);
+    console.log("Invitation sent to pharmacist:", pharmacistId);
+    showAlert({
+      type:"Success",
+      title:"نجحت في ارسال الدعوة!",
+      message:"تم ارسال الدعوة بنجاح"
+    })
   } catch (error: unknown) {
     if (axios.isAxiosError(error)) {
       setErrorMessage(
         error.response?.data?.message ??
+          Object.values(error.response?.data?.errors)
+            .flat()
+            .join(" ") ??
           "تعذر إرسال الدعوة",
       );
+      showAlert({
+        type:"Warning",
+        title:"تنبيه",
+        message:errorMessage
+      })
     } else {
-      setErrorMessage("حدث خطأ غير متوقع أثناء إرسال الدعوة");
+      setErrorMessage(
+        "حدث خطأ غير متوقع أثناء إرسال الدعوة",
+      );
     }
   } finally {
     setInvitingPharmacistId(null);
