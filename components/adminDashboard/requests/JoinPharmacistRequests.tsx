@@ -12,6 +12,7 @@ export default function PharmacistsRequests () {
         {text:"الطلبات قيد الانتظار", value:"pending"}
     ];
     const { requests, loading, error } = useContext(AdminRequestContext);
+    console.log(requests)
     const [selectedCategory, setSelectedCategory] = useState<(typeof requestsCategory[number])>(
         requestsCategory[0]
     );

@@ -45,6 +45,7 @@ export const AdminRequestProvider = ({ children }: { children: ReactNode }) => {
       setError(null);
 
       const data = await pharmacistApplications();
+      console.log("context pharmacsist arr: " + data)
       setRequests(data);
     } catch (error: unknown) {
       console.error(error);
