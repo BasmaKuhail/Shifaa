@@ -15,7 +15,7 @@ export const getAllPharmacies = async (): Promise<PharmacyApiResponse[]> => {
         include: "pharmacists,attachments",
       },
     });
-
+    console.log(response.data)
     return response.data.data;
   } catch (error: unknown) {
     let errorMessage = "Failed to fetch pharmacies";

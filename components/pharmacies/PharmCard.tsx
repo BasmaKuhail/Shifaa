@@ -6,6 +6,7 @@ import location from "@/public/icons/pharmacy-card/location.svg"
 import view from "@/public/icons/pharmacy-card/view.svg"
 import contact from "@/public/icons/pharmacy-card/contact.svg"
 import { PharmacyApiResponse } from "@/services/pharmacy";
+import { useRouter } from "next/router";
 
 const Btn = ({image, text}: {image:StaticImageData, text:string}) => {
     return(
@@ -16,21 +17,23 @@ const Btn = ({image, text}: {image:StaticImageData, text:string}) => {
     )
 }
 export default function PharmCard({pharmacy}:{pharmacy:PharmacyApiResponse}){
-    console.log(pharmacy);
     const logoSource =
         pharmacy.attachments?.[1]?.url ??
         pharmacy.attachments?.[0]?.url ??
         pharm;
 
+    const route = useRouter();
     return(
         <div className="
             bg-white flex flex-col gap-5 pb-7 rounded-[14px] 
             items-center justify-center p-1 cursor-pointer 
             hover:shadow-lg transition-shadow duration-300 ease-in-out 
             w-full md:w-[45%] lg:w-[30%] xl:w-[23%]"
+            onClick={() => route.push(`/pharmacies/pharmacy-details/${pharmacy.id}`)}
+      
         >
             {/* Apply a blue filter and reduce contrast using CSS styles */}
-<div className="relative h-[190px] w-full overflow-hidden rounded-[14px]">
+            <div className="relative h-[190px] w-full overflow-hidden rounded-[14px]">
                 <Image
                     src={logoSource}
                     alt={`${pharmacy.name} logo`}
