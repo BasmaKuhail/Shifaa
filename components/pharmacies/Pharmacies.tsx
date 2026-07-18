@@ -6,14 +6,59 @@ import { motion } from "framer-motion";
 import left from "@/public/images/About/left.png"
 import right from "@/public/images/About/right.png"
 import SearchInput from "../home/search/SearchInput";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Title from "../home/SectionTitle";
 import HeaderText from "../home/HeaderText";
 import SubHeader from "../home/SubHeader";
 import Pharm from "@/public/icons/dashboard/dashboard";
 import PharmCard from "./PharmCard";
+import { getAllPharmacies } from "@/services/pharmacies";
+import { Pharmacy } from "@/types/PharmacyType";
+import { PharmacyApiResponse } from "@/services/pharmacy";
 export default function Pharmacies() {
     const [userInput, setUserInput] = useState("");
+    const [pharmacies, setPharmacies] = useState<PharmacyApiResponse[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [errorMessage, setErrorMessage] = useState("");
+
+    useEffect(() => {
+        let isCancelled = false;
+
+        const fetchPharmacies = async () => {
+            setLoading(true);
+            setErrorMessage("");
+
+            try {
+                const data = await getAllPharmacies();
+
+                console.log(data)
+                if (!isCancelled) {
+                    setPharmacies(data);
+                }
+            } catch (error: unknown) {
+                console.error("Failed to fetch pharmacies:", error);
+
+                if (!isCancelled) {
+                    setPharmacies([]);
+                    setErrorMessage(
+                        error instanceof Error
+                        ? error.message
+                        : "تعذر تحميل الصيدليات",
+                    );
+                }
+            } finally {
+                if (!isCancelled) {
+                    setLoading(false);
+                }
+            }
+        };
+
+        void fetchPharmacies();
+
+        return () => {
+            isCancelled = true;
+        };
+    }, []);
     return (
         <div dir="rtl" className='w-full flex flex-col overflow-x-hidden '>
             <div className="bg-blue-100 relative inline-block w-full">
@@ -56,14 +101,14 @@ export default function Pharmacies() {
                     </div>
                 </div>
                 <div className="px-4 md:px-8 lg:px-20 xl:px-30 flex w-full flex-col flex-wrap md:flex-row items-center gap-5 justify-center md:justify-between mt-20 mb-20">
-                    <PharmCard/>
-                    <PharmCard/>
-                    <PharmCard/>
-                    <PharmCard/>
-                    <PharmCard/>     
-                    <PharmCard/>
-                    <PharmCard/>
-                    <PharmCard/>
+                    {loading && <p>جاري تحميل الصيدليات...</p>}
+                    {errorMessage && <p>{errorMessage || "حدث خطأ في تحميل صيدليات شفاء"}</p>}
+                    {!loading && pharmacies.length === 0 && <p>لم يتم اضافة صيدليات</p>}
+
+                    {pharmacies.map((pharmacy) => 
+                        <PharmCard key={pharmacy.id} pharmacy={pharmacy}/>
+                    )}
+                    
                 </div>
             </div>
         </div>

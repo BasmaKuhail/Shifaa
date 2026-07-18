@@ -12,7 +12,7 @@ import { address } from "framer-motion/client";
 
 
 
-type PharmacyApiResponse = {
+export type PharmacyApiResponse = {
   id: number;
   name: string;
   phone: string;
