@@ -3,11 +3,12 @@ import Image, { StaticImageData } from "next/image";
 type iconProps = {
     icon: StaticImageData,
     width: number,
+    className?: string,
 }
-export default function Icon ({icon, width}:iconProps){
+export default function Icon ({icon, width, className = ""}:iconProps){
     return(
         <div 
-            className="
+            className={`
                 p-3
                 aspect-square
                 rounded-full 
@@ -17,7 +18,8 @@ export default function Icon ({icon, width}:iconProps){
                 flex
                 items-center
                 justify-center
-                text-white"
+                text-white
+                ${className}`}
         >
             <Image src={icon} alt="Icon" width={width}/>
         </div>

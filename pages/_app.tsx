@@ -31,6 +31,8 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   const isAdminRoute = router.pathname.startsWith("/admin");
 
+  const isPharm = router.pathname.startsWith("/pharmacy")
+
   return (
     <div className={`${tajawal.className} ${tajawal.variable}`}>   
       <head>
@@ -39,14 +41,24 @@ function MyApp({ Component, pageProps }: AppProps) {
       <UserProvider>
         <AuthGuard>
           <BreadcrumbProvider>
-          <PharmacyProvider>
+          {isPharm ? (
+            <PharmacyProvider>
+              {page}
+            </PharmacyProvider>
+          ): (
+            page
+          )}
           {isAdminRoute ? (
-              <AdminRequestProvider><AdminPharmacyRequestProvider>{page}</AdminPharmacyRequestProvider></AdminRequestProvider>
+              <AdminRequestProvider>
+                <AdminPharmacyRequestProvider>
+                  {page}
+                </AdminPharmacyRequestProvider>
+              </AdminRequestProvider>
             ) : (
               page
             )}
             <AppToastContainer/>
-          </PharmacyProvider>
+          
           </BreadcrumbProvider>
         </AuthGuard>
       </UserProvider>
