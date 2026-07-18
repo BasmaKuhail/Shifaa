@@ -6,6 +6,7 @@ import {
   PharmacyDataToUpdate,
   PharmacyTeamMember,
 } from "@/types/PharmacyType";
+import { StatusType } from "@/types/Status";
 import axios from "axios";
 import { address } from "framer-motion/client";
 
@@ -126,3 +127,40 @@ export const invitePharmacist = async (pharmId:number, pharmaciestId:number, mes
     }
   )
 }
+export type InvitationData = {
+  id: number;
+  pharmacy_id: number;
+  pharmacist_id: number;
+  status: StatusType;
+  type: "invitation";
+  message: string | null;
+  created_at: string;
+  updated_at: string;
+  responded_at: string | null;
+  pharmacist: {
+    id: number;
+    phone_number: string;
+    employment_status: string;
+    created_at: string;
+    user: {
+      id: number;
+      name: string;
+      email: string;
+      role: string;
+    };
+  };
+};
+
+type SentInvitationsResponse = {
+  data: InvitationData[];
+};
+
+export const viewSentInvitations = async (
+  pharmacyId: number,
+): Promise<InvitationData[]> => {
+  const response = await api.get<SentInvitationsResponse>(
+    `pharmacies/${pharmacyId}/sent-invitations`,
+  );
+
+  return response.data.data;
+};
