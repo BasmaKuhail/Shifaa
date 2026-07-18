@@ -44,7 +44,7 @@ export default function PharmCard({pharmacy}:{pharmacy:PharmacyApiResponse}){
                         (max-width: 1280px) 33vw,
                         25vw
                     "
-                    className="object-cover contrast-60"
+                    className="object-cover"
                 />
 
                 <div className="absolute inset-0 rounded-[14px] bg-blue-200 opacity-50" />

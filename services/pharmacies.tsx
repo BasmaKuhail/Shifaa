@@ -49,3 +49,105 @@ export const getAllPharmacies = async (): Promise<PharmacyApiResponse[]> => {
     });
   }
 };
+
+type PharmacySearchField =
+  | "name"
+  | "address"
+  | "owner";
+
+type SearchPharmaciesParams = {
+  input: string;
+  field?: PharmacySearchField;
+  page?: number;
+};
+
+type PharmaciesApiResponse = {
+  data: PharmacyApiResponse[];
+  meta?: {
+    current_page: number;
+    last_page: number;
+    per_page: number;
+    total: number;
+  };
+};
+
+export type SearchPharmaciesResult = {
+  pharmacies: PharmacyApiResponse[];
+  pagination: {
+    currentPage: number;
+    lastPage: number;
+    perPage: number;
+    total: number;
+  } | null;
+};
+
+export const searchPharmacies = async ({
+  input,
+  field,
+  page = 1,
+}: SearchPharmaciesParams): Promise<SearchPharmaciesResult> => {
+  const normalizedInput = input.trim();
+
+  if (!normalizedInput) {
+    return {
+      pharmacies: [],
+      pagination: null,
+    };
+  }
+
+  if (!Number.isInteger(page) || page < 1) {
+    throw new Error("Page must be a positive integer");
+  }
+
+  try {
+    const filterKey = field
+      ? `filter[${field}]`
+      : "filter[search]";
+
+    const response = await api.get<PharmaciesApiResponse>(
+      "/pharmacies",
+      {
+        params: {
+          [filterKey]: normalizedInput,
+          include: "pharmacists,attachments",
+          page,
+        },
+      },
+    );
+
+    const { data, meta } = response.data;
+
+    return {
+      pharmacies: data ?? [],
+      pagination: meta
+        ? {
+            currentPage: meta.current_page,
+            lastPage: meta.last_page,
+            perPage: meta.per_page,
+            total: meta.total,
+          }
+        : null,
+    };
+  } catch (error: unknown) {
+    if (axios.isAxiosError(error)) {
+      const message =
+        error.response?.data?.message ??
+        error.message ??
+        "Failed to search pharmacies";
+
+      console.error("Failed to search pharmacies", {
+        input: normalizedInput,
+        field,
+        page,
+        url: error.config?.url,
+        params: error.config?.params,
+        status: error.response?.status,
+        response: error.response?.data,
+      });
+
+      throw new Error(message);
+    }
+
+    throw error;
+  }
+};

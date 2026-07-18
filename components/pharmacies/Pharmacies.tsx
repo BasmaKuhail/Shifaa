@@ -3,18 +3,18 @@ import MobileHeader from "../header/MobileHeader";
 import SecondaryHeader from "../home/secondaryHeader/SecondaryHeader";
 import { motion } from "framer-motion";
 
+import search from "@/public/icons/search.svg"
+import arrow from "@/public/icons/arrowLeft.svg"
+
 import left from "@/public/images/About/left.png"
 import right from "@/public/images/About/right.png"
-import SearchInput from "../home/search/SearchInput";
 import { useEffect, useState } from "react";
-import Title from "../home/SectionTitle";
 import HeaderText from "../home/HeaderText";
 import SubHeader from "../home/SubHeader";
-import Pharm from "@/public/icons/dashboard/dashboard";
 import PharmCard from "./PharmCard";
-import { getAllPharmacies } from "@/services/pharmacies";
-import { Pharmacy } from "@/types/PharmacyType";
+import { getAllPharmacies, searchPharmacies } from "@/services/pharmacies";
 import { PharmacyApiResponse } from "@/services/pharmacy";
+import GradientBtn from "../home/GradiantBtn";
 export default function Pharmacies() {
     const [userInput, setUserInput] = useState("");
     const [pharmacies, setPharmacies] = useState<PharmacyApiResponse[]>([]);
@@ -59,6 +59,58 @@ export default function Pharmacies() {
             isCancelled = true;
         };
     }, []);
+
+    useEffect(() => {
+        const normalizedInput = userInput.trim();
+
+        const controller = new AbortController();
+
+        const timeoutId = window.setTimeout(async () => {
+            setLoading(true);
+            setErrorMessage("");
+
+        try {
+            if (!normalizedInput) {
+                const data = await getAllPharmacies();
+
+                if (!controller.signal.aborted) {
+                    setPharmacies(data);
+                }
+                return;
+            }
+
+            const result = await searchPharmacies({
+                input: normalizedInput,
+            });
+
+            if (!controller.signal.aborted) {
+                setPharmacies(result.pharmacies);
+            }
+            } catch (error: unknown) {
+                if (controller.signal.aborted) {
+                    return;
+                }
+
+                console.error("Failed to search pharmacies:", error);
+
+                setPharmacies([]);
+                setErrorMessage(
+                    error instanceof Error
+                    ? error.message
+                    : "تعذر البحث عن الصيدليات",
+                );
+            } finally {
+            if (!controller.signal.aborted) {
+                setLoading(false);
+            }
+            }
+        }, 400);
+
+        return () => {
+            window.clearTimeout(timeoutId);
+            controller.abort();
+        };
+        }, [userInput]);
     return (
         <div dir="rtl" className='w-full flex flex-col overflow-x-hidden '>
             <div className="bg-blue-100 relative inline-block w-full">
@@ -87,7 +139,56 @@ export default function Pharmacies() {
                                 </div>
                             </div>
                             <div className="flex w-full items-center justify-center">
-                                <SearchInput label=" ابحث عن صيدليات" value= {userInput} onChange={(value) => setUserInput(value)}/>
+                                <div dir="rtl" className="relative w-full">
+                                    <Image 
+                                        alt=""
+                                        width={15}
+                                        src={search} 
+                                        className="hidden lg:block md:block absolute right-5 top-1/2 -translate-y-1/2 cursor-pointer z-10"
+                                        onClick={() => searchPharmacies} />
+                                    
+                                    <input 
+                                        onChange={(e) => setUserInput(e.target.value)}
+                                        type="text" 
+                                        value={userInput}
+                                        placeholder="ابحث في صيدليات شفاء"
+                                        className='w-full
+                                            h-[52px] md:h-[65px]
+                                            bg-white
+                                            border border-black-200
+                                            rounded-[30px]
+                                            text-right
+                                            pr-12 
+                                            pl-32
+                                            focus:outline-none
+                                            text-sm
+                                            text-black-500
+                                            '
+                                    />
+                                    <div 
+                                        className="
+                                            absolute
+                                            left-2
+                                            lg:left-2
+                                            md:left-2
+                                            top-7
+                                            lg:top-1/2
+                                            md:top-1/2
+                                            -translate-y-1/2
+                                            w-auto
+                                            h-[44px] md:h-[51px]"
+                                    >
+                                        <div className="hidden lg:block md:block  h-full">
+                                            <GradientBtn text="ابدأ البحث" onClick={() => {}} px={10} rounded="30"/>
+                                        </div>
+                                        <div className="block lg:hidden md:hidden h-[90%]">
+                                            <GradientBtn image={arrow} onClick={() => {}} px={5} rounded="30"/>
+                                        </div>
+
+                                    </div>
+                                    
+                                    
+                                </div>
                             </div>
                         </div>
                         <motion.div
