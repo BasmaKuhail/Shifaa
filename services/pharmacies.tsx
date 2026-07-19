@@ -50,14 +50,8 @@ export const getAllPharmacies = async (): Promise<PharmacyApiResponse[]> => {
   }
 };
 
-type PharmacySearchField =
-  | "name"
-  | "address"
-  | "owner";
-
 type SearchPharmaciesParams = {
   input: string;
-  field?: PharmacySearchField;
   page?: number;
 };
 
@@ -83,7 +77,6 @@ export type SearchPharmaciesResult = {
 
 export const searchPharmacies = async ({
   input,
-  field,
   page = 1,
 }: SearchPharmaciesParams): Promise<SearchPharmaciesResult> => {
   const normalizedInput = input.trim();
@@ -100,15 +93,11 @@ export const searchPharmacies = async ({
   }
 
   try {
-    const filterKey = field
-      ? `filter[${field}]`
-      : "filter[search]";
-
     const response = await api.get<PharmaciesApiResponse>(
       "/pharmacies",
       {
         params: {
-          [filterKey]: normalizedInput,
+          "filter[name]": normalizedInput,
           include: "pharmacists,attachments",
           page,
         },
@@ -129,25 +118,32 @@ export const searchPharmacies = async ({
         : null,
     };
   } catch (error: unknown) {
+    let errorMessage = "Failed to search pharmacies";
+
     if (axios.isAxiosError(error)) {
-      const message =
+      errorMessage =
         error.response?.data?.message ??
         error.message ??
-        "Failed to search pharmacies";
+        errorMessage;
 
       console.error("Failed to search pharmacies", {
         input: normalizedInput,
-        field,
         page,
         url: error.config?.url,
         params: error.config?.params,
         status: error.response?.status,
         response: error.response?.data,
       });
-
-      throw new Error(message);
+    } else if (error instanceof Error) {
+      errorMessage = error.message;
     }
-
-    throw error;
+    showAlert({
+        type:"Error",
+        title:"خطأ",
+        message:errorMessage
+    })
+    throw new Error(errorMessage, {
+      cause: error,
+    });
   }
 };

@@ -5,5 +5,5 @@ export type Pharmacist = {
         email:string
     },
     phone_number?: string;
-    role:string
+    role?:string
 }
