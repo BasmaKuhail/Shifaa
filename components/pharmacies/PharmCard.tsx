@@ -28,7 +28,7 @@ export default function PharmCard({pharmacy}:{pharmacy:PharmacyApiResponse}){
             bg-white flex flex-col gap-5 pb-7 rounded-[14px] 
             items-center justify-center p-1 cursor-pointer 
             hover:shadow-lg transition-shadow duration-300 ease-in-out 
-            w-full md:w-[45%] lg:w-[30%] xl:w-[23%]"
+            w-full"
             onClick={() => route.push(`/pharmacies/pharmacy-details/${pharmacy.id}`)}
       
         >
