@@ -9,6 +9,7 @@ import medication from "@/public/icons/profile/medication.svg";
 import settings from "@/public/icons/profile/settings.svg";
 import switchTo from "@/public/icons/profile/switch.svg";
 import createPharm from "@/public/icons/profile/createPharm.svg";
+import invitaions from "@/public/icons/invitations.svg"
 import ArrowRight from "@/public/icons/profile/arrowRight.svg";
 import { logout as logoutService } from "@/services/auth";
 import { User } from "@/types/UserType";
@@ -54,6 +55,15 @@ export default function MainMenu({ user, setIsSettingsOpen }: Props) {
       arrow: ArrowRight,
       onclick: () => {
         router.push("/create-pharmacy");
+      },
+    },
+    {
+      title: "الطلبات والدعوات",
+      icon: invitaions,
+      opened: false,
+      arrow: ArrowRight,
+      onclick: () => {
+        router.push("/requests&received-invitaions");
       },
     },
     {

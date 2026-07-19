@@ -8,6 +8,7 @@ import Resend from "@/public/icons/invitations/resend";
 import { InvitationData, viewSentInvitations } from "@/services/pharmacy";
 import { useContext, useEffect, useState } from "react";
 import { PharmacyContext } from "@/contexts/PharmacyDataContext";
+import { formatInvitationDate } from "@/config/date";
 
 export default function Invitations() {
     const { pharmacy, loading: isPharmacyLoading } =
@@ -16,18 +17,7 @@ export default function Invitations() {
     const [invitations, setInvitations] = useState<InvitationData[]>([]);
     const [isLoadingInvitations, setIsLoadingInvitations] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
-    function formatInvitationDate(dateValue: string): string {
-  const date = new Date(dateValue);
 
-  if (Number.isNaN(date.getTime())) {
-    return "—";
-  }
-
-  return new Intl.DateTimeFormat("ar", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  }).format(date);
-}
     useEffect(() => {
         if (!pharmacy?.id) {
             setInvitations([]);
@@ -104,8 +94,8 @@ export default function Invitations() {
                                     email:
                                     invitation.pharmacist.user.email,
                                     date: formatInvitationDate(
-                                    invitation.created_at,
-                                    ),
+                                        invitation.created_at,
+                                        ),
                                     status: (
                                     <StatusHolder status={invitation.status} />
                                     )
