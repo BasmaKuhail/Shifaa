@@ -2,6 +2,7 @@ import { showAlert } from "@/components/alerts/AlertContainer";
 import api from "@/lib/api";
 import { StatusType } from "@/types/Status";
 import axios from "axios";
+import { body } from "framer-motion/client";
 
 export type InvitationPharmacy = {
   id: number;
@@ -62,3 +63,18 @@ export const getReceivedInvitations = async (): Promise<Invitation[]> => {
     });
   }
 };
+
+export const interactIvitaion = async (id:number, action:"accepted" | "rejected") => {
+  const token = localStorage.getItem("token");
+  const response = await api.put(
+    `/invitations/${id}/respond`,
+    {
+      action,
+    },
+    {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    },
+  );
+}

@@ -17,11 +17,10 @@ export default function RequestInvitationIndex(){
         }, [])
     return(
         <LandingLayout>
-            <div className="flex w-full mt-5">
+              <div className="flex flex-col w-full mt-10 gap-15 px-4 md:px-8 lg:px-20 xl:px-30 pt-40 pb-20 bg-blue-100">
+                <div className="flex w-full mt-5">
                     <Breadcrumb breadcrumbArr={crumbs}/>
-            </div>
-            
-            <div className="px-4 md:px-8 lg:px-20 xl:px-30 pt-40 pb-20 bg-blue-100">
+                </div>
                 <Card scrollable>
                     <RequestInvitation/>
                 </Card> 

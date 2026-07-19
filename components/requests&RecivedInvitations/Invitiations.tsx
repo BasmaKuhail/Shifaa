@@ -5,6 +5,7 @@ import StatusHolder from "../pharmacyDashboard/MedicineRequests/StatusHolder";
 import PetrolBtn from "../pharmacyDashboard/PharmacyInfo/invitePopup/PetrolBtn";
 import { formatInvitationDate } from "@/config/date";
 import { useRouter } from "next/router";
+import Interact from "./PharmacistInteract";
 
 export default function Invitations(){
 
@@ -12,6 +13,7 @@ export default function Invitations(){
     const [errorMsg, setErrorMsg] = useState();
     const [loading,setLoading] = useState(false);
 
+    const [showDetails, setShowDetails] = useState(false);
     const router = useRouter()
     useEffect(()=>{
         const fetchInvitations = async() => {
@@ -52,7 +54,9 @@ export default function Invitations(){
                             pharmName: `صيدلية: ${invitation.pharmacy.name}`, 
                             date: formatInvitationDate(invitation.created_at),  
                             status: <StatusHolder status={invitation.status}/>, 
-                            interact: "التفاعل"
+                            interact:<div className="flex flex-row w-full gap-5">التفاعل:
+                                 <Interact status={invitation.status} id={invitation.id} name={invitation.pharmacy.name} setShowDetails={setShowDetails}/>
+                                 </div>
                         }} 
                         columnClassNames={{
                             pharmName: "flex-1 text-inpt",
@@ -77,7 +81,30 @@ export default function Invitations(){
                     </div>
 
                 </div>
-                
+                            
+                {showDetails && (
+                    <RowContainer>
+                        <div
+                            dir="rtl"
+                            className="grid w-full gap-4 rounded-lg sm:grid-cols-[140px_1fr] font-sm  text-black-700"
+                        >
+                        {invitation.message && <><p className="">رسالة الدعوة</p>
+                        <p className="break-words ">
+                            {invitation.message?.trim() || "-"}
+                        </p></>}
+
+                        <p>موقع الصيدلية</p>
+                        <p className="break-words">
+                            {invitation.pharmacy.address?.trim() || "-"}
+                        </p>
+
+                        <p >معلومات التواصل</p>
+                        <p dir="ltr" className="text-right">
+                            {invitation.pharmacy.phone?.trim() || "-"}
+                        </p>
+                        </div>
+                    </RowContainer>
+                )}       
             </RowContainer>)}
         </div>
     )

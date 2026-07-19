@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Invitations from "./Invitiations";
 import { useBreadcrumb } from "@/contexts/BreadcrumbContext";
+import MedRequests from "./MedRequests";
 
 export default function RequestInvitation(){
     const [medSelected, setMedSelected] = useState(true);
@@ -22,6 +23,7 @@ export default function RequestInvitation(){
             </div>
 
             {!medSelected && <Invitations/>}
+            {medSelected && <MedRequests/>}
         </div>
     )
 }
