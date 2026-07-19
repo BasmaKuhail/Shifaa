@@ -15,6 +15,7 @@ import PharmCard from "./PharmCard";
 import { getAllPharmacies, searchPharmacies } from "@/services/pharmacies";
 import { PharmacyApiResponse } from "@/services/pharmacy";
 import GradientBtn from "../home/GradiantBtn";
+import PharmCardSkeleton from "./CardSkelleton";
 export default function Pharmacies() {
     const [userInput, setUserInput] = useState("");
     const [pharmacies, setPharmacies] = useState<PharmacyApiResponse[]>([]);
@@ -22,95 +23,61 @@ export default function Pharmacies() {
     const [errorMessage, setErrorMessage] = useState("");
 
     useEffect(() => {
-        let isCancelled = false;
+    const normalizedInput = userInput.trim();
+    let isCancelled = false;
 
-        const fetchPharmacies = async () => {
-            setLoading(true);
-            setErrorMessage("");
+    setLoading(true);
 
-            try {
-                const data = await getAllPharmacies();
+    const timeoutId = window.setTimeout(async () => {
+      setLoading(true);
+      setErrorMessage("");
 
-                console.log(data)
-                if (!isCancelled) {
-                    setPharmacies(data);
-                }
-            } catch (error: unknown) {
-                console.error("Failed to fetch pharmacies:", error);
+      try {
+        if (!normalizedInput) {
+          const data = await getAllPharmacies();
 
-                if (!isCancelled) {
-                    setPharmacies([]);
-                    setErrorMessage(
-                        error instanceof Error
-                        ? error.message
-                        : "تعذر تحميل الصيدليات",
-                    );
-                }
-            } finally {
-                if (!isCancelled) {
-                    setLoading(false);
-                }
-            }
-        };
+          if (!isCancelled) {
+            setPharmacies(data);
+          }
 
-        void fetchPharmacies();
+          return;
+        }
 
-        return () => {
-            isCancelled = true;
-        };
-    }, []);
+        const result = await searchPharmacies({
+          input: normalizedInput,
+        });
 
-    useEffect(() => {
-        const normalizedInput = userInput.trim();
+        if (!isCancelled) {
+          setPharmacies(result.pharmacies);
+        }
+      } catch (error: unknown) {
+        if (isCancelled) {
+          return;
+        }
 
-        const controller = new AbortController();
+        console.error("Failed to load pharmacies:", error);
 
-        const timeoutId = window.setTimeout(async () => {
-            setLoading(true);
-            setErrorMessage("");
+        setPharmacies([]);
+        setErrorMessage(
+          error instanceof Error
+            ? error.message
+            : "تعذر تحميل الصيدليات",
+        );
+      } finally {
+        if (!isCancelled) {
+          setLoading(false);
+        }
+      }
+    }, 400);
 
-        try {
-            if (!normalizedInput) {
-                const data = await getAllPharmacies();
+    return () => {
+      isCancelled = true;
+      window.clearTimeout(timeoutId);
+    };
+  }, [userInput]);
 
-                if (!controller.signal.aborted) {
-                    setPharmacies(data);
-                }
-                return;
-            }
+    const skeletonCount = Math.max(pharmacies.length, 8);
 
-            const result = await searchPharmacies({
-                input: normalizedInput,
-            });
-
-            if (!controller.signal.aborted) {
-                setPharmacies(result.pharmacies);
-            }
-            } catch (error: unknown) {
-                if (controller.signal.aborted) {
-                    return;
-                }
-
-                console.error("Failed to search pharmacies:", error);
-
-                setPharmacies([]);
-                setErrorMessage(
-                    error instanceof Error
-                    ? error.message
-                    : "تعذر البحث عن الصيدليات",
-                );
-            } finally {
-            if (!controller.signal.aborted) {
-                setLoading(false);
-            }
-            }
-        }, 400);
-
-        return () => {
-            window.clearTimeout(timeoutId);
-            controller.abort();
-        };
-        }, [userInput]);
     return (
         <div dir="rtl" className='w-full flex flex-col overflow-x-hidden '>
             <div className="bg-blue-100 relative inline-block w-full">
@@ -151,7 +118,7 @@ export default function Pharmacies() {
                                         onChange={(e) => setUserInput(e.target.value)}
                                         type="text" 
                                         value={userInput}
-                                        placeholder="ابحث في صيدليات شفاء"
+                                        placeholder="ابحث باسم الصيدلية"
                                         className='w-full
                                             h-[52px] md:h-[65px]
                                             bg-white
@@ -201,12 +168,22 @@ export default function Pharmacies() {
                         </motion.div>
                     </div>
                 </div>
-                <div className="px-4 md:px-8 lg:px-20 xl:px-30 flex w-full flex-col flex-wrap md:flex-row items-center gap-5 justify-center md:justify-between mt-20 mb-20">
-                    {loading && <p>جاري تحميل الصيدليات...</p>}
-                    {errorMessage && <p>{errorMessage || "حدث خطأ في تحميل صيدليات شفاء"}</p>}
-                    {!loading && pharmacies.length === 0 && <p>لم يتم اضافة صيدليات</p>}
+                <div aria-busy={loading} className="px-4 md:px-8 lg:px-20 xl:px-30 mt-20 mb-20 grid min-h-[360px] w-full content-start grid-cols-1 items-stretch gap-x-5 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                    {loading && Array.from({ length: skeletonCount }, (_, index) => (
+                        <PharmCardSkeleton key={`pharmacy-skeleton-${index}`} />
+                    ))}
+                    {!loading && errorMessage && (
+                        <p role="alert" className="col-span-full flex min-h-[260px] w-full items-center justify-center px-6 text-center text-base font-semibold text-red">
+                            {errorMessage || "حدث خطأ في تحميل صيدليات شفاء"}
+                        </p>
+                    )}
+                    {!loading && !errorMessage && pharmacies.length === 0 && (
+                        <p role="status" className="col-span-full flex min-h-[260px] w-full items-center justify-center px-6 text-center text-base font-semibold text-blue-800">
+                            لم يتم ايجاد صيدليات
+                        </p>
+                    )}
 
-                    {pharmacies.map((pharmacy) => 
+                    {!loading && pharmacies.map((pharmacy) =>
                         <PharmCard key={pharmacy.id} pharmacy={pharmacy}/>
                     )}
                     

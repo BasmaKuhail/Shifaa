@@ -93,21 +93,28 @@ export const searchPharmacies = async ({
   }
 
   try {
-    const response = await api.get<PharmaciesApiResponse>(
-      "/pharmacies",
-      {
-        params: {
-          "filter[name]": normalizedInput,
-          include: "pharmacists,attachments",
-          page,
-        },
+    const response = await api.get<PharmaciesApiResponse>("/pharmacies", {
+      params: {
+        "filter[name]": `*${normalizedInput}*`,
+        include: "pharmacists,attachments",
+        page,
       },
-    );
+    });
 
-    const { data, meta } = response.data;
+    console.log("Pharmacy search request:", {
+      input: normalizedInput,
+      params: response.config.params,
+      response: response.data,
+    });
+
+    const pharmacies = Array.isArray(response.data.data)
+      ? response.data.data
+      : [];
+
+    const meta = response.data.meta;
 
     return {
-      pharmacies: data ?? [],
+      pharmacies,
       pagination: meta
         ? {
             currentPage: meta.current_page,
@@ -137,11 +144,13 @@ export const searchPharmacies = async ({
     } else if (error instanceof Error) {
       errorMessage = error.message;
     }
+
     showAlert({
-        type:"Error",
-        title:"خطأ",
-        message:errorMessage
-    })
+      type: "Error",
+      title: "خطأ",
+      message: errorMessage,
+    });
+
     throw new Error(errorMessage, {
       cause: error,
     });
