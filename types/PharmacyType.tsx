@@ -1,12 +1,22 @@
 import { ApplicationFile } from "@/types/PharmacistApplication";
 
+export type PharmacyTeamMember = {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone_number: string;
+  role: string;
+};
+
 export type Pharmacy = {
   id: number;
   name: string;
   address: string;
-  owner: {id:number, name: string};
+  owner: PharmacyTeamMember | undefined;
   phone: string;
-  logo: string | null;
+  logo: string | undefined,
+  staff: PharmacyTeamMember[] | undefined 
 }
 
 export type pharmacyResponseType = {

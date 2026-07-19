@@ -1,7 +1,7 @@
 import MobileHeader from "../header/MobileHeader";
 import SecondaryHeader from "../home/secondaryHeader/SecondaryHeader";
 import ImageProfile from "../EditProfile/Image";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { PharmacyContext } from "@/contexts/PharmacyDataContext";
 
 import call from "@/public/icons/pharmacies/call.svg"
@@ -10,13 +10,91 @@ import profile from "@/public/icons/pharmacies/profile.svg"
 
 import ContactCard, { ContactCardItem } from "./contactCard";
 import SearchInput from "../home/search/SearchInput";
+import { getPharmacyById } from "@/services/pharmacy";
+import { Pharmacy } from "@/types/PharmacyType";
+import { showAlert } from "../alerts/AlertContainer";
+import { useRouter } from "next/router";
 export default function PharmacyDetails (){
-    const {pharmacy} = useContext(PharmacyContext);
+    const [pharmacy, setPharmacy] = useState<Pharmacy | null>();
+    const [loading, setIsLoading] = useState(false);
+    const router = useRouter();
+    useEffect(() => {
+        if (!router.isReady) {
+            return;
+        }
+
+        const { id } = router.query;
+
+        if (typeof id !== "string") {
+            console.error("Invalid pharmacy ID:", id);
+            return;
+        }
+
+        const pharmacyId = Number(id);
+
+        if (!Number.isInteger(pharmacyId) || pharmacyId <= 0) {
+            console.error("Invalid pharmacy ID number:", pharmacyId);
+            return;
+        }
+
+        let isCancelled = false;
+
+        const fetchPharmacy = async () => {
+            setIsLoading(true);
+
+            try {
+                console.log("Fetching pharmacy:", pharmacyId);
+
+                const pharmacyData = await getPharmacyById(pharmacyId);
+
+                console.log("Fetched pharmacy:", pharmacyData);
+
+            if (!isCancelled) {
+                setPharmacy(pharmacyData);
+            }
+            } catch (error) {
+                console.error("Failed to fetch pharmacy:", error);
+
+            if (!isCancelled) {
+                setPharmacy(null);
+
+                showAlert({
+                type: "Error",
+                title: "خطأ",
+                message: "خطأ في إيجاد الصيدلية",
+                });
+            }
+            } finally {
+                if (!isCancelled) {
+                    setIsLoading(false);
+                }
+            }
+        };
+
+        void fetchPharmacy();
+
+        return () => {
+            isCancelled = true;
+        };
+    }, [router.isReady, router.query.id]);
+
+    const ownerName = useMemo(() => {
+        if (!pharmacy?.owner) {
+            return "غير متوفر";
+        }
+
+        return [
+            pharmacy.owner.first_name,
+            pharmacy.owner.last_name,
+        ]
+            .filter(Boolean)
+            .join(" ");
+    }, [pharmacy?.owner]);
 
     const contact: ContactCardItem[] = [
         {id:1, title:"رقم الهاتف", text:pharmacy?.phone, icon:call},
         {id:2, title:"العنوان", text:pharmacy?.address, icon:location},
-        {id:3, title:"المالك", text:pharmacy?.owner.name, icon:profile},
+        {id:3, title:"المالك", text:ownerName, icon:profile},
     ]
     const [userInput, setUserInput] = useState("");
     return(

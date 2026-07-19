@@ -74,7 +74,7 @@ export default function PharmInfoSec (){
 
             if (!hasChanges) {
                 showAlert({
-                type: "Warning",
+                type: "Hint",
                 title: "تنبيه",
                 message: "لم يتم إجراء أي تغييرات.",
                 });
@@ -188,7 +188,7 @@ export default function PharmInfoSec (){
                             label="المالك" 
                             type="text" 
                             inputText={ ""} 
-                            value={pharmacy?.owner.name || ""} 
+                            value={pharmacy ? pharmacy.owner?.first_name + " " + pharmacy.owner?.last_name  : ""} 
                             onChange={() => {}} 
                             isTrue={true}
                             editable={false}

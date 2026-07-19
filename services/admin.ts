@@ -11,7 +11,7 @@ export const pharmacistApplications = async ():Promise<PharmacistApplication[]> 
             status: string;
             data: PharmacistApplicationResponse[];
         }>("/admin/pharmacist-applications");
-    console.log(response.data);
+    console.log(response.data.data);
     return response.data.data.map((application) => ({
         id: application.id,
         name: application.user.name,
