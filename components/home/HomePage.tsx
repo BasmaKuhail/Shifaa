@@ -2,7 +2,7 @@ import Header from "../header/Header";
 import SecondaryHeader from "./secondaryHeader/SecondaryHeader";
 import SearchHome from "./search/Search";
 import Image from "next/image";
-import homeBgImg from "@/public/images/homeBgImg.png"
+import homeBgImg from "@/public/images/homeBgImg.svg"
 import Title from "./SectionTitle";
 import HeaderText from "./HeaderText";
 import SubHeader from "./SubHeader";
@@ -88,7 +88,7 @@ export default function Home (){
                     src={homeBgImg}
                     alt='home '
                     width={610.77}
-                    className='block lg:pt-[50px]'
+                    className='block lg:pt-[50px] rotate-180 scale-y-[-1]'
                 />
                 <div className="absolute inset-0 z-10 pt-[75px] hidden lg:block">
                     <div className="px-4 md:px-8 lg:px-20 xl:px-30 pt-4"><SecondaryHeader/></div>
