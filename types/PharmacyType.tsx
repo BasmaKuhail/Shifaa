@@ -1,4 +1,5 @@
 import { ApplicationFile } from "@/types/PharmacistApplication";
+import { StatusType } from "./Status";
 
 export type PharmacyTeamMember = {
   id: number;
@@ -9,6 +10,29 @@ export type PharmacyTeamMember = {
   role: string;
 };
 
+export type PharmacyApplicationApiResponse = {
+  id: number;
+  owner_id: number;
+  name: string;
+  address: string;
+  phone: string;
+  status: StatusType;
+  created_at: string;
+  attachments: ApplicationFile[];
+  team: PharmacyTeamMember[];
+};
+
+export type PharmacyApplication = {
+  id: number;
+  owner: PharmacyTeamMember | null;
+  pharmacy_name: string;
+  address: string;
+  date: string;
+  phone_number: string;
+  status: StatusType;
+  health_license: ApplicationFile | null;
+  logo: ApplicationFile | null;
+};
 export type Pharmacy = {
   id: number;
   name: string;

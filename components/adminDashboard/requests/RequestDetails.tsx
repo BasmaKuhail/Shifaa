@@ -18,10 +18,10 @@ type requestDetailsProps = {
 
 type ColumnProps = {
     c1: string;
-    c2: ApplicationFile | string | undefined;
+    c2: ApplicationFile | string | undefined | null;
 };
 
-    const Columen = ({c1,c2}:{c1:string, c2:ApplicationFile | string | undefined}) => {
+    const Columen = ({c1,c2}:{c1:string, c2:ApplicationFile | string | undefined | null}) => {
         return(
             <div className="flex flex-row gap-2 border-t border-black-200">
                 <div className="p-2 px-3 border-l border-black-200 w-[20%]">
@@ -30,7 +30,7 @@ type ColumnProps = {
                 <div className="p-2">
                     {!c2 && <p className="text-btn">لا يوجد مرفق</p>}
                     {typeof c2 === "string" && <p className="text-btn">{c2}</p>}
-                    {typeof c2 === "object" && <FileViewer file={c2} label={c1} id={c2.id} />}
+                    {typeof c2 === "object" && <FileViewer file={c2} label={c1} id={c2? c2.id : 0} />}
                 </div>
 
             </div>
@@ -109,7 +109,7 @@ export default function RequestDetails({request : initialRequest, type }: reques
                             :(
                                 <div>
                                     <Columen c1="اسم الصيدلية" c2={pharmacyRequest?.pharmacy_name} />
-                                    <Columen c1="اسم الصيدلي" c2={pharmacyRequest?.pharmacist_name} />
+                                    <Columen c1="اسم الصيدلي" c2={pharmacyRequest?.owner?.first_name + " " + pharmacyRequest?.owner?.last_name} />
                                     <Columen c1="تاريخ الطلب" c2={pharmacyRequest?.date} />
                                     <Columen c1="رقم الهاتف" c2={pharmacyRequest?.phone_number} />
                                     <Columen c1="العنوان" c2={pharmacyRequest?.address} />

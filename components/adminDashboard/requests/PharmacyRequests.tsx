@@ -13,6 +13,7 @@ export default function CreatePharmReq () {
         {text:"الطلبات قيد الانتظار", value:"pending"}
     ];
     const { pharmacyRequests, loadingPharm, errorPharm } = useContext(AdminPharmacyRequestContext);
+    console.log(pharmacyRequests)
     const [selectedCategory, setSelectedCategory] = useState<(typeof requestsCategory[number])>(
         requestsCategory[0]
     );
@@ -65,12 +66,12 @@ export default function CreatePharmReq () {
                                     data={
                                         {
                                             pharmacyName: req.pharmacy_name,
-                                            pharmaciestName: req.pharmacist_name,
+                                            pharmaciestName: req.owner?.first_name + " " + req.owner?.last_name,
                                             address:req.address,
                                             date: req.date,
                                             phone_number: req.phone_number,
                                             status: <StatusHolder status={req.status} />,
-                                            interact: <Interact status={req.status} id={req.id} name={req.pharmacist_name} type="pharmacy"/>
+                                            interact: <Interact status={req.status} id={req.id} name={req.owner?.first_name + " " + req.owner?.last_name} type="pharmacy"/>
                                         }}
                                     columnClassNames={{
                                         pharmacyName:"flex-1",
