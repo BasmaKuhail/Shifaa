@@ -20,6 +20,7 @@ import Sort from "@/public/icons/sort";
 export default function Pharmacies() {
     const [userInput, setUserInput] = useState("");
     const [pharmacies, setPharmacies] = useState<PharmacyApiResponse[]>([]);
+    const [isSortedDescending, setIsSortedDescending] = useState(false);
     const [loading, setLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState("");
 
@@ -35,7 +36,7 @@ export default function Pharmacies() {
 
       try {
         if (!normalizedInput) {
-          const data = await getAllPharmacies();
+          const data = await getAllPharmacies(isSortedDescending,);
 
           if (!isCancelled) {
             setPharmacies(data);
@@ -47,6 +48,13 @@ export default function Pharmacies() {
         const result = await searchPharmacies({
           input: normalizedInput,
         });
+
+        const sortedPharmacies = isSortedDescending
+          ? [...result.pharmacies].sort((firstPharmacy, secondPharmacy) =>
+              secondPharmacy.name.localeCompare(firstPharmacy.name, "ar"),
+            )
+          : result.pharmacies;
+
         if (!isCancelled) {
           setPharmacies(result.pharmacies);
         }
@@ -74,7 +82,7 @@ export default function Pharmacies() {
       isCancelled = true;
       window.clearTimeout(timeoutId);
     };
-  }, [userInput]);
+  }, [userInput, isSortedDescending]);
 
     const skeletonCount = Math.max(pharmacies.length, 8);
     const sort = async() => {
@@ -147,9 +155,21 @@ export default function Pharmacies() {
                                             -translate-y-1/2
                                             w-auto"
                                     >
-                                        <div className="flex pl-4" aria-label="ترتيب أبجدي" onClick={()=>sort}>
-                                            <Sort className="cursor-pointer"/>
-                                        </div>
+                                        <button
+                                            type="button"
+                                            aria-label={
+                                            isSortedDescending
+                                                ? "إلغاء الترتيب التنازلي"
+                                                : "ترتيب الصيدليات تنازلياً"
+                                            }
+                                            aria-pressed={isSortedDescending}
+                                            onClick={() =>
+                                            setIsSortedDescending((currentValue) => !currentValue)
+                                            }
+                                            className="absolute left-4 top-1/2 -translate-y-1/2"
+                                        >
+                                            <Sort className="cursor-pointer" />
+                                        </button>
                                     </div>
                                     
                                     
