@@ -1,6 +1,7 @@
 import api from "@/lib/api";
 import { User } from "@/types/UserType";
 import axios from "axios";
+import { Owner } from "framer-motion";
 
 type GetMeApiResponse = {
   data: ApiUser[] | ApiUser;
@@ -22,6 +23,7 @@ type ApiUser = {
       has_pharmacy_application?: boolean;
       is_approved?: boolean;
       pharmacy_id?:number;
+      pharmacy_role?:"staff" | "owner"
     } | null;
     
   };
@@ -43,6 +45,7 @@ export const getMe = async (): Promise<User> => {
     });
 
     const responseData = response.data.data;
+    console.log(responseData)
     const rawUser = Array.isArray(responseData)
       ? responseData[0]
       : responseData;
@@ -72,6 +75,7 @@ export const getMe = async (): Promise<User> => {
         attributes.pharmacy_application?.has_pharmacy_application ?? false,
       has_pharmacy: attributes.pharmacy_application?.is_approved ?? false,
       pharmacy_id:attributes.pharmacy_application?.pharmacy_id ?? undefined,
+      pharmacy_role:attributes.pharmacy_application?.pharmacy_role ?? undefined,
 
     };
   } catch (error) {
