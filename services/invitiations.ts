@@ -30,10 +30,12 @@ export type Invitation = {
   responded_at: string | null;
   pharmacy: InvitationPharmacy;
 };
-
+type ReceivedInvitationsResponse = {
+  data: Invitation[];
+};
 export const getReceivedInvitations = async (): Promise<Invitation[]> => {
   try {
-    const response = await api.get<Invitation[]>(
+    const response = await api.get<ReceivedInvitationsResponse>(
       "/pharmacist/received-invitations",
     );
     console.log(response.data)
