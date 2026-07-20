@@ -8,14 +8,19 @@ type PharmaciesResponse = {
   data: PharmacyApiResponse[];
 };
 
-export const getAllPharmacies = async (): Promise<PharmacyApiResponse[]> => {
+export const getAllPharmacies = async (
+  sortDescending = false,
+): Promise<PharmacyApiResponse[]> => {
   try {
     const response = await api.get<PharmaciesResponse>("/pharmacies", {
       params: {
         include: "pharmacists,attachments",
+        ...(sortDescending && {
+          sort: "-name",
+        }),
       },
     });
-    console.log(response.data)
+
     return response.data.data;
   } catch (error: unknown) {
     let errorMessage = "Failed to fetch pharmacies";

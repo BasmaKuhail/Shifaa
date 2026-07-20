@@ -16,9 +16,11 @@ import { getAllPharmacies, searchPharmacies } from "@/services/pharmacies";
 import { PharmacyApiResponse } from "@/services/pharmacy";
 import GradientBtn from "../home/GradiantBtn";
 import PharmCardSkeleton from "./CardSkelleton";
+import Sort from "@/public/icons/sort";
 export default function Pharmacies() {
     const [userInput, setUserInput] = useState("");
     const [pharmacies, setPharmacies] = useState<PharmacyApiResponse[]>([]);
+    const [isSortedDescending, setIsSortedDescending] = useState(false);
     const [loading, setLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState("");
 
@@ -34,7 +36,7 @@ export default function Pharmacies() {
 
       try {
         if (!normalizedInput) {
-          const data = await getAllPharmacies();
+          const data = await getAllPharmacies(isSortedDescending,);
 
           if (!isCancelled) {
             setPharmacies(data);
@@ -46,6 +48,12 @@ export default function Pharmacies() {
         const result = await searchPharmacies({
           input: normalizedInput,
         });
+
+        const sortedPharmacies = isSortedDescending
+          ? [...result.pharmacies].sort((firstPharmacy, secondPharmacy) =>
+              secondPharmacy.name.localeCompare(firstPharmacy.name, "ar"),
+            )
+          : result.pharmacies;
 
         if (!isCancelled) {
           setPharmacies(result.pharmacies);
@@ -74,10 +82,13 @@ export default function Pharmacies() {
       isCancelled = true;
       window.clearTimeout(timeoutId);
     };
-  }, [userInput]);
+  }, [userInput, isSortedDescending]);
 
     const skeletonCount = Math.max(pharmacies.length, 8);
-
+    const sort = async() => {
+                const sort = await getAllPharmacies(true)
+        setPharmacies(sort)
+    }
     return (
         <div dir="rtl" className='w-full flex flex-col overflow-x-hidden '>
             <div className="bg-blue-100 relative inline-block w-full">
@@ -142,16 +153,23 @@ export default function Pharmacies() {
                                             lg:top-1/2
                                             md:top-1/2
                                             -translate-y-1/2
-                                            w-auto
-                                            h-[44px] md:h-[51px]"
+                                            w-auto"
                                     >
-                                        <div className="hidden lg:block md:block  h-full">
-                                            <GradientBtn text="ابدأ البحث" onClick={() => {}} px={10} rounded="30"/>
-                                        </div>
-                                        <div className="block lg:hidden md:hidden h-[90%]">
-                                            <GradientBtn image={arrow} onClick={() => {}} px={5} rounded="30"/>
-                                        </div>
-
+                                        <button
+                                            type="button"
+                                            aria-label={
+                                            isSortedDescending
+                                                ? "إلغاء الترتيب التنازلي"
+                                                : "ترتيب الصيدليات تنازلياً"
+                                            }
+                                            aria-pressed={isSortedDescending}
+                                            onClick={() =>
+                                            setIsSortedDescending((currentValue) => !currentValue)
+                                            }
+                                            className="absolute left-4 top-1/2 -translate-y-1/2"
+                                        >
+                                            <Sort className="cursor-pointer" />
+                                        </button>
                                     </div>
                                     
                                     
