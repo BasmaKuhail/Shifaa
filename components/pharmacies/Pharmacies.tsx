@@ -16,6 +16,7 @@ import { getAllPharmacies, searchPharmacies } from "@/services/pharmacies";
 import { PharmacyApiResponse } from "@/services/pharmacy";
 import GradientBtn from "../home/GradiantBtn";
 import PharmCardSkeleton from "./CardSkelleton";
+import Sort from "@/public/icons/sort";
 export default function Pharmacies() {
     const [userInput, setUserInput] = useState("");
     const [pharmacies, setPharmacies] = useState<PharmacyApiResponse[]>([]);
@@ -46,7 +47,6 @@ export default function Pharmacies() {
         const result = await searchPharmacies({
           input: normalizedInput,
         });
-
         if (!isCancelled) {
           setPharmacies(result.pharmacies);
         }
@@ -77,7 +77,10 @@ export default function Pharmacies() {
   }, [userInput]);
 
     const skeletonCount = Math.max(pharmacies.length, 8);
-
+    const sort = async() => {
+                const sort = await getAllPharmacies(true)
+        setPharmacies(sort)
+    }
     return (
         <div dir="rtl" className='w-full flex flex-col overflow-x-hidden '>
             <div className="bg-blue-100 relative inline-block w-full">
@@ -142,16 +145,11 @@ export default function Pharmacies() {
                                             lg:top-1/2
                                             md:top-1/2
                                             -translate-y-1/2
-                                            w-auto
-                                            h-[44px] md:h-[51px]"
+                                            w-auto"
                                     >
-                                        <div className="hidden lg:block md:block  h-full">
-                                            <GradientBtn text="ابدأ البحث" onClick={() => {}} px={10} rounded="30"/>
+                                        <div className="flex pl-4" aria-label="ترتيب أبجدي" onClick={()=>sort}>
+                                            <Sort className="cursor-pointer"/>
                                         </div>
-                                        <div className="block lg:hidden md:hidden h-[90%]">
-                                            <GradientBtn image={arrow} onClick={() => {}} px={5} rounded="30"/>
-                                        </div>
-
                                     </div>
                                     
                                     

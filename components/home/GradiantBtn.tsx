@@ -35,7 +35,7 @@ export default function GradientBtn({text,image, onClick,px, rounded="30", w="fi
                 hover:from-[#356A82]
                 hover:to-[#1689B8]`}
                 
-            onClick={onClick}>
+                onClick={onClick}>
                 {image ? (
                     <div>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="size-6">
