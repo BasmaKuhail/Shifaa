@@ -81,7 +81,7 @@ export default function WhoAreWe(){
                     </div>
                     
                 </div>
-                <div className="flex flex-col items-center justify-center mt-20 lg:mt-30 w-full bg-blue-1000 py-20"><Request/></div>
+                <div className="flex flex-col items-center justify-center mt-20 lg:mt-30 w-full bg-gradient-to-r from-[#329CCB] to-[#668DCA] py-20"><Request/></div>
             </div>
         </div>
     )
