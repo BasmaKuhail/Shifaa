@@ -4,8 +4,8 @@ import TextArea from "./TextArea";
 import AboutText from "./TextGroup";
 import { motion } from "framer-motion";
 
-import left from "@/public/images/About/left.png"
-import right from "@/public/images/About/right.png"
+import left from "@/public/images/About/left.svg"
+import right from "@/public/images/About/right.svg"
 import Image from "next/image";
 import MobileHeader from "../header/MobileHeader";
 import HeaderText from "../home/HeaderText";

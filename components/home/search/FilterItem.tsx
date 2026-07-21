@@ -20,10 +20,10 @@ export default function Item ({title, elements, dropDownOpened, setDropDownOpene
             <div 
                 className= {`group  
                     p-2 px-4 rounded-[30px] flex flex-row-reverse gap-3 cursor-pointer w-fit
-                    ${(dropDownOpened === title)   ? "bg-gradient-to-r from-[#3E94B9] to-[#04B6FF] text-white" : "bg-white text-black-600"}
+                    ${(dropDownOpened === title)   ? "bg-gradient-to-r from-[#329CCB] to-[#668DCA] text-white" : "bg-white text-black-600"}
                     hover:bg-gradient-to-r
-                    hover:from-[#3E94B9]
-                    hover:to-[#04B6FF]
+                    hover:from-[#329CCB]
+                    hover:to-[#668DCA]
                     hover:text-white
                     transition duration-200`
                 }

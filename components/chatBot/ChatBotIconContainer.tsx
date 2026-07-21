@@ -152,7 +152,7 @@ export default function ChatIconContainer({
             relative z-10
             rounded-full
             p-3
-            bg-gradient-to-r from-[#3E94B9] to-[#04B6FF]
+            bg-gradient-to-r from-[#329CCB] to-[#668DCA]
             flex items-center justify-center
             cursor-pointer
             shadow-lg

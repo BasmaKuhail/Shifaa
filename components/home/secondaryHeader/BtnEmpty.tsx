@@ -5,8 +5,8 @@ export default function BtnEmpty({ children, onClick }: { children: React.ReactN
             p-[2px]
             rounded-full
             bg-gradient-to-r
-            from-[#3E94B9]
-            to-[#04B6FF]
+            from-[#329CCB]
+            to-[#668DCA]
             inline-block
             hover:p-0
             hover:border hover:border-white hover:border-[2px]
@@ -21,14 +21,14 @@ export default function BtnEmpty({ children, onClick }: { children: React.ReactN
                 font-medium
                 transition
                 hover:bg-gradient-to-r
-                hover:from-[#3E94B9]
-                hover:to-[#04B6FF]
+                hover:from-[#329CCB]
+                hover:to-[#668DCA]
             ">
                 <span className="
                     group
                     bg-gradient-to-r
-                    from-[#3E94B9]
-                    to-[#04B6FF]
+                    from-[#329CCB]
+                    to-[#668DCA]
                     bg-clip-text
                     text-transparent
                     transition
