@@ -1,6 +1,6 @@
 import ContactForm from "./Form";
 import Image from "next/image";
-import phsist from "@/public/images/phsist.png"
+import phsist from "@/public/images/phsist.svg"
 export default function ContatcSec(){
     return( 
         <div dir="rtl" className="flex flex-col lg:flex-row md:flex-row w-full items-stretch">
