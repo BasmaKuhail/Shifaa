@@ -64,10 +64,10 @@ export default function ChatIconContainer({
         ref={containerRef} 
         className={
           mobileCompact
-            ? "relative z-[70] lg:fixed lg:bottom-6 lg:left-10"
-            : "fixed bottom-6 left-10 z-[70]"
+            ? "relative z-50 lg:fixed lg:bottom-6 lg:left-10"
+            : "fixed bottom-6 left-10 z-50"
         }
-        >
+      >
         {isChatOpen && user && (
             <motion.div
                 initial={{

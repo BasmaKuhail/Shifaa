@@ -105,7 +105,6 @@ html {
   border-radius: 999px 999px 55% 55%;
   filter: blur(0.3px);
   transform: translateX(-50%);
-  clip-path: polygon(50% 100%, 18% 72%, 28% 46%, 42% 0, 58% 22%, 72% 8%, 82% 46%);
 }
 
 .chat-bot-fire::before {
@@ -123,7 +122,6 @@ html {
   height: 34px;
   background: linear-gradient(180deg, #ffffff 0%, #bff4ff 48%, rgba(118, 221, 255, 0) 100%);
   opacity: 0.88;
-  clip-path: polygon(50% 100%, 12% 68%, 30% 42%, 44% 0, 58% 24%, 74% 10%, 88% 64%);
 }
 
 @keyframes chat-bot-fire-land {
