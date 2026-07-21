@@ -1,4 +1,3 @@
-import { Pharmacy } from "@/types/PharmacyType";
 import Image, { StaticImageData } from "next/image";
 
 import pharm from "@/public/images/pharm-info/deafultPharm.png"
@@ -16,7 +15,13 @@ const Btn = ({image, text}: {image:StaticImageData, text:string}) => {
         </div>
     )
 }
-export default function PharmCard({pharmacy}:{pharmacy:PharmacyApiResponse}){
+export default function PharmCard({
+    pharmacy,
+    isList = false,
+}: {
+    pharmacy: PharmacyApiResponse;
+    isList?: boolean;
+}){
     const logoSource =
         pharmacy.attachments?.[1]?.url ??
         pharmacy.attachments?.[0]?.url ??
@@ -24,16 +29,15 @@ export default function PharmCard({pharmacy}:{pharmacy:PharmacyApiResponse}){
 
     const route = useRouter();
     return(
-        <div className="
-            bg-white flex flex-col gap-5 pb-7 rounded-[14px] 
-            items-center justify-center p-1 cursor-pointer 
+        <div className={`
+            bg-white rounded-[14px] cursor-pointer 
             hover:shadow-lg transition-shadow duration-300 ease-in-out 
-            w-full"
+            w-full ${isList ? "flex flex-row items-center gap-5 p-3" : "flex flex-col items-center justify-center gap-5 pb-7 p-1"}`}
             onClick={() => route.push(`/pharmacies/pharmacy-details/${pharmacy.id}`)}
       
         >
             {/* Apply a blue filter and reduce contrast using CSS styles */}
-            <div className="relative h-[190px] w-full overflow-hidden rounded-[14px]">
+            <div className={`relative overflow-hidden rounded-[14px] ${isList ? "h-40 w-36 shrink-0" : "h-[190px] w-full"}`}>
                 <Image
                     src={logoSource}
                     alt={`${pharmacy.name} logo`}
@@ -49,7 +53,8 @@ export default function PharmCard({pharmacy}:{pharmacy:PharmacyApiResponse}){
 
                 <div className="absolute inset-0 rounded-[14px] bg-blue-200 opacity-50" />
             </div>
-            <p className="font-semibold text-lg mt-2">{pharmacy.name}</p>
+            <div className={isList ? "flex min-w-0 flex-1 flex-col items-start gap-3" : "contents"}>
+            <p className="mt-2 text-lg font-semibold">{pharmacy.name}</p>
             <div className="flex flex-row gap-2 items-center justify-center text-center">
                 <Image src={location} alt="" width={15}/>
                 <p className="text-black-500 text-sm">{pharmacy.address}</p>
@@ -57,6 +62,7 @@ export default function PharmCard({pharmacy}:{pharmacy:PharmacyApiResponse}){
             <div className="flex flex-row items-center justify-between gap-2 items-center">
                 <Btn image={view} text="عرض"/>
                 <Btn image={contact} text="تواصل"/>
+            </div>
             </div>
         </div>
     )

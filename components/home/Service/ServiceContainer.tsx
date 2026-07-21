@@ -21,7 +21,7 @@ export default function ServiceCotainer ({icon, header, text, link}:sectionProps
     return(
         <div 
             dir="rtl" 
-            className="group hover:bg-gradient-to-r from-[#3E94B9] to-[#04B6FF] inline-block rounded-[5px] p-0.5 w-[97%] md:w-[32%] lg:w-[35%] lg:hover:w-[38%] hover:shadow-lg transition-all duration-500 ease-in-out">
+            className="group hover:bg-gradient-to-r from-[#329CCB] to-[#668DCA] inline-block rounded-[5px] p-0.5 w-[97%] md:w-[32%] lg:w-[35%] lg:hover:w-[38%] hover:shadow-lg transition-all duration-500 ease-in-out">
             <div 
                 className="
                     flex flex-col items-center gap-5
@@ -42,7 +42,7 @@ export default function ServiceCotainer ({icon, header, text, link}:sectionProps
                     flex flex-row gap-2 items-center justify-center 
                     text-btn lg:text-btn md:text-inpt font-[450] text-black-600 
                     bg-clip-text
-                    group-hover:bg-gradient-to-r from-[#3E94B9] to-[#04B6FF] 
+                    group-hover:bg-gradient-to-r from-[#329CCB] to-[#668DCA]
                     group-hover:text-transparent">
                     <Link href={"#"}>{link}</Link>
                     <ArrowLeft className="text-black-600 group-hover:text-[#3E94B9]" />

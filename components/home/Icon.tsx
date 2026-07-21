@@ -13,8 +13,8 @@ export default function Icon ({icon, width, className = ""}:iconProps){
                 aspect-square
                 rounded-full 
                 bg-gradient-to-r
-                from-[#3E94B9]
-                to-[#04B6FF]
+                from-[#329CCB]
+                to-[#668DCA]
                 flex
                 items-center
                 justify-center

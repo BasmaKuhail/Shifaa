@@ -4,8 +4,8 @@ import TextArea from "./TextArea";
 import AboutText from "./TextGroup";
 import { motion } from "framer-motion";
 
-import left from "@/public/images/About/left.png"
-import right from "@/public/images/About/right.png"
+import left from "@/public/images/About/left.svg"
+import right from "@/public/images/About/right.svg"
 import Image from "next/image";
 import MobileHeader from "../header/MobileHeader";
 import HeaderText from "../home/HeaderText";
@@ -81,7 +81,7 @@ export default function WhoAreWe(){
                     </div>
                     
                 </div>
-                <div className="flex flex-col items-center justify-center mt-20 lg:mt-30 w-full bg-blue-1000 py-20"><Request/></div>
+                <div className="flex flex-col items-center justify-center mt-20 lg:mt-30 w-full bg-gradient-to-r from-[#329CCB] to-[#668DCA] py-20"><Request/></div>
             </div>
         </div>
     )

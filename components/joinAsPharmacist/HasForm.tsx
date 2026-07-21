@@ -10,7 +10,7 @@ export default function HasPharmacistApplication() {
             <div
                 className="
                 flex h-[200px] w-[200px] items-center justify-center rounded-full
-                bg-[radial-gradient(circle_at_center,#91B8F478_0%,#67B7F2B8_35%,#39B7EE_100%)]
+                bg-[linear-gradient(90deg,#329CCB_0%,#668DCA_100%)]
                 shadow-[0_4px_50px_-4px_#B4E8FF]
                 "
             >
