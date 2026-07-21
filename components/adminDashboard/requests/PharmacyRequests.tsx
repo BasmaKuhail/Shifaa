@@ -2,7 +2,6 @@ import StatusHolder from "@/components/pharmacyDashboard/MedicineRequests/Status
 import Row from "@/components/pharmacyDashboard/PharmacyInfo/pharmacistsTable/Row";
 import Interact from "./Interact";
 import { useContext, useState } from "react";
-import { AdminRequestContext } from "@/contexts/AdminPharmacistsRequestsContext";
 import { AdminPharmacyRequestContext } from "@/contexts/AdminPharmcyRequestsContext";
 
 export default function CreatePharmReq () {
@@ -13,7 +12,7 @@ export default function CreatePharmReq () {
         {text:"الطلبات قيد الانتظار", value:"pending"}
     ];
     const { pharmacyRequests, loadingPharm, errorPharm } = useContext(AdminPharmacyRequestContext);
-    console.log(pharmacyRequests)
+    // console.log(pharmacyRequests)
     const [selectedCategory, setSelectedCategory] = useState<(typeof requestsCategory[number])>(
         requestsCategory[0]
     );

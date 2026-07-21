@@ -1,7 +1,6 @@
 import api from "@/lib/api";
 import { ApplicationFile, PharmacistApplication } from "@/types/PharmacistApplication";
 import { PharmacistApplicationResponse } from "@/types/PharmacistApplicationResponse";
-import { PharmacyApplicationResponse } from "@/types/PharmacyApplicationResponse";
 import { PharmacyApplication, PharmacyApplicationApiResponse } from "@/types/PharmacyType";
 import { StatusType } from "@/types/Status";
 
@@ -13,7 +12,8 @@ export const pharmacistApplications = async ():Promise<PharmacistApplication[]> 
             data: PharmacistApplicationResponse[];
         }>("/admin/pharmacist-applications",
           {params:{include:"attachments"}});
-    // console.log(response.data.data);
+    console.log(response.data.data);
+
     return response.data.data.map((application) => ({
         id: application.id,
         name: application.user.name,
