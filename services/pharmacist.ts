@@ -33,7 +33,7 @@ export const searchPharmacists = async (
 
   const response = await api.get("/pharmacists", {
     params: {
-      [`filter[${searchField}]`]: normalizedInput,
+      [`filter[${searchField}]`]: `*${normalizedInput}*`,
       page,
     },
   });

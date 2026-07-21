@@ -11,7 +11,6 @@ import axios from "axios";
 import { address } from "framer-motion/client";
 
 
-
 export type PharmacyApiResponse = {
   id: number;
   name: string;
