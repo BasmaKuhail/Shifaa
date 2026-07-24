@@ -64,8 +64,8 @@ export default function ChatIconContainer({
         ref={containerRef} 
         className={
           mobileCompact
-            ? "relative z-50 lg:fixed lg:bottom-6 lg:left-10"
-            : "fixed bottom-6 left-10 z-50"
+            ? "relative z-60 lg:fixed lg:bottom-6 lg:left-10"
+            : "fixed bottom-6 left-10 z-60"
         }
       >
         {isChatOpen && user && (
