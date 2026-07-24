@@ -24,6 +24,7 @@ import Features from "./FeaturesSec/FeaturesSec";
 import ContatcSec from "./contactForm/ContactFormSec";
 import MobileHeader from "../header/MobileHeader";
 import { useRouter } from "next/navigation";
+import MedNotFoundC2A from "../searchMed.tsx/MedNotFound";
 
 const services =[
     {
@@ -95,6 +96,7 @@ export default function Home (){
                     
                     <div id="search" className='mt-20'>
                         <SearchHome />
+                        {/* <MedNotFoundC2A/> */}
                     </div>
                 </div>
                 {/* mobile view */}

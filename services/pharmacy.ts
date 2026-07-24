@@ -51,7 +51,7 @@ export const getPharmacyById = async (
     const staff = pharmacy.team.filter(
       (member) => member.role !== "owner",
     );
-
+    console.log(response.data.data)
     return {
       id:pharmacy.id,
       name:pharmacy.name,

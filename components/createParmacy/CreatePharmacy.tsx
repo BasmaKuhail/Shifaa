@@ -18,7 +18,7 @@ import HasPharm from "./HasPharm";
 export default function CreatePharmacy(){
 
     const [checkBoxChecked, setCheckBoxChecked] = useState(false)
-    
+    const [showSubmited, setshowSubmited] = useState(false)
     const {user, loading} = useContext(UserContext);
     const handlePreviousPage = () => {
         window.history.back();
@@ -97,6 +97,7 @@ export default function CreatePharmacy(){
         const res = await createPharm(userInfo.name, userInfo.phone, userInfo.health_license, userInfo.address, userInfo.logo);
         console.log(res);
         setSubmitLoading(false);
+        setshowSubmited(true);
         showAlert({
             type: "Success",
             title: "تم تقديم الطلب بنجاح",
@@ -120,7 +121,7 @@ export default function CreatePharmacy(){
             <HasPharm/>
         )
     }
-    if(user?.has_pharmacy_application || submitLoading){
+    if(user?.has_pharmacy_application || showSubmited){
         return <HasPharmacistApplication/>
     }
 
