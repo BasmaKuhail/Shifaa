@@ -76,7 +76,7 @@ export const pharmacytNav = [
         id: 5,
         icon: Add,
         label: "إضافة دواء",
-        link: "/pharmacy-dashboard/add"
+        link: "/pharmacy-dashboard/add-medicine"
     },
     {
         id: 6,

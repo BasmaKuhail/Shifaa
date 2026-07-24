@@ -1,13 +1,13 @@
-import Invitations from "@/components/pharmacyDashboard/invitations/Invitations";
 import DashboardLayout from "@/layouts/DashboardLayout";
 import { pharmacytNav } from "@/config/navigations";
+import AddMed from "@/components/pharmacyDashboard/addMedicine/AddMed";
 
-export default function InvitationsIndex() {
+export default function AddMedicineIndex() {
 
     
     return(
         <DashboardLayout sideNavArr={pharmacytNav}>
-            <Invitations/>
+            <AddMed/>
         </DashboardLayout>
     )
 }
