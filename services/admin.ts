@@ -113,7 +113,7 @@ export const pharmacyApplications = async (): Promise<
       include: "attachments,pharmacists",
     },
   });
-  console.log(response.data.data)
+  console.log(response.data)
   return response.data.data.map((application) => ({
     id: application.id,
     owner:
@@ -121,6 +121,7 @@ export const pharmacyApplications = async (): Promise<
         (member) => member.id === application.owner_id,
       ) ?? null,
     pharmacy_name: application.name,
+    owner_name:application.owner_name,
     address: application.address,
     date: new Date(application.created_at).toLocaleDateString("en-GB"),
     phone_number: application.phone,

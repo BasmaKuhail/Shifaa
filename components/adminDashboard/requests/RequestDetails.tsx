@@ -109,7 +109,7 @@ export default function RequestDetails({request : initialRequest, type }: reques
                             :(
                                 <div>
                                     <Columen c1="اسم الصيدلية" c2={pharmacyRequest?.pharmacy_name} />
-                                    <Columen c1="اسم الصيدلي" c2={pharmacyRequest?.owner?.first_name + " " + pharmacyRequest?.owner?.last_name} />
+                                    <Columen c1="اسم الصيدلي" c2={pharmacyRequest?.owner_name} />
                                     <Columen c1="تاريخ الطلب" c2={pharmacyRequest?.date} />
                                     <Columen c1="رقم الهاتف" c2={pharmacyRequest?.phone_number} />
                                     <Columen c1="العنوان" c2={pharmacyRequest?.address} />

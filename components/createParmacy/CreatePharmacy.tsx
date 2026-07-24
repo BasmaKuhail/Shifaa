@@ -65,6 +65,7 @@ export default function CreatePharmacy(){
                 title: "تحذير",
                 message: "يجب تعبئة البيانات المطلوبة",
             });
+            setSubmitLoading(false);
             return;
         }
         if (!checkBoxChecked) {
@@ -73,7 +74,8 @@ export default function CreatePharmacy(){
                 title: "تحذير",
                 message: "يجب التأكيد على أن هذه الوثائق تخصك",
             });
-            console.log(userInfo);
+            setSubmitLoading(false);
+            // console.log(userInfo);
 
             return;
         }
@@ -90,6 +92,7 @@ export default function CreatePharmacy(){
                 title: "خطأ",
                 message: "خطأ في البيانات المدخلة لأحد الحقول",
             });
+            setSubmitLoading(false);
             return
         }
 
@@ -112,7 +115,8 @@ export default function CreatePharmacy(){
             title: "خطأ",
             message: err.response?.data.message || "حدث خطأ غير متوقع",
         });
-
+    }finally{
+        setSubmitLoading(false)
     }
 };
     const { crumbs } = useBreadcrumb()
