@@ -113,7 +113,7 @@ export const pharmacyApplications = async (): Promise<
       include: "attachments,pharmacists",
     },
   });
-
+  console.log(response.data.data)
   return response.data.data.map((application) => ({
     id: application.id,
     owner:
