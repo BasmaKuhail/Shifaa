@@ -18,6 +18,7 @@ export type PharmacyApplication = {
   owner: PharmacyOwner | null;
   health_license: ApplicationFile | null;
   logo: ApplicationFile | null;
+  owner_name?:string
 };
 export type ApplicationFile = {
   id: number;

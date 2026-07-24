@@ -20,6 +20,7 @@ export type PharmacyApplicationApiResponse = {
   created_at: string;
   attachments: ApplicationFile[];
   team: PharmacyTeamMember[];
+  owner_name:string;
 };
 
 export type PharmacyApplication = {
@@ -40,7 +41,8 @@ export type Pharmacy = {
   owner: PharmacyTeamMember | undefined;
   phone: string;
   logo: string | undefined,
-  staff: PharmacyTeamMember[] | undefined 
+  staff: PharmacyTeamMember[] | undefined;
+  owner_name?:string
 }
 
 export type pharmacyResponseType = {

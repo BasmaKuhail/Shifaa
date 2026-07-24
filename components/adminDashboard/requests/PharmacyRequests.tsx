@@ -65,7 +65,7 @@ export default function CreatePharmReq () {
                                     data={
                                         {
                                             pharmacyName: req.pharmacy_name,
-                                            pharmaciestName: req.owner?.first_name + " " + req.owner?.last_name,
+                                            pharmaciestName: req.owner_name,
                                             address:req.address,
                                             date: req.date,
                                             phone_number: req.phone_number,
