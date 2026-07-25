@@ -45,7 +45,7 @@ export const getMe = async (): Promise<User> => {
     });
 
     const responseData = response.data.data;
-    console.log(responseData)
+    console.log("data", response.data)
     const rawUser = Array.isArray(responseData)
       ? responseData[0]
       : responseData;

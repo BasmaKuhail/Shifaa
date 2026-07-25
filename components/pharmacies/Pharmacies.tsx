@@ -10,7 +10,7 @@ import PharmCard from "./PharmCard";
 import { getAllPharmacies, searchPharmacies } from "@/services/pharmacies";
 import { PharmacyApiResponse } from "@/services/pharmacy";
 import PharmCardSkeleton from "./CardSkelleton";
-import Sort from "@/public/icons/sort";
+import Arrow from "@/public/icons/pharmacies/arrowHeadR"
 
 import pharmaciesBg from "@/public/images/pharmaciesbg.svg"
 import verifyIcon from "@/public/icons/pharmacies/verify.svg";
@@ -43,80 +43,127 @@ const pharmacyNetworkFeatures: PharmacyNetworkFeatureItem[] = [
 export default function Pharmacies() {
     const [userInput, setUserInput] = useState("");
     const [pharmacies, setPharmacies] = useState<PharmacyApiResponse[]>([]);
-    const [isSortedDescending, setIsSortedDescending] = useState(false);
     const [loading, setLoading] = useState(true);
     const [errorMessage, setErrorMessage] = useState("");
     const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-    const [sortBy, setSortBy] = useState<"alphabetical">("alphabetical");
 
+    const [sortOrder, setSortOrder] = useState<"asc" | "desc">("asc");
+
+    const isSortedDescending = sortOrder === "desc";
+    const [page, setPage] = useState(1);
+    const [lastPage, setLastPage] = useState(1);
+    const [loadingMore, setLoadingMore] = useState(false);
     useEffect(() => {
-    const normalizedInput = userInput.trim();
-    let isCancelled = false;
+      const normalizedInput = userInput.trim();
+      let isCancelled = false;
 
-    setLoading(true);
+      const timeoutId = window.setTimeout(async () => {
+        setLoading(true);
+        setErrorMessage("");
+        setPage(1);
 
-    const timeoutId = window.setTimeout(async () => {
-      setLoading(true);
-      setErrorMessage("");
+        try {
+          const result = normalizedInput
+            ? await searchPharmacies({
+                input: normalizedInput,
+                page: 1,
+                sortDescending: isSortedDescending,
+              })
+            : await getAllPharmacies({
+                page: 1,
+                sortDescending: isSortedDescending,
+              });
 
-      try {
-        if (!normalizedInput) {
-          const data = await getAllPharmacies(isSortedDescending,);
-
-          if (!isCancelled) {
-            setPharmacies(data);
+          if (isCancelled) {
+            return;
           }
 
-          return;
-        }
+          setPharmacies(result.pharmacies);
+          setLastPage(result.pagination?.lastPage ?? 1);
+        } catch (error: unknown) {
+          if (isCancelled) {
+            return;
+          }
 
-        const result = await searchPharmacies({
+          console.error("Failed to load pharmacies:", error);
+
+          setPharmacies([]);
+          setLastPage(1);
+          setErrorMessage(
+            error instanceof Error
+              ? error.message
+              : "تعذر تحميل الصيدليات",
+          );
+        } finally {
+          if (!isCancelled) {
+            setLoading(false);
+          }
+        }
+      }, 400);
+
+      return () => {
+        isCancelled = true;
+        window.clearTimeout(timeoutId);
+      };
+}, [userInput, isSortedDescending]);
+
+const hasMorePharmacies = page < lastPage;
+
+const handleLoadMore = async () => {
+  if (loadingMore || !hasMorePharmacies) {
+    return;
+  }
+
+  const nextPage = page + 1;
+  const normalizedInput = userInput.trim();
+
+  setLoadingMore(true);
+  setErrorMessage("");
+
+  try {
+    const result = normalizedInput
+      ? await searchPharmacies({
           input: normalizedInput,
+          page: nextPage,
+          sortDescending: isSortedDescending,
+        })
+      : await getAllPharmacies({
+          page: nextPage,
+          sortDescending: isSortedDescending,
         });
 
-        const sortedPharmacies = isSortedDescending
-          ? [...result.pharmacies].sort((firstPharmacy, secondPharmacy) =>
-              secondPharmacy.name.localeCompare(firstPharmacy.name, "ar"),
-            )
-          : result.pharmacies;
+    setPharmacies((currentPharmacies) => {
+      const pharmacyMap = new Map(
+        currentPharmacies.map((pharmacy) => [pharmacy.id, pharmacy]),
+      );
 
-        if (!isCancelled) {
-          setPharmacies(result.pharmacies);
-        }
-      } catch (error: unknown) {
-        if (isCancelled) {
-          return;
-        }
+      result.pharmacies.forEach((pharmacy) => {
+        pharmacyMap.set(pharmacy.id, pharmacy);
+      });
 
-        console.error("Failed to load pharmacies:", error);
+      return Array.from(pharmacyMap.values());
+    });
 
-        setPharmacies([]);
-        setErrorMessage(
-          error instanceof Error
-            ? error.message
-            : "تعذر تحميل الصيدليات",
-        );
-      } finally {
-        if (!isCancelled) {
-          setLoading(false);
-        }
-      }
-    }, 400);
+    setPage(result.pagination?.currentPage ?? nextPage);
+    setLastPage(result.pagination?.lastPage ?? nextPage);
+  } catch (error: unknown) {
+    console.error("Failed to load more pharmacies:", error);
 
-    return () => {
-      isCancelled = true;
-      window.clearTimeout(timeoutId);
-    };
-  }, [userInput, isSortedDescending]);
+    setErrorMessage(
+      error instanceof Error
+        ? error.message
+        : "تعذر تحميل المزيد من الصيدليات",
+    );
+  } finally {
+    setLoadingMore(false);
+  }
+};
 
     const skeletonCount = Math.max(pharmacies.length, 8);
     const visiblePharmacies = [...pharmacies].sort((firstPharmacy, secondPharmacy) =>
         firstPharmacy.name.localeCompare(secondPharmacy.name, "ar"),
     );
-    const sort = async() => {
-                const sort = await getAllPharmacies(true)
-        setPharmacies(sort)
-    }
+
     return (
        <div dir="rtl" className='w-full flex flex-col overflow-x-hidden'>
             <div className="bg-blue-100 relative inline-block ">
@@ -214,17 +261,20 @@ export default function Pharmacies() {
                     <label className="relative flex h-10 shrink-0 items-center rounded-[10px] border border-black-200 bg-white px-4 text-inpt text-black-500">
                         <span className="pointer-events-none whitespace-nowrap ml-5">ترتيب حسب:</span>
                         <select
-                            value={sortBy}
-                            onChange={(event) => setSortBy(event.target.value as "alphabetical")}
-                            aria-label="ترتيب الصيدليات حسب"
-                            className="w-full cursor-pointer appearance-none bg-transparent pl-5 text-inpt font-medium text-black-600 outline-none"
-                        >
-                            <option value="alphabetical">أبجدي</option>
-                        </select>
+                        value={sortOrder}
+                        onChange={(event) =>
+                          setSortOrder(event.target.value as "asc" | "desc")
+                        }
+                        aria-label="ترتيب الصيدليات حسب"
+                        className="w-full cursor-pointer appearance-none bg-transparent pl-5 text-inpt font-medium text-black-600 outline-none"
+                      >
+                        <option value="asc">أبجدي: أ - ي</option>
+                        <option value="desc">أبجدي: ي - أ</option>
+                      </select>
                         <span className="pointer-events-none absolute left-4 top-1/2 h-2 w-2 -translate-y-3/4 rotate-45 border-b-2 border-r-2 border-black-600" />
                     </label>
                 </div>
-                <div aria-busy={loading} className={`${viewMode === "grid" ? "grid grid-cols-1 items-stretch gap-x-5 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" : "flex flex-col gap-4"} px-4 md:px-8 lg:px-20 xl:px-30 mt-8 mb-20 min-h-[360px] w-full content-start`}>
+                <div aria-busy={loading} className={`my-10 ${viewMode === "grid" ? "grid grid-cols-1 items-stretch gap-x-5 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" : "flex flex-col gap-4"} px-4 md:px-8 lg:px-20 xl:px-30 min-h-[360px] w-full content-start`}>
                     {loading && Array.from({ length: skeletonCount }, (_, index) => (
                         <PharmCardSkeleton key={`pharmacy-skeleton-${index}`} />
                     ))}
@@ -244,7 +294,32 @@ export default function Pharmacies() {
                     )}
                     
                 </div>
+              {!loading && !errorMessage && pharmacies.length > 0 && hasMorePharmacies && (
+                <div className="flex w-full items-center justify-center">
+                  <button
+                    type="button"
+                    onClick={handleLoadMore}
+                    disabled={loadingMore}
+                    className="
+                      cursor-pointer
+                      mb-20 flex w-fit items-center gap-2 rounded-full
+                      bg-white px-6 py-1 text-blue-1000
+                      hover:bg-blue-10
+                      disabled:cursor-not-allowed
+                      disabled:opacity-60
+                    "
+                  >
+                    <span>
+                      {loadingMore ? "جاري التحميل..." : "عرض المزيد"}
+                    </span>
+
+                    {!loadingMore && (
+                      <Arrow className="rotate-90 text-blue-1000" />
+                    )}
+                  </button>
+                </div>
+              )}   
             </div>
-        </div>
+      </div>
     )
 }
