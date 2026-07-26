@@ -60,6 +60,19 @@ function MyApp({
     page
   );
 
+  let wrappedPage = page;
+
+
+  if (isAdminRoute) {
+    wrappedPage = (
+      <AdminRequestProvider>
+        <AdminPharmacyRequestProvider>
+          {wrappedPage}
+        </AdminPharmacyRequestProvider>
+      </AdminRequestProvider>
+    );
+  }
+
   return (
     <div
       className={`${tajawal.className} ${tajawal.variable}`}
@@ -72,7 +85,9 @@ function MyApp({
         <AuthGuard>
           <BreadcrumbProvider>
             {pageWithRouteProviders}
-            <AppToastContainer />
+          {wrappedPage}
+            <AppToastContainer/>
+          
           </BreadcrumbProvider>
         </AuthGuard>
       </UserProvider>

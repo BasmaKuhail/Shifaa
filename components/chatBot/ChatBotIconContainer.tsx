@@ -55,7 +55,7 @@ export default function ChatIconContainer({
         <button
           type="button"
           aria-label="إغلاق المحادثة"
-          className="fixed inset-0 z-[60] cursor-default bg-black/45"
+          className="fixed inset-0 z-[110] cursor-default bg-black/45"
           onClick={() => setIsChatOpen(false)}
         />
       )}
