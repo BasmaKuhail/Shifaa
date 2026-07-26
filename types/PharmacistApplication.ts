@@ -1,3 +1,4 @@
+import { PharmacistApplicationResponse } from "./PharmacistApplicationResponse";
 import { StatusType } from "./Status";
 
 export type PharmacyOwner = {
@@ -35,9 +36,32 @@ export type PharmacistApplication = {
   email: string;
   role: string;
   date: string;
-  phone_number:string;
-  status:  StatusType;
-  license_certificate: ApplicationFile | undefined;
-  personal_photo: ApplicationFile | undefined;
-  identity_document: ApplicationFile | undefined;
+  phone_number: string;
+  status: StatusType;
+  license_certificate?: PharmacistApplicationResponse["attachments"][number];
+  personal_photo?: PharmacistApplicationResponse["attachments"][number];
+  identity_document?: PharmacistApplicationResponse["attachments"][number];
+};
+
+type PaginationMeta = {
+  current_page: number;
+  last_page: number;
+  per_page: number;
+  total: number;
+};
+
+export type PharmacistApplicationsApiResponse = {
+  status: string;
+  data: PharmacistApplicationResponse[];
+  meta: PaginationMeta;
+};
+
+export type PharmacistApplicationsResult = {
+  applications: PharmacistApplication[];
+  pagination: {
+    currentPage: number;
+    lastPage: number;
+    perPage: number;
+    total: number;
+  };
 };
