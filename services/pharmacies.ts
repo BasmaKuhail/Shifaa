@@ -45,21 +45,16 @@ const validatePage = (page: number): void => {
   }
 };
 
-const isAcceptedPharmacy = (
-  pharmacy: PharmacyApiResponse,
-): boolean => pharmacy.status === "approved";
+
 
 const mapPharmaciesResponse = (
   response: PharmaciesApiResponse,
 ): PharmaciesResult => {
-  const acceptedPharmacies = Array.isArray(response.data)
-    ? response.data.filter(isAcceptedPharmacy)
-    : [];
-
+  const pharmacies = response.data
   const meta = response.meta;
 
   return {
-    pharmacies: acceptedPharmacies,
+    pharmacies: pharmacies,
     pagination: meta
       ? {
           currentPage: meta.current_page,
@@ -118,6 +113,7 @@ export const getAllPharmacies = async ({
       {
         params: {
           include: "pharmacists,attachments",
+          status:"approved",
           page,
           sort: sortDescending ? "-name" : "name",
         },

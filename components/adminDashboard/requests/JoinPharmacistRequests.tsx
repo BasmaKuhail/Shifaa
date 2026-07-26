@@ -25,9 +25,9 @@ export default function PharmacistsRequests () {
     });
 
     const pageCount = Math.max(
-    1,
-    Math.ceil(filteredResults.length / REQUESTS_PER_PAGE),
-  );
+        1,
+        Math.ceil(filteredResults.length / REQUESTS_PER_PAGE),
+    );
 
   const paginatedResults = useMemo(() => {
     const startIndex = (currentPage - 1) * REQUESTS_PER_PAGE;
@@ -50,7 +50,7 @@ export default function PharmacistsRequests () {
         <div className="w-full flex flex-col gap-5">
             <div className="w-full flex flex-row items-center justify-between border border-gray-200 rounded-[14px] p-2">
                         {requestsCategories.map((category, index) => (
-                            <p key={index} className={`text-center px-10 p-1 text-inpt font-semibold text-black-400 cursor-pointer ${selectedCategory.value === category.value ? "bg-blue-100 rounded-[10px]" : ""}`} onClick={() => setSelectedCategory(category)}>{category.text}</p>    
+                            <p key={index} className={`text-center px-10 p-1 text-inpt font-semibold text-black-400 cursor-pointer ${selectedCategory.value === category.value ? "bg-blue-100 rounded-[10px]" : ""}`} onClick={() => handleCategoryChange(category)}>{category.text}</p>    
                         ))}
                     </div>
                     <div className="flex w-full flex-col px-10">

@@ -5,9 +5,7 @@ import { PharmacyApplication, PharmacyApplicationApiResponse } from "@/types/Pha
 import { StatusType } from "@/types/Status";
 
 // pharmacist
-export const pharmacistApplications = async (): Promise<
-  PharmacistApplication[]
-> => {
+export const pharmacistApplications = async (): Promise<PharmacistApplication[]> => {
   const response = await api.get<{
     status: string;
     data: PharmacistApplicationResponse[];
