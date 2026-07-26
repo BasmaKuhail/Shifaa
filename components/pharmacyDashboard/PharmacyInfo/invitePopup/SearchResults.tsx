@@ -17,7 +17,7 @@ export default function Result({name, contactNumber, email, isInviting = false, 
   return (
     <article
       dir="rtl"
-      className="flex w-full items-center justify-between gap-3 rounded-[14px] bg-blue-100 px-4 py-3 sm:px-6"
+      className="flex w-full items-center justify-between gap-3 rounded-[14px] bg-black-10 px-4 py-3 sm:px-6"
     >
       <div className="flex min-w-0 items-center gap-3">
 

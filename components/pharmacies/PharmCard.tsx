@@ -52,7 +52,7 @@ export default function PharmCard({
                     className="object-cover"
                 />
 
-                <div className="absolute inset-0 rounded-[14px] bg-blue-200 opacity-50" />
+                {/* <div className="absolute inset-0 rounded-[14px] bg-blue-200 opacity-50" /> */}
             </div>
             <div className={isList ? "flex min-w-0 flex-1 flex-col items-start gap-3" : "contents mr-10"}>
                 <div className="flex flex-row gap-5 items-center justify-center">

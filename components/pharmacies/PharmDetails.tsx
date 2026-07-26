@@ -94,7 +94,7 @@ export default function PharmacyDetails (){
     const contact: ContactCardItem[] = [
         {id:1, title:"رقم الهاتف", text:pharmacy?.phone, icon:call},
         {id:2, title:"العنوان", text:pharmacy?.address, icon:location},
-        {id:3, title:"المالك", text:ownerName, icon:profile},
+        {id:3, title:"المالك", text:pharmacy?.owner_name, icon:profile},
     ]
     const [userInput, setUserInput] = useState("");
     return(

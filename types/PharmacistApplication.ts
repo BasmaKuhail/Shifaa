@@ -1,5 +1,26 @@
+import { PharmacistApplicationResponse } from "./PharmacistApplicationResponse";
 import { StatusType } from "./Status";
 
+export type PharmacyOwner = {
+  id: number;
+  first_name: string;
+  last_name: string;
+  email: string;
+  phone_number: string;
+};
+
+export type PharmacyApplication = {
+  id: number;
+  pharmacy_name: string;
+  address: string;
+  date: string;
+  phone_number: string;
+  status: StatusType;
+  owner: PharmacyOwner | null;
+  health_license: ApplicationFile | null;
+  logo: ApplicationFile | null;
+  owner_name?:string
+};
 export type ApplicationFile = {
   id: number;
   type: string;
@@ -15,21 +36,32 @@ export type PharmacistApplication = {
   email: string;
   role: string;
   date: string;
-  phone_number:string;
-  status:  StatusType;
-  license_certificate: ApplicationFile | undefined;
-  personal_photo: ApplicationFile | undefined;
-  identity_document: ApplicationFile | undefined;
+  phone_number: string;
+  status: StatusType;
+  license_certificate?: PharmacistApplicationResponse["attachments"][number];
+  personal_photo?: PharmacistApplicationResponse["attachments"][number];
+  identity_document?: PharmacistApplicationResponse["attachments"][number];
 };
 
-export type PharmacyApplication = {
-  id: number;
-  pharmacy_name:string;
-  pharmacist_name:string;
-  date: string;
-  phone_number:string;
-  status:  StatusType;
-  address:string;
-  health_license: ApplicationFile | undefined;
-  logo: ApplicationFile | undefined;
+type PaginationMeta = {
+  current_page: number;
+  last_page: number;
+  per_page: number;
+  total: number;
+};
+
+export type PharmacistApplicationsApiResponse = {
+  status: string;
+  data: PharmacistApplicationResponse[];
+  meta: PaginationMeta;
+};
+
+export type PharmacistApplicationsResult = {
+  applications: PharmacistApplication[];
+  pagination: {
+    currentPage: number;
+    lastPage: number;
+    perPage: number;
+    total: number;
+  };
 };

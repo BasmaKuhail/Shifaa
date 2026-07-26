@@ -8,26 +8,20 @@ import Resend from "@/public/icons/invitations/resend";
 import { InvitationData, viewSentInvitations } from "@/services/pharmacy";
 import { useContext, useEffect, useState } from "react";
 import { PharmacyContext } from "@/contexts/PharmacyDataContext";
+import { formatInvitationDate } from "@/config/date";
+import { UserContext } from "@/contexts/UserContext";
+import { useRouter } from "next/router";
 
 export default function Invitations() {
     const { pharmacy, loading: isPharmacyLoading } =
     useContext(PharmacyContext);
 
+    const {user, loading:userLoading} = useContext(UserContext)
     const [invitations, setInvitations] = useState<InvitationData[]>([]);
     const [isLoadingInvitations, setIsLoadingInvitations] = useState(false);
     const [errorMessage, setErrorMessage] = useState("");
-    function formatInvitationDate(dateValue: string): string {
-  const date = new Date(dateValue);
 
-  if (Number.isNaN(date.getTime())) {
-    return "—";
-  }
-
-  return new Intl.DateTimeFormat("ar", {
-    dateStyle: "medium",
-    timeStyle: "short",
-  }).format(date);
-}
+    const router = useRouter()
     useEffect(() => {
         if (!pharmacy?.id) {
             setInvitations([]);
@@ -68,6 +62,9 @@ export default function Invitations() {
         };
     }, [pharmacy?.id]);
 
+    if(!userLoading && user?.pharmacy_role === "staff"){
+        router.push("/403")
+    }
     return(
         <div className="flex flex-col gap-10 mt-13 mb-40 w-full">
             <p className="font-semibold text-27px">إدارة الدعوات</p>
@@ -104,8 +101,8 @@ export default function Invitations() {
                                     email:
                                     invitation.pharmacist.user.email,
                                     date: formatInvitationDate(
-                                    invitation.created_at,
-                                    ),
+                                        invitation.created_at,
+                                        ),
                                     status: (
                                     <StatusHolder status={invitation.status} />
                                     )

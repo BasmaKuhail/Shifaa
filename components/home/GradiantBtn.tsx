@@ -19,9 +19,9 @@ export default function GradientBtn({text,image, onClick,px, rounded="30", w="fi
                 py-2
                 px-${px}
                 rounded-${rounded}
-                bg-gradient-to-b
-                from-[#3E94B9]
-                to-[#04B6FF]
+                bg-gradient-to-r
+                from-[#329CCB]
+                to-[#668DCA]
                 flex                    
                 items-center
                 justify-center
@@ -31,9 +31,9 @@ export default function GradientBtn({text,image, onClick,px, rounded="30", w="fi
                 lg:text-btn
                 md:text-btn
                 
-                hover:bg-gradient-to-b                    
-                hover:from-[#356A82]
-                hover:to-[#1689B8]`}
+                hover:bg-gradient-to-r
+                hover:from-[#329CCB]
+                hover:to-[#668DCA]`}
                 
                 onClick={onClick}>
                 {image ? (

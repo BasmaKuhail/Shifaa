@@ -122,8 +122,8 @@ const handleInvite = async (pharmacistId: number) => {
           "تعذر إرسال الدعوة",
       );
       showAlert({
-        type:"Warning",
-        title:"تنبيه",
+        type:"Error",
+        title:"خطأ",
         message:errorMessage
       })
     } else {

@@ -19,7 +19,7 @@ export default function DropDownMenu({title, elements}:dropDownProps){
                     {elements.map((element, index) => 
                         <div className="flex flex-row gap-2 px-3">
                             <input 
-                                className="scale-150 bg-gradient-to-r from-[#3E94B9] to-[#04B6FF]" 
+                                className="scale-150 bg-gradient-to-r from-[#329CCB] to-[#668DCA]"
                                 key={index} 
                                 type="checkbox" 
                                 value={element}/>

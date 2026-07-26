@@ -17,7 +17,7 @@ import { ApplicationFile } from "@/types/PharmacistApplication";
 import PopUp from "@/components/adminDashboard/requests/InteractRequestPopup";
 import PopupContainer from "./PopUpContainer";
 import { useRouter } from "next/router";
-export default function PharmInfoSec (){
+export default function PharmInfoSec ({pharmacistRole}:{pharmacistRole:"staff" | "owner" | undefined}){
     type PharmacyInfo = {
         logo: string | File | null;
         name: string;
@@ -200,13 +200,15 @@ export default function PharmInfoSec (){
                         <PetrolBtn text="تحديث البيانات" onClick={() => updatePharmacyInfo()} />
                         <p onClick={() => setPharmacyInfo(getInitialPharmacyInfo())} className="underline text-sm text-gray-600 cursor-pointer"> إلغاء </p>
                     </div>
-                    <button
-                        onClick={() => setShowDeleteConfirmation(true)}
-                        dir="rtl"
-                        className="w-fit px-5 bg-red-500 rounded-[12px] text-white flex flex-row items-center justify-center gap-2 px-4 py-2 hover:bg-red-600 transition-colors duration-300 cursor-pointer" 
-                    >
-                        <p className="text-inpt font-[500]">حذف الصيدلية</p>
-                    </button>
+                    {pharmacistRole==="owner" &&
+                        <button
+                            onClick={() => setShowDeleteConfirmation(true)}
+                            dir="rtl"
+                            className="w-fit px-5 bg-red-500 rounded-[12px] text-white flex flex-row items-center justify-center gap-2 px-4 py-2 hover:bg-red-600 transition-colors duration-300 cursor-pointer" 
+                        >
+                            <p className="text-inpt font-[500]">حذف الصيدلية</p>
+                        </button>
+                    }
                 </div>
             </div></>)}
         </Card>

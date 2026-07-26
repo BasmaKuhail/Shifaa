@@ -113,7 +113,6 @@ html {
   height: 56px;
   background: linear-gradient(180deg, #e9fbff 0%, #69d8ff 34%, #0d8cff 72%, rgba(4, 182, 255, 0) 100%);
   box-shadow: 0 10px 24px rgba(4, 182, 255, 0.55);
-  animation: chat-bot-fire-flicker 0.16s ease-in-out 0.25s infinite alternate;
 }
 
 .chat-bot-fire::after {

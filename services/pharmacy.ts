@@ -22,7 +22,8 @@ export type PharmacyApiResponse = {
   attachments:[
       health_license: ApplicationFile | null,
       logo: null | ApplicationFile,
-    ]
+    ];
+  owner_name?:string
 };
 
 export const getPharmacyById = async (
@@ -51,7 +52,7 @@ export const getPharmacyById = async (
     const staff = pharmacy.team.filter(
       (member) => member.role !== "owner",
     );
-
+    console.log(response.data.data)
     return {
       id:pharmacy.id,
       name:pharmacy.name,
@@ -59,7 +60,8 @@ export const getPharmacyById = async (
       address:pharmacy.address,
       logo:pharmacy.attachments[1]?.url,
       owner:owner,
-      staff:staff
+      staff:staff,
+      owner_name:pharmacy.owner_name,
 
     };
   } catch (error: unknown) {

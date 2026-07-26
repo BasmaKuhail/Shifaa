@@ -6,7 +6,7 @@ import { useRouter } from "next/router";
 import PopUp from "./InteractRequestPopup";
 
 
-export default function Interact({status, id, name, type}: {status: string, id: number, name: string, type:"pharmacist" | "pharmacy"}) {
+export default function Interact({status, id, name, type}: {status: string, id: number, name: string|undefined, type:"pharmacist" | "pharmacy"}) {
     const [showPopup, setShowPopup] = useState(false);
     const [popupType, setType] = useState<"reject" | "delete" | "accept" | null>(null);
     const router = useRouter();

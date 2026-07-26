@@ -1,5 +1,5 @@
 import Title from "../SectionTitle"
-import featuresImg from "@/public/images/featuresImg.png"
+import featuresImg from "@/public/images/featuresImg.svg"
 import Image, { StaticImageData } from "next/image";
 import Item from "./CardItem";
 import { motion } from "framer-motion";

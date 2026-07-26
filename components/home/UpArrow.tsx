@@ -12,7 +12,7 @@ export default function UpArrow (){
                 fixed bottom-6 right-3 z-50
                 rounded-full 
                 p-4
-                bg-gradient-to-r from-[#3E94B9] to-[#04B6FF]
+                bg-gradient-to-r from-[#329CCB] to-[#668DCA]
                 flex items-center justify-center 
                 cursor-pointer 
                 shadow-lg 

@@ -215,6 +215,7 @@ const handleCropSave = async () => {
       {showBtns && 
       <div className="flex flex-row gap-3">
         <Btn
+          isbloacked={false}
           text="تعديل الصورة"
           icon={editIcon}
           onClick={() => fileInputRef.current?.click()}

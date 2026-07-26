@@ -7,7 +7,7 @@ type Props = {
 
 export default function MedicalChatHeader({ onClose }: Props) {
   return (
-    <div className="shadow-b-[0_16px_36px_rgba(18,51,66,0.16)] flex items-center justify-between bg-gradient-to-l from-[#6A98E4] to-[#31A8D9] px-6 py-5 text-white rounded-t-[30px]">
+    <div className="shadow-b-[0_16px_36px_rgba(18,51,66,0.16)] flex items-center justify-between bg-gradient-to-r from-[#329CCB] to-[#668DCA] px-6 py-5 text-white rounded-t-[30px]">
       <div className="flex items-center gap-3">
         <div className="flex items-center justify-center">
           <Image src={chatbotIcon} alt="" width={40} height={40} />

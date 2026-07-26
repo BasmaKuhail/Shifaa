@@ -18,7 +18,7 @@ import HasPharm from "./HasPharm";
 export default function CreatePharmacy(){
 
     const [checkBoxChecked, setCheckBoxChecked] = useState(false)
-    
+    const [showSubmited, setshowSubmited] = useState(false)
     const {user, loading} = useContext(UserContext);
     const handlePreviousPage = () => {
         window.history.back();
@@ -65,6 +65,7 @@ export default function CreatePharmacy(){
                 title: "تحذير",
                 message: "يجب تعبئة البيانات المطلوبة",
             });
+            setSubmitLoading(false);
             return;
         }
         if (!checkBoxChecked) {
@@ -73,7 +74,8 @@ export default function CreatePharmacy(){
                 title: "تحذير",
                 message: "يجب التأكيد على أن هذه الوثائق تخصك",
             });
-            console.log(userInfo);
+            setSubmitLoading(false);
+            // console.log(userInfo);
 
             return;
         }
@@ -90,6 +92,7 @@ export default function CreatePharmacy(){
                 title: "خطأ",
                 message: "خطأ في البيانات المدخلة لأحد الحقول",
             });
+            setSubmitLoading(false);
             return
         }
 
@@ -97,6 +100,7 @@ export default function CreatePharmacy(){
         const res = await createPharm(userInfo.name, userInfo.phone, userInfo.health_license, userInfo.address, userInfo.logo);
         console.log(res);
         setSubmitLoading(false);
+        setshowSubmited(true);
         showAlert({
             type: "Success",
             title: "تم تقديم الطلب بنجاح",
@@ -111,7 +115,8 @@ export default function CreatePharmacy(){
             title: "خطأ",
             message: err.response?.data.message || "حدث خطأ غير متوقع",
         });
-
+    }finally{
+        setSubmitLoading(false)
     }
 };
     const { crumbs } = useBreadcrumb()
@@ -120,7 +125,7 @@ export default function CreatePharmacy(){
             <HasPharm/>
         )
     }
-    if(user?.has_pharmacy_application || submitLoading){
+    if(user?.has_pharmacy_application || showSubmited){
         return <HasPharmacistApplication/>
     }
 

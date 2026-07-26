@@ -2,7 +2,7 @@ import Header from "../header/Header";
 import SecondaryHeader from "./secondaryHeader/SecondaryHeader";
 import SearchHome from "./search/Search";
 import Image from "next/image";
-import homeBgImg from "@/public/images/homeBgImg.png"
+import homeBgImg from "@/public/images/homeBgImg.svg"
 import Title from "./SectionTitle";
 import HeaderText from "./HeaderText";
 import SubHeader from "./SubHeader";
@@ -24,6 +24,7 @@ import Features from "./FeaturesSec/FeaturesSec";
 import ContatcSec from "./contactForm/ContactFormSec";
 import MobileHeader from "../header/MobileHeader";
 import { useRouter } from "next/navigation";
+import MedNotFoundC2A from "../searchMed.tsx/MedNotFound";
 
 const services =[
     {
@@ -88,13 +89,14 @@ export default function Home (){
                     src={homeBgImg}
                     alt='home '
                     width={610.77}
-                    className='block lg:pt-[50px]'
+                    className='block lg:pt-[50px] rotate-180 scale-y-[-1]'
                 />
                 <div className="absolute inset-0 z-10 pt-[75px] hidden lg:block">
                     <div className="px-4 md:px-8 lg:px-20 xl:px-30 pt-4"><SecondaryHeader/></div>
                     
                     <div id="search" className='mt-20'>
                         <SearchHome />
+                        {/* <MedNotFoundC2A/> */}
                     </div>
                 </div>
                 {/* mobile view */}
@@ -145,9 +147,9 @@ export default function Home (){
                 <div className="lg:mb-40 md:mb-40 mb-20 h-full">
                     <Features featuresArr={featuresArr}/>
                 </div>
-                <div className="mb-30" id="contact"> 
+                {/* <div className="mb-30" id="contact"> 
                     <ContatcSec/>
-                </div>
+                </div> */}
             </div>
             
             {/* <h1>{t('welcome')}</h1>

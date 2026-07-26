@@ -7,20 +7,20 @@ import { useContext, useState } from "react";
 import EditPopup from "./EditPopup/EditPopup";
 import Card from "./CardContainer";
 import { PharmacyContext } from "@/contexts/PharmacyDataContext";
+import { UserContext } from "@/contexts/UserContext";
 type PharmacistsSecProps = {
     pharmacyName: string;
 }
 
 
-export default function PharmacistsSec({  }: PharmacistsSecProps) {
-    
-
-    const [showInvitePopup, setShowInvitePopup] = useState(false);
+export default function PharmacistsSec({pharmacistRole}:{pharmacistRole:"staff" | "owner" | undefined}) {
+        const [showInvitePopup, setShowInvitePopup] = useState(false);
     const [onEdit, setOnEdit] = useState(false);
+
     return (
         <Card title={"الصيادلة العاملون في الصيدلية " } actions={
             <div className="flex flex-row items-center gap-5">
-                <Btn text="دعوة صيدلي" icon={invite} onClick={() => {setShowInvitePopup(true)}} />
+                <Btn isbloacked={pharmacistRole === "staff" || false} text="دعوة صيدلي" icon={invite} onClick={() => {setShowInvitePopup(true)}} />
                 {/* <Btn text="تعديل" icon={edit} onClick={() => {setOnEdit(Prev => !Prev)}} /> */}
             </div>
             }

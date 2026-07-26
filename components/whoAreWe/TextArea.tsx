@@ -9,9 +9,9 @@ export default function TextArea(){
             </div>
 
             {/* vertical line */}
-            <div className="w-[3px] h-[200px] bg-gradient-to-b from-[#3E94B9] to-[#04B6FF] hidden lg:block md:block"/> 
+            <div className="w-[3px] h-[200px] bg-gradient-to-r from-[#329CCB] to-[#668DCA] hidden lg:block md:block"/>
             {/* hr */}
-            <div className="w-[90%] lg:w-full md:w-full h-[1px] bg-gradient-to-r from-[#3E94B9] to-[#04B6FF] block lg:hidden md:hidden"/>
+            <div className="w-[90%] lg:w-full md:w-full h-[1px] bg-gradient-to-r from-[#329CCB] to-[#668DCA] block lg:hidden md:hidden"/>
 
             <div className="flex flex-col gap-2 items-center w-full">
                 <Text icon={vision} title="رؤيتنا" text="أن نصبح المرجع الرقمي الرائد للرعاية الصحية في فلسطين، وتعزيز مجتمع تلتقي فيه التكنولوجيا والخبرة الطبية. نحن نتصور مستقبلاً تكون فيه البيانات الصيدلانية شفافة، والتوعية الصحية متاحة للجميع، ولا يضطر فيه أي مريض أبداً للكفاح بمفرده للعثور على دواء منقذ للحياة."/>
