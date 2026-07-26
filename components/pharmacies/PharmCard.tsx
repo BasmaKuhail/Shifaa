@@ -2,16 +2,15 @@ import Image, { StaticImageData } from "next/image";
 
 import pharm from "@/public/images/pharm-info/deafultPharm.png"
 import location from "@/public/icons/pharmacy-card/location.svg"
-import view from "@/public/icons/pharmacy-card/view.svg"
 import contact from "@/public/icons/pharmacy-card/contact.svg"
 import { PharmacyApiResponse } from "@/services/pharmacy";
 import { useRouter } from "next/router";
 import verified from "@/public/icons/pharmacies/verified.svg"
 
-const Btn = ({image, text}: {image:StaticImageData, text:string}) => {
+const Btn = ({image, text}: {image?:StaticImageData, text:string}) => {
     return(
-        <div className="flex flex-row px-5 gap-3 bg-blue-100 rounded-[10px] p-2 hover:bg-blue-200 transition-colors duration-300 ease-in-out cursor-pointer">
-            <Image src={image} alt=""/>
+        <div className={`${!image? "md:px-10":""} border border-black-50 flex flex-row text-blue-1000 font-bold px-5 gap-3 bg-blue-100 rounded-[10px] p-2 hover:bg-blue-200 transition-colors duration-300 ease-in-out cursor-pointer`}>
+            {image && <Image src={image} alt=""/>}
             <p className="text-sm">{text}</p>
         </div>
     )
@@ -54,20 +53,23 @@ export default function PharmCard({
 
                 {/* <div className="absolute inset-0 rounded-[14px] bg-blue-200 opacity-50" /> */}
             </div>
-            <div className={isList ? "flex min-w-0 flex-1 flex-col items-start gap-3" : "contents mr-10"}>
-                <div className="flex flex-row gap-5 items-center justify-center">
-                <p className="mt-2 text-lg font-semibold">{pharmacy.name}</p>  
-                <Image src={verified} alt="" width={20}/>
+            <div className={isList ? "flex min-w-0 flex-1 flex-col items-start gap-3" : "contents"}>
+                <div  className={isList ? "flex flex-col gap-4" : "flex flex-col px-3 gap-4 w-full"}>
+                    <div className="flex flex-row gap-5 items-center ">
+                        <p className="mt-2 text-lg font-semibold">{pharmacy.name}</p>  
+                        <Image src={verified} alt="" width={20}/>
+                    </div>
+                    
+                    <div className="flex flex-row gap-2 items-center text-center">
+                        <Image src={location} alt="" width={12}/>
+                        <p className="text-black-500 text-sm">{pharmacy.address}</p>
+                    </div>
+                    <div className={`${isList? "gap-5": "justify-between gap-2"} flex flex-row items-center  items-center`}>
+                        <Btn text="عرض"/>
+                        <Btn image={contact} text="تواصل"/>
+                    </div>
                 </div>
                 
-                <div className="flex flex-row gap-2 items-center justify-center text-center">
-                    <Image src={location} alt="" width={15}/>
-                    <p className="text-black-500 text-sm">{pharmacy.address}</p>
-                </div>
-                <div className="flex flex-row items-center justify-between gap-2 items-center">
-                    <Btn image={view} text="عرض"/>
-                    <Btn image={contact} text="تواصل"/>
-                </div>
             </div>
         </div>
     )
