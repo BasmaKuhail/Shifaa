@@ -6,6 +6,7 @@ import view from "@/public/icons/pharmacy-card/view.svg"
 import contact from "@/public/icons/pharmacy-card/contact.svg"
 import { PharmacyApiResponse } from "@/services/pharmacy";
 import { useRouter } from "next/router";
+import verified from "@/public/icons/pharmacies/verified.svg"
 
 const Btn = ({image, text}: {image:StaticImageData, text:string}) => {
     return(
@@ -32,7 +33,7 @@ export default function PharmCard({
         <div className={`
             bg-white rounded-[14px] cursor-pointer 
             hover:shadow-lg transition-shadow duration-300 ease-in-out 
-            w-full ${isList ? "flex flex-row items-center gap-5 p-3" : "flex flex-col items-center justify-center gap-5 pb-7 p-1"}`}
+            w-full ${isList ? "flex flex-row  p-3" : "flex flex-col  justify-center  pb-7 p-1"} items-start gap-5`}
             onClick={() => route.push(`/pharmacies/pharmacy-details/${pharmacy.id}`)}
       
         >
@@ -53,16 +54,20 @@ export default function PharmCard({
 
                 <div className="absolute inset-0 rounded-[14px] bg-blue-200 opacity-50" />
             </div>
-            <div className={isList ? "flex min-w-0 flex-1 flex-col items-start gap-3" : "contents"}>
-            <p className="mt-2 text-lg font-semibold">{pharmacy.name}</p>
-            <div className="flex flex-row gap-2 items-center justify-center text-center">
-                <Image src={location} alt="" width={15}/>
-                <p className="text-black-500 text-sm">{pharmacy.address}</p>
-            </div>
-            <div className="flex flex-row items-center justify-between gap-2 items-center">
-                <Btn image={view} text="عرض"/>
-                <Btn image={contact} text="تواصل"/>
-            </div>
+            <div className={isList ? "flex min-w-0 flex-1 flex-col items-start gap-3" : "contents mr-10"}>
+                <div className="flex flex-row gap-5 items-center justify-center">
+                <p className="mt-2 text-lg font-semibold">{pharmacy.name}</p>  
+                <Image src={verified} alt="" width={20}/>
+                </div>
+                
+                <div className="flex flex-row gap-2 items-center justify-center text-center">
+                    <Image src={location} alt="" width={15}/>
+                    <p className="text-black-500 text-sm">{pharmacy.address}</p>
+                </div>
+                <div className="flex flex-row items-center justify-between gap-2 items-center">
+                    <Btn image={view} text="عرض"/>
+                    <Btn image={contact} text="تواصل"/>
+                </div>
             </div>
         </div>
     )
