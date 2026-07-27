@@ -55,23 +55,12 @@ function MyApp({
       </AdminPharmacyRequestProvider>
     </AdminRequestProvider>
   ) : isPharmacyRoute ? (
-    <PharmacyProvider>{page}</PharmacyProvider>
+    <PharmacyProvider>
+      {page}
+    </PharmacyProvider>
   ) : (
     page
   );
-
-  let wrappedPage = page;
-
-
-  if (isAdminRoute) {
-    wrappedPage = (
-      <AdminRequestProvider>
-        <AdminPharmacyRequestProvider>
-          {wrappedPage}
-        </AdminPharmacyRequestProvider>
-      </AdminRequestProvider>
-    );
-  }
 
   return (
     <div
@@ -85,9 +74,7 @@ function MyApp({
         <AuthGuard>
           <BreadcrumbProvider>
             {pageWithRouteProviders}
-          {wrappedPage}
-            <AppToastContainer/>
-          
+            <AppToastContainer />
           </BreadcrumbProvider>
         </AuthGuard>
       </UserProvider>

@@ -128,7 +128,6 @@ export default function CreatePharmacy(){
         setSubmitLoading(false)
     }
 };
-    const { crumbs } = useBreadcrumb()
     if(user?.has_pharmacy){
         return(
             <HasPharm/>
@@ -136,7 +135,7 @@ export default function CreatePharmacy(){
     }
     if(user?.has_pharmacy_application || showSubmited){
         return <HasPharmacistApplication/>
-    }
+    }else{
 
     
     return(
@@ -232,4 +231,4 @@ export default function CreatePharmacy(){
                 </div>
 
     )
-}
+}}
