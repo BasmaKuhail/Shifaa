@@ -53,7 +53,6 @@ export const getMe = async (): Promise<User> => {
     if (!rawUser) {
       throw new Error("The /me endpoint returned no user data");
     }
-
     const attributes = rawUser.attributes;
 
     if (!attributes) {

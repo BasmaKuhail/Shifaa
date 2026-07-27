@@ -1,76 +1,129 @@
 import Image, { StaticImageData } from "next/image";
-
-import pharm from "@/public/images/pharm-info/deafultPharm.png"
-import location from "@/public/icons/pharmacy-card/location.svg"
-import contact from "@/public/icons/pharmacy-card/contact.svg"
-import { PharmacyApiResponse } from "@/services/pharmacy";
 import { useRouter } from "next/router";
-import verified from "@/public/icons/pharmacies/verified.svg"
 
-const Btn = ({image, text}: {image?:StaticImageData, text:string}) => {
-    return(
-        <div className={`${!image? "md:px-10":""} border border-black-50 flex flex-row text-blue-1000 font-bold px-5 gap-3 bg-blue-100 rounded-[10px] p-2 hover:bg-blue-200 transition-colors duration-300 ease-in-out cursor-pointer`}>
-            {image && <Image src={image} alt=""/>}
+import pharm from "@/public/images/pharm-info/deafultPharm.png";
+import location from "@/public/icons/pharmacy-card/location.svg";
+import contact from "@/public/icons/pharmacy-card/contact.svg";
+import verified from "@/public/icons/pharmacies/verified.svg";
+
+import { PharmacyApiResponse } from "@/services/pharmacy";
+
+type BtnProps = {
+    image?: StaticImageData;
+    text: string;
+};
+
+const Btn = ({ image, text }: BtnProps) => {
+    return (
+        <div
+            className={`
+                flex cursor-pointer flex-row items-center gap-3 rounded-[10px]
+                border border-black-50 bg-blue-100 p-2 px-5
+                font-bold text-blue-1000 transition-colors duration-300 ease-in-out
+                hover:bg-blue-200
+                ${!image ? "md:px-10" : ""}
+            `}
+        >
+            {image && <Image src={image} alt="" />}
             <p className="text-sm">{text}</p>
         </div>
-    )
-}
+    );
+};
+
+type PharmCardProps = {
+    pharmacy: PharmacyApiResponse;
+    isList?: boolean;
+};
+
 export default function PharmCard({
     pharmacy,
     isList = false,
-}: {
-    pharmacy: PharmacyApiResponse;
-    isList?: boolean;
-}){
+}: PharmCardProps) {
+    const router = useRouter();
+
     const logoSource =
         pharmacy.attachments?.[1]?.url ??
         pharmacy.attachments?.[0]?.url ??
         pharm;
 
-    const route = useRouter();
-    return(
-        <div className={`
-            bg-white rounded-[14px] cursor-pointer 
-            hover:shadow-lg transition-shadow duration-300 ease-in-out 
-            w-full ${isList ? "flex flex-row  p-3" : "flex flex-col  justify-center  pb-7 p-1"} items-start gap-5`}
-            onClick={() => route.push(`/pharmacies/pharmacy-details/${pharmacy.id}`)}
-      
-        >
-            {/* Apply a blue filter and reduce contrast using CSS styles */}
-            <div className={`relative overflow-hidden rounded-[14px] ${isList ? "h-40 w-36 shrink-0" : "h-[190px] w-full"}`}>
-                <Image
-                    src={logoSource}
-                    alt={`${pharmacy.name} logo`}
-                    fill
-                    sizes="
-                        (max-width: 640px) 100vw,
-                        (max-width: 1024px) 50vw,
-                        (max-width: 1280px) 33vw,
-                        25vw
-                    "
-                    className="object-cover"
-                />
+    const handleCardClick = () => {
+        void router.push(`/pharmacies/pharmacy-details/${pharmacy.id}`);
+    };
 
-                {/* <div className="absolute inset-0 rounded-[14px] bg-blue-200 opacity-50" /> */}
-            </div>
-            <div className={isList ? "flex min-w-0 flex-1 flex-col items-start gap-3" : "contents"}>
-                <div  className={isList ? "flex flex-col gap-4" : "flex flex-col px-3 gap-4 w-full"}>
-                    <div className="flex flex-row gap-5 items-center ">
-                        <p className="mt-2 text-lg font-semibold">{pharmacy.name}</p>  
-                        <Image src={verified} alt="" width={20}/>
+    return (
+        <div
+            className={`
+                h-full w-full cursor-pointer items-start gap-5 rounded-[14px] bg-white
+                transition-shadow duration-300 ease-in-out hover:shadow-lg
+                ${
+                isList
+                    ? "flex flex-row p-3"
+                    : "flex flex-col justify-start p-1 pb-7"
+                }
+            `}
+            onClick={handleCardClick}
+        >
+            <Image
+                src={logoSource}
+                alt={`${pharmacy.name} logo`}
+                width={600}
+                height={400}
+                className={`
+                    rounded-[14px] object-cover
+                    ${
+                    isList
+                        ? "h-40 w-36 shrink-0"
+                        : "aspect-[3/2] w-full"
+                    }
+                `}
+            />
+
+            <div
+                className={
+                    isList
+                        ? "flex min-w-0 flex-1 flex-col"
+                        : "flex w-full flex-1 flex-col px-3"
+                }
+            >
+                <div className="flex flex-1 flex-col gap-4">
+                    <div className="flex min-h-14 flex-row items-start gap-3">
+                        <p className="line-clamp-2 text-lg font-semibold">
+                            {pharmacy.name}
+                        </p>
+
+                        <Image
+                            src={verified}
+                            alt="Verified pharmacy"
+                            width={20}
+                            height={20}
+                            className="mt-1 shrink-0"
+                        />
                     </div>
-                    
-                    <div className="flex flex-row gap-2 items-center text-center">
-                        <Image src={location} alt="" width={12}/>
-                        <p className="text-black-500 text-sm">{pharmacy.address}</p>
+
+                    <div className="flex min-h-10 flex-row items-start gap-2">
+                        <Image
+                            src={location}
+                            alt=""
+                            width={12}
+                            className="mt-1 shrink-0"
+                        />
+
+                        <p className="line-clamp-2 text-sm text-black-500">
+                            {pharmacy.address}
+                        </p>
                     </div>
-                    <div className={`${isList? "gap-5": "justify-between gap-2"} flex flex-row items-center  items-center`}>
-                        <Btn text="عرض"/>
-                        <Btn image={contact} text="تواصل"/>
+
+                    <div
+                        className={`
+                            mt-auto flex flex-row items-center
+                            ${isList ? "gap-5" : "justify-between gap-2"}
+                        `}
+                    >
+                        <Btn text="عرض" />
+                        <Btn image={contact} text="تواصل" />
                     </div>
                 </div>
-                
             </div>
         </div>
-    )
+    );
 }
