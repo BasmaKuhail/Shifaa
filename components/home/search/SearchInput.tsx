@@ -41,7 +41,7 @@ export default function SearchInput({label, value, onChange}:SearchInputProps){
                 value={value}
                 placeholder={label}
                 className='w-full
-                    h-[52px] md:h-[65px]
+                    h-[52px] md:h-[55px]
                     bg-white
                     border border-black-200
                     rounded-[30px]
@@ -57,14 +57,14 @@ export default function SearchInput({label, value, onChange}:SearchInputProps){
                 className="
                     absolute
                     left-2
-                    lg:left-2
+                    lg:left-1
                     md:left-2
                     top-7
                     lg:top-1/2
                     md:top-1/2
                     -translate-y-1/2
                     w-auto
-                    h-[44px] md:h-[51px]"
+                    h-[44px] md:h-[49px]"
             >
                 <div className="hidden lg:block md:block  h-full">
                     <GradientBtn text="ابدأ البحث" onClick={() => {}} px={10} rounded="30"/>

@@ -14,18 +14,17 @@ export default function ContactCard({
     text,
 }: ContactCardItem){
     return(
-        <div className="relative mt-11 flex w-full flex-col items-center rounded-sm bg-blue-100 px-6 pb-8 pt-16 text-center text-black-600">
-            <div className="absolute -top-11 rounded-full border-4 border-white">
-                <Icon icon={icon} width={34} className="h-15 w-15 md:h-20 md:w-20"/>
+        <div className="flex p-5 gap-5 w-full flex-row items-start rounded-[14px] border border-black-50 text-black-600">
+            <Icon icon={icon} width={20} className="h-10 w-10 md:h-15 md:w-15"/>
+            <div className="flex flex-col gap-2 w-full items-start justify-start ">
+                <h3 className="text-inpt md:text-btn font-bold leading-none">
+                    {title}
+                </h3>
+                <div className="text-inpt text-start">
+                    <p>{text || "-"}</p>
+                </div> 
             </div>
-
-            <h3 className="text-21px md:text-27px font-bold leading-none">
-                {title}
-            </h3>
-
-            <div className="mt-4 flex min-h-[48px] flex-col items-center justify-center text-btn leading-5">
-                <p>{text || "-"}</p>
-            </div>
+            
         </div>
     )
 

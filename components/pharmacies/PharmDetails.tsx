@@ -7,6 +7,7 @@ import { PharmacyContext } from "@/contexts/PharmacyDataContext";
 import call from "@/public/icons/pharmacies/call.svg"
 import location from "@/public/icons/pharmacies/location.svg"
 import profile from "@/public/icons/pharmacies/profile.svg"
+import verified from "@/public/icons/pharmacies/verified.svg";
 
 import ContactCard, { ContactCardItem } from "./contactCard";
 import SearchInput from "../home/search/SearchInput";
@@ -14,6 +15,8 @@ import { getPharmacyById } from "@/services/pharmacy";
 import { Pharmacy } from "@/types/PharmacyType";
 import { showAlert } from "../alerts/AlertContainer";
 import { useRouter } from "next/router";
+import Card from "../pharmacyDashboard/PharmacyInfo/CardContainer";
+import Image from "next/image";
 export default function PharmacyDetails (){
     const [pharmacy, setPharmacy] = useState<Pharmacy | null>();
     const [loading, setIsLoading] = useState(false);
@@ -108,24 +111,36 @@ export default function PharmacyDetails (){
                     <MobileHeader/>
                 </div> 
                 <div className="flex w-full px-4 md:px-8 lg:px-20 xl:px-30 mt-20">
-                    <div 
-                        className="
-                            bg-white rounded-normal w-full
-                            p-10 
-                            md:p-20
-                            flex flex-col gap-5 md:gap-10
-                            md:mt-0
-                            shadow-lg"
-                    >
-                        <div className="flex flex-col md:flex-row gap-5 md:gap-10 items-center justify-start">
-                            <ImageProfile
-                                imageUrl={pharmacy?.logo || null}
-                                width={150}
-                                isUser={false}
-                                isCircle={true}
-                                showBtns={false}
-                            />
-                                <p className="text-center text-27px md:text-[35px] font-bold">{pharmacy?.name || "اسم الصيدلية"}</p>
+                    <Card>
+                        <div className="flex flex-col md:flex-row gap-5 md:gap-10 items-start justify-start">
+                            <div className="flex border border-black-50 p-1 rounded-[14px]">
+                                <ImageProfile
+                                    imageUrl={pharmacy?.logo || null}
+                                    width={135}
+                                    isUser={false}
+                                    showBtns={false}
+                                    isCircle={false}
+                                />
+                            </div>
+                           
+                            <div className="flex flex-col "> 
+                                <div className="flex min-h-14 flex-row items-center gap-3">
+                                    <p className="text-center text-27px md:text-[30px] font-bold">{pharmacy?.name || "اسم الصيدلية"}</p>
+                                    <Image
+                                        src={verified}
+                                        alt="Verified pharmacy"
+                                        width={20}
+                                        height={20}
+                                        className="mt-1 shrink-0"
+                                    />
+                                </div>  
+                                <p className="md:w-[60%]">
+                                    {pharmacy?.name + " " || "اسم الصيدلية"}
+                                    أحد صيدليات شفاء المعتمدة، تصفح ادوية الصيدلية بالأسفل ولا تتردد في تقديم طلب دواء في حال لم تجد دواءك الذي تبحث عنه
+                                    
+                                </p>
+                            </div>
+                            
                         </div>
                         <div className="flex flex-col md:flex-row gap-5 md:gap-10 justify-between mt-5 md:mt-10">
                             {contact.map((item) => 
@@ -133,13 +148,12 @@ export default function PharmacyDetails (){
                             )}
                             
                         </div>
-                        <div className="flex flwx-row w-full items-center justify-center mt-5">
-                            <div className="flex w-full md:w-[80%] items-center justify-center">
-                                <SearchInput label="ابحث عن دواء..." value= {userInput} onChange={(value) => setUserInput(value)}/>
-                            </div>
+                        <div className="flex flex-col  gap-5 mt-10 w-full items-start justify-center">
+                            <p className="font-[500] text-btn">ابحث عن الأدوية الموجودة في هذه الصيدلية </p>
+                            <SearchInput label="ابحث عن دواء..." value= {userInput} onChange={(value) => setUserInput(value)}/>
                         </div>
 
-                    </div>
+                    </Card>
                 </div>
             </div>
 
