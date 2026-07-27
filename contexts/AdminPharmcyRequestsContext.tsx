@@ -9,7 +9,10 @@ import {
   useState,
 } from "react";
 
-import { pharmacyApplications } from "@/services/admin";
+import {
+  pharmacyApplications,
+  PharmacyApplicationsPagination,
+} from "@/services/admin";
 import { PharmacyApplication } from "@/types/PharmacistApplication";
 
 type RequestStatus = PharmacyApplication["status"];
@@ -18,6 +21,9 @@ type AdminPharmacyRequestContextType = {
   pharmacyRequests: PharmacyApplication[];
   loadingPharm: boolean;
   errorPharm: string | null;
+  pagination: PharmacyApplicationsPagination | null;
+  currentPage: number;
+  setCurrentPage: (page: number) => void;
   refreshPharmRequests: () => Promise<void>;
   getPharmRequestById: (
     id: number,
@@ -33,6 +39,9 @@ const defaultContextValue: AdminPharmacyRequestContextType = {
   pharmacyRequests: [],
   loadingPharm: true,
   errorPharm: null,
+  pagination: null,
+  currentPage: 1,
+  setCurrentPage: () => {},
   refreshPharmRequests: async () => {},
   getPharmRequestById: () => undefined,
   removeRequest: () => {},
@@ -53,6 +62,10 @@ export const AdminPharmacyRequestProvider = ({
     PharmacyApplication[]
   >([]);
 
+  const [pagination, setPagination] =
+    useState<PharmacyApplicationsPagination | null>(null);
+
+  const [currentPage, setCurrentPageState] = useState(1);
   const [loadingPharm, setLoadingPharm] = useState(true);
   const [errorPharm, setErrorPharm] = useState<string | null>(
     null,
@@ -63,11 +76,22 @@ export const AdminPharmacyRequestProvider = ({
       setLoadingPharm(true);
       setErrorPharm(null);
 
-      const applications = await pharmacyApplications();
+      const result = await pharmacyApplications(currentPage);
 
-      setPharmacyRequests(applications);
+      setPharmacyRequests(result.applications);
+      setPagination(result.pagination);
+
+      if (
+        result.pagination.lastPage > 0 &&
+        currentPage > result.pagination.lastPage
+      ) {
+        setCurrentPageState(result.pagination.lastPage);
+      }
     } catch (error: unknown) {
-      console.error("Failed to load pharmacy applications:", error);
+      console.error(
+        "Failed to load pharmacy applications:",
+        error,
+      );
 
       const message =
         error instanceof Error
@@ -76,15 +100,42 @@ export const AdminPharmacyRequestProvider = ({
 
       setErrorPharm(message);
       setPharmacyRequests([]);
+      setPagination(null);
     } finally {
       setLoadingPharm(false);
     }
-  }, []);
+  }, [currentPage]);
+
+  const setCurrentPage = useCallback(
+    (page: number) => {
+      if (!Number.isInteger(page) || page < 1) {
+        return;
+      }
+
+      if (pagination && page > pagination.lastPage) {
+        return;
+      }
+
+      setCurrentPageState(page);
+    },
+    [pagination],
+  );
 
   const removeRequest = useCallback((id: number) => {
     setPharmacyRequests((currentRequests) =>
       currentRequests.filter((request) => request.id !== id),
     );
+
+    setPagination((currentPagination) => {
+      if (!currentPagination) {
+        return null;
+      }
+
+      return {
+        ...currentPagination,
+        total: Math.max(0, currentPagination.total - 1),
+      };
+    });
   }, []);
 
   const updateRequestStatus = useCallback(
@@ -118,6 +169,9 @@ export const AdminPharmacyRequestProvider = ({
       pharmacyRequests,
       loadingPharm,
       errorPharm,
+      pagination,
+      currentPage,
+      setCurrentPage,
       refreshPharmRequests,
       getPharmRequestById,
       removeRequest,
@@ -127,6 +181,9 @@ export const AdminPharmacyRequestProvider = ({
       pharmacyRequests,
       loadingPharm,
       errorPharm,
+      pagination,
+      currentPage,
+      setCurrentPage,
       refreshPharmRequests,
       getPharmRequestById,
       removeRequest,

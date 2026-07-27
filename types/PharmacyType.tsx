@@ -33,6 +33,7 @@ export type PharmacyApplication = {
   status: StatusType;
   health_license: ApplicationFile | null;
   logo: ApplicationFile | null;
+  owner_name:string;
 };
 export type Pharmacy = {
   id: number;

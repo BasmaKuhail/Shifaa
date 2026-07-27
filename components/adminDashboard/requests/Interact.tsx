@@ -13,9 +13,9 @@ export default function Interact({status, id, name, type}: {status: string, id: 
 
     const handleSeeDetails = (id:number) => {
         type === "pharmacist" ?
-            router.push(`/admin-dashboard/requests/pharmacist-request-details/${id}`)
+            router.push(`/admin-dashboard/pharmacist-requests/pharmacist-request-details/${id}`)
             :
-            router.push(`/admin-dashboard/requests/pharmacy-request-details/${id}`)
+            router.push(`/admin-dashboard/pharmacy-requests/pharmacy-request-details/${id}`)
             // console.log(`See details of request with id: ${id}`);
     }
     return(
