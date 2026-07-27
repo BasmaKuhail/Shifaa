@@ -17,6 +17,17 @@ import { showAlert } from "../alerts/AlertContainer";
 import { useRouter } from "next/router";
 import Card from "../pharmacyDashboard/PharmacyInfo/CardContainer";
 import Image from "next/image";
+import MedNotFoundC2A from "../searchMed.tsx/MedNotFound";
+import MedCard from "../medicen/MedCard";
+
+import Insulin from "@/public/icons/pharmacies/Insulin.png"
+import no from "@/public/icons/pharmacies/no.png"
+import med from "@/public/icons/pharmacies/med.png"
+import Hydrocortisone from "@/public/icons/pharmacies/Hydrocortisone.png"
+import Vitamin from "@/public/icons/pharmacies/Vitamin.png"
+import Diphenhydramine from "@/public/icons/pharmacies/Diphenhydramine.png"
+import PetrolBtn from "../pharmacyDashboard/PharmacyInfo/invitePopup/PetrolBtn";
+
 export default function PharmacyDetails (){
     const [pharmacy, setPharmacy] = useState<Pharmacy | null>();
     const [loading, setIsLoading] = useState(false);
@@ -100,6 +111,7 @@ export default function PharmacyDetails (){
         {id:3, title:"العنوان", text:pharmacy?.address, icon:location},
     ]
     const [userInput, setUserInput] = useState("");
+    const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
     return(
         <div dir="rtl" className='w-full flex flex-col overflow-x-hidden '>
             <div className="bg-blue-100 relative inline-block pb-20 ">
@@ -111,7 +123,7 @@ export default function PharmacyDetails (){
                     <MobileHeader/>
                 </div> 
                 <div className="flex w-full px-4 md:px-8 lg:px-20 xl:px-30 mt-20">
-                    <Card>
+                    <div dir="rtl" className="bg-white rounded-[14px] shadow-sm flex flex-col justify-start w-full p-15">
                         <div className="flex flex-col md:flex-row gap-5 md:gap-10 items-center md:items-start justify-start">
                             <div className="flex border border-black-50 p-1 rounded-[14px]">
                                 <ImageProfile
@@ -170,12 +182,25 @@ export default function PharmacyDetails (){
                                     );
                                 })}
                             </div>
-                        <div className="flex flex-col  gap-5 mt-10 w-full items-start justify-center">
+                        <div className="flex flex-col mb-10 gap-5 mt-10 w-full items-start justify-center">
                             <p className="font-[500] text-btn">ابحث عن الأدوية الموجودة في هذه الصيدلية </p>
                             <SearchInput label="ابحث عن دواء..." value= {userInput} onChange={(value) => setUserInput(value)}/>
                         </div>
-
-                    </Card>
+                        
+                        <div aria-busy={loading} className={`mb-5 ${viewMode === "grid" ? "grid grid-cols-1 items-stretch gap-x-5 gap-y-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4" : "flex flex-col gap-4"} min-h-[360px] w-full content-start`}>
+                                <MedCard image={Insulin} medName="Insulin" isList={false} location={pharmacy?.address || ""}/>
+                                <MedCard image={Hydrocortisone} medName="Hydrocortisone" isList={false} location={pharmacy?.address || ""}/>
+                                <MedCard image={no} medName="Ibuprofen" isList={false} location={pharmacy?.address || ""}/>
+                                <MedCard image={Diphenhydramine} medName="Diphenhydramine" isList={false} location={pharmacy?.address || ""}/>
+                        </div>
+                        <div className="flex w-full items-center justify-center mb-10">
+                            <div className=" inline-block rounded-full bg-blue-1000 text-btn px-4 md:px-6 md:py-2 text-white mt-5 hover:bg-blue-500 transition ease-out">
+                                عرض المزيد
+                            </div>
+                        </div>
+                        
+                        <MedNotFoundC2A/>
+                    </div>
                 </div>
             </div>
 
