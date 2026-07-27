@@ -13,6 +13,7 @@ import invitaions from "@/public/icons/invitations.svg"
 import ArrowRight from "@/public/icons/profile/arrowRight.svg";
 import { logout as logoutService } from "@/services/auth";
 import { User } from "@/types/UserType";
+import { clearUserNotifications } from "@/lib/notifications";
 
 type Props = {
   user: User;
@@ -87,6 +88,7 @@ export default function MainMenu({ user, setIsSettingsOpen }: Props) {
         }
 
         localStorage.removeItem("token");
+        clearUserNotifications(user.id);
         localStorage.removeItem("user");
         localStorage.removeItem("shifaa-medical-chat-messages");
         localStorage.removeItem(`shifaa-medical-chat-v2-${user.id}`);

@@ -15,6 +15,7 @@ import { useRouter } from "next/router";
 import { showAlert } from "../alerts/AlertContainer";
 import HasPharmacistApplication from "./HasForm";
 import ErrorMsg from "../register/ErrorMsg";
+import { addUserNotification } from "@/lib/notifications";
 export default function PharmacistForm(){
 
     const [checkBoxChecked, setCheckBoxChecked] = useState(false)
@@ -98,6 +99,14 @@ export default function PharmacistForm(){
     try {
         const res = await switchToPharmasist(userInfo.identity_document, userInfo.phone_number, userInfo.license_certificate, userInfo.personal_photo);
         console.log(res);
+        if (user) {
+            addUserNotification(user.id, {
+                type: "success",
+                title: "تم تقديم الطلب",
+                message: "تم تقديم طلب الانضمام كصيدلي للمراجعة.",
+                href: "/switch-to-pharmacist",
+            });
+        }
         setSubmitLoading(false);
         showAlert({
             type: "Success",

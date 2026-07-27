@@ -20,7 +20,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
     <div className='w-full flex flex-col overflow-x-hidden'>
 
       {/* Mobile controls */}
-      <div className="fixed bottom-20 right-3 z-[70] flex flex-col items-center gap-3 lg:hidden">
+      <div className="fixed bottom-20 right-3 z-[120] flex flex-col items-center gap-3 lg:hidden">
         <ChatIconContainer mobileCompact />
         {showArrow && <UpArrow />}
       </div>
@@ -33,7 +33,7 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
           <UpArrow />
         </div>
       )}
-      <div className="fixed top-0 left-0 w-full z-50 hidden lg:block">
+      <div className="fixed top-0 left-0 w-full z-[90] hidden lg:block">
         <Header />
       </div>
 

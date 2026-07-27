@@ -55,7 +55,9 @@ function MyApp({
       </AdminPharmacyRequestProvider>
     </AdminRequestProvider>
   ) : isPharmacyRoute ? (
-    <PharmacyProvider>{page}</PharmacyProvider>
+    <PharmacyProvider>
+      {page}
+    </PharmacyProvider>
   ) : (
     page
   );
