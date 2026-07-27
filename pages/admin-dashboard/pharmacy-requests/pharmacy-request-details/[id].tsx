@@ -1,5 +1,5 @@
 import DashboardLayout from "@/layouts/DashboardLayout";
-import Requests from "@/components/adminDashboard/requests/Requests";
+import Requests from "@/components/adminDashboard/requests/PharmacistRequests";
 import { adminNav } from "@/config/navigations";
 import RequestDetails from "@/components/adminDashboard/requests/RequestDetails";
 import { useContext, useEffect, useState } from "react";

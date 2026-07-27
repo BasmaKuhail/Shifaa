@@ -114,8 +114,14 @@ export const adminNav =[
         {
             id: 4,
             icon: Request,
-            label: "الطلبات",
-            link: "/admin-dashboard/requests"
+            label: "طلبات صيدلي",
+            link: "/admin-dashboard/pharmacist-requests"
+        },
+        {
+            id: 5,
+            icon: Request,
+            label: "طلبات الصيدلية",
+            link: "/admin-dashboard/pharmacy-requests"
         },
         // {
         //     id: 5,

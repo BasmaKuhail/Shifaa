@@ -1,3 +1,4 @@
+import { PaginationLink, PharmacistApplicationsPagination } from "@/services/admin";
 import { PharmacistApplicationResponse } from "./PharmacistApplicationResponse";
 import { StatusType } from "./Status";
 
@@ -51,17 +52,26 @@ type PaginationMeta = {
 };
 
 export type PharmacistApplicationsApiResponse = {
-  status: string;
   data: PharmacistApplicationResponse[];
-  meta: PaginationMeta;
+  links: {
+    first: string | null;
+    last: string | null;
+    prev: string | null;
+    next: string | null;
+  };
+  meta: {
+    current_page: number;
+    from: number | null;
+    last_page: number;
+    links: PaginationLink[];
+    path: string;
+    per_page: number;
+    to: number | null;
+    total: number;
+  };
 };
 
 export type PharmacistApplicationsResult = {
   applications: PharmacistApplication[];
-  pagination: {
-    currentPage: number;
-    lastPage: number;
-    perPage: number;
-    total: number;
-  };
+  pagination: PharmacistApplicationsPagination;
 };
