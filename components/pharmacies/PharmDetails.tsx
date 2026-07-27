@@ -96,8 +96,8 @@ export default function PharmacyDetails (){
 
     const contact: ContactCardItem[] = [
         {id:1, title:"رقم الهاتف", text:pharmacy?.phone, icon:call},
-        {id:2, title:"العنوان", text:pharmacy?.address, icon:location},
-        {id:3, title:"المالك", text:pharmacy?.owner_name, icon:profile},
+        {id:2, title:"المالك", text:pharmacy?.owner_name, icon:profile},
+        {id:3, title:"العنوان", text:pharmacy?.address, icon:location},
     ]
     const [userInput, setUserInput] = useState("");
     return(
@@ -112,7 +112,7 @@ export default function PharmacyDetails (){
                 </div> 
                 <div className="flex w-full px-4 md:px-8 lg:px-20 xl:px-30 mt-20">
                     <Card>
-                        <div className="flex flex-col md:flex-row gap-5 md:gap-10 items-start justify-start">
+                        <div className="flex flex-col md:flex-row gap-5 md:gap-10 items-center md:items-start justify-start">
                             <div className="flex border border-black-50 p-1 rounded-[14px]">
                                 <ImageProfile
                                     imageUrl={pharmacy?.logo || null}
@@ -123,8 +123,8 @@ export default function PharmacyDetails (){
                                 />
                             </div>
                            
-                            <div className="flex flex-col "> 
-                                <div className="flex min-h-14 flex-row items-center gap-3">
+                            <div className="flex flex-col"> 
+                                <div className="flex flex-row items-center gap-3">
                                     <p className="text-center text-27px md:text-[30px] font-bold">{pharmacy?.name || "اسم الصيدلية"}</p>
                                     <Image
                                         src={verified}
@@ -134,7 +134,7 @@ export default function PharmacyDetails (){
                                         className="mt-1 shrink-0"
                                     />
                                 </div>  
-                                <p className="md:w-[60%]">
+                                <p className="hidden md:block md:w-[90%] lg:w-[60%]">
                                     {pharmacy?.name + " " || "اسم الصيدلية"}
                                     أحد صيدليات شفاء المعتمدة، تصفح ادوية الصيدلية بالأسفل ولا تتردد في تقديم طلب دواء في حال لم تجد دواءك الذي تبحث عنه
                                     
@@ -142,12 +142,34 @@ export default function PharmacyDetails (){
                             </div>
                             
                         </div>
-                        <div className="flex flex-col md:flex-row gap-5 md:gap-10 justify-between mt-5 md:mt-10">
-                            {contact.map((item) => 
-                                <ContactCard key={item.id} title={item.title} text={item.text} icon={item.icon}/>
-                            )}
-                            
-                        </div>
+                            <div
+                                className="
+                                    mt-5 grid grid-cols-2 gap-5
+                                    md:mt-10 md:flex md:flex-row md:justify-between md:gap-10
+                                "
+                            >
+                                {contact.map((item, index) => {
+                                    const isLastCard = index === contact.length - 1;
+
+                                    return (
+                                        <div
+                                            key={item.id}
+                                            className={
+                                                isLastCard
+                                                    ? "col-span-2 md:col-span-1 md:flex-1"
+                                                    : "md:flex-1"
+                                            }
+                                        >
+                                            <ContactCard
+                                                title={item.title}
+                                                text={item.text}
+                                                icon={item.icon}
+                                                mobileRow={isLastCard}
+                                            />
+                                        </div>
+                                    );
+                                })}
+                            </div>
                         <div className="flex flex-col  gap-5 mt-10 w-full items-start justify-center">
                             <p className="font-[500] text-btn">ابحث عن الأدوية الموجودة في هذه الصيدلية </p>
                             <SearchInput label="ابحث عن دواء..." value= {userInput} onChange={(value) => setUserInput(value)}/>
