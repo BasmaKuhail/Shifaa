@@ -93,12 +93,12 @@ export const pharmacytNav = [
 ];
 
 export const adminNav =[
-        {
-            id:1,
-            icon:Home,
-            label:"الرئيسية",
-            link:"/"
-        },
+        // {
+        //     id:1,
+        //     icon:Home,
+        //     label:"الرئيسية",
+        //     link:"/"
+        // },
         // {
         //     id: 2,
         //     icon: Dash,
@@ -119,7 +119,7 @@ export const adminNav =[
         },
         {
             id: 5,
-            icon: Request,
+            icon: Pharm,
             label: "طلبات الصيدلية",
             link: "/admin-dashboard/pharmacy-requests"
         },
