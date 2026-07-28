@@ -13,17 +13,23 @@ import {
   pharmacyApplications,
   PharmacyApplicationsPagination,
 } from "@/services/admin";
-import { PharmacyApplication } from "@/types/PharmacistApplication";
+import { PharmacyApplication } from "@/types/PharmacyType";
+import { StatusType } from "@/types/Status";
 
-type RequestStatus = PharmacyApplication["status"];
+export type PharmacyRequestFilter = StatusType | "all";
 
 type AdminPharmacyRequestContextType = {
   pharmacyRequests: PharmacyApplication[];
   loadingPharm: boolean;
   errorPharm: string | null;
+
   pagination: PharmacyApplicationsPagination | null;
   currentPage: number;
   setCurrentPage: (page: number) => void;
+
+  statusFilter: PharmacyRequestFilter;
+  setStatusFilter: (status: PharmacyRequestFilter) => void;
+
   refreshPharmRequests: () => Promise<void>;
   getPharmRequestById: (
     id: number,
@@ -31,7 +37,7 @@ type AdminPharmacyRequestContextType = {
   removeRequest: (id: number) => void;
   updateRequestStatus: (
     id: number,
-    status: RequestStatus,
+    status: StatusType,
   ) => void;
 };
 
@@ -39,9 +45,14 @@ const defaultContextValue: AdminPharmacyRequestContextType = {
   pharmacyRequests: [],
   loadingPharm: true,
   errorPharm: null,
+
   pagination: null,
   currentPage: 1,
   setCurrentPage: () => {},
+
+  statusFilter: "all",
+  setStatusFilter: () => {},
+
   refreshPharmRequests: async () => {},
   getPharmRequestById: () => undefined,
   removeRequest: () => {},
@@ -53,11 +64,13 @@ export const AdminPharmacyRequestContext =
     defaultContextValue,
   );
 
+type AdminPharmacyRequestProviderProps = {
+  children: ReactNode;
+};
+
 export const AdminPharmacyRequestProvider = ({
   children,
-}: {
-  children: ReactNode;
-}) => {
+}: AdminPharmacyRequestProviderProps) => {
   const [pharmacyRequests, setPharmacyRequests] = useState<
     PharmacyApplication[]
   >([]);
@@ -66,6 +79,10 @@ export const AdminPharmacyRequestProvider = ({
     useState<PharmacyApplicationsPagination | null>(null);
 
   const [currentPage, setCurrentPageState] = useState(1);
+
+  const [statusFilter, setStatusFilterState] =
+    useState<PharmacyRequestFilter>("all");
+
   const [loadingPharm, setLoadingPharm] = useState(true);
   const [errorPharm, setErrorPharm] = useState<string | null>(
     null,
@@ -76,7 +93,10 @@ export const AdminPharmacyRequestProvider = ({
       setLoadingPharm(true);
       setErrorPharm(null);
 
-      const result = await pharmacyApplications(currentPage);
+      const result = await pharmacyApplications(
+        currentPage,
+        statusFilter,
+      );
 
       setPharmacyRequests(result.applications);
       setPagination(result.pagination);
@@ -93,18 +113,18 @@ export const AdminPharmacyRequestProvider = ({
         error,
       );
 
-      const message =
+      const errorMessage =
         error instanceof Error
           ? error.message
           : "حدث خطأ أثناء تحميل الطلبات";
 
-      setErrorPharm(message);
+      setErrorPharm(errorMessage);
       setPharmacyRequests([]);
       setPagination(null);
     } finally {
       setLoadingPharm(false);
     }
-  }, [currentPage]);
+  }, [currentPage, statusFilter]);
 
   const setCurrentPage = useCallback(
     (page: number) => {
@@ -112,13 +132,25 @@ export const AdminPharmacyRequestProvider = ({
         return;
       }
 
-      if (pagination && page > pagination.lastPage) {
+      if (
+        pagination &&
+        pagination.lastPage > 0 &&
+        page > pagination.lastPage
+      ) {
         return;
       }
 
       setCurrentPageState(page);
     },
     [pagination],
+  );
+
+  const setStatusFilter = useCallback(
+    (status: PharmacyRequestFilter) => {
+      setStatusFilterState(status);
+      setCurrentPageState(1);
+    },
+    [],
   );
 
   const removeRequest = useCallback((id: number) => {
@@ -139,13 +171,13 @@ export const AdminPharmacyRequestProvider = ({
   }, []);
 
   const updateRequestStatus = useCallback(
-    (id: number, status: RequestStatus) => {
+    (id: number, newStatus: StatusType) => {
       setPharmacyRequests((currentRequests) =>
         currentRequests.map((request) =>
           request.id === id
             ? {
                 ...request,
-                status,
+                status: newStatus,
               }
             : request,
         ),
@@ -172,6 +204,8 @@ export const AdminPharmacyRequestProvider = ({
       pagination,
       currentPage,
       setCurrentPage,
+      statusFilter,
+      setStatusFilter,
       refreshPharmRequests,
       getPharmRequestById,
       removeRequest,
@@ -184,6 +218,8 @@ export const AdminPharmacyRequestProvider = ({
       pagination,
       currentPage,
       setCurrentPage,
+      statusFilter,
+      setStatusFilter,
       refreshPharmRequests,
       getPharmRequestById,
       removeRequest,

@@ -2,7 +2,7 @@ import StatusHolder from "@/components/pharmacyDashboard/MedicineRequests/Status
 import Row from "@/components/pharmacyDashboard/PharmacyInfo/pharmacistsTable/Row";
 import PaginationRounded from "@/components/Paginantion";
 import { AdminPharmacyRequestContext } from "@/contexts/AdminPharmcyRequestsContext";
-import { useContext, useMemo, useState } from "react";
+import { useContext } from "react";
 
 import Interact from "./Interact";
 import Card from "@/components/pharmacyDashboard/PharmacyInfo/CardContainer";
@@ -26,8 +26,6 @@ const requestsCategories = [
   },
 ] as const;
 
-type RequestCategory = (typeof requestsCategories)[number];
-
 export default function CreatePharmReq() {
   const {
     pharmacyRequests,
@@ -36,26 +34,9 @@ export default function CreatePharmReq() {
     pagination,
     currentPage,
     setCurrentPage,
+    statusFilter,
+    setStatusFilter,
   } = useContext(AdminPharmacyRequestContext);
-
-  const [selectedCategory, setSelectedCategory] =
-    useState<RequestCategory>(requestsCategories[0]);
-
-  const filteredResults = useMemo(() => {
-    if (selectedCategory.value === "all") {
-      return pharmacyRequests;
-    }
-
-    return pharmacyRequests.filter(
-      (request) => request.status === selectedCategory.value,
-    );
-  }, [pharmacyRequests, selectedCategory.value]);
-
-  const handleCategoryChange = (
-    category: RequestCategory,
-  ): void => {
-    setSelectedCategory(category);
-  };
 
   return (
     <div className="mt-13 mb-40 flex w-full flex-col gap-10">
@@ -68,7 +49,7 @@ export default function CreatePharmReq() {
           <div className="flex w-full flex-row items-center justify-between rounded-[14px] border border-gray-200 p-2">
             {requestsCategories.map((category) => {
               const isSelected =
-                selectedCategory.value === category.value;
+                statusFilter === category.value;
 
               return (
                 <button
@@ -80,7 +61,7 @@ export default function CreatePharmReq() {
                       : "hover:bg-gray-100"
                   }`}
                   onClick={() =>
-                    handleCategoryChange(category)
+                    setStatusFilter(category.value)
                   }
                 >
                   {category.text}
@@ -128,15 +109,15 @@ export default function CreatePharmReq() {
 
             {!loadingPharm &&
               !errorPharm &&
-              filteredResults.length === 0 && (
+              pharmacyRequests.length === 0 && (
                 <p className="py-6 text-center text-gray-500">
-                  لا توجد طلبات في هذه الصفحة
+                  لا توجد طلبات
                 </p>
               )}
 
             {!loadingPharm &&
               !errorPharm &&
-              filteredResults.map((request) => {
+              pharmacyRequests.map((request) => {
                 const ownerName = request.owner
                   ? `${request.owner.first_name} ${request.owner.last_name}`.trim()
                   : request.owner_name;
@@ -184,7 +165,7 @@ export default function CreatePharmReq() {
             {!loadingPharm &&
               !errorPharm &&
               pagination &&
-              pagination.total > 0 && (
+              pagination.lastPage > 1 && (
                 <div className="flex w-full justify-start pt-5">
                   <PaginationRounded
                     count={pagination.lastPage}

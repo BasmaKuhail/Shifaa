@@ -1,9 +1,8 @@
 import api from "@/lib/api";
-import { ApplicationFile, PharmacistApplication, PharmacistApplicationsApiResponse, PharmacistApplicationsResult } from "@/types/PharmacistApplication";
-import { PharmacistApplicationResponse } from "@/types/PharmacistApplicationResponse";
+import { PharmacistApplication, PharmacistApplicationsApiResponse, PharmacistApplicationsResult } from "@/types/PharmacistApplication";
 import { PharmacyApplication, PharmacyApplicationApiResponse } from "@/types/PharmacyType";
-import { StatusType } from "@/types/Status";
-import axios from "axios";
+import { ApplicationStatusFilter, StatusType } from "@/types/Status";
+import { PharmacyRequestFilter } from "@/contexts/AdminPharmcyRequestsContext";
 export type PaginationLink = {
   url: string | null;
   label: string;
@@ -41,9 +40,9 @@ export type PharmacistApplicationsPagination = {
   total: number;
 };
 
-
 export const pharmacistApplications = async (
   page = 1,
+  status: ApplicationStatusFilter = "all",
 ): Promise<PharmacistApplicationsResult> => {
   if (!Number.isInteger(page) || page < 1) {
     throw new Error("Page must be a positive integer");
@@ -56,6 +55,11 @@ export const pharmacistApplications = async (
         params: {
           page,
           include: "attachments",
+
+          // Do not send the status parameter for all requests.
+          ...(status !== "all" && {
+            status,
+          }),
         },
       },
     );
@@ -66,15 +70,22 @@ export const pharmacistApplications = async (
       name: application.user.name,
       email: application.user.email,
       role: application.user.role,
+
       date: new Date(
         application.created_at,
       ).toLocaleDateString("en-GB"),
+
       phone_number: application.phone_number,
-      status: application.employment_status as StatusType,
+
+      status:
+        application.employment_status as StatusType,
+
       license_certificate:
         application.attachments?.[0] ?? null,
+
       personal_photo:
         application.attachments?.[1] ?? null,
+
       identity_document:
         application.attachments?.[2] ?? null,
     }),
@@ -166,7 +177,6 @@ export const getAttachment = async (url:string):Promise<Blob>=> {
 
 // pharmcy
 
-
 export type PharmacyApplicationsPagination = {
   currentPage: number;
   lastPage: number;
@@ -181,6 +191,7 @@ export type PharmacyApplicationsResult = {
 
 export const pharmacyApplications = async (
   page = 1,
+  status: PharmacyRequestFilter = "all",
 ): Promise<PharmacyApplicationsResult> => {
   if (!Number.isInteger(page) || page < 1) {
     throw new Error("Page must be a positive integer");
@@ -193,6 +204,11 @@ export const pharmacyApplications = async (
         params: {
           page,
           include: "attachments,pharmacists",
+
+          // Do not send status when showing all requests.
+          ...(status !== "all" && {
+            status,
+          }),
         },
       },
     );
@@ -215,13 +231,14 @@ export const pharmacyApplications = async (
       ).toLocaleDateString("en-GB"),
 
       phone_number: application.phone,
-      status: application.status,
+      status: application.status as StatusType,
 
-      health_license: application.attachments?.[0] ?? null,
+      health_license:
+        application.attachments?.[0] ?? null,
       logo: application.attachments?.[1] ?? null,
     }),
   );
-  console.log(response.data)
+
   return {
     applications,
     pagination: {

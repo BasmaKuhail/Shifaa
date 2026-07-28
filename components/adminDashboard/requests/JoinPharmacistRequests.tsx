@@ -1,10 +1,10 @@
+import { useContext } from "react";
+
 import StatusHolder from "@/components/pharmacyDashboard/MedicineRequests/StatusHolder";
 import Row from "@/components/pharmacyDashboard/PharmacyInfo/pharmacistsTable/Row";
 import PaginationRounded from "@/components/Paginantion";
 
 import { AdminRequestContext } from "@/contexts/AdminPharmacistsRequestsContext";
-
-import { useContext, useMemo, useState } from "react";
 
 import Interact from "./Interact";
 
@@ -27,8 +27,6 @@ const requestsCategories = [
   },
 ] as const;
 
-type RequestCategory = (typeof requestsCategories)[number];
-
 export default function PharmacistsRequests() {
   const {
     requests,
@@ -37,34 +35,16 @@ export default function PharmacistsRequests() {
     pagination,
     currentPage,
     setCurrentPage,
+    statusFilter,
+    setStatusFilter,
   } = useContext(AdminRequestContext);
-
-  const [selectedCategory, setSelectedCategory] =
-    useState<RequestCategory>(requestsCategories[0]);
-
-  const filteredResults = useMemo(() => {
-    if (selectedCategory.value === "all") {
-      return requests;
-    }
-
-    return requests.filter(
-      (request) =>
-        request.status === selectedCategory.value,
-    );
-  }, [requests, selectedCategory.value]);
-
-  const handleCategoryChange = (
-    category: RequestCategory,
-  ): void => {
-    setSelectedCategory(category);
-  };
 
   return (
     <div className="flex w-full flex-col gap-5">
       <div className="flex w-full flex-row items-center justify-between rounded-[14px] border border-gray-200 p-2">
         {requestsCategories.map((category) => {
           const isSelected =
-            selectedCategory.value === category.value;
+            statusFilter === category.value;
 
           return (
             <button
@@ -76,7 +56,7 @@ export default function PharmacistsRequests() {
                   : "hover:bg-gray-100"
               }`}
               onClick={() =>
-                handleCategoryChange(category)
+                setStatusFilter(category.value)
               }
             >
               {category.text}
@@ -120,17 +100,15 @@ export default function PharmacistsRequests() {
           </p>
         )}
 
-        {!loading &&
-          !error &&
-          filteredResults.length === 0 && (
-            <p className="py-6 text-center text-gray-500">
-              لا توجد طلبات في هذه الصفحة
-            </p>
-          )}
+        {!loading && !error && requests.length === 0 && (
+          <p className="py-6 text-center text-gray-500">
+            لا توجد طلبات
+          </p>
+        )}
 
         {!loading &&
           !error &&
-          filteredResults.map((request) => (
+          requests.map((request) => (
             <div
               key={request.id}
               className="text-inpt flex w-full items-center border-t border-gray-200"
@@ -141,11 +119,13 @@ export default function PharmacistsRequests() {
                   email: request.email,
                   date: request.date,
                   phone_number: request.phone_number,
+
                   status: (
                     <StatusHolder
                       status={request.status}
                     />
                   ),
+
                   interact: (
                     <Interact
                       status={request.status}
@@ -170,7 +150,7 @@ export default function PharmacistsRequests() {
         {!loading &&
           !error &&
           pagination &&
-          pagination.total > 0 && (
+          pagination.lastPage > 1 && (
             <div className="flex w-full items-start pt-5">
               <PaginationRounded
                 count={pagination.lastPage}
