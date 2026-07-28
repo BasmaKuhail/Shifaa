@@ -3,9 +3,11 @@ import Footer from "@/components/footer/Footer";
 import UpArrow from "@/components/home/UpArrow";
 import { useEffect, useState } from "react";
 import ChatIconContainer from "@/components/chatBot/ChatBotIconContainer";
+import { useOverlay } from "@/contexts/OverlayContext";
 
 export default function MainLayout({ children }: { children: React.ReactNode }) {
   const [showArrow, setShowArrow] = useState(false);
+  const { headerMenuOpen } = useOverlay();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -21,16 +23,16 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
 
       {/* Mobile controls */}
       <div className="fixed bottom-20 right-3 z-[120] flex flex-col items-center gap-3 lg:hidden">
-        <ChatIconContainer mobileCompact />
-        {showArrow && <UpArrow />}
+        {!headerMenuOpen && <ChatIconContainer mobileCompact />}
+        {showArrow && !headerMenuOpen && <UpArrow />}
       </div>
 
       <div className="hidden lg:block">
-        <ChatIconContainer />
+        {!headerMenuOpen && <ChatIconContainer />}
       </div>
       {showArrow && (
         <div className="hidden lg:block">
-          <UpArrow />
+          {!headerMenuOpen && <UpArrow />}
         </div>
       )}
       <div className="fixed top-0 left-0 w-full z-[90] hidden lg:block">

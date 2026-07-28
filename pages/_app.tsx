@@ -13,6 +13,7 @@ import { BreadcrumbProvider } from "@/contexts/BreadcrumbContext";
 import { AdminRequestProvider } from "@/contexts/AdminPharmacistsRequestsContext";
 import { AdminPharmacyRequestProvider } from "@/contexts/AdminPharmcyRequestsContext";
 import { PharmacyProvider } from "@/contexts/PharmacyDataContext";
+import { OverlayProvider } from "@/contexts/OverlayContext";
 
 import AuthGuard from "@/components/auth/AuthGuard";
 import { AppToastContainer } from "@/components/alerts/AlertContainer";
@@ -71,12 +72,14 @@ function MyApp({
       </Head>
 
       <UserProvider>
-        <AuthGuard>
-          <BreadcrumbProvider>
-            {pageWithRouteProviders}
-            <AppToastContainer />
-          </BreadcrumbProvider>
-        </AuthGuard>
+        <OverlayProvider>
+          <AuthGuard>
+            <BreadcrumbProvider>
+              {pageWithRouteProviders}
+              <AppToastContainer />
+            </BreadcrumbProvider>
+          </AuthGuard>
+        </OverlayProvider>
       </UserProvider>
     </div>
   );

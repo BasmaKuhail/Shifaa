@@ -14,6 +14,7 @@ import {
   notificationsChangedEvent,
   UserNotification,
 } from "@/lib/notifications";
+import { useOverlay } from "@/contexts/OverlayContext";
 
 type ProNotContProps = {
   user: User;
@@ -25,6 +26,7 @@ export default function ProNotCont({ user, bg = "white" }: ProNotContProps) {
   const [profileOpened, setProfileOpened] = useState(false);
   const [notificationsOpened, setNotificationsOpened] = useState(false);
   const [notifications, setNotifications] = useState<UserNotification[]>([]);
+  const { setHeaderMenuOpen } = useOverlay();
 
   useEffect(() => {
     const refreshNotifications = () => setNotifications(getUserNotifications(user.id));
@@ -37,6 +39,12 @@ export default function ProNotCont({ user, bg = "white" }: ProNotContProps) {
     window.addEventListener(notificationsChangedEvent, handleNotificationsChanged);
     return () => window.removeEventListener(notificationsChangedEvent, handleNotificationsChanged);
   }, [user.id]);
+
+  useEffect(() => {
+    setHeaderMenuOpen(profileOpened || notificationsOpened);
+
+    return () => setHeaderMenuOpen(false);
+  }, [profileOpened, notificationsOpened, setHeaderMenuOpen]);
 
   useEffect(() => {
     document.body.style.overflow = profileOpened || notificationsOpened ? "hidden" : "auto";
