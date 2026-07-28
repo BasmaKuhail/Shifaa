@@ -15,6 +15,7 @@ import {
 } from "@/services/admin";
 
 import { PharmacistApplication } from "@/types/PharmacistApplication";
+import { ApplicationStatusFilter } from "@/types/Status";
 
 type RequestStatus = PharmacistApplication["status"];
 
@@ -22,14 +23,24 @@ type PharmacistApplicationContextType = {
   requests: PharmacistApplication[];
   loading: boolean;
   error: string | null;
+
   pagination: PharmacistApplicationsPagination | null;
   currentPage: number;
   setCurrentPage: (page: number) => void;
+
+  statusFilter: ApplicationStatusFilter;
+  setStatusFilter: (
+    status: ApplicationStatusFilter,
+  ) => void;
+
   refreshRequests: () => Promise<void>;
+
   getRequestById: (
     id: number,
   ) => PharmacistApplication | undefined;
+
   removeRequest: (id: number) => void;
+
   updateRequestStatus: (
     id: number,
     status: RequestStatus,
@@ -40,9 +51,14 @@ const defaultContextValue: PharmacistApplicationContextType = {
   requests: [],
   loading: true,
   error: null,
+
   pagination: null,
   currentPage: 1,
   setCurrentPage: () => {},
+
+  statusFilter: "all",
+  setStatusFilter: () => {},
+
   refreshRequests: async () => {},
   getRequestById: () => undefined,
   removeRequest: () => {},
@@ -54,11 +70,13 @@ export const AdminRequestContext =
     defaultContextValue,
   );
 
+type AdminRequestProviderProps = {
+  children: ReactNode;
+};
+
 export const AdminRequestProvider = ({
   children,
-}: {
-  children: ReactNode;
-}) => {
+}: AdminRequestProviderProps) => {
   const [requests, setRequests] = useState<
     PharmacistApplication[]
   >([]);
@@ -67,6 +85,10 @@ export const AdminRequestProvider = ({
     useState<PharmacistApplicationsPagination | null>(null);
 
   const [currentPage, setCurrentPageState] = useState(1);
+
+  const [statusFilter, setStatusFilterState] =
+    useState<ApplicationStatusFilter>("all");
+
   const [loading, setLoading] = useState(true);
 
   const [error, setError] = useState<string | null>(null);
@@ -76,8 +98,10 @@ export const AdminRequestProvider = ({
       setLoading(true);
       setError(null);
 
-      const result =
-        await pharmacistApplications(currentPage);
+      const result = await pharmacistApplications(
+        currentPage,
+        statusFilter,
+      );
 
       setRequests(result.applications);
       setPagination(result.pagination);
@@ -94,18 +118,18 @@ export const AdminRequestProvider = ({
         error,
       );
 
-      const message =
+      const errorMessage =
         error instanceof Error
           ? error.message
           : "حدث خطأ أثناء تحميل الطلبات";
 
-      setError(message);
+      setError(errorMessage);
       setRequests([]);
       setPagination(null);
     } finally {
       setLoading(false);
     }
-  }, [currentPage]);
+  }, [currentPage, statusFilter]);
 
   const setCurrentPage = useCallback(
     (page: number) => {
@@ -113,13 +137,27 @@ export const AdminRequestProvider = ({
         return;
       }
 
-      if (pagination && page > pagination.lastPage) {
+      if (
+        pagination &&
+        pagination.lastPage > 0 &&
+        page > pagination.lastPage
+      ) {
         return;
       }
 
       setCurrentPageState(page);
     },
     [pagination],
+  );
+
+  const setStatusFilter = useCallback(
+    (status: ApplicationStatusFilter) => {
+      setStatusFilterState(status);
+
+      // Each status can have a different number of pages.
+      setCurrentPageState(1);
+    },
+    [],
   );
 
   const removeRequest = useCallback((id: number) => {
@@ -145,13 +183,13 @@ export const AdminRequestProvider = ({
   }, []);
 
   const updateRequestStatus = useCallback(
-    (id: number, status: RequestStatus) => {
+    (id: number, newStatus: RequestStatus) => {
       setRequests((currentRequests) =>
         currentRequests.map((request) =>
           request.id === id
             ? {
                 ...request,
-                status,
+                status: newStatus,
               }
             : request,
         ),
@@ -176,9 +214,14 @@ export const AdminRequestProvider = ({
         requests,
         loading,
         error,
+
         pagination,
         currentPage,
         setCurrentPage,
+
+        statusFilter,
+        setStatusFilter,
+
         refreshRequests,
         getRequestById,
         removeRequest,
@@ -191,6 +234,8 @@ export const AdminRequestProvider = ({
         pagination,
         currentPage,
         setCurrentPage,
+        statusFilter,
+        setStatusFilter,
         refreshRequests,
         getRequestById,
         removeRequest,
