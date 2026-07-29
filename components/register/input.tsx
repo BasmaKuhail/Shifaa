@@ -104,6 +104,7 @@ const Input = React.memo(({label, type, inputText, value, onChange, isTrue, edit
                 {type === 'password' && 
                     <img 
                         src={passSrc} 
+                        alt="show-hide"
                         className="absolute left-4 top-1/2 transform -translate-y-1/2 cursor-pointer"
                         onClick={togglePasswordVisibility} />
                 }

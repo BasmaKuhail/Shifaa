@@ -2,7 +2,6 @@ import { useCallback, useState } from "react";
 import { useRouter } from "next/router";
 
 import ButtonFull from "./ButtonFull";
-import GoogleBtn from "./GoogleBtn";
 import Input from "./input";
 import Title from "./Title";
 import ButtonEmpty from "./ButtonEmpty";
@@ -15,7 +14,6 @@ import { useAuthForm } from "@/hooks/useAuthForm";
 export default function Form({ isRegister }: { isRegister: boolean }) {
     const {
         formData,
-        errorMsg,
         isSubmitting,
         updateField,
         submit,
