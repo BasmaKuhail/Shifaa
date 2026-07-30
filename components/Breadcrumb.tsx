@@ -9,13 +9,13 @@ type breadcrumbProps = {
 
 export default function Breadcrumb({breadcrumbArr}:breadcrumbProps){
     const router = useRouter()
-    // {console.log(breadcrumbArr)}
+    {console.log(breadcrumbArr)}
     return(
         
         <nav
             dir="rtl"
             aria-label="Breadcrumb"
-            className="hidden md:flex text-sm  w-full "
+            className="flex text-sm  w-full "
         >
             
             <ol className="flex flex-row items-center gap-3 w-full">

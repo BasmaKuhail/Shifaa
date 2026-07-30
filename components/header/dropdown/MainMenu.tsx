@@ -102,7 +102,7 @@ export default function MainMenu({ user, setIsSettingsOpen }: Props) {
       return false;
     }
 
-    if (user?.has_pharmacy && item.title === "إنشاء صيدلية") {
+    if (user?.pharmacy_id && item.title === "إنشاء صيدلية") {
       return false;
     }
 
