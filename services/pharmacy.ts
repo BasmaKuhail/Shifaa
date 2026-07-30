@@ -8,7 +8,6 @@ import {
 } from "@/types/PharmacyType";
 import { StatusType } from "@/types/Status";
 import axios from "axios";
-import { address } from "framer-motion/client";
 
 
 export type PharmacyApiResponse = {

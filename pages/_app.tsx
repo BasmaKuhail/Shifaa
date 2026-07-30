@@ -17,6 +17,7 @@ import { OverlayProvider } from "@/contexts/OverlayContext";
 
 import AuthGuard from "@/components/auth/AuthGuard";
 import { AppToastContainer } from "@/components/alerts/AlertContainer";
+import { MedicinesProvider } from "@/contexts/MedicinesContext";
 
 const tajawal = Tajawal({
   subsets: ["arabic"],
@@ -80,7 +81,9 @@ function MyApp({
         <OverlayProvider>
           <AuthGuard>
             <BreadcrumbProvider>
-              {pageWithRouteProviders}
+              <MedicinesProvider>
+                {pageWithRouteProviders}
+              </MedicinesProvider>
               <AppToastContainer />
             </BreadcrumbProvider>
           </AuthGuard>
