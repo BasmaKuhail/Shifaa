@@ -1,11 +1,9 @@
 import Input from "@/components/register/input";
 import HeaderText from "../HeaderText";
 import Title from "../SectionTitle";
-import SubHeader from "../SubHeader";
 import { useState } from "react";
 import { validateInput } from "@/utils/ValidateInput"
 import GradientBrn from "../GradiantBtn";
-import PhoneNum from "./PhoneNumInput";
 
 export default function ContactForm(){
     const [userContactFornInfo, setUserContactFornInfo] = useState({

@@ -68,8 +68,13 @@ function MyApp({
       className={`${tajawal.className} ${tajawal.variable}`}
     >
       <Head>
-        <title>Shifaa</title>
-      </Head>
+          <title>شفاء</title>
+          <meta
+            name="description"
+            content=".تصفح منصة شفاء"
+          />
+          <meta name="robots" content="index, nofollow" />
+        </Head>
 
       <UserProvider>
         <OverlayProvider>

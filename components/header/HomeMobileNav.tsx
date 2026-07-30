@@ -7,7 +7,6 @@ import { useContext } from "react";
 import { UserContext } from "@/contexts/UserContext";
 import ProNotContSkeleton from "./ProfileNotification/ProNotContSkeleton";
 import BtnEmpty from "../home/secondaryHeader/BtnEmpty";
-import GradientBtn from "../home/GradiantBtn";
 
 import { headerItems } from "@/config/navigations";
 type mobileNavProps ={

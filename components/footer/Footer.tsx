@@ -9,6 +9,8 @@ import msg from "@/public/icons/footer/message.svg"
 import instegram from "@/public/icons/footer/instegram.svg"
 import facebook from "@/public/icons/footer/facebook.svg"
 import linkedin from "@/public/icons/footer/linkedin.svg"
+import Arrow from "@/public/icons/pharmacies/arrowHeadR";
+import ArrowRight from "@/public/icons/error/arrowRight";
 
 
 export default function Footer(){
@@ -76,28 +78,18 @@ export default function Footer(){
                         />
                         <button 
                             className="
-                            px-2 rounded-l-[9px]
+                                px-2 rounded-l-[9px]
                                 absolute left-0 top-0 h-full
                                 lg:rounded-l-[5px] lg:px-4 
                                 bg-blue-1000 text-white 
                                 flex items-center justify-center 
                                 cursor-pointer 
                                 hover:bg-blue-900 transition"
+                            
+                            type="submit"
+                            aria-label="Send message"
                         >
-                            <svg 
-                                xmlns="http://www.w3.org/2000/svg" 
-                                fill="none" 
-                                viewBox="0 0 24 24" 
-                                stroke-width="1.5" 
-                                stroke="currentColor" 
-                                className=" size-4 lg:size-6"
-                            >
-                                <path 
-                                    stroke-linecap="round" 
-                                    stroke-linejoin="round" 
-                                    d="M10.5 19.5 3 12m0 0 7.5-7.5M3 12h18" 
-                                />
-                            </svg>
+                            <ArrowRight className="rotate-180 text-white" />
                         </button>
                     </div>
                 </div>

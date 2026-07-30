@@ -1,11 +1,8 @@
-import ButtonFull from "@/components/register/ButtonFull"
 import HeaderText from "../HeaderText"
 import Title from "../SectionTitle"
-import SubHeader from "../SubHeader"
 import GradientBrn from "../GradiantBtn"
 import Image, { StaticImageData } from "next/image";
 import { motion } from "framer-motion";
-import { useMediaQuery } from "react-responsive";
 
 type textSecProps ={
     secTitle: string,
@@ -16,16 +13,31 @@ type textSecProps ={
     dir:string
 }
 export default function TextSec({secTitle, header, paragraphText, button, image,dir}:textSecProps){
-    const isMobile = useMediaQuery({ maxWidth: 1023 });
-    const direction = isMobile ? "rtl" : dir;
+    const desktopLayoutDirection =
+        dir === "rtl" ? "lg:flex-row-reverse" : "lg:flex-row";
 
     return(
         <motion.div
-            dir={isMobile ? direction : dir}
-            className="flex lg:flex-row md:flex-row flex-col justify-between mb-20 items-stretch gap-8 "
-            initial={{ opacity: 0, x: dir==="ltr" ? 60 : -60} }
-            whileInView={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut", delay: 0.2 }}
+            dir="rtl"
+            className={`
+                flex flex-col
+                ${desktopLayoutDirection}
+                items-stretch justify-between
+                gap-8 mb-20
+            `}
+            initial={{
+                opacity: 0,
+                x: dir === "ltr" ? 60 : -60,
+            }}
+            whileInView={{
+                opacity: 1,
+                x: 0,
+            }}
+            transition={{
+                duration: 0.8,
+                ease: "easeOut",
+                delay: 0.2,
+            }}
             viewport={{ once: true }}
         >
             <div className="hidden lg:block lg:w-[50%] xl:w-[45%]">

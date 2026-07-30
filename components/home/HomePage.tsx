@@ -2,7 +2,7 @@ import Header from "../header/Header";
 import SecondaryHeader from "./secondaryHeader/SecondaryHeader";
 import SearchHome from "./search/Search";
 import Image from "next/image";
-import homeBgImg from "@/public/images/homeBgImg.svg"
+import homeBgImg from "@/public/images/homeBgImg.webp"
 import Title from "./SectionTitle";
 import HeaderText from "./HeaderText";
 import SubHeader from "./SubHeader";
@@ -21,10 +21,8 @@ import RequestMed from "@/public/images/RequestMed.png"
 import TextSec from "./TextSection/TextSec";
 import Work from "./howItWorks/HowItWorks";
 import Features from "./FeaturesSec/FeaturesSec";
-import ContatcSec from "./contactForm/ContactFormSec";
 import MobileHeader from "../header/MobileHeader";
 import { useRouter } from "next/navigation";
-import MedNotFoundC2A from "../searchMed.tsx/MedNotFound";
 
 const services =[
     {
@@ -84,12 +82,13 @@ export default function Home (){
         <div className='w-full flex flex-col overflow-x-hidden'>
             <div className="bg-blue-100 relative inline-block ">
                 {/* web view */}
-                
                 <Image
                     src={homeBgImg}
-                    alt='home '
+                    alt='home hero image'
                     width={610.77}
                     className='block lg:pt-[50px] rotate-180 scale-y-[-1]'
+                    loading="eager"
+                    fetchPriority="high"
                 />
                 <div className="absolute inset-0 z-10 pt-[75px] hidden lg:block">
                     <div className="px-4 md:px-8 lg:px-20 xl:px-30 pt-4"><SecondaryHeader/></div>

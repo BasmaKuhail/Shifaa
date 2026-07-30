@@ -2,8 +2,6 @@ import { useContext, useEffect, useState } from "react";
 import { UserContext } from "@/contexts/UserContext";
 import Input from "../register/input";
 import { validateConfirmPassword, validateInput } from "@/utils/ValidateInput";
-import GradientBtn from "../home/GradiantBtn";
-import ImageProfile from "./Image";
 import EditProfileSkeleton from "../Skeleton/EditProfileSkeleton";
 
 import { useBreadcrumb } from "@/contexts/BreadcrumbContext"
@@ -11,7 +9,6 @@ import Link from "next/link";
 import PetrolBtn from "../pharmacyDashboard/PharmacyInfo/invitePopup/PetrolBtn";
 import { showAlert } from "../alerts/AlertContainer";
 import { changePassword, updateProfile } from "@/services/editProfile";
-import axios from "axios";
 import { getApiErrorMessage } from "@/utils/getApiErrorMessage";
 import { addUserNotification } from "@/lib/notifications";
 

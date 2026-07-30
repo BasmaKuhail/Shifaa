@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 
 import Icon from "../Icon"
 import Link from "next/link"
+import ArrowRight from "@/public/icons/error/arrowRight";
 
 
 type sectionProps = {
@@ -11,11 +12,6 @@ type sectionProps = {
     text: string,
     link: string
 }
-const ArrowLeft = ({ className }: { className?: string }) => (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor" className={`size-6 ${className}`}>
-        <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 15.75 3 12m0 0 3.75-3.75M3 12h18" />
-    </svg>
-);
 export default function ServiceCotainer ({icon, header, text, link}:sectionProps){
     const router = useRouter();
     return(
@@ -45,7 +41,7 @@ export default function ServiceCotainer ({icon, header, text, link}:sectionProps
                     group-hover:bg-gradient-to-r from-[#329CCB] to-[#668DCA]
                     group-hover:text-transparent">
                     <Link href={"#"}>{link}</Link>
-                    <ArrowLeft className="text-black-600 group-hover:text-[#3E94B9]" />
+                    <ArrowRight className="rotate-180 text-black-600 group-hover:text-[#3E94B9]" />
                 </p>
             </div>
         </div>)
