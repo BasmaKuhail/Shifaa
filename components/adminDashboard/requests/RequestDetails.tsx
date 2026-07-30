@@ -58,12 +58,12 @@ export default function RequestDetails({request : initialRequest, type }: reques
     useEffect(() => {
         setCrumbs([
             { 
-                title: "الطلبات", 
-                link: "/admin-dashboard/requests" 
+                title: type === "pharmacist" ? `طلبات الانضمام كصيدلي` : `طلبات انشاء صيدلية`,
+                link:  type === "pharmacist" ? "/admin-dashboard/pharmacist-requests" : "/admin-dashboard/pharmacy-requests",
             },
             { 
                 title:  type === "pharmacist" ? `تفاصيل طلب الصيدلي رقم ${request?.id}` : `تفاصيل طلب  الصيدلية رقم ${request?.id}`,
-                link: type === "pharmacist" ? `/admin-dashboard/requests/pharmacist-request-details/${request?.id}` : `/admin-dashboard/requests/pharmacy-request-details/${request?.id}`
+                link: type === "pharmacist" ? `/admin-dashboard/pharmacist-requests/pharmacist-request-details/${request?.id}` : `/admin-dashboard/pharmacy-requests/pharmacy-request-details/${request?.id}`
             }
         ])
     }, [request])
