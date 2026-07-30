@@ -18,10 +18,10 @@ export default function HomeNav({isMenuOpened, setIsMenuOpened}:mobileNavProps){
     const {user, loading} = useContext(UserContext);
     const router = useRouter();
     const dashboardBtn = () => {
-            if (user && user?.role === "pharmacist" && user?.has_pharmacy){
+            if (user && user?.role === "pharmacist" && user?.pharmacy_id){
                 return <BtnEmpty onClick={() => {router.push("/pharmacy-dashboard/pharmInfo")}}>لوحة التحكم</BtnEmpty>
             } else if (user && user?.role === "admin"){
-                return <BtnEmpty onClick={() => {router.push("/admin-dashboard")}}>لوحة التحكم</BtnEmpty>
+                return <BtnEmpty onClick={() => {router.push("/admin-dashboard/pharmacist-requests")}}>لوحة التحكم</BtnEmpty>
             }else{
                 return <div className="px-20"></div>
             }
