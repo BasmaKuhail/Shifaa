@@ -36,7 +36,7 @@ export default function Login() {
             name="description"
             content="سجّل الدخول إلى منصة شفاء."
           />
-          <meta name="robots" content="noindex, nofollow" />
+          <meta name="robots" content="index, nofollow" />
         </Head>
         <main>
         <RegisterFormLayout>

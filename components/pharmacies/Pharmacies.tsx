@@ -289,8 +289,8 @@ const handleLoadMore = async () => {
                         </p>
                     )}
 
-                    {!loading && visiblePharmacies.map((pharmacy) =>
-                        <PharmCard key={pharmacy.id} pharmacy={pharmacy} isList={viewMode === "list"}/>
+                    {!loading && visiblePharmacies.map((pharmacy, index) =>
+                        <PharmCard isLcpCandidate={index === 0} key={pharmacy.id} pharmacy={pharmacy} isList={viewMode === "list"}/>
                     )}
                     
                 </div>

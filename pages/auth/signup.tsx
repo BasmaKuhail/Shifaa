@@ -20,7 +20,7 @@ export default function SignUp() {
                 name="description"
                 content="سجّل الدخول إلى حسابك في منصة شفاء."
             />
-            <meta name="robots" content="noindex, nofollow" />
+            <meta name="robots" content="index, nofollow" />
         </Head>
         <RegisterFormLayout>
             <Form isRegister={true} />

@@ -31,11 +31,13 @@ const Btn = ({ image, text }: BtnProps) => {
 };
 
 type PharmCardProps = {
+    isLcpCandidate:boolean;
     pharmacy: PharmacyApiResponse;
     isList?: boolean;
 };
 
 export default function PharmCard({
+    isLcpCandidate,
     pharmacy,
     isList = false,
 }: PharmCardProps) {
@@ -68,6 +70,8 @@ export default function PharmCard({
                 alt={`${pharmacy.name} logo`}
                 width={600}
                 height={400}
+                loading={isLcpCandidate ? "eager" : "lazy"}
+                 fetchPriority={isLcpCandidate ? "high" : "auto"}
                 className={`
                     rounded-[14px] object-cover
                     ${

@@ -1,6 +1,3 @@
-import heartBeat from "@/public/icons/heartBeat.svg"
-
-import Image from "next/image";
 import HeaderText from "../home/HeaderText";
 import SubHeader from "../home/SubHeader";
 
