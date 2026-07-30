@@ -4,7 +4,7 @@ import Image from 'next/image';
 import ErrorMsg from './ErrorMsg';
 type InputProps = {
     label: string;
-    type: 'text' | 'email' | 'password' | 'textarea' | 'file';
+    type: 'text' | 'email' | 'password' | 'textarea' | 'file' | 'number';
     inputText: string;
     value: string | File | null;
     onChange: (value: string | File | null) => void;
@@ -16,7 +16,7 @@ type InputProps = {
 
 const Input = React.memo(({label, type, inputText, value, onChange, isTrue, editable=true, errorMsg}: InputProps) =>{
     const [passSrc, setPassSrc] = useState<string>('/icons/unshowPass.svg');
-    const [inputType, setInputType] = useState<'text' | 'email' | 'password' | 'textarea' | 'file'>(type);
+    const [inputType, setInputType] = useState<'text' | 'email' | 'password' | 'textarea' | 'file' | 'number'>(type);
     const togglePasswordVisibility = () => {
         setInputType((prev) => (prev === 'password' ? 'text' : 'password'));
         setPassSrc((prev) => (prev === '/icons/unshowPass.svg' ? '/icons/showPass.svg' : '/icons/unshowPass.svg'));
@@ -97,6 +97,7 @@ const Input = React.memo(({label, type, inputText, value, onChange, isTrue, edit
                                 : 'border-[#FF1F1F]'
                                 : ''
                             }
+                            ${editable? "":"cursor-not-allowed"}
                             border-[#D1D1D1] focus:border-[#1A71F6]
                         `}
                     />

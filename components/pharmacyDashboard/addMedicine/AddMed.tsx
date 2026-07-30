@@ -1,138 +1,368 @@
+"use client";
 import Input from "@/components/register/input";
+import EmptyPetrolBtn from "@/components/adminDashboard/requests/EpmtyPetrolBtn";
 import Card from "../PharmacyInfo/CardContainer";
+import PetrolBtn from "../PharmacyInfo/invitePopup/PetrolBtn";
 import Dropdown from "./DropDownInput";
 import AddImage from "./AddImage";
-import PetrolBtn from "../PharmacyInfo/invitePopup/PetrolBtn";
-import BtnEmpty from "@/components/home/secondaryHeader/BtnEmpty";
-import EmptyPetrolBtn from "@/components/adminDashboard/requests/EpmtyPetrolBtn";
-export default function AddMed(){
-    return(
-            <div dir="rtl" className="flex flex-col gap-10 mt-13 mb-40 w-full">
-                <p className="font-semibold text-27px">اضافة دواء</p>
-                <Card title="معلومات الدواء الأساسية" >
-                    <div className="flex w-full flex-col px-10">
-                        <div className="text-black-500 text-inpt">
-                            <Dropdown
-                                label="الاسم العلمي"
-                                placeholder="اختر الاسم العلمي"
-                                value={""}
-                                options={[{label:"op1", value:"option1"},{label:"op2", value:"option2", disabled:true} ]}
-                                onChange={()=>{}}
-                                isTrue={true}
-                                errorMsg={
-                                    ""
-                                }
-                            />
-                            <Input
-                                label="* الاسم التجاري"
-                                type="text" 
-                                inputText="الاسم التجاري"
-                                value={""} 
-                                onChange={() => {}} 
-                                isTrue={true} 
-                                errorMsg={""}
-                            />
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-4 w-full">
-                                <Dropdown
-                                    label="الشكل"
-                                    placeholder="اختر الشكل"
-                                    value={""}
-                                    options={[{label:"op1", value:"option1"},{label:"op2", value:"option2", disabled:true} ]}
-                                    onChange={()=>{}}
-                                    isTrue={true}
-                                    errorMsg={
-                                        ""
-                                    }
-                                />
-                                <Dropdown
-                                    label="يتاج وصفة طبية؟"
-                                    placeholder="اختر الشكل"
-                                    value={""}
-                                    options={[{label:"op1", value:"option1"},{label:"op2", value:"option2", disabled:true} ]}
-                                    onChange={()=>{}}
-                                    isTrue={true}
-                                    errorMsg={
-                                        ""
-                                    }
-                                />
-                                <Input
-                                    label="السعر"
-                                    type="text" 
-                                    inputText="الاسم التجاري"
-                                    value={""} 
-                                    onChange={() => {}} 
-                                    isTrue={true} 
-                                    errorMsg={""}
-                                />
-                                <div className="grid grid-cols-3 gap-4 w-full items-end">
-                                    <Dropdown
-                                        label="تاريخ الانتهاء"
-                                        placeholder="اليوم"
-                                        value={""}
-                                        options={Array.from({ length: 31 }, (_, index) => ({
-                                            label: String(index + 1),
-                                            value: String(index + 1),
-                                        }))}
-                                        onChange={()=>{}}
-                                        isTrue={true}
-                                        errorMsg={
-                                            ""
-                                        }
-                                    />
-                                    <Dropdown
-                                        label={"\u00A0"}
-                                        placeholder="الشهر"
-                                        value={""}
-                                        options={Array.from({ length: 12 }, (_, index) => ({
-                                            label: String(index + 1),
-                                            value: String(index + 1),
-                                        }))}
-                                        onChange={()=>{}}
-                                        isTrue={true}
-                                        errorMsg={
-                                            ""
-                                        }
-                                    />
-                                    <Dropdown
-                                        label={"\u00A0"}
-                                        placeholder="السنة"
-                                        value={""}
-                                        options={Array.from({length:5}, (_,index) => ({
-                                            label: String(index + 2026),
-                                            value: String(index + 2026),
-                                        }))}
-                                        onChange={()=>{}}
-                                        isTrue={true}
-                                        errorMsg={
-                                            ""
-                                        }
-                                    />
-                                </div>
-                            </div>
-                            
-                        </div>
-                    </div>
-                </Card>
-                <Card title="صور الدواء" scrollable>
-                    <div className="flex flex-col gap-5">
-                       <p className="text-inpt text-black-500">ملاحظة: تقبل انواع الصور التالية: png, jpeg, jpg</p>
-                       <div className="flex flex-row gap-5 items-center justify-start">
-                            <AddImage label="صورة 1"/> 
-                            <AddImage label="صورة 2"/> 
-                            <AddImage label="صورة 3"/> 
-                            <AddImage label="صورة 4"/> 
-                            <AddImage label="صورة 5"/> 
-                       </div>
-                        
-                    </div>
-                    
-                </Card>
-                <div className="flex flex-row gap-5">
-                   <PetrolBtn text="اضافة" onClick={() => {}} />
-                    <EmptyPetrolBtn text="حفظ التغيرات" onClick={() => {}}/> 
-                </div>
 
-                
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+
+import {
+  getMedicines,
+  Medicine,
+} from "@/services/medication";
+
+type MedicineFormData = {
+  scientific_name: string;
+  trade_name: string;
+  dosage_form: string;
+  strength: string;
+  price: string;
+};
+
+const initialMedicineData: MedicineFormData = {
+  scientific_name: "",
+  trade_name: "",
+  dosage_form: "",
+  strength: "",
+  price: "",
+};
+
+const SEARCH_DEBOUNCE_MS = 500;
+
+export default function AddMed() {
+  const [medicines, setMedicines] = useState<
+    Medicine[]
+  >([]);
+
+  const [selectedMedicine, setSelectedMedicine] =
+    useState<Medicine | null>(null);
+
+  const [selectedMedicineId, setSelectedMedicineId] =
+    useState("");
+
+  const [medicineData, setMedicineData] =
+    useState<MedicineFormData>(initialMedicineData);
+
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const [isLoadingMedicines, setIsLoadingMedicines] =
+    useState(false);
+
+  const [medicinesError, setMedicinesError] =
+    useState("");
+
+  const latestRequestIdRef = useRef(0);
+
+  const fetchMedicines = useCallback(
+    async (search: string) => {
+      const requestId = ++latestRequestIdRef.current;
+
+      setIsLoadingMedicines(true);
+      setMedicinesError("");
+
+      try {
+        const response = await getMedicines({
+          page: 1,
+          perPage: 50,
+          search,
+        });
+
+        // Ignore a response if a newer request was started.
+        if (
+          requestId !== latestRequestIdRef.current
+        ) {
+          return;
+        }
+
+        setMedicines(response.data);
+      } catch (error) {
+        if (
+          requestId !== latestRequestIdRef.current
+        ) {
+          return;
+        }
+
+        console.error(
+          "Failed to load medicines:",
+          error,
+        );
+
+        setMedicines([]);
+        setMedicinesError(
+          "تعذر تحميل قائمة الأدوية",
+        );
+      } finally {
+        if (
+          requestId === latestRequestIdRef.current
+        ) {
+          setIsLoadingMedicines(false);
+        }
+      }
+    },
+    [],
+  );
+
+  useEffect(() => {
+    const timeoutId = window.setTimeout(() => {
+      void fetchMedicines(searchQuery);
+    }, SEARCH_DEBOUNCE_MS);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+    };
+  }, [searchQuery, fetchMedicines]);
+
+  const availableMedicines = useMemo(() => {
+    if (!selectedMedicine) {
+      return medicines;
+    }
+
+    const selectedMedicineExists = medicines.some(
+      (medicine) =>
+        medicine.id === selectedMedicine.id,
+    );
+
+    if (selectedMedicineExists) {
+      return medicines;
+    }
+
+    return [selectedMedicine, ...medicines];
+  }, [medicines, selectedMedicine]);
+
+  const scientificNameOptions = useMemo(
+    () =>
+      availableMedicines.map((medicine) => ({
+        // Including more details avoids multiple identical
+        label: [
+          medicine.scientific_name,
+        //   medicine.trade_name,
+          medicine.strength,
+          medicine.dosage_form,
+        ]
+          .filter(Boolean)
+          .join(" - "),
+        value: String(medicine.id),
+      })),
+    [availableMedicines],
+  );
+
+  const handleMedicineChange = (
+    medicineId: string,
+  ) => {
+    const selected =
+      availableMedicines.find(
+        (medicine) =>
+          String(medicine.id) === medicineId,
+      ) ?? null;
+
+    if (!selected) {
+      setSelectedMedicineId("");
+      setSelectedMedicine(null);
+      setMedicineData(initialMedicineData);
+      return;
+    }
+
+    setSelectedMedicineId(medicineId);
+    setSelectedMedicine(selected);
+
+    setMedicineData({
+      scientific_name: selected.scientific_name,
+      trade_name: selected.trade_name,
+      dosage_form: selected.dosage_form,
+      strength: selected.strength ?? "",
+      price: "",
+    });
+  };
+
+  const handleFieldChange = (
+    field: keyof MedicineFormData,
+    value: string,
+  ) => {
+    setMedicineData((previousData) => ({
+      ...previousData,
+      [field]: value,
+    }));
+  };
+
+  const createStringChangeHandler =
+    (field: keyof MedicineFormData) =>
+    (value: string | File | null) => {
+      if (typeof value === "string") {
+        handleFieldChange(field, value);
+      }
+    };
+
+  const handleReset = () => {
+    latestRequestIdRef.current += 1;
+
+    setSelectedMedicineId("");
+    setSelectedMedicine(null);
+    setMedicineData(initialMedicineData);
+    setSearchQuery("");
+    setMedicinesError("");
+
+    void fetchMedicines("");
+  };
+
+  const handleSubmit = () => {
+    const price = Number(medicineData.price);
+
+    if (!selectedMedicineId) {
+      setMedicinesError("يرجى اختيار الدواء");
+      return;
+    }
+
+    if (
+      !medicineData.price.trim() ||
+      !Number.isFinite(price) ||
+      price <= 0
+    ) {
+      return;
+    }
+
+    const payload = {
+      global_medicine_id: Number(
+        selectedMedicineId,
+      ),
+      price,
+    };
+
+    console.log(payload);
+  };
+
+  return (
+    <div
+      dir="rtl"
+      className="mt-13 mb-40 flex w-full flex-col gap-10"
+    >
+      <p className="text-27px font-semibold">
+        إضافة دواء
+      </p>
+
+      <Card title="معلومات الدواء الأساسية">
+        <div className="flex w-full flex-col px-10">
+          <div className="text-inpt text-black-500">
+            <Dropdown
+              label="الاسم العلمي"
+              placeholder="ابحث عن الاسم العلمي"
+              value={selectedMedicineId}
+              options={scientificNameOptions}
+              onChange={handleMedicineChange}
+              onSearchChange={setSearchQuery}
+              isTrue={Boolean(selectedMedicineId)}
+              editable
+              loading={isLoadingMedicines}
+              errorMsg={medicinesError}
+              noResultsText="لا توجد أدوية مطابقة"
+            />
+
+            <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2">
+              <Input
+                label="الاسم التجاري"
+                type="text"
+                inputText="الاسم التجاري"
+                value={medicineData.trade_name}
+                onChange={createStringChangeHandler(
+                  "trade_name",
+                )}
+                isTrue={Boolean(
+                  medicineData.trade_name,
+                )}
+                errorMsg=""
+                editable={Boolean(
+                  medicineData.scientific_name,
+                )}
+              />
+
+              <Input
+                label="الشكل"
+                type="text"
+                inputText="الشكل الدوائي"
+                value={medicineData.dosage_form}
+                onChange={createStringChangeHandler(
+                  "dosage_form",
+                )}
+                isTrue={Boolean(
+                  medicineData.dosage_form,
+                )}
+                editable={Boolean(
+                  medicineData.scientific_name,
+                )}
+                errorMsg=""
+              />
+
+              <Input
+                label="التركيز"
+                type="text"
+                inputText="التركيز"
+                value={medicineData.strength}
+                onChange={createStringChangeHandler(
+                  "strength",
+                )}
+                isTrue={Boolean(
+                  medicineData.strength,
+                )}
+                editable={Boolean(
+                  medicineData.scientific_name,
+                )}
+                errorMsg=""
+              />
+
+              <Input
+                label="السعر"
+                type="number"
+                inputText="أدخل السعر"
+                value={medicineData.price}
+                onChange={createStringChangeHandler(
+                  "price",
+                )}
+                isTrue={Boolean(medicineData.price)}
+                editable={Boolean(
+                  selectedMedicineId,
+                )}
+                errorMsg=""
+              />
             </div>
-    )
+          </div>
+        </div>
+      </Card>
+
+      <Card title="صور الدواء" scrollable>
+        <div className="flex flex-col gap-5">
+          <p className="text-inpt text-black-500">
+            ملاحظة: تقبل أنواع الصور التالية: png,
+            jpeg, jpg
+          </p>
+
+          <div className="flex flex-row items-center justify-start gap-5">
+            <AddImage label="صورة 1" />
+            <AddImage label="صورة 2" />
+            <AddImage label="صورة 3" />
+            <AddImage label="صورة 4" />
+            <AddImage label="صورة 5" />
+          </div>
+        </div>
+      </Card>
+
+      <div className="flex flex-row gap-5">
+        <PetrolBtn
+          text="إضافة"
+          onClick={handleSubmit}
+        />
+
+        <EmptyPetrolBtn
+          text="إلغاء"
+          onClick={handleReset}
+        />
+      </div>
+    </div>
+  );
 }
