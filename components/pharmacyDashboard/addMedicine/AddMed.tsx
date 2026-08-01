@@ -8,6 +8,7 @@ import AddImage from "./AddImage";
 
 import {
   useCallback,
+  useContext,
   useEffect,
   useMemo,
   useRef,
@@ -15,19 +16,27 @@ import {
 } from "react";
 
 import {
+    // addMed,
+  addMedicine,
   getMedicines,
   Medicine,
 } from "@/services/medication";
+import { showAlert } from "@/components/alerts/AlertContainer";
+import { ApplicationFile } from "@/types/PharmacistApplication";
+import { PharmacyContext } from "@/contexts/PharmacyDataContext";
 
-type MedicineFormData = {
+export type MedicineFormData = {
+    id:number,
   scientific_name: string;
   trade_name: string;
   dosage_form: string;
   strength: string;
   price: string;
+  image?: ApplicationFile
 };
 
 const initialMedicineData: MedicineFormData = {
+  id: 0,
   scientific_name: "",
   trade_name: "",
   dosage_form: "",
@@ -38,31 +47,19 @@ const initialMedicineData: MedicineFormData = {
 const SEARCH_DEBOUNCE_MS = 500;
 
 export default function AddMed() {
-  const [medicines, setMedicines] = useState<
-    Medicine[]
-  >([]);
+  const {pharmacy, loading} = useContext(PharmacyContext);
 
-  const [selectedMedicine, setSelectedMedicine] =
-    useState<Medicine | null>(null);
-
-  const [selectedMedicineId, setSelectedMedicineId] =
-    useState("");
-
-  const [medicineData, setMedicineData] =
-    useState<MedicineFormData>(initialMedicineData);
-
+  const [medicines, setMedicines] = useState<Medicine[]>([]);
+  const [selectedMedicine, setSelectedMedicine] = useState<Medicine | null>(null);
+  const [selectedMedicineId, setSelectedMedicineId] = useState("");
+  const [medicineData, setMedicineData] = useState<MedicineFormData>(initialMedicineData);
   const [searchQuery, setSearchQuery] = useState("");
-
-  const [isLoadingMedicines, setIsLoadingMedicines] =
-    useState(false);
-
-  const [medicinesError, setMedicinesError] =
-    useState("");
+  const [isLoadingMedicines, setIsLoadingMedicines] = useState(false);
+  const [medicinesError, setMedicinesError] = useState("");
 
   const latestRequestIdRef = useRef(0);
 
-  const fetchMedicines = useCallback(
-    async (search: string) => {
+  const fetchMedicines = useCallback(async (search: string) => {
       const requestId = ++latestRequestIdRef.current;
 
       setIsLoadingMedicines(true);
@@ -174,6 +171,7 @@ export default function AddMed() {
     setSelectedMedicine(selected);
 
     setMedicineData({
+        id:selected.id,
       scientific_name: selected.scientific_name,
       trade_name: selected.trade_name,
       dosage_form: selected.dosage_form,
@@ -212,31 +210,79 @@ export default function AddMed() {
     void fetchMedicines("");
   };
 
-  const handleSubmit = () => {
-    const price = Number(medicineData.price);
+const handleSubmit = async () => {
+    if(medicineData.scientific_name === "" || 
+        medicineData.trade_name === "" || 
+        medicineData.dosage_form === "" ||
+        medicineData.price=== "" ||
+        medicineData.strength === ""
+    ){
+        showAlert({
+            type:"Hint",
+            title:"تلميح",
+            message:"الرجاء تعبئة جميع الحقول المطلوبة"
 
-    if (!selectedMedicineId) {
-      setMedicinesError("يرجى اختيار الدواء");
-      return;
-    }
+        })
+        return }
+  const globalMedicineId = Number(selectedMedicineId);
+  const price = Number(medicineData.price);
 
-    if (
-      !medicineData.price.trim() ||
-      !Number.isFinite(price) ||
-      price <= 0
-    ) {
-      return;
-    }
+  if (
+    !Number.isInteger(globalMedicineId) ||
+    globalMedicineId <= 0
+  ) {
+    setMedicinesError("يرجى اختيار الدواء");
+    return;
+  }
 
-    const payload = {
-      global_medicine_id: Number(
-        selectedMedicineId,
-      ),
-      price,
-    };
+  if (!Number.isFinite(price) || price <= 0) {
+    showAlert({
+            type:"Hint",
+            title:"تلميح",
+            message:"السعر يجب ان يكون عدد موجب"
 
-    console.log(payload);
-  };
+        })
+    return;
+  }
+ if(!loading && pharmacy){
+    try {
+    const response = await addMedicine({
+      pharmacyId: pharmacy?.id,
+      medicine: {
+        global_medicine_id: globalMedicineId,
+        price,
+      },
+    });
+
+    console.log(response);
+
+    setSelectedMedicineId("");
+    setSelectedMedicine(null);
+    setMedicineData(initialMedicineData);
+    showAlert({
+            type:"Success",
+            title:"تجح!",
+            message:"تم اضافة الدواء بنجاح!"
+
+        })
+  } catch (error) {
+    console.error("Failed to add medicine:", error);
+    // showAlert({
+    //         type:"Error",
+    //         title:"خطأ!",
+    //         message:error.message || "حدث خطأ"
+
+    //     })
+  }
+ }else{
+    showAlert({
+        type:"Error",
+        title:"خطأ",
+        message:"تعذر ايجاد الصيدلية!"
+    })
+ }
+  
+};
 
   return (
     <div
@@ -330,24 +376,16 @@ export default function AddMed() {
                 )}
                 errorMsg=""
               />
-            </div>
-          </div>
-        </div>
-      </Card>
 
-      <Card title="صور الدواء" scrollable>
-        <div className="flex flex-col gap-5">
-          <p className="text-inpt text-black-500">
+              
+            </div>
+            <div className="flex flex-col gap-2 mt-3">
+                <label className="text-sm font-bold text-right">صورة الدواء (اختياري)</label>
+            <p className="text-inpt text-black-500">
             ملاحظة: تقبل أنواع الصور التالية: png,
             jpeg, jpg
           </p>
-
-          <div className="flex flex-row items-center justify-start gap-5">
-            <AddImage label="صورة 1" />
-            <AddImage label="صورة 2" />
-            <AddImage label="صورة 3" />
-            <AddImage label="صورة 4" />
-            <AddImage label="صورة 5" />
+          <AddImage label="صورة 1" /></div>
           </div>
         </div>
       </Card>
