@@ -88,7 +88,7 @@ export const pharmacytNav = [
         id: 7,
         icon:Med,
         label:"الأدوية",
-        link:"/pharmacy-dashboard/medicines"
+        link:"/pharmacy-dashboard/my-medicines"
     }
 ];
 
