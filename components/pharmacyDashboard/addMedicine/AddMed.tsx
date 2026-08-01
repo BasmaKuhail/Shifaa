@@ -46,7 +46,7 @@ const initialMedicineData: MedicineFormData = {
 
 const SEARCH_DEBOUNCE_MS = 500;
 
-export default function AddMed() {
+export default function AddMed({edit = false}: {edit?: boolean}) {  
   const {pharmacy, loading} = useContext(PharmacyContext);
 
   const [medicines, setMedicines] = useState<Medicine[]>([]);
@@ -290,10 +290,10 @@ const handleSubmit = async () => {
       className="mt-13 mb-40 flex w-full flex-col gap-10"
     >
       <p className="text-27px font-semibold">
-        إضافة دواء
+        {edit ? "تعديل دواء" : "إضافة دواء"}
       </p>
 
-      <Card title="معلومات الدواء الأساسية">
+      <Card title="معلومات الدواء ">
         <div className="flex w-full flex-col px-10">
           <div className="text-inpt text-black-500">
             <Dropdown
@@ -391,10 +391,14 @@ const handleSubmit = async () => {
       </Card>
 
       <div className="flex flex-row gap-5">
-        <PetrolBtn
+        {
+          edit?  <PetrolBtn
+          text="حفظ التغييرات"
+          onClick={handleSubmit}
+        /> : <PetrolBtn
           text="إضافة"
           onClick={handleSubmit}
-        />
+        />}
 
         <EmptyPetrolBtn
           text="إلغاء"

@@ -72,9 +72,9 @@ export default function PopUp ({id, popupType, setShowPopup, name}:popUpProps){
     
     const text = () => {
         if(popupType === "accept")
-            return "هل تريد قبول طلب"
+            return "هل تريد قبول طلب "
         else if (popupType === "reject")
-            return "هل تريد رفض طلب"
+            return " هل تريد رفض طلب "
     }
     const functionToCall = () => {
         if(popupType === "accept"){
