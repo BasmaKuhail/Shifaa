@@ -1,3 +1,4 @@
+import { MedicineFormData } from "@/components/pharmacyDashboard/addMedicine/AddMed";
 import api from "@/lib/api";
 
 export type Medicine = {
@@ -43,6 +44,37 @@ export const getMedicines = async ({
           "filter[scientificName]": `*${normalizedSearch}*`,
         }),
       },
+    },
+  );
+
+  return response.data;
+};
+
+export type AddMedicinePayload = {
+  global_medicine_id: number;
+  price: number;
+};
+
+export type AddMedicineResponse = {
+  status: string;
+  message: string;
+  data?: unknown;
+};
+
+type AddMedicineParams = {
+  pharmacyId: number;
+  medicine: AddMedicinePayload;
+};
+
+export const addMedicine = async ({
+  pharmacyId,
+  medicine,
+}: AddMedicineParams): Promise<AddMedicineResponse> => {
+  const response = await api.post<AddMedicineResponse>(
+    "/pharmacy/inventory/store",
+    {
+      pharmacy_id: pharmacyId,
+      ...medicine,
     },
   );
 
