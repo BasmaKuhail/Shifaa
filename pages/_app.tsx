@@ -18,6 +18,7 @@ import { OverlayProvider } from "@/contexts/OverlayContext";
 import AuthGuard from "@/components/auth/AuthGuard";
 import { AppToastContainer } from "@/components/alerts/AlertContainer";
 import { MedicinesProvider } from "@/contexts/MedicinesContext";
+import PwaRegistration from "@/components/PwaRegistration";
 
 const tajawal = Tajawal({
   subsets: ["arabic"],
@@ -75,8 +76,13 @@ function MyApp({
             content=".تصفح منصة شفاء"
           />
           <meta name="robots" content="index, nofollow" />
+          <meta name="mobile-web-app-capable" content="yes" />
+          <meta name="apple-mobile-web-app-capable" content="yes" />
+          <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+          <meta name="apple-mobile-web-app-title" content="Shifaa" />
         </Head>
 
+      <PwaRegistration />
       <UserProvider>
         <OverlayProvider>
           <AuthGuard>
