@@ -107,10 +107,7 @@ export default function ProNotCont({ user, bg = "white" }: ProNotContProps) {
           setProfileOpened(true);
         }}
       >
-        <ProfileIconContainer
-          width={40}
-          isCircle={false}
-        />
+        <Profile user={user} />
         <div className="absolute top-full left-0 z-[70]">
           {profileOpened && <HeaderDeopDown user={user} profileOpened={profileOpened} setProfileOpened={setProfileOpened} />}
         </div>

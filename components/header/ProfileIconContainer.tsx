@@ -22,7 +22,7 @@ export default function ProfileIconContainer({width, isCircle = true}: ProfileIc
     >
         {!loading && 
             <Image src={userType === "admin" ? admin : userType === "pharmacist" ? pharm : User} alt="profile" />
-        }    
+        }
     </div>
   );
 }
