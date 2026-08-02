@@ -15,6 +15,7 @@ import {
   UserNotification,
 } from "@/lib/notifications";
 import { useOverlay } from "@/contexts/OverlayContext";
+import ProfileIconContainer from "../ProfileIconContainer";
 
 type ProNotContProps = {
   user: User;
@@ -106,7 +107,10 @@ export default function ProNotCont({ user, bg = "white" }: ProNotContProps) {
           setProfileOpened(true);
         }}
       >
-        <Profile user={user} />
+        <ProfileIconContainer
+          width={40}
+          isCircle={false}
+        />
         <div className="absolute top-full left-0 z-[70]">
           {profileOpened && <HeaderDeopDown user={user} profileOpened={profileOpened} setProfileOpened={setProfileOpened} />}
         </div>
