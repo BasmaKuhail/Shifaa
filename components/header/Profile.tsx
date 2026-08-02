@@ -9,14 +9,8 @@ type ProfileProps = {
 
 export default function Profile({user}:ProfileProps){
     return(
-        <div dir="rtl" className="flex flex-row items-center  gap-5 mr-[12px]">
+        <div dir="ltr" className="flex flex-row items-center  gap-5 mr-[12px]">
             <div className="flex flex-row items-center gap-2">
-                {/* <div className="relative">
-                    <div className="flex flex-col cursor-pointer">
-                        <AttachmentProfileIcon imageUrl={user.avatar?.url ?? null} width={40} isCircle={false}/>
-                    </div>
-                    <div className="bg-online p-1 w-[11px] h-[11px] rounded-full absolute right-0 bottom-0"></div>
-                </div> */}
                 <ProfileIconContainer width={40} isCircle={false}/>
                 <div className="flex flex-col gap-0">
                     <p className="text-input">{user.firstName}</p>
