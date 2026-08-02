@@ -14,6 +14,7 @@ import ArrowRight from "@/public/icons/profile/arrowRight.svg";
 import { logout as logoutService } from "@/services/auth";
 import { User } from "@/types/UserType";
 import { clearUserNotifications } from "@/lib/notifications";
+import ProfileIconContainer from "../ProfileIconContainer";
 
 type Props = {
   user: User;
@@ -125,7 +126,7 @@ export default function MainMenu({ user, setIsSettingsOpen }: Props) {
     <div>
       <div className="flex w-full flex-row justify-between border-b border-b-black-200 pb-5">
         <div className="flex flex-row items-center gap-4">
-          <AttachmentProfileIcon imageUrl={user.avatar?.url ?? null} width={40} isCircle={false} />
+          <ProfileIconContainer width={40} isCircle={false} />
 
           <div dir="rtl" className="flex flex-col">
             <p className="text-sm font-semibold">{user.firstName}</p>
