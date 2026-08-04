@@ -2,14 +2,13 @@ import { useEffect, useRef, useState } from "react"
 import SearchInput from "./SearchInput"
 import Text from "./Text"
 import Item from "./FilterItem"
+import MinimumDistanceSlider from "./PriceSlider"
 
 const filters =[
-    {title: "الشكل الدوائي", elements:[]},
-    {title: "التصنيف", elements:[]},
-    {title: "السعر", elements:[]},
-    {title: "الموقع الجغرافي", elements:[]},
-    {title: "الفئة العمرية", elements:[]},
-    {title: "يتطلب وصفة طبية", elements:[]},
+    {title: "الشكل الدوائي", elements:["أقراص", "كبسولات", "شراب", "كريم / مرهم", "قطرات", "أقراص", "كبسولات", "شراب", "كريم / مرهم", "قطرات"]},
+    // {title: "التصنيف", elements:[]},
+    {title: "₪ السعر", elements:<MinimumDistanceSlider/>},
+    {title: "الموقع الجغرافي", elements:[]}
 ]
 export default function SearchHome (){
     const [userInput, setUserInput] = useState("");
@@ -44,7 +43,7 @@ export default function SearchHome (){
                 <SearchInput label=" ابحث عن الأدوية" value= {userInput} onChange={(value) => setUserInput(value)}/>
                 
                 <div 
-                    className="flex flex-row justify-between hidden lg:flex md:flex"
+                    className="flex flex-row md:flex-row gap-5 hidden lg:flex md:flex "
                     ref={containerRef}
                 >
                     {filters.map((item, indx) => 

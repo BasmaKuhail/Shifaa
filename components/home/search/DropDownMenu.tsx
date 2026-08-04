@@ -1,31 +1,24 @@
+import { Children } from "react"
+
 type dropDownProps ={
     title: string,
-    elements: (string)[]
+    children: React.ReactNode
 }
 
-export default function DropDownMenu({title, elements}:dropDownProps){
+export default function DropDownMenu({title, children}:dropDownProps){
     return(
-        <div dir="rtl" className="bg-white rounded-[12px] flex flex-col p-5 gap-3 w-[14rem] border border-black-50 shadow">
-            <div className="flex flex-row justify-between gap-1 items-center w-full">
+        <div dir="rtl" className="bg-white w-fit min-w-max rounded-[12px] h-fit flex flex-col p-5 gap-3  border border-black-50 shadow">
+            <div className="flex flex-nowrap whitespace-nowrap flex-row justify-between gap-5 items-center w-full">
                 <p className="text-inpt text-right">تصنيف {title} </p>
                 <a href="#" className="hover:underline text-xs">اعادة الضبط</a>
             </div>
             <div className="flex flex-col">
                 <div 
-                    style={{ direction: "rtl" }}
+                    dir="rtl"
                     className="flex flex-col gap-2
-                        h-[10rem] overflow-y-scroll overflow-x-hidden "
+                        max-h-[10rem] overflow-y-scroll overflow-x-hidden "
                 >
-                    {elements.map((element, index) => 
-                        <div className="flex flex-row gap-2 px-3">
-                            <input 
-                                className="scale-150 bg-gradient-to-r from-[#329CCB] to-[#668DCA]"
-                                key={index} 
-                                type="checkbox" 
-                                value={element}/>
-                            <p className="text-inpt">{element}</p>
-                        </div>
-                    )}
+                    {children}
                 </div>
             </div>
         </div>

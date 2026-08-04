@@ -2,9 +2,10 @@ import Image from "next/image";
 import filterArrowDown from "@/public/icons/filterArrowDown.svg"
 import { Dispatch, SetStateAction, useState } from "react";
 import DropDownMenu from "./DropDownMenu";
+import JSX from "react";
 type itemProps = {
     title: string,
-    elements: (string)[];
+    elements: string[] | any;
     dropDownOpened: string | null;
     setDropDownOpened:Dispatch<SetStateAction<string | null>>;
 }
@@ -44,7 +45,18 @@ export default function Item ({title, elements, dropDownOpened, setDropDownOpene
                 
             </div>
             <div className="absolute top-full right-0">
-            {(dropDownOpened === title) && <DropDownMenu title={title} elements={["أقراص", "كبسولات", "شراب", "كريم / مرهم", "قطرات", "أقراص", "كبسولات", "شراب", "كريم / مرهم", "قطرات"]}/>}
+            {(dropDownOpened === title) && <DropDownMenu title={title}>
+                {Array.isArray(elements) ? elements.map((element, index) => 
+                        <div className="flex flex-row gap-2 px-3">
+                            <input 
+                                className="scale-150 bg-gradient-to-r from-[#329CCB] to-[#668DCA]"
+                                key={index} 
+                                type="checkbox" 
+                                value={element}/>
+                            <p className="text-inpt">{element}</p>
+                        </div>
+                    ) : elements}
+            </DropDownMenu>}
             </div>
         </div>
     )
