@@ -1,4 +1,4 @@
-import { MedicineFormData } from "@/components/pharmacyDashboard/addMedicine/AddMed";
+import axios from "axios";
 import api from "@/lib/api";
 
 export type Medicine = {
@@ -7,6 +7,8 @@ export type Medicine = {
   trade_name: string;
   dosage_form: string;
   strength: string | null;
+  price: number | null;
+  medication_photo?: File | null;
 };
 
 export type MedicinesPagination = {
@@ -39,7 +41,6 @@ export const getMedicines = async ({
       params: {
         page,
         per_page: perPage,
-        // sort: "scientificName",
         ...(normalizedSearch && {
           "filter[scientificName]": `*${normalizedSearch}*`,
         }),
@@ -53,6 +54,7 @@ export const getMedicines = async ({
 export type AddMedicinePayload = {
   global_medicine_id: number;
   price: number;
+  medication_photo?: File | null;
 };
 
 export type AddMedicineResponse = {
@@ -70,13 +72,50 @@ export const addMedicine = async ({
   pharmacyId,
   medicine,
 }: AddMedicineParams): Promise<AddMedicineResponse> => {
+  const formData = new FormData();
+
+  formData.append("pharmacy_id", String(pharmacyId));
+  formData.append(
+    "global_medicine_id",
+    String(medicine.global_medicine_id),
+  );
+  formData.append("price", String(medicine.price));
+
+  if (medicine.medication_photo instanceof File) {
+    formData.append(
+      "medication_photo",
+      medicine.medication_photo,
+    );
+  }
+
   const response = await api.post<AddMedicineResponse>(
     "/pharmacy/inventory/store",
-    {
-      pharmacy_id: pharmacyId,
-      ...medicine,
-    },
+    formData,
   );
 
+  return response.data;
+};
+
+
+
+export const getPharmacyMedicines = async (
+  pharmacyId: number,
+  params: GetMedicinesParams = {},
+): Promise<MedicinesApiResponse> => {
+  const normalizedSearch = params.search?.trim() || "";
+
+  const response = await api.get<MedicinesApiResponse>(
+    "pharmacy-medicines",
+    {
+      params: {
+        pharmacy_id: pharmacyId,
+        ...params,
+        ...(normalizedSearch && {
+          "filter[scientificName]": `*${normalizedSearch}*`,
+        }),
+      },
+    },
+  );
+  console.log("getPharmacyMedicines response:", response.data);
   return response.data;
 };

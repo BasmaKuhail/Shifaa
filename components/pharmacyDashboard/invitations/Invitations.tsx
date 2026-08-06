@@ -73,6 +73,7 @@ export default function Invitations() {
                     <div className="text-black-500 text-inpt">
                         <Row 
                             data={{pharmacistName: "اسم الصيدلي", phone: "رقم التواصل", email: "البريد الإلكتروني", date:"وقت الارسال", status: "حالة الدعوة"}} 
+                            isFirst
                             columnClassNames={{
                                 pharmacistName: "flex-1",
                                 phone: "flex-1",
