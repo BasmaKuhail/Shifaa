@@ -21,6 +21,7 @@ export type MedicinesPagination = {
 
 export type MedicinesApiResponse = MedicinesPagination & {
   data: Medicine[];
+  meta: any
 };
 
 export type GetMedicinesParams = {
