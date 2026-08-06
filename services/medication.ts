@@ -1,5 +1,6 @@
 import axios from "axios";
 import api from "@/lib/api";
+import { PaginationLink } from "./admin";
 
 export type Medicine = {
   id: number;
@@ -20,6 +21,7 @@ export type MedicinesPagination = {
 
 export type MedicinesApiResponse = MedicinesPagination & {
   data: Medicine[];
+  meta: any
 };
 
 export type GetMedicinesParams = {
@@ -97,25 +99,48 @@ export const addMedicine = async ({
 };
 
 
+export type MedicinesPaginationMeta = {
+  current_page: number;
+  from: number | null;
+  last_page: number;
+  links: PaginationLink[];
+  path: string;
+  per_page: number;
+  to: number | null;
+  total: number;
+};
+
+export type MedicinesPaginationLinks = {
+  first: string | null;
+  last: string | null;
+  prev: string | null;
+  next: string | null;
+};
+
 
 export const getPharmacyMedicines = async (
   pharmacyId: number,
-  params: GetMedicinesParams = {},
+  {
+    page = 1,
+    perPage = 9,
+    search = "",
+  }: GetMedicinesParams = {},
 ): Promise<MedicinesApiResponse> => {
-  const normalizedSearch = params.search?.trim() || "";
+  const normalizedSearch = search.trim();
 
   const response = await api.get<MedicinesApiResponse>(
-    "pharmacy-medicines",
+    "/pharmacy-medicines",
     {
       params: {
         pharmacy_id: pharmacyId,
-        ...params,
+        page,
+        per_page: perPage,
         ...(normalizedSearch && {
           "filter[scientificName]": `*${normalizedSearch}*`,
         }),
       },
     },
   );
-  console.log("getPharmacyMedicines response:", response.data);
+
   return response.data;
 };
