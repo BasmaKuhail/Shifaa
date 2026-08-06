@@ -8,17 +8,19 @@ import search from "@/public/icons/medicine/search.svg"
 import Image from "next/image";
 import InteractMed from "./interactMed";
 
-import ExportXLS from "@/public/icons/pharmInfo/exportXLS";
 import { getPharmacyMedicines, Medicine } from "@/services/medication";
 import { PharmacyContext } from "@/contexts/PharmacyDataContext";
+import ExportMedicinesButton from "./ExportMedicinesButton";
+
 export default function Medicines() {
     const router = useRouter();
     const [medicines, setMedicines] = useState<Medicine[]>([]);
     const [loadingMed, setLoadingMed] = useState(false);
-    const [errorMed, setErrorMed] = useState(null);
+    const [errorMed, setErrorMed] = useState<unknown>(null);
 
     const [searchInput, setSearchInput] = useState("");
     const { pharmacy, loading } = useContext(PharmacyContext);
+
     useEffect(() => {
         const fetchMedicines = async () => {
             setLoadingMed(true);
@@ -30,7 +32,7 @@ export default function Medicines() {
                     setMedicines(response.data);
                             console.log("Medicines:", response.data);
 
-                } catch (error: any) {
+                } catch (error: unknown) {
                     setErrorMed(error);
                 } finally {
                     setLoadingMed(false);
@@ -38,7 +40,8 @@ export default function Medicines() {
             }
         }
         fetchMedicines();
-    }, [searchInput, loading]);
+    }, [searchInput, loading, pharmacy]);
+
 
     return(
         <div className="flex flex-col gap-10 mt-13 mb-40 w-full">
@@ -53,10 +56,10 @@ export default function Medicines() {
                             icon={add}
                             onClick={() => router.push("/pharmacy-dashboard/add-medicine")}
                         />
-                        <ExportXLS className="text-black-500 w-10 cursor-pointer hover:text-blue-1000"/>
+                        <ExportMedicinesButton pharmacyName={pharmacy?.name} medicines={medicines} isLoading={loadingMed} />
                         {/* put the search icon and the input field in a flex row with gap-2 */}
                         <div className="relative flex flex-row items-center gap-2">
-                            <Image src={search} alt="search" className="fixed mr-2 z-10 cursor-pointer"/>
+                            <Image src={search} alt="search" className="absolute mr-2 z-10 cursor-pointer"/>
                             <input
                                 value={searchInput}
                                 type="search"
