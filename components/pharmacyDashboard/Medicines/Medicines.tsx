@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import Card from "../PharmacyInfo/CardContainer";
 import PetrolBtn from "../PharmacyInfo/invitePopup/PetrolBtn";
-import { use, useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import Row from "../PharmacyInfo/pharmacistsTable/Row";
 import add from "@/public/icons/medicine/add.svg"
 import search from "@/public/icons/medicine/search.svg"
@@ -11,7 +11,6 @@ import InteractMed from "./interactMed";
 import ExportXLS from "@/public/icons/pharmInfo/exportXLS";
 import { getPharmacyMedicines, Medicine } from "@/services/medication";
 import { PharmacyContext } from "@/contexts/PharmacyDataContext";
-import { m } from "framer-motion";
 export default function Medicines() {
     const router = useRouter();
     const [medicines, setMedicines] = useState<Medicine[]>([]);
@@ -37,8 +36,7 @@ export default function Medicines() {
                     setLoadingMed(false);
                 }
             }
-        };
-
+        }
         fetchMedicines();
     }, [searchInput, loading]);
 
