@@ -6,21 +6,9 @@ import PetrolBtn from "../PharmacyInfo/invitePopup/PetrolBtn";
 import Dropdown from "./DropDownInput";
 import AddImage from "./AddImage";
 
-import {
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import {useCallback, useContext, useEffect, useMemo, useRef, useState} from "react";
 
-import {
-    // addMed,
-  addMedicine,
-  getMedicines,
-  Medicine,
-} from "@/services/medication";
+import {addMedicine, getMedicines, Medicine} from "@/services/medication";
 import { showAlert } from "@/components/alerts/AlertContainer";
 import { PharmacyContext } from "@/contexts/PharmacyDataContext";
 import axios from "axios";
@@ -65,17 +53,13 @@ export default function AddMed({edit = false}: {edit?: boolean}) {
         });
 
         // Ignore a response if a newer request was started.
-        if (
-          requestId !== latestRequestIdRef.current
-        ) {
+        if (requestId !== latestRequestIdRef.current) {
           return;
         }
 
         setMedicines(response.data);
       } catch (error) {
-        if (
-          requestId !== latestRequestIdRef.current
-        ) {
+        if (requestId !== latestRequestIdRef.current) {
           return;
         }
         showAlert({
@@ -93,15 +77,11 @@ export default function AddMed({edit = false}: {edit?: boolean}) {
           "تعذر تحميل قائمة الأدوية",
         );
       } finally {
-        if (
-          requestId === latestRequestIdRef.current
-        ) {
+        if (requestId === latestRequestIdRef.current) {
           setIsLoadingMedicines(false);
         }
       }
-    },
-    [],
-  );
+    }, [],);
 
   useEffect(() => {
     const timeoutId = window.setTimeout(() => {

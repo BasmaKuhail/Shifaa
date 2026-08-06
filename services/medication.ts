@@ -1,4 +1,3 @@
-import axios from "axios";
 import api from "@/lib/api";
 import { PaginationLink } from "./admin";
 
@@ -21,7 +20,7 @@ export type MedicinesPagination = {
 
 export type MedicinesApiResponse = MedicinesPagination & {
   data: Medicine[];
-  meta: any
+  meta: MedicinesPaginationMeta;
 };
 
 export type GetMedicinesParams = {
@@ -143,4 +142,49 @@ export const getPharmacyMedicines = async (
   );
 
   return response.data;
+};
+type MedicineApiResponse = {
+  data: Array<{
+    id: number;
+    scientific_name: string;
+    trade_name: string;
+    dosage_form: string;
+    strength: string | null;
+    price: string | number | null;
+    attachments: unknown[];
+  }>;
+};
+
+export const getMedicineDetails = async (
+  pharmacyId: number,
+  medicineId: number,
+): Promise<Medicine | null> => {
+  const response = await api.get<MedicineApiResponse>(
+    "/pharmacy-medicines",
+    {
+      params: {
+        pharmacy_id: pharmacyId,
+        "filter[id]": medicineId,
+      },
+    },
+  );
+
+  const medicine = response.data.data[0];
+
+  if (!medicine) {
+    return null;
+  }
+
+  return {
+    id: medicine.id,
+    scientific_name: medicine.scientific_name,
+    trade_name: medicine.trade_name,
+    dosage_form: medicine.dosage_form,
+    strength: medicine.strength ?? "",
+    price:
+      medicine.price !== null
+        ? Number(medicine.price)
+        : null,
+    medication_photo: null,
+  };
 };

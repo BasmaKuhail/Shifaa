@@ -156,8 +156,8 @@ export default function Medicines() {
                                                 tradeName: medicine.trade_name,
                                                 dosageForm: medicine.dosage_form,
                                                 price: medicine.price,
-                                                availability: "متوفر", // You can replace this with actual availability data if available
-                                                interact: <InteractMed id={medicine.id} name={medicine.trade_name}/>,
+                                                availability: "متوفر", 
+                                                interact: <InteractMed pharmId={pharmacy?.id} id={medicine.id} name={medicine.trade_name}/>,
                                             }}
                                             columnClassNames={{
                                                 medScientificName: "flex-2",

@@ -18,6 +18,10 @@ export const protectedRoutes: RouteRule[] = [
         path: "/switch-to-pharmacist",
         allowedRoles: ["user"],
     },
+    {
+        path: "/pharmacy-daqshboard",
+        allowedRoles: ["pharmacist"],
+    }
 ];
 
 export const guestOnlyRoutes: string[] = [
