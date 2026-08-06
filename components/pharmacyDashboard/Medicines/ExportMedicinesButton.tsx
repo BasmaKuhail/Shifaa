@@ -1,9 +1,15 @@
+import { useState } from "react";
 import ExportXLS from "@/public/icons/pharmInfo/exportXLS";
-import { Medicine } from "@/services/medication";
+import {
+    getPharmacyMedicines,
+    Medicine,
+} from "@/services/medication";
 
 type ExportMedicinesButtonProps = {
+    pharmacyId?: number;
     pharmacyName?: string;
     medicines: Medicine[];
+    search?: string;
     isLoading?: boolean;
 };
 
@@ -15,14 +21,39 @@ const escapeXlsValue = (value: unknown) =>
         .replace(/"/g, "&quot;");
 
 export default function ExportMedicinesButton({
+    pharmacyId,
     pharmacyName,
     medicines,
+    search = "",
     isLoading = false,
 }: ExportMedicinesButtonProps) {
-    const exportMedicines = () => {
-        if (medicines.length === 0) return;
+    const [isExporting, setIsExporting] = useState(false);
 
-        const rows = medicines.map((medicine) => `
+    const exportMedicines = async () => {
+        if (isExporting || !pharmacyId) return;
+
+        setIsExporting(true);
+
+        try {
+            const exportedMedicines: Medicine[] = [];
+            let page = 1;
+            let lastPage = 1;
+
+            do {
+                const response = await getPharmacyMedicines(pharmacyId, {
+                    page,
+                    perPage: 100,
+                    search,
+                });
+
+                exportedMedicines.push(...response.data);
+                lastPage = response.meta?.last_page ?? response.last_page ?? page;
+                page += 1;
+            } while (page <= lastPage);
+
+            if (exportedMedicines.length === 0) return;
+
+            const rows = exportedMedicines.map((medicine) => `
             <tr>
                 <td>${escapeXlsValue(medicine.scientific_name)}</td>
                 <td>${escapeXlsValue(medicine.trade_name)}</td>
@@ -32,8 +63,8 @@ export default function ExportMedicinesButton({
                 <td>${escapeXlsValue("متوفر")}</td>
             </tr>`).join("");
 
-        // Excel supports an HTML table downloaded with the Excel MIME type as an .xls file.
-        const workbook = `
+            // Excel supports an HTML table downloaded with the Excel MIME type as an .xls file.
+            const workbook = `
             <html xmlns:o="urn:schemas-microsoft-com:office:office"
                 xmlns:x="urn:schemas-microsoft-com:office:excel"
                 xmlns="http://www.w3.org/TR/REC-html40">
@@ -55,17 +86,20 @@ export default function ExportMedicinesButton({
                 </body>
             </html>`;
 
-        const blob = new Blob([workbook], {
-            type: "application/vnd.ms-excel;charset=utf-8",
-        });
-        const downloadUrl = URL.createObjectURL(blob);
-        const link = document.createElement("a");
-        link.href = downloadUrl;
-        link.download = `${pharmacyName}-medicines-${new Date().toLocaleString().replace(/[/:]/g, '-')}.xls`;
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-        URL.revokeObjectURL(downloadUrl);
+            const blob = new Blob([workbook], {
+                type: "application/vnd.ms-excel;charset=utf-8",
+            });
+            const downloadUrl = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+            link.href = downloadUrl;
+            link.download = `${pharmacyName}-medicines-${new Date().toLocaleString().replace(/[/:]/g, '-')}.xls`;
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+            URL.revokeObjectURL(downloadUrl);
+        } finally {
+            setIsExporting(false);
+        }
     };
 
     const hasMedicines = medicines.length > 0;
@@ -74,7 +108,7 @@ export default function ExportMedicinesButton({
         <button
             type="button"
             onClick={exportMedicines}
-            disabled={isLoading || !hasMedicines}
+            disabled={isLoading || isExporting || !hasMedicines || !pharmacyId}
             aria-label="تصدير الأدوية إلى ملف Excel"
             title={!hasMedicines ? "لا توجد أدوية للتصدير" : "تصدير إلى Excel"}
             className="cursor-pointer disabled:cursor-not-allowed disabled:opacity-40"

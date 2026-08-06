@@ -8,7 +8,6 @@ import search from "@/public/icons/medicine/search.svg"
 import Image from "next/image";
 import InteractMed from "./interactMed";
 
-import ExportXLS from "@/public/icons/pharmInfo/exportXLS";
 import { getPharmacyMedicines, Medicine, MedicinesPaginationMeta } from "@/services/medication";
 import { PharmacyContext } from "@/contexts/PharmacyDataContext";
 import PaginationRounded from "@/components/Paginantion";
@@ -95,8 +94,13 @@ export default function Medicines() {
                             icon={add}
                             onClick={() => router.push("/pharmacy-dashboard/add-medicine")}
                         />
-                        <ExportMedicinesButton pharmacyName={pharmacy?.name} medicines={medicines} isLoading={loadingMed} />
-                        {/* put the search icon and the input field in a flex row with gap-2 */}
+                        <ExportMedicinesButton
+                            pharmacyId={pharmacy?.id}
+                            pharmacyName={pharmacy?.name}
+                            medicines={medicines}
+                            search={debouncedSearch}
+                            isLoading={loadingMed}
+                        />
                         <div className="relative flex flex-row items-center gap-2">
                             <Image src={search} alt="search" className="absolute mr-2 z-10 cursor-pointer"/>
                             <input
