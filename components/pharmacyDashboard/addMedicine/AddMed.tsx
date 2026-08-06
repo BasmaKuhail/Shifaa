@@ -22,26 +22,18 @@ import {
   Medicine,
 } from "@/services/medication";
 import { showAlert } from "@/components/alerts/AlertContainer";
-import { ApplicationFile } from "@/types/PharmacistApplication";
 import { PharmacyContext } from "@/contexts/PharmacyDataContext";
+import axios from "axios";
 
-export type MedicineFormData = {
-    id:number,
-  scientific_name: string;
-  trade_name: string;
-  dosage_form: string;
-  strength: string;
-  price: string;
-  image?: ApplicationFile
-};
 
-const initialMedicineData: MedicineFormData = {
+const initialMedicineData: Medicine = {
   id: 0,
   scientific_name: "",
   trade_name: "",
   dosage_form: "",
   strength: "",
-  price: "",
+  price: null,
+  medication_photo: null,
 };
 
 const SEARCH_DEBOUNCE_MS = 500;
@@ -52,7 +44,7 @@ export default function AddMed({edit = false}: {edit?: boolean}) {
   const [medicines, setMedicines] = useState<Medicine[]>([]);
   const [selectedMedicine, setSelectedMedicine] = useState<Medicine | null>(null);
   const [selectedMedicineId, setSelectedMedicineId] = useState("");
-  const [medicineData, setMedicineData] = useState<MedicineFormData>(initialMedicineData);
+  const [medicineData, setMedicineData] = useState<Medicine>(initialMedicineData);
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoadingMedicines, setIsLoadingMedicines] = useState(false);
   const [medicinesError, setMedicinesError] = useState("");
@@ -86,7 +78,11 @@ export default function AddMed({edit = false}: {edit?: boolean}) {
         ) {
           return;
         }
-
+        showAlert({
+            type:"Error",
+            title:"خطأ",
+            message:"تعذر تحميل قائمة الأدوية"
+        })
         console.error(
           "Failed to load medicines:",
           error,
@@ -140,9 +136,11 @@ export default function AddMed({edit = false}: {edit?: boolean}) {
         // Including more details avoids multiple identical
         label: [
           medicine.scientific_name,
-        //   medicine.trade_name,
+          medicine.trade_name,
           medicine.strength,
           medicine.dosage_form,
+          medicine.price,
+          medicine.medication_photo,
         ]
           .filter(Boolean)
           .join(" - "),
@@ -171,17 +169,18 @@ export default function AddMed({edit = false}: {edit?: boolean}) {
     setSelectedMedicine(selected);
 
     setMedicineData({
-        id:selected.id,
+      id: selected.id,
       scientific_name: selected.scientific_name,
       trade_name: selected.trade_name,
       dosage_form: selected.dosage_form,
       strength: selected.strength ?? "",
-      price: "",
+      price: 0,
+      medication_photo: null,
     });
   };
 
   const handleFieldChange = (
-    field: keyof MedicineFormData,
+    field: keyof Medicine,
     value: string,
   ) => {
     setMedicineData((previousData) => ({
@@ -191,8 +190,8 @@ export default function AddMed({edit = false}: {edit?: boolean}) {
   };
 
   const createStringChangeHandler =
-    (field: keyof MedicineFormData) =>
-    (value: string | File | null) => {
+    (field: keyof Medicine) =>
+    (value: string | File | null ) => {
       if (typeof value === "string") {
         handleFieldChange(field, value);
       }
@@ -214,7 +213,7 @@ const handleSubmit = async () => {
     if(medicineData.scientific_name === "" || 
         medicineData.trade_name === "" || 
         medicineData.dosage_form === "" ||
-        medicineData.price=== "" ||
+        medicineData.price=== 0 ||
         medicineData.strength === ""
     ){
         showAlert({
@@ -250,7 +249,8 @@ const handleSubmit = async () => {
       pharmacyId: pharmacy?.id,
       medicine: {
         global_medicine_id: globalMedicineId,
-        price,
+        price: price,
+        medication_photo: medicineData.medication_photo,
       },
     });
 
@@ -266,14 +266,36 @@ const handleSubmit = async () => {
 
         })
   } catch (error) {
-    console.error("Failed to add medicine:", error);
-    // showAlert({
-    //         type:"Error",
-    //         title:"خطأ!",
-    //         message:error.message || "حدث خطأ"
+  console.error("Failed to add medicine:", error);
 
-    //     })
+  let errorMessage = "تعذر إضافة الدواء";
+
+  if (axios.isAxiosError(error)) {
+    console.error("Validation response:", error.response?.data);
+
+    const responseData = error.response?.data as
+      | {
+          message?: string;
+          errors?: Record<string, string[]>;
+        }
+      | undefined;
+
+    const firstValidationError = responseData?.errors
+      ? Object.values(responseData.errors).flat()[0]
+      : undefined;
+
+    errorMessage =
+      firstValidationError ??
+      responseData?.message ??
+      errorMessage;
   }
+
+  showAlert({
+    type: "Error",
+    title: "خطأ!",
+    message: errorMessage,
+  });
+}
  }else{
     showAlert({
         type:"Error",
@@ -366,14 +388,31 @@ const handleSubmit = async () => {
                 label="السعر"
                 type="number"
                 inputText="أدخل السعر"
-                value={medicineData.price}
-                onChange={createStringChangeHandler(
-                  "price",
-                )}
-                isTrue={Boolean(medicineData.price)}
-                editable={Boolean(
-                  selectedMedicineId,
-                )}
+                value={
+                  medicineData.price !== null
+                    ? String(medicineData.price)
+                    : ""
+                }
+                onChange={(value) => {
+                  const numericPrice =
+                    typeof value === "string" && value !== ""
+                      ? Number(value)
+                      : null;
+
+                  setMedicineData((previousData) => ({
+                    ...previousData,
+                    price:
+                      numericPrice !== null &&
+                      Number.isFinite(numericPrice)
+                        ? numericPrice
+                        : null,
+                  }));
+                }}
+                isTrue={
+                  medicineData.price !== null &&
+                  medicineData.price > 0
+                }
+                editable={Boolean(selectedMedicineId)}
                 errorMsg=""
               />
 
@@ -385,7 +424,15 @@ const handleSubmit = async () => {
             ملاحظة: تقبل أنواع الصور التالية: png,
             jpeg, jpg
           </p>
-          <AddImage label="صورة 1" /></div>
+          <AddImage
+            label="صورة 1"
+            onImageChange={(file: File | null) => {
+              setMedicineData((previousData) => ({
+                ...previousData,
+                medication_photo: file,
+              }));
+            }}
+          /></div>
           </div>
         </div>
       </Card>

@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import Card from "../PharmacyInfo/CardContainer";
 import PetrolBtn from "../PharmacyInfo/invitePopup/PetrolBtn";
-import { useState } from "react";
+import { use, useContext, useEffect, useState } from "react";
 import Row from "../PharmacyInfo/pharmacistsTable/Row";
 import add from "@/public/icons/medicine/add.svg"
 import search from "@/public/icons/medicine/search.svg"
@@ -9,16 +9,46 @@ import Image from "next/image";
 import InteractMed from "./interactMed";
 
 import ExportXLS from "@/public/icons/pharmInfo/exportXLS";
+import { getPharmacyMedicines, Medicine } from "@/services/medication";
+import { PharmacyContext } from "@/contexts/PharmacyDataContext";
+import { m } from "framer-motion";
 export default function Medicines() {
     const router = useRouter();
+    const [medicines, setMedicines] = useState<Medicine[]>([]);
+    const [loadingMed, setLoadingMed] = useState(false);
+    const [errorMed, setErrorMed] = useState(null);
+
     const [searchInput, setSearchInput] = useState("");
+    const { pharmacy, loading } = useContext(PharmacyContext);
+    useEffect(() => {
+        const fetchMedicines = async () => {
+            setLoadingMed(true);
+            if(!loading && pharmacy) {
+                try {
+                    const response = await getPharmacyMedicines(pharmacy.id, {
+                        search: searchInput,
+                    });
+                    setMedicines(response.data);
+                            console.log("Medicines:", response.data);
+
+                } catch (error: any) {
+                    setErrorMed(error);
+                } finally {
+                    setLoadingMed(false);
+                }
+            }
+        };
+
+        fetchMedicines();
+    }, [searchInput, loading]);
+
     return(
         <div className="flex flex-col gap-10 mt-13 mb-40 w-full">
             <p className="font-semibold text-27px">إدارة أدوية الصيدلية</p>
             <Card 
                 title="أدوية الصيدلية"
-                scrollable  
-                actions= { 
+                scrollable
+                actions={
                     <div className="flex flex-row justify-between items-center gap-5">
                         <PetrolBtn
                             text="إضافة دواء"
@@ -48,42 +78,55 @@ export default function Medicines() {
                             data={{
                                 medScientificName: "الاسم العلمي",
                                 tradeName: "الاسم التجاري",
-                                price: "سعر",
                                 dosageForm: "شكل الجرعة",
+                                price: "السعر",
                                 availability: "توافر",
                                 interact: "التفاعل",
                             }}
                             columnClassNames={{
                                 medScientificName: "flex-2",
                                 tradeName: "flex-2",
+                                dosageForm: "flex-2",
                                 price: "flex-1",
-                                dosageForm: "flex-1",
                                 availability: "flex-1",
                                 interact: "flex-1",
                             }}
                         />
                         <div
                             key={1}
-                            className="text-inpt flex w-full items-center border-t border-gray-200"
+                            className="flex flex-col text-inpt flex w-full items-center border-t border-gray-200"
                         >
-                            <Row
-                                data={{
-                                    medScientificName: "باراسيتامول",
-                                    tradeName: "باراسيتامول",
-                                    price: "10.00",
-                                    dosageForm: "قرص",
-                                    availability: "متوفر",
-                                    interact: <InteractMed id={1} name="باراسيتامول"/>,
-                                }}
-                            columnClassNames={{
-                                medScientificName: "flex-2",
-                                tradeName: "flex-2",
-                                price: "flex-1",
-                                dosageForm: "flex-1",
-                                availability: "flex-1",
-                                interact: "flex-1",
-                            }}
-                            />
+                            {loadingMed ? (
+                                <p className="text-black-500 text-sm py-2">جاري تحميل الأدوية...</p>
+                            ) : errorMed ? (
+                                <p className="text-red-500 text-sm py-2">تعذر تحميل الأدوية</p>
+                            ) : (
+                                medicines.length === 0 ? (
+                                    <p className="text-black-500 text-sm py-2">لا توجد أدوية</p>
+                                ) : (
+                                    medicines.map((medicine) => (
+                                        <Row
+                                            key={medicine.id}
+                                            data={{
+                                                medScientificName: medicine.scientific_name,
+                                                tradeName: medicine.trade_name,
+                                                dosageForm: medicine.dosage_form,
+                                                price: medicine.price,
+                                                availability: "متوفر", // You can replace this with actual availability data if available
+                                                interact: <InteractMed id={medicine.id} name={medicine.trade_name}/>,
+                                            }}
+                                            columnClassNames={{
+                                                medScientificName: "flex-2",
+                                                tradeName: "flex-2",
+                                                dosageForm: "flex-2",
+                                                price: "flex-1",
+                                                availability: "flex-1",
+                                                interact: "flex-1",
+                                            }}
+                                        />
+                                    ))
+                                )
+                            )}
                         </div>
                 </div>
             </Card>
