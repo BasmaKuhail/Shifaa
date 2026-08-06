@@ -7,6 +7,8 @@ import add from "@/public/icons/medicine/add.svg"
 import search from "@/public/icons/medicine/search.svg"
 import Image from "next/image";
 import InteractMed from "./interactMed";
+
+import ExportXLS from "@/public/icons/pharmInfo/exportXLS";
 export default function Medicines() {
     const router = useRouter();
     const [searchInput, setSearchInput] = useState("");
@@ -23,6 +25,7 @@ export default function Medicines() {
                             icon={add}
                             onClick={() => router.push("/pharmacy-dashboard/add-medicine")}
                         />
+                        <ExportXLS className="text-black-500 w-10 cursor-pointer hover:text-blue-1000"/>
                         {/* put the search icon and the input field in a flex row with gap-2 */}
                         <div className="relative flex flex-row items-center gap-2">
                             <Image src={search} alt="search" className="fixed mr-2 z-10 cursor-pointer"/>
