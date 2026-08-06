@@ -1,7 +1,7 @@
 import { useRouter } from "next/router";
 import Card from "../PharmacyInfo/CardContainer";
 import PetrolBtn from "../PharmacyInfo/invitePopup/PetrolBtn";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import Row from "../PharmacyInfo/pharmacistsTable/Row";
 import add from "@/public/icons/medicine/add.svg"
 import search from "@/public/icons/medicine/search.svg"
@@ -9,37 +9,77 @@ import Image from "next/image";
 import InteractMed from "./interactMed";
 
 import ExportXLS from "@/public/icons/pharmInfo/exportXLS";
-import { getPharmacyMedicines, Medicine } from "@/services/medication";
+import { getPharmacyMedicines, Medicine, MedicinesPaginationMeta } from "@/services/medication";
 import { PharmacyContext } from "@/contexts/PharmacyDataContext";
+import PaginationRounded from "@/components/Paginantion";
 export default function Medicines() {
+    const MEDICINES_PER_PAGE = 9;
+    const SEARCH_DEBOUNCE_MS = 500;
+
+
     const router = useRouter();
     const [medicines, setMedicines] = useState<Medicine[]>([]);
     const [loadingMed, setLoadingMed] = useState(false);
     const [errorMed, setErrorMed] = useState(null);
 
+    const [pagination, setPagination] = useState<MedicinesPaginationMeta | null>(null);
+    const [currentPage, setCurrentPage] = useState(1);
+
+    const [debouncedSearch, setDebouncedSearch] = useState("");
     const [searchInput, setSearchInput] = useState("");
+
     const { pharmacy, loading } = useContext(PharmacyContext);
+
+    const latestRequestIdRef = useRef(0);
+    useEffect(() => {
+        const timeoutId = window.setTimeout(() => {
+            setDebouncedSearch(searchInput.trim());
+            setCurrentPage(1);
+        }, SEARCH_DEBOUNCE_MS);
+
+        return () => {
+            window.clearTimeout(timeoutId);
+        };
+    }, [searchInput]);
+
     useEffect(() => {
         const fetchMedicines = async () => {
             setLoadingMed(true);
             if(!loading && pharmacy) {
+                const requestId = ++latestRequestIdRef.current;
                 try {
                     const response = await getPharmacyMedicines(pharmacy.id, {
-                        search: searchInput,
+                        page: currentPage,
+                        perPage: MEDICINES_PER_PAGE,
+                        search: debouncedSearch,
                     });
+                    if (requestId !== latestRequestIdRef.current) {
+                        return;
+                    }
                     setMedicines(response.data);
-                            console.log("Medicines:", response.data);
+                    setPagination(response.meta);
+                    console.log("Medicines:", response.data);
 
                 } catch (error: any) {
-                    setErrorMed(error);
+                    if (requestId !== latestRequestIdRef.current) {
+                        return;
+                    }
+                    setMedicines([]);
+                    setPagination(null);
+                    setErrorMed(error|| "تعذر تحميل الأدوية");
                 } finally {
-                    setLoadingMed(false);
+                    if (requestId === latestRequestIdRef.current) {
+                        setLoadingMed(false);
+                    }
                 }
             }
         }
         fetchMedicines();
-    }, [searchInput, loading]);
+    }, [currentPage, debouncedSearch, pharmacy, loading]);
 
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
+    };
     return(
         <div className="flex flex-col gap-10 mt-13 mb-40 w-full">
             <p className="font-semibold text-27px">إدارة أدوية الصيدلية</p>
@@ -56,7 +96,7 @@ export default function Medicines() {
                         <ExportXLS className="text-black-500 w-10 cursor-pointer hover:text-blue-1000"/>
                         {/* put the search icon and the input field in a flex row with gap-2 */}
                         <div className="relative flex flex-row items-center gap-2">
-                            <Image src={search} alt="search" className="fixed mr-2 z-10 cursor-pointer"/>
+                            <Image src={search} alt="search" className="absolute mr-2 z-10 cursor-pointer"/>
                             <input
                                 value={searchInput}
                                 type="search"
@@ -97,10 +137,10 @@ export default function Medicines() {
                             {loadingMed ? (
                                 <p className="text-black-500 text-sm py-2">جاري تحميل الأدوية...</p>
                             ) : errorMed ? (
-                                <p className="text-red-500 text-sm py-2">تعذر تحميل الأدوية</p>
+                                <p className="text-red-500 text-sm py-2">{errorMed || "تعذر تحميل الأدوية"} </p>
                             ) : (
                                 medicines.length === 0 ? (
-                                    <p className="text-black-500 text-sm py-2">لا توجد أدوية</p>
+                                    <p className="text-black-500 text-sm py-2">لا توجد أدوية في صيدليتك</p>
                                 ) : (
                                     medicines.map((medicine) => (
                                         <Row
@@ -126,6 +166,18 @@ export default function Medicines() {
                                 )
                             )}
                         </div>
+                    {!loadingMed &&
+                    !errorMed &&
+                    pagination &&
+                    pagination.last_page > 1 && (
+                        <div className="flex w-full justify-start pt-5">
+                            <PaginationRounded
+                                count={pagination.last_page}
+                                page={currentPage}
+                                onChange={handlePageChange}
+                            />
+                        </div>
+                    )}
                 </div>
             </Card>
         </div>
