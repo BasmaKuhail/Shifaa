@@ -12,6 +12,8 @@ import ExportXLS from "@/public/icons/pharmInfo/exportXLS";
 import { getPharmacyMedicines, Medicine, MedicinesPaginationMeta } from "@/services/medication";
 import { PharmacyContext } from "@/contexts/PharmacyDataContext";
 import PaginationRounded from "@/components/Paginantion";
+import ExportMedicinesButton from "./ExportMedicinesButton";
+
 export default function Medicines() {
     const MEDICINES_PER_PAGE = 9;
     const SEARCH_DEBOUNCE_MS = 500;
@@ -20,7 +22,7 @@ export default function Medicines() {
     const router = useRouter();
     const [medicines, setMedicines] = useState<Medicine[]>([]);
     const [loadingMed, setLoadingMed] = useState(false);
-    const [errorMed, setErrorMed] = useState(null);
+    const [errorMed, setErrorMed] = useState<string>("");
 
     const [pagination, setPagination] = useState<MedicinesPaginationMeta | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
@@ -93,7 +95,7 @@ export default function Medicines() {
                             icon={add}
                             onClick={() => router.push("/pharmacy-dashboard/add-medicine")}
                         />
-                        <ExportXLS className="text-black-500 w-10 cursor-pointer hover:text-blue-1000"/>
+                        <ExportMedicinesButton pharmacyName={pharmacy?.name} medicines={medicines} isLoading={loadingMed} />
                         {/* put the search icon and the input field in a flex row with gap-2 */}
                         <div className="relative flex flex-row items-center gap-2">
                             <Image src={search} alt="search" className="absolute mr-2 z-10 cursor-pointer"/>
@@ -137,7 +139,7 @@ export default function Medicines() {
                             {loadingMed ? (
                                 <p className="text-black-500 text-sm py-2">جاري تحميل الأدوية...</p>
                             ) : errorMed ? (
-                                <p className="text-red-500 text-sm py-2">{errorMed || "تعذر تحميل الأدوية"} </p>
+                                <p className="text-red-500 text-sm py-2">{errorMed}</p>
                             ) : (
                                 medicines.length === 0 ? (
                                     <p className="text-black-500 text-sm py-2">لا توجد أدوية في صيدليتك</p>
