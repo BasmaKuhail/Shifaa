@@ -71,7 +71,7 @@ export default function PharmCard({
                 width={600}
                 height={400}
                 loading={isLcpCandidate ? "eager" : "lazy"}
-                 fetchPriority={isLcpCandidate ? "high" : "auto"}
+                fetchPriority={isLcpCandidate ? "high" : "auto"}
                 className={`
                     rounded-[14px] object-cover
                     ${

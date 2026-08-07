@@ -4,7 +4,6 @@ import Input from "@/components/register/input";
 import Card from "../PharmacyInfo/CardContainer";
 import PetrolBtn from "../PharmacyInfo/invitePopup/PetrolBtn";
 import Dropdown from "../addMedicine/DropDownInput";
-import AddImage from "../addMedicine/AddImage";
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/router";
@@ -14,6 +13,8 @@ import {
   Medicine,
 } from "@/services/medication";
 import { showAlert } from "@/components/alerts/AlertContainer";
+import Image from "next/image";
+import ArrowRight from "@/public/icons/error/arrowRight";
 
 const initialMedicineData: Medicine = {
   id: 0,
@@ -34,6 +35,7 @@ export default function MedDetails() {
   const [hasError, setHasError] = useState(false);
 
   const loadedMedicineRef = useRef<string | null>(null);
+  const [imageSource, setImageSource] = useState<string | null>(null);
 
   useEffect(() => {
     if (!router.isReady) {
@@ -79,7 +81,7 @@ export default function MedDetails() {
           pharmacyId,
           medicineId,
         );
-
+        setImageSource(medicine?.medication_photo || null)
         if (!medicine) {
           loadedMedicineRef.current = null;
           setHasError(true);
@@ -155,9 +157,14 @@ export default function MedDetails() {
       dir="rtl"
       className="mb-40 mt-13 flex w-full flex-col gap-10"
     >
-      <h1 className="text-27px font-semibold">
-        بيانات الدواء
-      </h1>
+      <div className="flex flex-row items-center gap-5 cursor-pointer ">
+        <div onClick={() => router.push("/pharmacy-dashboard/my-medicines")}><ArrowRight className="text-black hover:text-blue-1000" /></div>
+        
+        <h1 className="text-27px font-semibold">
+          بيانات الدواء
+        </h1>
+      </div>
+
 
       <Card title="معلومات الدواء">
         <div className="flex w-full flex-col px-10">
@@ -230,15 +237,21 @@ export default function MedDetails() {
               />
             </div>
 
-            {medicineData.medication_photo && <div className="mt-3 flex flex-col gap-2">
+            {medicineData.medication_photo && 
+            <div className="mt-3 flex flex-col gap-2">
               <label className="text-right text-sm font-bold">
                 صورة الدواء
               </label>
-
-              <AddImage
-                label="صورة 1"
-                onImageChange={() => undefined}
-              />
+              {imageSource ? (
+                <Image
+                  src={imageSource}
+                  alt="medicine photo"
+                  width={400}
+                  height={400}
+                  className="rounded-[14px] border"
+                />
+              ) : <p>لا توجد صورة لهذا الدواء</p>}
+              
             </div>}
           </div>
         </div>

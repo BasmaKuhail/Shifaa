@@ -1,5 +1,6 @@
 import api from "@/lib/api";
 import { PaginationLink } from "./admin";
+import { ApplicationFile } from "@/types/PharmacistApplication";
 
 export type Medicine = {
   id: number;
@@ -8,7 +9,7 @@ export type Medicine = {
   dosage_form: string;
   strength: string | null;
   price: number | null;
-  medication_photo?: File | null;
+  medication_photo?: string | null;
 };
 
 export type MedicinesPagination = {
@@ -151,7 +152,9 @@ type MedicineApiResponse = {
     dosage_form: string;
     strength: string | null;
     price: string | number | null;
-    attachments: unknown[];
+    attachments:[
+      ApplicationFile | null,
+    ];
   }>;
 };
 
@@ -185,6 +188,6 @@ export const getMedicineDetails = async (
       medicine.price !== null
         ? Number(medicine.price)
         : null,
-    medication_photo: null,
+    medication_photo: medicine.attachments[0]?.url || null,
   };
 };
