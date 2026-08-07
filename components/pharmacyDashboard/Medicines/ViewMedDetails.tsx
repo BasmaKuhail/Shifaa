@@ -15,6 +15,7 @@ import {
 import { showAlert } from "@/components/alerts/AlertContainer";
 import Image from "next/image";
 import ArrowRight from "@/public/icons/error/arrowRight";
+import { getDosageFormImage } from "@/config/medicationFormImages";
 
 const initialMedicineData: Medicine = {
   id: 0,
@@ -125,6 +126,9 @@ export default function MedDetails() {
   const handleDeleteMedicine = async () => {
     console.log("Delete medicine:", medicineData.id);
   };
+
+  const imageToDisplay =
+    imageSource ?? getDosageFormImage(medicineData.dosage_form);
 
   if (isLoading) {
     return (
@@ -237,22 +241,21 @@ export default function MedDetails() {
               />
             </div>
 
-            {medicineData.medication_photo && 
             <div className="mt-3 flex flex-col gap-2">
               <label className="text-right text-sm font-bold">
                 صورة الدواء
               </label>
-              {imageSource ? (
+              {imageToDisplay ? (
                 <Image
-                  src={imageSource}
+                  src={imageToDisplay}
                   alt="medicine photo"
-                  width={400}
+                  width={200}
                   height={400}
                   className="rounded-[14px] border"
                 />
               ) : <p>لا توجد صورة لهذا الدواء</p>}
               
-            </div>}
+            </div>
           </div>
         </div>
       </Card>
