@@ -6,6 +6,7 @@ import Image from "next/image";
 import GradientBtn from "../GradiantBtn";
 import { useState } from "react";
 import MobileFilter from "./mobileFilter/MobileFilter";
+import { useRouter } from "next/router";
 
 type SearchInputProps = {
     label: string;
@@ -19,6 +20,8 @@ function handleSearch (){
 }
 export default function SearchInput({label, value, onChange}:SearchInputProps){
     const [isFilterOpened, setIsFilterOpened] = useState(false);
+
+    const router = useRouter()
     return(<>
         <div dir="rtl" className="relative w-full">
             <Image 
@@ -67,12 +70,11 @@ export default function SearchInput({label, value, onChange}:SearchInputProps){
                     h-[44px] md:h-[49px]"
             >
                 <div className="hidden lg:block md:block  h-full">
-                    <GradientBtn text="ابدأ البحث" onClick={() => {}} px={10} rounded="30"/>
+                    <GradientBtn text="ابدأ البحث" onClick={() => {router.push("/search-medicine")}} px={10} rounded="30"/>
                 </div>
                 <div className="block lg:hidden md:hidden h-[90%]">
-                    <GradientBtn image={arrow} onClick={() => {}} px={5} rounded="30"/>
+                    <GradientBtn image={arrow} onClick={() => {router.push("/search-medicine")}} px={5} rounded="30"/>
                 </div>
-
             </div>
             
             
