@@ -13,8 +13,11 @@ import { showAlert } from "@/components/alerts/AlertContainer";
 import { PharmacyContext } from "@/contexts/PharmacyDataContext";
 import axios from "axios";
 
+type MedicineFormData = Omit<Medicine, "medication_photo"> & {
+  medication_photo: File | null;
+};
 
-const initialMedicineData: Medicine = {
+const initialMedicineData: MedicineFormData = {
   id: 0,
   scientific_name: "",
   trade_name: "",
@@ -32,7 +35,7 @@ export default function AddMed({edit = false}: {edit?: boolean}) {
   const [medicines, setMedicines] = useState<Medicine[]>([]);
   const [selectedMedicine, setSelectedMedicine] = useState<Medicine | null>(null);
   const [selectedMedicineId, setSelectedMedicineId] = useState("");
-  const [medicineData, setMedicineData] = useState<Medicine>(initialMedicineData);
+  const [medicineData, setMedicineData] = useState<MedicineFormData>(initialMedicineData);
   const [searchQuery, setSearchQuery] = useState("");
   const [isLoadingMedicines, setIsLoadingMedicines] = useState(false);
   const [medicinesError, setMedicinesError] = useState("");
@@ -160,7 +163,7 @@ export default function AddMed({edit = false}: {edit?: boolean}) {
   };
 
   const handleFieldChange = (
-    field: keyof Medicine,
+    field: keyof MedicineFormData,
     value: string,
   ) => {
     setMedicineData((previousData) => ({
@@ -170,7 +173,7 @@ export default function AddMed({edit = false}: {edit?: boolean}) {
   };
 
   const createStringChangeHandler =
-    (field: keyof Medicine) =>
+    (field: keyof MedicineFormData) =>
     (value: string | File | null ) => {
       if (typeof value === "string") {
         handleFieldChange(field, value);

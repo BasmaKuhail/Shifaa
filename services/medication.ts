@@ -56,7 +56,7 @@ export const getMedicines = async ({
 export type AddMedicinePayload = {
   global_medicine_id: number;
   price: number;
-  medication_photo?: File | null;
+  medication_photo?: File | string | null;
 };
 
 export type AddMedicineResponse = {

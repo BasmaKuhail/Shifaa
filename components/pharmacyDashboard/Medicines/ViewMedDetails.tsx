@@ -251,10 +251,11 @@ export default function MedDetails() {
                   alt="medicine photo"
                   width={200}
                   height={400}
-                  className="rounded-[14px] border"
+                  className="rounded-[14px] border mt-10"
                 />
+                
               ) : <p>لا توجد صورة لهذا الدواء</p>}
-              
+              {!medicineData.medication_photo && <p>ملاحظة: هذه صورة مضافة تلقائياً من موقعنا بناء على نوع الدواء</p>}
             </div>
           </div>
         </div>
