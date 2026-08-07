@@ -1,6 +1,12 @@
 {
   "name": "Shifaa",
   "short_name": "Shifaa",
+  "description": "Shifaa healthcare platform",
+  "start_url": "/",
+  "scope": "/",
+  "id": "/",
+  "lang": "arab",
+  "dir": "rtl",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",

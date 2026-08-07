@@ -5,20 +5,31 @@ import { useRouter } from "next/router";
 import Edit from "@/public/icons/admin/edit";
 
 
-export default function InteractMed({id, name}: {id: number, name: string|undefined}) {
+export default function InteractMed({pharmId, id, name}: {pharmId: number | undefined, id: number, name: string|undefined}) {
     const [showPopup, setShowPopup] = useState(false);
     const [popupType, setType] = useState<"delete"| null>(null);
     const router = useRouter();
 
-    const handleSeeDetails = (id:number) => {
-        router.push(`/admin-dashboard/pharmacist-requests/pharmacist-request-details/${id}`)
-    }
+const handleViewMedicine = async (
+  event: React.MouseEvent<HTMLButtonElement>,
+) => {
+  event.stopPropagation();
+
+  if (!pharmId) {
+    console.error("Cannot view medicine: pharmacy ID is missing");
+    return;
+  }
+
+  await router.push(
+    `/pharmacy-dashboard/my-medicines/${encodeURIComponent(String(id))}?pharmacy_id=${encodeURIComponent(String(pharmId))}`,
+  );
+};
     return(
         <div className="w-full flex flex-row gap-3 items-center justify-start">
-            <button  
-                type="button" 
-                title="عرض تفاصيل الدواء" 
-                onClick={() => {handleSeeDetails(id)}} 
+            <button
+                type="button"
+                title="عرض تفاصيل الدواء"
+                onClick={handleViewMedicine}
                 aria-label="عرض تفاصيل الدواء"
             >
                 <Eye className="text-black-400 cursor-pointer"  aria-hidden="true"/>
