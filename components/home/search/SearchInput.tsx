@@ -70,7 +70,9 @@ export default function SearchInput({label, value, onChange}:SearchInputProps){
                     h-[44px] md:h-[49px]"
             >
                 <div className="hidden lg:block md:block  h-full">
-                    <GradientBtn text="ابدأ البحث" onClick={() => {router.push("/search-medicine")}} px={10} rounded="30"/>
+                    <GradientBtn 
+                    text="ابدأ البحث" 
+                        onClick={() => {console.log("clicked") ; router.push(`/search-medicine?search_input=${encodeURIComponent(String(value))}`)}} px={10} rounded="30"/>
                 </div>
                 <div className="block lg:hidden md:hidden h-[90%]">
                     <GradientBtn image={arrow} onClick={() => {router.push("/search-medicine")}} px={5} rounded="30"/>

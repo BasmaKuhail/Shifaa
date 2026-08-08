@@ -10,8 +10,8 @@ const filters =[
     {title: "₪ السعر", elements:<MinimumDistanceSlider/>},
     {title: "الموقع الجغرافي", elements:[]}
 ]
-export default function SearchHome (){
-    const [userInput, setUserInput] = useState("");
+export default function SearchHome ({userInputProp}:{userInputProp?:string}){
+    const [userInput, setUserInput] = useState(userInputProp|| "");
 
     const [dropDownOpened, setDropDownOpened] = useState<string | null>(null);
 
