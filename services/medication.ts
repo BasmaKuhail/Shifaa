@@ -191,3 +191,9 @@ export const getMedicineDetails = async (
     medication_photo: medicine.attachments[0]?.url || null,
   };
 };
+
+
+export const deleteMedicine = async (id:number) => {
+  const response = await api.delete(`/pharmacy/inventory/delete${id}`)
+  return response;
+}
