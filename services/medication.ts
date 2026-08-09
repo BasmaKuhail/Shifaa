@@ -134,9 +134,6 @@ export const getMedicines = async ({
   return response.data;
 };
 
-
-//  Get medicines belonging to a pharmacy.
-
 export const getPharmacyMedicines = async (
   pharmacyId: number,
   {
@@ -165,6 +162,7 @@ export const getPharmacyMedicines = async (
 
   return response.data;
 };
+
 
 
 //  Get a single medicine from pharmacy inventory.
