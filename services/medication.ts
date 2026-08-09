@@ -1,4 +1,5 @@
 import api from "@/lib/api";
+
 import { PaginationLink } from "./admin";
 import { ApplicationFile } from "@/types/PharmacistApplication";
 
@@ -10,6 +11,7 @@ export type Medicine = {
   strength: string | null;
   price: number | null;
   medication_photo?: string | null;
+  is_available: boolean;
 };
 
 export type MedicinesPagination = {
@@ -18,86 +20,6 @@ export type MedicinesPagination = {
   per_page: number;
   total: number;
 };
-
-export type MedicinesApiResponse = MedicinesPagination & {
-  data: Medicine[];
-  meta: MedicinesPaginationMeta;
-};
-
-export type GetMedicinesParams = {
-  page?: number;
-  perPage?: number;
-  search?: string;
-};
-
-export const getMedicines = async ({
-  page = 1,
-  perPage = 10,
-  search = "",
-}: GetMedicinesParams = {}): Promise<MedicinesApiResponse> => {
-  const normalizedSearch = search.trim();
-
-  const response = await api.get<MedicinesApiResponse>(
-    "/global-medicines",
-    {
-      params: {
-        page,
-        per_page: perPage,
-        ...(normalizedSearch && {
-          "filter[scientificName]": `*${normalizedSearch}*`,
-        }),
-      },
-    },
-  );
-
-  return response.data;
-};
-
-export type AddMedicinePayload = {
-  global_medicine_id: number;
-  price: number;
-  medication_photo?: File | string | null;
-};
-
-export type AddMedicineResponse = {
-  status: string;
-  message: string;
-  data?: unknown;
-};
-
-type AddMedicineParams = {
-  pharmacyId: number;
-  medicine: AddMedicinePayload;
-};
-
-export const addMedicine = async ({
-  pharmacyId,
-  medicine,
-}: AddMedicineParams): Promise<AddMedicineResponse> => {
-  const formData = new FormData();
-
-  formData.append("pharmacy_id", String(pharmacyId));
-  formData.append(
-    "global_medicine_id",
-    String(medicine.global_medicine_id),
-  );
-  formData.append("price", String(medicine.price));
-
-  if (medicine.medication_photo instanceof File) {
-    formData.append(
-      "medication_photo",
-      medicine.medication_photo,
-    );
-  }
-
-  const response = await api.post<AddMedicineResponse>(
-    "/pharmacy/inventory/store",
-    formData,
-  );
-
-  return response.data;
-};
-
 
 export type MedicinesPaginationMeta = {
   current_page: number;
@@ -117,6 +39,100 @@ export type MedicinesPaginationLinks = {
   next: string | null;
 };
 
+export type MedicinesApiResponse = {
+  data: Medicine[];
+  links?: MedicinesPaginationLinks;
+  meta: MedicinesPaginationMeta;
+};
+
+export type GetMedicinesParams = {
+  page?: number;
+  perPage?: number;
+  search?: string;
+};
+
+type MedicineDetailsApiItem = {
+  id: number;
+  scientific_name: string;
+  trade_name: string;
+  dosage_form: string;
+  is_available: boolean;
+  strength: string | null;
+  price: string | number | null;
+  attachments: Array<ApplicationFile | null>;
+};
+
+type MedicineDetailsApiResponse = {
+  data: MedicineDetailsApiItem[];
+};
+
+export type AddMedicinePayload = {
+  global_medicine_id: number;
+  trade_name: string;
+  dosage_form: string;
+  strength: string;
+  price: number;
+  medication_photo?: File | null;
+  is_available?: boolean;
+};
+
+export type AddMedicineParams = {
+  pharmacyId: number;
+  medicine: AddMedicinePayload;
+};
+
+export type EditMedicinePayload = {
+  trade_name?: string;
+  dosage_form?: string;
+  strength?: string;
+  price?: number;
+  medication_photo?: File | null;
+  is_available?: boolean;
+};
+
+export type EditMedicineParams = {
+  pharmacyId: number;
+  medicineId: number;
+  medicine: EditMedicinePayload;
+};
+
+export type MedicineMutationResponse = {
+  status: string;
+  message: string;
+  data?: unknown;
+};
+
+export type DeleteMedicineResponse = {
+  status: string;
+  message: string;
+};
+
+
+//  Get global medicines.
+ 
+export const getMedicines = async ({
+  page = 1,
+  perPage = 10,
+  search = "",
+}: GetMedicinesParams = {}): Promise<MedicinesApiResponse> => {
+  const normalizedSearch = search.trim();
+
+  const response = await api.get<MedicinesApiResponse>(
+    "/global-medicines",
+    {
+      params: {
+        page,
+        per_page: perPage,
+
+        ...(normalizedSearch && {
+          "filter[scientificName]": `*${normalizedSearch}*`,
+        }),
+      },
+    },
+  );
+
+  return response.data;
+};
 
 export const getPharmacyMedicines = async (
   pharmacyId: number,
@@ -132,9 +148,11 @@ export const getPharmacyMedicines = async (
     "/pharmacy-medicines",
     {
       params: {
-        pharmacy_id: pharmacyId,
+        include: "globalMedicine",
+        "filter[pharmacyId]": pharmacyId,
         page,
         per_page: perPage,
+
         ...(normalizedSearch && {
           "filter[scientificName]": `*${normalizedSearch}*`,
         }),
@@ -144,33 +162,25 @@ export const getPharmacyMedicines = async (
 
   return response.data;
 };
-type MedicineApiResponse = {
-  data: Array<{
-    id: number;
-    scientific_name: string;
-    trade_name: string;
-    dosage_form: string;
-    strength: string | null;
-    price: string | number | null;
-    attachments:[
-      ApplicationFile | null,
-    ];
-  }>;
-};
+
+
+
+//  Get a single medicine from pharmacy inventory.
 
 export const getMedicineDetails = async (
   pharmacyId: number,
   medicineId: number,
 ): Promise<Medicine | null> => {
-  const response = await api.get<MedicineApiResponse>(
-    "/pharmacy-medicines",
-    {
-      params: {
-        pharmacy_id: pharmacyId,
-        "filter[id]": medicineId,
+  const response =
+    await api.get<MedicineDetailsApiResponse>(
+      "/pharmacy-medicines",
+      {
+        params: {
+          "filter[pharmacyId]": pharmacyId,
+          "filter[id]": medicineId,
+        },
       },
-    },
-  );
+    );
 
   const medicine = response.data.data[0];
 
@@ -183,17 +193,162 @@ export const getMedicineDetails = async (
     scientific_name: medicine.scientific_name,
     trade_name: medicine.trade_name,
     dosage_form: medicine.dosage_form,
-    strength: medicine.strength ?? "",
+    strength: medicine.strength,
     price:
       medicine.price !== null
         ? Number(medicine.price)
         : null,
-    medication_photo: medicine.attachments[0]?.url || null,
+    medication_photo:
+      medicine.attachments[0]?.url ?? null,
+    is_available: medicine.is_available,
   };
 };
 
 
-export const deleteMedicine = async (id:number) => {
-  const response = await api.delete(`/pharmacy/inventory/delete${id}`)
-  return response;
-}
+//  Add medicine to pharmacy inventory.
+ 
+export const addMedicine = async ({
+  pharmacyId,
+  medicine,
+}: AddMedicineParams): Promise<MedicineMutationResponse> => {
+  const formData = new FormData();
+
+  formData.append(
+    "pharmacy_id",
+    String(pharmacyId),
+  );
+
+  formData.append(
+    "global_medicine_id",
+    String(medicine.global_medicine_id),
+  );
+
+  formData.append(
+    "trade_name",
+    medicine.trade_name,
+  );
+
+  formData.append(
+    "dosage_form",
+    medicine.dosage_form,
+  );
+
+  formData.append(
+    "strength",
+    medicine.strength,
+  );
+
+  formData.append(
+    "price",
+    String(medicine.price),
+  );
+
+  formData.append(
+    "is_available",
+    medicine.is_available === false
+      ? "0"
+      : "1",
+  );
+
+  if (
+    medicine.medication_photo instanceof
+    File
+  ) {
+    formData.append(
+      "medication_photo",
+      medicine.medication_photo,
+    );
+  }
+
+  const response =
+    await api.post<MedicineMutationResponse>(
+      "/pharmacy/inventory/store",
+      formData,
+    );
+
+  return response.data;
+};
+
+
+//  Edit pharmacy inventory medicine.
+
+export const editMedicine = async ({
+  pharmacyId,
+  medicineId,
+  medicine,
+}: EditMedicineParams): Promise<MedicineMutationResponse> => {
+  const formData = new FormData();
+
+  formData.append(
+    "pharmacy_id",
+    String(pharmacyId),
+  );
+
+  if (medicine.trade_name !== undefined) {
+    formData.append(
+      "trade_name",
+      medicine.trade_name,
+    );
+  }
+
+  if (medicine.dosage_form !== undefined) {
+    formData.append(
+      "dosage_form",
+      medicine.dosage_form,
+    );
+  }
+
+  if (medicine.strength !== undefined) {
+    formData.append(
+      "strength",
+      medicine.strength,
+    );
+  }
+
+  if (medicine.price !== undefined) {
+    formData.append(
+      "price",
+      String(medicine.price),
+    );
+  }
+
+  if (
+    medicine.is_available !== undefined
+  ) {
+    formData.append(
+      "is_available",
+      medicine.is_available ? "1" : "0",
+    );
+  }
+
+  if (
+    medicine.medication_photo instanceof
+    File
+  ) {
+    formData.append(
+      "medication_photo",
+      medicine.medication_photo,
+    );
+  }
+
+  const response =
+    await api.post<MedicineMutationResponse>(
+      `/pharmacy/inventory/update/${medicineId}`,
+      formData,
+    );
+
+  return response.data;
+};
+
+//  Delete medicine from pharmacy inventory.
+
+export const deleteMedicine = async (
+  medicineId: number,
+): Promise<DeleteMedicineResponse> => {
+  const response =
+    await api.delete<DeleteMedicineResponse>(
+      `/pharmacy/inventory/delete/${medicineId}`,
+    );
+
+  return response.data;
+};

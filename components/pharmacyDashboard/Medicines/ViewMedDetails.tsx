@@ -25,6 +25,7 @@ const initialMedicineData: Medicine = {
   dosage_form: "",
   strength: "",
   price: null,
+  is_available:true,
   medication_photo: null,
 };
 
@@ -39,14 +40,16 @@ export default function MedDetails() {
   const loadedMedicineRef = useRef<string | null>(null);
   const [imageSource, setImageSource] = useState<string | null>(null);
 
-  const [medicineId, setMedicineId] = useState<number>(0);
+  // const [medicine_id, setMedicineId] = useState<number>(0);
 
   useEffect(() => {
     if (!router.isReady) {
       return;
     }
     
-    setMedicineId(Number(router.query.id));
+    
+    const medicineId = Number(router.query.id);
+    // setMedicineId(medicineId);;
     const pharmacyId = Number(router.query.pharmacy_id);
 
 
@@ -268,7 +271,7 @@ export default function MedDetails() {
           onClick={() => setShowPopup(true)}
         />
       </div>
-      {showPopup && <DeleteMedPopup id={medicineId} onClose={() => setShowPopup(false)}/>}
+      {showPopup && <DeleteMedPopup id={medicineData.id} onClose={() => setShowPopup(false)}/>}
     </div>
   );
 }

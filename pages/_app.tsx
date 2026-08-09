@@ -82,7 +82,7 @@ function MyApp({
           <meta name="apple-mobile-web-app-title" content="Shifaa" />
         </Head>
 
-      <PwaRegistration />
+      {/* <PwaRegistration /> */}
       <UserProvider>
         <OverlayProvider>
           <AuthGuard>
