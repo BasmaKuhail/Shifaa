@@ -8,10 +8,13 @@ import search from "@/public/icons/medicine/search.svg"
 import Image from "next/image";
 import InteractMed from "./interactMed";
 
-import { getPharmacyMedicines, Medicine, MedicinesPaginationMeta } from "@/services/medication";
+import { editMedicine, getPharmacyMedicines, Medicine, MedicinesPaginationMeta } from "@/services/medication";
 import { PharmacyContext } from "@/contexts/PharmacyDataContext";
 import PaginationRounded from "@/components/Paginantion";
 import ExportMedicinesButton from "./ExportMedicinesButton";
+import StatusHolder from "../MedicineRequests/StatusHolder";
+import MedAvailability from "./MedAvailabilityStatus";
+import { showAlert } from "@/components/alerts/AlertContainer";
 
 export default function Medicines() {
     const MEDICINES_PER_PAGE = 9;
@@ -81,6 +84,52 @@ export default function Medicines() {
     const handlePageChange = (page: number) => {
         setCurrentPage(page);
     };
+    const handleAvailabilityChange = async (
+  medicineId: number,
+  isAvailable: boolean,
+) => {
+  if (!pharmacy?.id) {
+    return;
+  }
+
+  try {
+    await editMedicine({
+      pharmacyId: pharmacy.id,
+      medicineId,
+      medicine: {
+        is_available: isAvailable,
+      },
+    });
+
+    setMedicines((previousMedicines) =>
+      previousMedicines.map((medicine) =>
+        medicine.id === medicineId
+          ? {
+              ...medicine,
+              is_available: isAvailable,
+            }
+          : medicine,
+      ),
+    );
+
+    showAlert({
+      type: "Success",
+      title: "نجاح",
+      message: "تم تحديث حالة توفر الدواء",
+    });
+  } catch (error) {
+    console.error(
+      "Failed to update medicine availability:",
+      error,
+    );
+
+    showAlert({
+      type: "Error",
+      title: "خطأ",
+      message: "تعذر تحديث حالة توفر الدواء",
+    });
+  }
+};
     return(
         <div className="flex flex-col gap-10 mt-13 mb-40 w-full">
             <p className="font-semibold text-27px">إدارة أدوية الصيدلية</p>
@@ -123,6 +172,7 @@ export default function Medicines() {
                                 medScientificName: "الاسم العلمي",
                                 tradeName: "الاسم التجاري",
                                 dosageForm: "شكل الجرعة",
+                                strength: "التركيز",
                                 price: "السعر",
                                 availability: "توافر",
                                 interact: "التفاعل",
@@ -131,6 +181,7 @@ export default function Medicines() {
                                 medScientificName: "flex-2",
                                 tradeName: "flex-2",
                                 dosageForm: "flex-2",
+                                strength:"flex-1",
                                 price: "flex-1",
                                 availability: "flex-1",
                                 interact: "flex-1",
@@ -155,8 +206,19 @@ export default function Medicines() {
                                                 medScientificName: medicine.scientific_name,
                                                 tradeName: medicine.trade_name,
                                                 dosageForm: medicine.dosage_form,
-                                                price: medicine.price,
-                                                availability: "متوفر", 
+                                                strength:medicine.strength,
+                                                price: medicine.price + "₪",
+                                                availability: (
+                                                    <MedAvailability
+                                                        isAvailable={medicine.is_available}
+                                                        onChange={(isAvailable) =>
+                                                        handleAvailabilityChange(
+                                                            medicine.id,
+                                                            isAvailable,
+                                                        )
+                                                        }
+                                                    />
+                                                    ),
                                                 interact: <InteractMed pharmId={pharmacy?.id} id={medicine.id} name={medicine.trade_name}/>,
                                             }}
                                             columnClassNames={{

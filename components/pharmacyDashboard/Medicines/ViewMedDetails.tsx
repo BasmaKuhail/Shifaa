@@ -16,6 +16,7 @@ import { showAlert } from "@/components/alerts/AlertContainer";
 import Image from "next/image";
 import ArrowRight from "@/public/icons/error/arrowRight";
 import { getDosageFormImage } from "@/config/medicationFormImages";
+import DeleteMedPopup from "./DeletePopup";
 
 const initialMedicineData: Medicine = {
   id: 0,
@@ -24,6 +25,7 @@ const initialMedicineData: Medicine = {
   dosage_form: "",
   strength: "",
   price: null,
+  is_available:true,
   medication_photo: null,
 };
 
@@ -38,13 +40,18 @@ export default function MedDetails() {
   const loadedMedicineRef = useRef<string | null>(null);
   const [imageSource, setImageSource] = useState<string | null>(null);
 
+  // const [medicine_id, setMedicineId] = useState<number>(0);
+
   useEffect(() => {
     if (!router.isReady) {
       return;
     }
-
+    
+    
     const medicineId = Number(router.query.id);
+    // setMedicineId(medicineId);;
     const pharmacyId = Number(router.query.pharmacy_id);
+
 
     const hasInvalidParams =
       !Number.isInteger(medicineId) ||
@@ -123,13 +130,10 @@ export default function MedDetails() {
     router.query.pharmacy_id,
   ]);
 
-  const handleDeleteMedicine = async () => {
-    console.log("Delete medicine:", medicineData.id);
-  };
-
   const imageToDisplay =
     imageSource ?? getDosageFormImage(medicineData.dosage_form);
 
+  const [showPopup, setShowPopup] = useState(false);
   if (isLoading) {
     return (
       <div
@@ -264,9 +268,10 @@ export default function MedDetails() {
       <div className="flex flex-row gap-5">
         <PetrolBtn
           text="حذف الدواء"
-          onClick={handleDeleteMedicine}
+          onClick={() => setShowPopup(true)}
         />
       </div>
+      {showPopup && <DeleteMedPopup id={medicineData.id} onClose={() => setShowPopup(false)}/>}
     </div>
   );
 }

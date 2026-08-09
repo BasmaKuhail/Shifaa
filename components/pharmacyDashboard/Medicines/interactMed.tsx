@@ -3,11 +3,11 @@ import Eye from "@/public/icons/admin/Eye"
 import { useState } from "react";
 import { useRouter } from "next/router";
 import Edit from "@/public/icons/admin/edit";
+import DeleteMedPopup from "./DeletePopup";
 
 
 export default function InteractMed({pharmId, id, name}: {pharmId: number | undefined, id: number, name: string|undefined}) {
     const [showPopup, setShowPopup] = useState(false);
-    const [popupType, setType] = useState<"delete"| null>(null);
     const router = useRouter();
 
 const handleViewMedicine = async (
@@ -22,6 +22,27 @@ const handleViewMedicine = async (
 
   await router.push(
     `/pharmacy-dashboard/my-medicines/${encodeURIComponent(String(id))}?pharmacy_id=${encodeURIComponent(String(pharmId))}`,
+  );
+};
+
+const handleEditMedicine = async (
+  event: React.MouseEvent<HTMLButtonElement>,
+) => {
+  event.stopPropagation();
+
+  if (!pharmId) {
+    console.error(
+      "Cannot edit medicine: pharmacy ID is missing",
+    );
+    return;
+  }
+
+  await router.push(
+    `/pharmacy-dashboard/my-medicines/edit-medicine-data/${encodeURIComponent(
+      String(id),
+    )}?pharmacy_id=${encodeURIComponent(
+      String(pharmId),
+    )}`,
   );
 };
     return(
@@ -39,7 +60,7 @@ const handleViewMedicine = async (
                 type="button" 
                 title="تعديل الدواء" 
                 aria-label="تعديل الدواء"
-                onClick={() => {router.push(`/pharmacy-dashboard/my-medicines/edit-medicine-data/${id}`)}}
+                onClick={handleEditMedicine}
             >
                 <Edit className={`text-black-400 w-5 h-5 cursor-pointer`}/>
             </button>
@@ -48,11 +69,11 @@ const handleViewMedicine = async (
                 type="button" 
                 title="حذف الدواء" 
                 aria-label="حذف الدواء"
-                onClick={(e) => {e.stopPropagation(); setType("delete"); setShowPopup(true); }}
+                onClick={(e) => {e.stopPropagation(); setShowPopup(true); }}
             >
                 <Delete className={`text-black-400 cursor-pointer`}/>
             </button>
-            
+            {showPopup   && <DeleteMedPopup id={id} onClose={() => setShowPopup(false)}/>}
         </div>
     )
 }

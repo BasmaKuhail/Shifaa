@@ -1,6 +1,10 @@
 "use client";
 
-import { getMedicines, Medicine } from "@/services/medication";
+import {
+  getMedicines,
+  Medicine,
+} from "@/services/medication";
+
 import {
   createContext,
   ReactNode,
@@ -10,7 +14,6 @@ import {
   useMemo,
   useState,
 } from "react";
-
 
 type MedicinesContextValue = {
   medicines: Medicine[];
@@ -44,22 +47,27 @@ export function MedicinesProvider({
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
 
-  const fetchMedicines = useCallback(async () => {
+  const fetchMedicines = useCallback(async (): Promise<void> => {
     setIsLoading(true);
     setErrorMessage("");
 
     try {
       const response = await getMedicines({
         page,
-        perPage: 10,
+        perPage: 9,
         search,
       });
 
       setMedicines(response.data);
-      setLastPage(response.last_page);
-      setTotal(response.total);
+
+      setLastPage(response.meta.last_page);
+      setTotal(response.meta.total);
     } catch (error) {
       console.error("Failed to fetch medicines:", error);
+
+      setMedicines([]);
+      setLastPage(1);
+      setTotal(0);
       setErrorMessage("Unable to load medicines.");
     } finally {
       setIsLoading(false);
