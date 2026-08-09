@@ -1,4 +1,5 @@
-import Search from "@/components/Search/Search";
+import SearchMed from "@/components/Search/SearchMed";
+import Search from "@/components/Search/SearchMed";
 import MainLayout from "@/layouts/MainLayout";
 import Head from "next/head";
 
@@ -15,7 +16,7 @@ export default function MedicineSearchIndex (){
             </Head>
             <main>
                 <MainLayout>
-                    <Search/>
+                    <SearchMed/>
                 </MainLayout>
             </main>
         </>

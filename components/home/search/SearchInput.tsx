@@ -9,6 +9,7 @@ import MobileFilter from "./mobileFilter/MobileFilter";
 import { useRouter } from "next/router";
 
 type SearchInputProps = {
+    isHome?:boolean;
     label: string;
     value: string;
     onChange: (value: string) => void;
@@ -18,10 +19,18 @@ function handleSearch (){
     console.log("search")
     return;
 }
-export default function SearchInput({label, value, onChange}:SearchInputProps){
+export default function SearchInput({isHome=true, label, value, onChange}:SearchInputProps){
     const [isFilterOpened, setIsFilterOpened] = useState(false);
 
     const router = useRouter()
+
+    const handleSearchClick = () => {
+        if(value.trim() === ""){
+            return
+        }
+        if (isHome)
+            router.push(`/search-medicine?search_input=${encodeURIComponent(String(value))}`)
+    }
     return(<>
         <div dir="rtl" className="relative w-full">
             <Image 
@@ -72,10 +81,10 @@ export default function SearchInput({label, value, onChange}:SearchInputProps){
                 <div className="hidden lg:block md:block  h-full">
                     <GradientBtn 
                     text="ابدأ البحث" 
-                        onClick={() => {console.log("clicked") ; router.push(`/search-medicine?search_input=${encodeURIComponent(String(value))}`)}} px={10} rounded="30"/>
+                        onClick={handleSearchClick} px={10} rounded="30"/>
                 </div>
                 <div className="block lg:hidden md:hidden h-[90%]">
-                    <GradientBtn image={arrow} onClick={() => {router.push("/search-medicine")}} px={5} rounded="30"/>
+                    <GradientBtn image={arrow} onClick={handleSearchClick} px={5} rounded="30"/>
                 </div>
             </div>
             

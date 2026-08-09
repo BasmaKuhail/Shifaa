@@ -1,64 +1,124 @@
-import { useEffect, useRef, useState } from "react"
-import SearchInput from "./SearchInput"
-import Text from "./Text"
-import Item from "./FilterItem"
-import MinimumDistanceSlider from "./PriceSlider"
+import { useEffect, useRef, useState } from "react";
 
-const filters =[
-    {title: "الشكل الدوائي", elements:["أقراص", "كبسولات", "شراب", "كريم / مرهم", "قطرات", "أقراص", "كبسولات", "شراب", "كريم / مرهم", "قطرات"]},
-    // {title: "التصنيف", elements:[]},
-    {title: "₪ السعر", elements:<MinimumDistanceSlider/>},
-    {title: "الموقع الجغرافي", elements:[]}
-]
-export default function SearchHome ({userInputProp}:{userInputProp?:string}){
-    const [userInput, setUserInput] = useState(userInputProp|| "");
+import SearchInput from "./SearchInput";
+import Text from "./Text";
+import Item from "./FilterItem";
 
-    const [dropDownOpened, setDropDownOpened] = useState<string | null>(null);
+type SearchHomeProps = {
+  isHome?: boolean;
+  userInputProp?: string;
+  onSearchChange?: (value: string) => void;
+};
 
-    const containerRef = useRef<HTMLDivElement>(null);
+const filters = [
+  {
+    title: "الشكل الدوائي",
+    elements: [
+      "أقراص",
+      "كبسولات",
+      "شراب",
+      "كريم / مرهم",
+      "قطرات",
+    ],
+  },
+  {
+    title: "₪ السعر",
+    elements: [],
+  },
+  {
+    title: "الموقع الجغرافي",
+    elements: [],
+  },
+];
 
-    useEffect(() => {
-        function handleClickOutside(event: MouseEvent) {
-            if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
-                setDropDownOpened(null);
-            }
-        }
+export default function SearchHome({
+  isHome = true,
+  userInputProp = "",
+  onSearchChange,
+}: SearchHomeProps) {
+  const [userInput, setUserInput] = useState("");
+  const [dropDownOpened, setDropDownOpened] =
+    useState<string | null>(null);
 
-        document.addEventListener("mousedown", handleClickOutside);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
+  /**
+   * Keep the local input synchronized with the value
+   * provided by the search page.
+   */
+  useEffect(() => {
+    if (isHome) {
+      return;
+    }
 
-    return(
-        <div dir="rtl" className="flex flex-col w-full px-4 md:px-8 lg:px-20 xl:px-30 pt-4 gap-8">
-            <Text 
-                intro="صحتك أولويتنا" 
-                titleBlack="ابحث عن دوائك" 
-                titleBlue="في ثوانٍ" 
-                sentence="ابحث، صَفِّ النتائج، قارن الأسعار، وتحقق من التوفر بالقرب منك"
+    setUserInput(userInputProp);
+  }, [isHome, userInputProp]);
+
+  /**
+   * Close filter dropdowns when clicking outside.
+   */
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        setDropDownOpened(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener(
+        "mousedown",
+        handleClickOutside,
+      );
+    };
+  }, []);
+
+  const handleSearchChange = (value: string) => {
+    setUserInput(value);
+
+    if (!isHome) {
+      onSearchChange?.(value);
+    }
+  };
+
+  return (
+    <div
+      dir="rtl"
+      className="flex w-full flex-col gap-8 px-4 pt-4 md:px-8 lg:px-20 xl:px-30"
+    >
+      <Text
+        intro="صحتك أولويتنا"
+        titleBlack="ابحث عن دوائك"
+        titleBlue="في ثوانٍ"
+        sentence="ابحث، صَفِّ النتائج، قارن الأسعار، وتحقق من التوفر بالقرب منك"
+      />
+
+      <div className="flex w-full flex-col gap-4 lg:w-[90%] xl:w-[70%]">
+        <SearchInput
+          label="ابحث عن الأدوية"
+          value={userInput}
+          onChange={handleSearchChange}
+        />
+
+        <div
+          ref={containerRef}
+          className="hidden flex-row gap-5 md:flex"
+        >
+          {filters.map((filter) => (
+            <Item
+              key={filter.title}
+              title={filter.title}
+              elements={filter.elements}
+              dropDownOpened={dropDownOpened}
+              setDropDownOpened={setDropDownOpened}
             />
-            <div className="flex flex-col gap-4 lg:w-[90%] xl:w-[70%] w-full">
-                <SearchInput label=" ابحث عن الأدوية" value= {userInput} onChange={(value) => setUserInput(value)}/>
-                
-                <div 
-                    className="flex flex-row md:flex-row gap-5 hidden lg:flex md:flex "
-                    ref={containerRef}
-                >
-                    {filters.map((item, indx) => 
-                        <Item 
-                            key={indx} 
-                            title={item.title} 
-                            elements= {item.elements}
-                            dropDownOpened={dropDownOpened}
-                            setDropDownOpened={setDropDownOpened}
-                            />
-                    )}
-                </div>
-            </div>
-            
-            
+          ))}
         </div>
-    ) 
+      </div>
+    </div>
+  );
 }
