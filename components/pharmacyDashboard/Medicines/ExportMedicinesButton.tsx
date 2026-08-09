@@ -47,7 +47,7 @@ export default function ExportMedicinesButton({
                 });
 
                 exportedMedicines.push(...response.data);
-                lastPage = response.meta?.last_page ?? response.last_page ?? page;
+                lastPage = response.meta?.last_page ?? response.links?.last ?? page;
                 page += 1;
             } while (page <= lastPage);
 
@@ -60,7 +60,7 @@ export default function ExportMedicinesButton({
                 <td>${escapeXlsValue(medicine.dosage_form)}</td>
                 <td>${escapeXlsValue(medicine.strength)}</td>
                 <td>${escapeXlsValue(medicine.price)}</td>
-                <td>${escapeXlsValue("متوفر")}</td>
+                <td>${escapeXlsValue(medicine.is_available)}</td>
             </tr>`).join("");
 
             // Excel supports an HTML table downloaded with the Excel MIME type as an .xls file.
