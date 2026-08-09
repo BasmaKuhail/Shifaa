@@ -6,7 +6,9 @@ const StatusHolder = ({status}:{status:string}) => {
         pending: "bg-pending",
         rejected: "bg-rejected",
         expired: "bg-rejected",
-        unread: "bg-unread"
+        unread: "bg-unread",
+        available:"bg-accepted",
+        not_available: "bg-rejected",
     };
     return(
         <div 

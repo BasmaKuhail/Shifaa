@@ -24,6 +24,27 @@ const handleViewMedicine = async (
     `/pharmacy-dashboard/my-medicines/${encodeURIComponent(String(id))}?pharmacy_id=${encodeURIComponent(String(pharmId))}`,
   );
 };
+
+const handleEditMedicine = async (
+  event: React.MouseEvent<HTMLButtonElement>,
+) => {
+  event.stopPropagation();
+
+  if (!pharmId) {
+    console.error(
+      "Cannot edit medicine: pharmacy ID is missing",
+    );
+    return;
+  }
+
+  await router.push(
+    `/pharmacy-dashboard/my-medicines/edit-medicine-data/${encodeURIComponent(
+      String(id),
+    )}?pharmacy_id=${encodeURIComponent(
+      String(pharmId),
+    )}`,
+  );
+};
     return(
         <div className="w-full flex flex-row gap-3 items-center justify-start">
             <button
@@ -39,7 +60,7 @@ const handleViewMedicine = async (
                 type="button" 
                 title="تعديل الدواء" 
                 aria-label="تعديل الدواء"
-                onClick={() => {router.push(`/pharmacy-dashboard/my-medicines/edit-medicine-data/${id}`)}}
+                onClick={handleEditMedicine}
             >
                 <Edit className={`text-black-400 w-5 h-5 cursor-pointer`}/>
             </button>

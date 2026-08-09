@@ -2,6 +2,7 @@ import DashboardLayout from "@/layouts/DashboardLayout";
 import { pharmacytNav } from "@/config/navigations";
 import AddMed from "@/components/pharmacyDashboard/addMedicine/AddMed";
 import Head from "next/head";
+import EditMed from "@/components/pharmacyDashboard/EditMed/EditMed";
 
 export default function EditMedicineIndex() {
     return(
@@ -16,7 +17,7 @@ export default function EditMedicineIndex() {
             </Head>
             <main>
             <DashboardLayout sideNavArr={pharmacytNav}>
-                <AddMed edit/>
+                <EditMed/>
             </DashboardLayout>
             </main>
         </>
