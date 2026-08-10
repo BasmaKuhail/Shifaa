@@ -10,7 +10,7 @@ type SearchHomeProps = {
   isHome?: boolean;
   userInputProp?: string;
   onSearchChange?: (value: string) => void;
-  setSelectedDosageForm:Dispatch<SetStateAction<string>>
+  setSelectedDosageForm?:Dispatch<SetStateAction<string>>
 };
 
 export default function SearchHome({
@@ -24,7 +24,22 @@ export default function SearchHome({
   const [dropDownOpened, setDropDownOpened] = useState<string | null>(null);
 
   const containerRef = useRef<HTMLDivElement>(null);
+  const [localDosageForm, setLocalDosageForm] =
+    useState(dosage);
+  const selectedDosageForm = isHome
+    ? localDosageForm
+    : dosage;
 
+  const handleDosageChange: Dispatch<
+    SetStateAction<string>
+  > = (value) => {
+    if (isHome) {
+      setLocalDosageForm(value);
+      return;
+    }
+
+    setSelectedDosageForm?.(value);
+  };
   // const [selectedDosageForm, setSelectedDosageForm] = useState<string | null>();
   useEffect(() => {
     if (isHome) {
@@ -78,7 +93,7 @@ export default function SearchHome({
           label="ابحث عن الأدوية"
           value={userInput}
           onChange={handleSearchChange}
-          dosageForm={dosage}
+          dosageForm={selectedDosageForm}
         />
 
         <div
@@ -88,9 +103,9 @@ export default function SearchHome({
           <Dosage 
             title="الشكل الدوائي" 
             dropDownOpened={dropDownOpened}
-            dosage={dosage}
+            dosage={selectedDosageForm}
             setDropDownOpened={setDropDownOpened}
-            setSelectedDosageForm={setSelectedDosageForm}
+            setSelectedDosageForm={handleDosageChange}
           />
           <Price
             title="السعر" 

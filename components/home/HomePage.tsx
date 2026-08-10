@@ -40,7 +40,6 @@ export default function Home (){
     ]
     const router = useRouter()
 
-    const [isSearching, setIsSearching] = useState();
     return(
         <div className='w-full flex flex-col overflow-x-hidden'>
             <div className="bg-blue-100 relative inline-block ">
@@ -57,7 +56,7 @@ export default function Home (){
                     <div className="px-4 md:px-8 lg:px-20 xl:px-30 pt-4"><SecondaryHeader/></div>
                     
                     <div id="search" className='mt-20'>
-                        <SearchHome />
+                        <SearchHome/>
                     </div>
                 </div>
                 {/* mobile view */}
@@ -65,7 +64,7 @@ export default function Home (){
                     <MobileHeader/>
                 </div>
                 <div id="search" className='-mt-10 block lg:hidden mb-40'>
-                    <SearchHome />
+                    <SearchHome/>
                 </div>
             </div>
             

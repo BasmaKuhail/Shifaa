@@ -25,7 +25,7 @@ type filterProps ={
     title: string,
     dropDownOpened: string | null,
     setDropDownOpened:Dispatch<SetStateAction<string | null>>,
-    setSelectedDosageForm:Dispatch<SetStateAction<string>>
+    setSelectedDosageForm?:Dispatch<SetStateAction<string>>
 }
 export default function Dosage({dosage, title,dropDownOpened, setDropDownOpened,setSelectedDosageForm}:filterProps){
     const handleClick = () =>{
@@ -69,8 +69,8 @@ export default function Dosage({dosage, title,dropDownOpened, setDropDownOpened,
                                     name="dosage-form"
                                     type="checkbox" 
                                     value={element.title}
-                                    onChange={() => 
-                                        setSelectedDosageForm(element.filter)
+                                    onChange={setSelectedDosageForm ? () => 
+                                        setSelectedDosageForm(element.filter) : () => {}
                                     }
                                     checked={element.filter == dosage}
                                 />
