@@ -41,7 +41,10 @@ export default function MobileFilter ({
                 <p className="font-bold text-21px text-center">تعيين الفلاتر</p>
             </div>
             <div className="flex flex-col gap-1">
-                <p className="font-[500] text-btn">الشكل الدوائي</p>
+                <div className="flex flex-row justify-between">
+                    <p className="font-[500] text-btn">الشكل الدوائي</p>
+                    <button onClick={()=>setSelectedDosageForm("")} className="hover:underline text-xs">اعادة الضبط</button>
+                </div>
                 <div className="flex flex-wrap gap-1">
                     {elements.map((item, indx) => (
                         <Box
