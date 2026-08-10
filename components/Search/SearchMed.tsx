@@ -36,22 +36,12 @@ export default function SearchMed() {
   const [loadingMore, setLoadingMore] = useState(false);
   const [error, setError] = useState("");
 
-  /**
-   * Used to prevent an older request from overwriting
-   * a newer search result.
-   */
   const searchRequestIdRef = useRef(0);
 
   const hasMoreMedicines =
     pagination !== null &&
     pagination.current_page < pagination.last_page;
 
-  /**
-   * Initialise search state from the URL.
-   *
-   * Example:
-   * /search-medicine?search_input=Panadol
-   */
   useEffect(() => {
     if (!router.isReady) {
       return;
@@ -68,9 +58,6 @@ export default function SearchMed() {
     setDebouncedSearch(normalizedSearch);
   }, [router.isReady]);
 
-  /**
-   * Debounce user typing.
-   */
   useEffect(() => {
     if (!router.isReady) {
       return;
@@ -85,12 +72,7 @@ export default function SearchMed() {
     };
   }, [userInput, router.isReady]);
 
-  /**
-   * Keep the URL synchronized with the current search.
-   *
-   * router.replace prevents every keystroke/search from creating
-   * another browser history entry.
-   */
+
   useEffect(() => {
     if (!router.isReady) {
       return;
@@ -125,9 +107,6 @@ export default function SearchMed() {
     );
   }, [debouncedSearch, router]);
 
-  /**
-   * Fetch page 1 whenever the debounced search changes.
-   */
   useEffect(() => {
     if (!router.isReady) {
       return;
@@ -146,10 +125,6 @@ export default function SearchMed() {
           search: debouncedSearch,
         });
 
-        /**
-         * Ignore the response if another search started
-         * while this request was still running.
-         */
         if (requestId !== searchRequestIdRef.current) {
           return;
         }
@@ -181,9 +156,7 @@ export default function SearchMed() {
     void fetchResults();
   }, [router.isReady, debouncedSearch]);
 
-  /**
-   * Load and append the next page.
-   */
+
   const handleLoadMore = async () => {
     if (
       loading ||
@@ -207,10 +180,6 @@ export default function SearchMed() {
       });
 
       setResults((currentResults) => {
-        /**
-         * Using a Map protects us from duplicated medicines
-         * if records move between pages while pagination is happening.
-         */
         const medicinesById = new Map<number, Medicine>();
 
         currentResults.forEach((medicine) => {
@@ -322,6 +291,7 @@ export default function SearchMed() {
                       key={medicine.id}
                       dosageFprm={medicine.dosage_form}
                       image={medicine.medication_photo}
+                      scintifcName={medicine.scientific_name}
                       medName={medicine.trade_name}
                       isList={viewMode === "list"}
                       location=""

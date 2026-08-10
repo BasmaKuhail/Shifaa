@@ -3,6 +3,7 @@ import { useEffect, useRef, useState } from "react";
 import SearchInput from "./SearchInput";
 import Text from "./Text";
 import Item from "./FilterItem";
+import MinimumDistanceSlider from "./PriceSlider";
 
 type SearchHomeProps = {
   isHome?: boolean;
@@ -23,7 +24,7 @@ const filters = [
   },
   {
     title: "₪ السعر",
-    elements: [],
+    elements: <MinimumDistanceSlider/>,
   },
   {
     title: "الموقع الجغرافي",
