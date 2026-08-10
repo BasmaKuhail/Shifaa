@@ -6,6 +6,7 @@ export const searchMedicines = async (
     page = 1,
     perPage = 9,
     search = "",
+    dosageForm=""
   }: GetMedicinesParams = {},
 ): Promise<MedicinesApiResponse> => {
   const normalizedSearch = search.trim();
@@ -20,6 +21,7 @@ export const searchMedicines = async (
 
         ...(normalizedSearch && {
           "filter[scientificNameOrTradeName]": `*${normalizedSearch}*`,
+          "filter[dosageForm]": `*${dosageForm}*`,
         }),
       },
     },

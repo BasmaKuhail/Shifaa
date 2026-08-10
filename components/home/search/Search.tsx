@@ -1,63 +1,38 @@
-import { useEffect, useRef, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from "react";
 
 import SearchInput from "./SearchInput";
 import Text from "./Text";
-import Item from "./FilterItem";
-import MinimumDistanceSlider from "./PriceSlider";
+import Dosage from "./DosageFormFilter";
+import Price from "./PriceFilter";
 
 type SearchHomeProps = {
+  dosage?:string,
   isHome?: boolean;
   userInputProp?: string;
   onSearchChange?: (value: string) => void;
+  setSelectedDosageForm:Dispatch<SetStateAction<string>>
 };
 
-const filters = [
-  {
-    title: "الشكل الدوائي",
-    elements: [
-      "أقراص",
-      "كبسولات",
-      "شراب",
-      "كريم / مرهم",
-      "قطرات",
-    ],
-  },
-  {
-    title: "₪ السعر",
-    elements: <MinimumDistanceSlider/>,
-  },
-  {
-    title: "الموقع الجغرافي",
-    elements: [],
-  },
-];
-
 export default function SearchHome({
+  dosage="",
   isHome = true,
   userInputProp = "",
   onSearchChange,
+  setSelectedDosageForm
 }: SearchHomeProps) {
   const [userInput, setUserInput] = useState("");
-  const [dropDownOpened, setDropDownOpened] =
-    useState<string | null>(null);
+  const [dropDownOpened, setDropDownOpened] = useState<string | null>(null);
 
   const containerRef = useRef<HTMLDivElement>(null);
 
-  /**
-   * Keep the local input synchronized with the value
-   * provided by the search page.
-   */
+  // const [selectedDosageForm, setSelectedDosageForm] = useState<string | null>();
   useEffect(() => {
     if (isHome) {
       return;
     }
-
     setUserInput(userInputProp);
   }, [isHome, userInputProp]);
 
-  /**
-   * Close filter dropdowns when clicking outside.
-   */
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -103,21 +78,25 @@ export default function SearchHome({
           label="ابحث عن الأدوية"
           value={userInput}
           onChange={handleSearchChange}
+          dosageForm={dosage}
         />
 
         <div
           ref={containerRef}
           className="hidden flex-row gap-5 md:flex"
         >
-          {filters.map((filter) => (
-            <Item
-              key={filter.title}
-              title={filter.title}
-              elements={filter.elements}
-              dropDownOpened={dropDownOpened}
-              setDropDownOpened={setDropDownOpened}
-            />
-          ))}
+          <Dosage 
+            title="الشكل الدوائي" 
+            dropDownOpened={dropDownOpened}
+            dosage={dosage}
+            setDropDownOpened={setDropDownOpened}
+            setSelectedDosageForm={setSelectedDosageForm}
+          />
+          <Price
+            title="السعر" 
+            dropDownOpened={dropDownOpened}
+            setDropDownOpened={setDropDownOpened}
+          />
         </div>
       </div>
     </div>

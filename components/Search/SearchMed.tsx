@@ -27,6 +27,7 @@ export default function SearchMed() {
 
   const [userInput, setUserInput] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
+  const [selectedDosageForm, setSelectedDosageForm] = useState("");
 
   const [results, setResults] = useState<Medicine[]>([]);
   const [pagination, setPagination] =
@@ -53,9 +54,14 @@ export default function SearchMed() {
         : "";
 
     const normalizedSearch = querySearch.trim();
-
     setUserInput(normalizedSearch);
     setDebouncedSearch(normalizedSearch);
+
+    const dosageForm = 
+      typeof router.query.dosage_form === "string"
+        ? router.query.dosage_form
+        : "";
+    setSelectedDosageForm(dosageForm);
   }, [router.isReady]);
 
   useEffect(() => {
@@ -72,7 +78,41 @@ export default function SearchMed() {
     };
   }, [userInput, router.isReady]);
 
+  useEffect(() => {
+    if (!router.isReady) {
+        return;
+    }
 
+    const currentDosage =
+        typeof router.query.dosage_form === "string"
+            ? router.query.dosage_form
+            : "";
+
+    if (currentDosage === selectedDosageForm) {
+        return;
+    }
+
+    const nextQuery = {
+        ...router.query,
+    };
+
+    if (selectedDosageForm) {
+        nextQuery.dosage_form = selectedDosageForm;
+    } else {
+        delete nextQuery.dosage_form;
+    }
+
+    void router.replace(
+        {
+            pathname: router.pathname,
+            query: nextQuery,
+        },
+        undefined,
+        {
+            shallow: true,
+        },
+    );
+}, [selectedDosageForm, router.isReady]);
   useEffect(() => {
     if (!router.isReady) {
       return;
@@ -123,6 +163,7 @@ export default function SearchMed() {
           page: 1,
           perPage: MEDICINES_PER_PAGE,
           search: debouncedSearch,
+          dosageForm: selectedDosageForm
         });
 
         if (requestId !== searchRequestIdRef.current) {
@@ -154,7 +195,7 @@ export default function SearchMed() {
     };
 
     void fetchResults();
-  }, [router.isReady, debouncedSearch]);
+  }, [router.isReady, debouncedSearch, selectedDosageForm,]);
 
 
   const handleLoadMore = async () => {
@@ -177,6 +218,7 @@ export default function SearchMed() {
         page: nextPage,
         perPage: MEDICINES_PER_PAGE,
         search: debouncedSearch,
+        dosageForm: selectedDosageForm,
       });
 
       setResults((currentResults) => {
@@ -230,9 +272,11 @@ export default function SearchMed() {
             className="pointer-events-auto mt-20"
         >
             <SearchHome
-            isHome={false}
-            userInputProp={userInput}
-            onSearchChange={setUserInput}
+              isHome={false}
+              userInputProp={userInput}
+              onSearchChange={setUserInput}
+              dosage={selectedDosageForm}
+              setSelectedDosageForm={setSelectedDosageForm}
             />
         </div>
         </div>
@@ -250,6 +294,8 @@ export default function SearchMed() {
             isHome={false}
             userInputProp={userInput}
             onSearchChange={setUserInput}
+            dosage={selectedDosageForm}
+            setSelectedDosageForm={setSelectedDosageForm}
           />
         </div>
 

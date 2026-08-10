@@ -13,13 +13,14 @@ type SearchInputProps = {
     label: string;
     value: string;
     onChange: (value: string) => void;
+    dosageForm?:string | null
 }
 
 function handleSearch (){
     console.log("search")
     return;
 }
-export default function SearchInput({isHome=true, label, value, onChange}:SearchInputProps){
+export default function SearchInput({isHome=true, label, value, onChange, dosageForm}:SearchInputProps){
     const [isFilterOpened, setIsFilterOpened] = useState(false);
 
     const router = useRouter()
@@ -28,8 +29,16 @@ export default function SearchInput({isHome=true, label, value, onChange}:Search
         if(value.trim() === ""){
             return
         }
-        if (isHome)
-            router.push(`/search-medicine?search_input=${encodeURIComponent(String(value))}`)
+        if (isHome){
+            const query = new URLSearchParams();
+            query.set("search_input", value.trim());
+            if (dosageForm) {
+                query.set("dosage_form", dosageForm);
+            }
+
+            void router.push(`/search-medicine?${query.toString()}`);
+        }
+            // router.push(`/search-medicine?search_input=${encodeURIComponent(String(value))}&dosageForm=${encodeURIComponent(String(dosageForm))}`)
     }
     return(<>
         <div dir="rtl" className="relative w-full">
