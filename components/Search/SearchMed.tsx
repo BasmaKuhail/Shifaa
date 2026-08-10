@@ -340,9 +340,11 @@ export default function SearchMed() {
                       scintifcName={medicine.scientific_name}
                       medName={medicine.trade_name}
                       isList={viewMode === "list"}
-                      location=""
                       price={medicine.price}
                       availablity={medicine.is_available}
+                      pharmacyName={medicine.pharmacy?.name}
+                      location={medicine.pharmacy?.address}
+                      pharmacyId={medicine.pharmacy?.id}
                     />
                   ))}
                 </div>

@@ -12,6 +12,11 @@ export type Medicine = {
   price: number | null;
   medication_photo?: string | null;
   is_available: boolean;
+  pharmacy?:{
+    id:number;
+    name:string;
+    address:string;
+  }
 };
 
 export type MedicinesPagination = {

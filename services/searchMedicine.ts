@@ -15,7 +15,7 @@ export const searchMedicines = async (
     "/pharmacy-medicines",
     {
       params: {
-        include: "globalMedicine",
+        include: "pharmacy",
         page,
         per_page: perPage,
 

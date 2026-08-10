@@ -3,17 +3,19 @@ import pharm from "@/public/icons/pharmacies/pharm.svg"
 import loc from "@/public/icons/pharmacies/loc.svg"
 import { getDosageFormImage } from "@/config/medicationFormImages"
 type medCardProps ={
+    pharmacyName:string | undefined,
+    pharmacyId:number | undefined,
     price:number | null,
     scintifcName:string,
     medName:string,
     image:string | undefined | null,
     isList:boolean,
-    location:string,
+    location:string | undefined,
     availablity:boolean,
     dosageFprm:string
 }
 
-export default function MedCard({dosageFprm, scintifcName, availablity, price, image, medName, isList, location}:medCardProps){
+export default function MedCard({pharmacyName,pharmacyId, dosageFprm, scintifcName, availablity, price, image, medName, isList, location}:medCardProps){
     const imageToDisplay =
         image ?? getDosageFormImage(dosageFprm);
     return(
@@ -24,17 +26,17 @@ export default function MedCard({dosageFprm, scintifcName, availablity, price, i
                 <p className="text-12px text-black-500">{scintifcName.toLocaleLowerCase()}</p>
                 <div className="flex flex-row gap-2 items-start">
                     <Image src={pharm} alt=""/>
-                    <p className="text-inpt md:text-btn text-black-500">صيدلية البسمة</p>
+                    <p className="text-12px md:text-inpt  text-black-500">{pharmacyName}</p>
                 </div>
                 <div className="flex flex-row gap-2 items-start">
                     <Image src={loc} alt=""/>
-                    <p className="text-inpt md:text-btn text-black-500">{location}</p>
+                    <p className="text-12px md:text-inpt text-black-500">{location}</p>
                 </div>
                 <div className="flex flex-row gap-3 items-center justify-center">
                     <p className="text-inpt md:text-btn text-black-500">{price}₪</p>
                     <div className="flex flex-row gap-1 items-center justify-center">
                         <div className={`${availablity? "bg-online" : "bg-red"} rounded-full p-1.5`}/>
-                        <p className="text-inpt md:text-btn text-black-500">{availablity? "متوفر" : "غير متوفر"}</p>
+                        <p className="text-12px md:text-inpt text-black-500">{availablity? "متوفر" : "غير متوفر"}</p>
                     </div>
                     
                 </div>
