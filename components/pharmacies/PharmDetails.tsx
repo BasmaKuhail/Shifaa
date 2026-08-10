@@ -427,8 +427,10 @@ export default function PharmacyDetails() {
                                             dosageFprm={medicine.dosage_form}
                                             image={medicine.medication_photo}
                                             medName={medicine.trade_name}
+                                            pharmacyName={pharmacy?.name}
                                             isList={viewMode ==="list"}
                                             location={pharmacy?.address || ""}
+                                            pharmacyId={pharmacy?.id}
                                             price={medicine.price}
                                             availablity={medicine.is_available}
                                             scintifcName={medicine.scientific_name}
