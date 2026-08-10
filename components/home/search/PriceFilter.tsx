@@ -1,15 +1,16 @@
+import { Dispatch, SetStateAction } from "react";
+import DropDownMenu from "./DropDownMenu";
 import Image from "next/image";
 import filterArrowDown from "@/public/icons/filterArrowDown.svg"
-import { Dispatch, SetStateAction, useState } from "react";
-import DropDownMenu from "./DropDownMenu";
-type itemProps = {
-    title: string,
-    elements: (string)[];
-    dropDownOpened: string | null;
-    setDropDownOpened:Dispatch<SetStateAction<string | null>>;
-}
-export default function Item ({title, elements, dropDownOpened, setDropDownOpened}:itemProps){
+import MinimumDistanceSlider from "./PriceSlider";
 
+
+type filterProps ={
+    title: string,
+    dropDownOpened: string | null;
+    setDropDownOpened:Dispatch<SetStateAction<string | null>>
+}
+export default function Price({title,dropDownOpened, setDropDownOpened}:filterProps){
     const handleClick = () =>{
         setDropDownOpened((prev) => (prev === title ? null : title));
         console.log("title" , dropDownOpened)
@@ -29,22 +30,23 @@ export default function Item ({title, elements, dropDownOpened, setDropDownOpene
                 }
                 onClick={handleClick}
             >
-                <Image 
+                <Image
                     src={filterArrowDown} 
                     width={9} 
                     alt={""} 
-                    
                     className= {`transition duration-200
                         ${(dropDownOpened === title) ? "brightness-0 invert": ""}
                         group-hover:brightness-0
                         group-hover:invert`}
-                    
                 />
-                <p className="text-inpt">{title}</p>
-                
+                    <p className="text-inpt">{title}</p>
+                      
             </div>
             <div className="absolute top-full right-0">
-            {(dropDownOpened === title) && <DropDownMenu title={title} elements={["أقراص", "كبسولات", "شراب", "كريم / مرهم", "قطرات", "أقراص", "كبسولات", "شراب", "كريم / مرهم", "قطرات"]}/>}
+                {(dropDownOpened === title) && <DropDownMenu title="السعر">
+                        <MinimumDistanceSlider/>
+                    </DropDownMenu>
+                }
             </div>
         </div>
     )
