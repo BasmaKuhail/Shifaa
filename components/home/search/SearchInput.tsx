@@ -7,20 +7,29 @@ import GradientBtn from "../GradiantBtn";
 import { useState } from "react";
 import MobileFilter from "./mobileFilter/MobileFilter";
 import { useRouter } from "next/router";
+import { Dispatch, SetStateAction } from "react";
 
 type SearchInputProps = {
     isHome?:boolean;
     label: string;
     value: string;
     onChange: (value: string) => void;
-    dosageForm?:string | null
+    dosageForm?:string | null,
+    setSelectedDosageForm?: Dispatch<SetStateAction<string>>
 }
 
 function handleSearch (){
     console.log("search")
     return;
 }
-export default function SearchInput({isHome=true, label, value, onChange, dosageForm}:SearchInputProps){
+export default function SearchInput({
+    isHome=true,
+    label,
+    value,
+    onChange,
+    dosageForm,
+    setSelectedDosageForm
+}:SearchInputProps){
     const [isFilterOpened, setIsFilterOpened] = useState(false);
 
     const router = useRouter()
@@ -99,6 +108,13 @@ export default function SearchInput({isHome=true, label, value, onChange, dosage
             
             
         </div>
-        {isFilterOpened && <MobileFilter isFilterOpened={isFilterOpened} setIsFilterOpened={setIsFilterOpened}/>}</>
+        {isFilterOpened && setSelectedDosageForm && (
+            <MobileFilter
+                isFilterOpened={isFilterOpened}
+                setIsFilterOpened={setIsFilterOpened}
+                dosage={dosageForm ?? ""}
+                setSelectedDosageForm={setSelectedDosageForm}
+            />
+        )}</>
     )
 }

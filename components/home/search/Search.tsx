@@ -94,6 +94,7 @@ export default function SearchHome({
           value={userInput}
           onChange={handleSearchChange}
           dosageForm={selectedDosageForm}
+          setSelectedDosageForm={handleDosageChange}
         />
 
         <div

@@ -43,7 +43,7 @@ export default function Price({title,dropDownOpened, setDropDownOpened}:filterPr
                       
             </div>
             <div className="absolute top-full right-0">
-                {(dropDownOpened === title) && <DropDownMenu title="السعر">
+                {(dropDownOpened === title) && <DropDownMenu title="السعر" action={<button onClick={()=> {}} className="hover:underline text-xs">اعادة الضبط</button>}>
                         <MinimumDistanceSlider/>
                     </DropDownMenu>
                 }

@@ -60,7 +60,7 @@ export default function Dosage({dosage, title,dropDownOpened, setDropDownOpened,
                       
             </div>
             <div className="absolute top-full right-0">
-                {(dropDownOpened === title) && <DropDownMenu title="تصنيف الشكل الدوائي">
+                {(dropDownOpened === title) && <DropDownMenu title="تصنيف الشكل الدوائي" action={<button onClick={setSelectedDosageForm? ()=> setSelectedDosageForm("") : ()=> {}} className="hover:underline text-xs">اعادة الضبط</button>}>
                         {elements.map((element, index) => 
                             <div className="flex flex-row gap-2 px-3">
                                 <input 
