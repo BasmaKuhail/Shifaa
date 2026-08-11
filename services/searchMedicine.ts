@@ -6,7 +6,9 @@ export const searchMedicines = async (
     page = 1,
     perPage = 9,
     search = "",
-    dosageForm=""
+    dosageForm="",
+    min=1,
+    max=200
   }: GetMedicinesParams = {},
 ): Promise<MedicinesApiResponse> => {
   const normalizedSearch = search.trim();
@@ -20,12 +22,15 @@ export const searchMedicines = async (
         per_page: perPage,
 
         ...(normalizedSearch && {
-          "filter[scientificNameOrTradeName]": `*${normalizedSearch}*`,
+          "filter[scientificNameOrTradeName]": `*${normalizedSearch}*`}),
+
+        ...(dosageForm && {
           "filter[dosageForm]": `*${dosageForm}*`,
         }),
-      },
-    },
-  );
+
+        "filter[priceRange]": `${min},${max}`,    
+      }
+    })
     console.log(response)
 
   return response.data;

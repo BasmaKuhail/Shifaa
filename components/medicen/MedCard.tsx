@@ -2,6 +2,7 @@ import Image, { StaticImageData } from "next/image"
 import pharm from "@/public/icons/pharmacies/pharm.svg"
 import loc from "@/public/icons/pharmacies/loc.svg"
 import { getDosageFormImage } from "@/config/medicationFormImages"
+import { useRouter } from "next/router"
 type medCardProps ={
     pharmacyName:string | undefined,
     pharmacyId:number | undefined,
@@ -18,12 +19,16 @@ type medCardProps ={
 export default function MedCard({pharmacyName,pharmacyId, dosageFprm, scintifcName, availablity, price, image, medName, isList, location}:medCardProps){
     const imageToDisplay =
         image ?? getDosageFormImage(dosageFprm);
+    const router = useRouter();
     return(
-        <div className={`flex ${isList? "flex-row":"flex-col items-center"} border border-black-50 rounded-[10px] cursor-pointer hover:transtion-ease-out hover:shadow-sm`}>
-            <Image src={imageToDisplay} alt="" className="h-[200px]" height={200} width={200}/>
-            <div className={`flex w-full ${isList? "items-start px-5 rounded-l-[10px]":"items-center rounded-b-[10px] px-10 py-5 text-center"} py-2  bg-black-10 gap-2 flex-col`}>
+        <div 
+            onClick={() => router.push(`pharmacies/pharmacy-details/${pharmacyId}`)}
+            className={`flex ${isList? "flex-row":"flex-col items-center"} border border-black-50 rounded-[10px] cursor-pointer hover:transtion-ease-out hover:shadow-sm`}>
+            <Image src={imageToDisplay} alt=""  className="h-full" height={200} width={200}/>
+            
+            <div className={`flex w-full h-full ${isList? "items-start px-5 rounded-l-[10px]":"items-center rounded-b-[10px] px-10 py-5 text-center"} py-2  bg-black-10 gap-2 flex-col`}>
                 <p className="text-btn md:text-21px font-[500]">{medName.toLocaleLowerCase()}</p>
-                <p className="text-12px text-black-500">{scintifcName.toLocaleLowerCase()}</p>
+                <p className="text-12px text-black-500">{scintifcName.toLocaleLowerCase().slice(0, 70)}</p>
                 <div className="flex flex-row gap-2 items-start">
                     <Image src={pharm} alt=""/>
                     <p className="text-12px md:text-inpt  text-black-500">{pharmacyName}</p>

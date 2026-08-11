@@ -54,9 +54,6 @@ export default function PharmacyDetails() {
 
     const latestRequestIdRef = useRef(0);
 
-    /*
-     * Debounce medicine search
-     */
     useEffect(() => {
         const timeoutId = window.setTimeout(() => {
             setDebouncedSearch(searchInput.trim());
@@ -68,9 +65,6 @@ export default function PharmacyDetails() {
         };
     }, [searchInput]);
 
-    /*
-     * Load pharmacy details
-     */
     useEffect(() => {
         if (!router.isReady) {
             return;
@@ -127,15 +121,6 @@ export default function PharmacyDetails() {
         };
     }, [router.isReady, router.query.id]);
 
-    /*
-     * Load medicines
-     *
-     * Page 1:
-     * Replace the medicines list.
-     *
-     * Page 2+:
-     * Append new medicines to the current list.
-     */
     useEffect(() => {
         if (loadingPharmacy || !pharmacy) {
             return;
@@ -381,17 +366,27 @@ export default function PharmacyDetails() {
                                     setSearchInput
                                 }
                             />
-                        </div>
+                        
 
                         {/* Initial loading */}
                         {loadingMed &&
                             currentPage === 1 && (
-                                <div className="flex min-h-[360px] w-full items-center justify-center">
+                                <div className="flex min-h-[200px] w-full items-center justify-center">
                                     <p className="text-black-300">
                                         جاري تحميل الأدوية...
                                     </p>
                                 </div>
                             )}
+                        {/* No medicines */}
+                        {!loadingMed &&
+                            !errorMed &&
+                            medicines.length === 0 && (
+                                <div className="flex min-h-[200px] w-full items-center justify-center">
+                                    <p className="text-black-300">
+                                        لا توجد أدوية
+                                    </p>
+                                </div>
+                        )}
 
                         {/* Error */}
                         {!loadingMed &&
@@ -405,10 +400,7 @@ export default function PharmacyDetails() {
                             )}
 
                         {/* Medicines */}
-                        {!(
-                            loadingMed &&
-                            currentPage === 1
-                        ) && (
+                        {!(loadingMed && currentPage === 1) && medicines.length !=0 &&
                             <div
                                 aria-busy={loadingMed}
                                 className={`
@@ -438,20 +430,7 @@ export default function PharmacyDetails() {
                                     ),
                                 )}
                             </div>
-                        )}
-
-                        {/* No medicines */}
-                        {!loadingMed &&
-                            !errorMed &&
-                            medicines.length === 0 && (
-                                <div className="mb-10 flex w-full items-center justify-center">
-                                    <p className="text-black-300">
-                                        لا توجد أدوية مطابقة
-                                        للبحث
-                                    </p>
-                                </div>
-                            )}
-
+                        }
                         {/* Load more */}
                         {hasMoreMedicines && (
                             <div className="mb-10 flex w-full items-center justify-center">
@@ -486,7 +465,7 @@ export default function PharmacyDetails() {
                                 </button>
                             </div>
                         )}
-
+                    </div>
                         <MedNotFoundC2A />
                     </div>
                 </div>

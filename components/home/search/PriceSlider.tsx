@@ -1,48 +1,46 @@
-import * as React from 'react';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
+import { useState } from 'react';
 
-function valuetext(value: number) {
-  return `${value}°₪`;
-}
 
-const minDistance = 10;
+const MIN_PRICE = 1;
+const MAX_PRICE = 200;
+const MIN_DISTANCE = 5;
 
-export default function MinimumDistanceSlider() {
-  const [value1, setValue1] = React.useState<number[]>([20, 37]);
+export default function MinimumDistanceSlider({min, max, onChange}:{min:number, max:number, onChange: (min: number, max: number) => void;}) {
 
-  const handleChange1 = (event: Event, newValue: number[], activeThumb: number) => {
-    if (activeThumb === 0) {
-      setValue1([Math.min(newValue[0], value1[1] - minDistance), value1[1]]);
-    } else {
-      setValue1([value1[0], Math.max(newValue[1], value1[0] + minDistance)]);
-    }
-  };
+  function valuetext(value: number) {
+    return `${value}₪`;
+  }
+const handleChange = (_event: Event, newValue: number | number[], activeThumb: number) => {
+    if (!Array.isArray(newValue)) return;
 
-  const [value2, setValue2] = React.useState<number[]>([20, 37]);
+    let [newMin, newMax] = newValue;
 
-  const handleChange2 = (event: Event, newValue: number[], activeThumb: number) => {
-    if (newValue[1] - newValue[0] < minDistance) {
+    if (newMax - newMin < MIN_DISTANCE) {
       if (activeThumb === 0) {
-        const clamped = Math.min(newValue[0], 100 - minDistance);
-        setValue2([clamped, clamped + minDistance]);
+        newMin = Math.min(newMin, MAX_PRICE - MIN_DISTANCE);
+        newMax = newMin + MIN_DISTANCE;
       } else {
-        const clamped = Math.max(newValue[1], minDistance);
-        setValue2([clamped - minDistance, clamped]);
+        newMax = Math.max(newMax, MIN_PRICE + MIN_DISTANCE);
+        newMin = newMax - MIN_DISTANCE;
       }
-    } else {
-      setValue2(newValue);
     }
+
+    onChange(newMin, newMax);
   };
 
   return (
-    <div className='flex flex-col mt-10 gap-4 px-5'>
+    <div className='flex flex-col mt-5 gap-4 px-5'>
 
       <Box sx={{ width: 200 }}>
         <Slider
+        style={{color:"#329CCB"}}
           getAriaLabel={() => 'Minimum distance shift'}
-          value={value2}
-          onChange={handleChange2}
+          value={[min, max]}
+          min={MIN_PRICE}
+          max={MAX_PRICE}
+          onChange={handleChange}
           valueLabelDisplay="auto"
           getAriaValueText={valuetext}
           disableSwap

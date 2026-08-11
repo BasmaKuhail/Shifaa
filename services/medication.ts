@@ -54,7 +54,9 @@ export type GetMedicinesParams = {
   page?: number;
   perPage?: number;
   search?: string;
-  dosageForm?:string
+  dosageForm?:string;
+  min?:number,
+  max?:number
 };
 
 type MedicineDetailsApiItem = {
@@ -160,7 +162,7 @@ export const getPharmacyMedicines = async (
         per_page: perPage,
 
         ...(normalizedSearch && {
-          "filter[scientificName]": `*${normalizedSearch}*`,
+          "filter[scientificNameOrTradeName]": `*${normalizedSearch}*`,
         }),
       },
     },

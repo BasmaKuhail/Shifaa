@@ -39,30 +39,47 @@ export default function SearchMed() {
 
   const searchRequestIdRef = useRef(0);
 
+  const [min, setMin] = useState(1);
+  const [max, setMax] = useState(200);
   const hasMoreMedicines =
     pagination !== null &&
     pagination.current_page < pagination.last_page;
 
   useEffect(() => {
-    if (!router.isReady) {
-      return;
-    }
+  if (!router.isReady) {
+    return;
+  }
 
-    const querySearch =
-      typeof router.query.search_input === "string"
-        ? router.query.search_input
-        : "";
+  const querySearch =
+    typeof router.query.search_input === "string"
+      ? router.query.search_input
+      : "";
 
-    const normalizedSearch = querySearch.trim();
-    setUserInput(normalizedSearch);
-    setDebouncedSearch(normalizedSearch);
+  const normalizedSearch = querySearch.trim();
 
-    const dosageForm = 
-      typeof router.query.dosage_form === "string"
-        ? router.query.dosage_form
-        : "";
-    setSelectedDosageForm(dosageForm);
-  }, [router.isReady]);
+  setUserInput(normalizedSearch);
+  setDebouncedSearch(normalizedSearch);
+
+  const dosageForm =
+    typeof router.query.dosage_form === "string"
+      ? router.query.dosage_form
+      : "";
+
+  setSelectedDosageForm(dosageForm);
+
+  const queryMin =
+    typeof router.query.min_price === "string"
+      ? Number(router.query.min_price)
+      : 1;
+
+  const queryMax =
+    typeof router.query.max_price === "string"
+      ? Number(router.query.max_price)
+      : 200;
+
+  setMin(Number.isFinite(queryMin) ? queryMin : 1);
+  setMax(Number.isFinite(queryMax) ? queryMax : 200);
+}, [router.isReady]);
 
   useEffect(() => {
     if (!router.isReady) {
@@ -110,6 +127,7 @@ export default function SearchMed() {
         undefined,
         {
             shallow: true,
+            scroll: false,
         },
     );
 }, [selectedDosageForm, router.isReady]);
@@ -143,9 +161,45 @@ export default function SearchMed() {
       undefined,
       {
         shallow: true,
+        scroll: false,
       },
     );
   }, [debouncedSearch, router]);
+
+  useEffect(() => {
+    if (!router.isReady) {
+      return;
+    }
+
+    const currentMin =
+      typeof router.query.min_price === "string"
+        ? router.query.min_price
+        : "1";
+    const currentMax =
+      typeof router.query.max_price === "string"
+        ? router.query.max_price
+        : "200";
+
+    if (currentMin === String(min) && currentMax === String(max)) {
+      return;
+    }
+
+    void router.replace(
+      {
+        pathname: router.pathname,
+        query: {
+          ...router.query,
+          min_price: String(min),
+          max_price: String(max),
+        },
+      },
+      undefined,
+      {
+        shallow: true,
+        scroll: false,
+      },
+    );
+  }, [min, max, router.isReady]);
 
   useEffect(() => {
     if (!router.isReady) {
@@ -163,7 +217,9 @@ export default function SearchMed() {
           page: 1,
           perPage: MEDICINES_PER_PAGE,
           search: debouncedSearch,
-          dosageForm: selectedDosageForm
+          dosageForm: selectedDosageForm,
+          min,
+          max
         });
 
         if (requestId !== searchRequestIdRef.current) {
@@ -195,7 +251,13 @@ export default function SearchMed() {
     };
 
     void fetchResults();
-  }, [router.isReady, debouncedSearch, selectedDosageForm,]);
+  }, [
+      router.isReady,
+      debouncedSearch,
+      selectedDosageForm,
+      min,
+      max,
+    ]);
 
 
   const handleLoadMore = async () => {
@@ -219,6 +281,8 @@ export default function SearchMed() {
         perPage: MEDICINES_PER_PAGE,
         search: debouncedSearch,
         dosageForm: selectedDosageForm,
+        min,
+        max,
       });
 
       setResults((currentResults) => {
@@ -277,6 +341,10 @@ export default function SearchMed() {
               onSearchChange={setUserInput}
               dosage={selectedDosageForm}
               setSelectedDosageForm={setSelectedDosageForm}
+              min={min}
+              max={max}
+              setMin={setMin}
+              setMax={setMax}
             />
         </div>
         </div>
@@ -296,6 +364,10 @@ export default function SearchMed() {
             onSearchChange={setUserInput}
             dosage={selectedDosageForm}
             setSelectedDosageForm={setSelectedDosageForm}
+            min={min}
+            max={max}
+            setMin={setMin}
+            setMax={setMax}
           />
         </div>
 
