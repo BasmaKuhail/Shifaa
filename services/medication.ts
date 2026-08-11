@@ -160,7 +160,7 @@ export const getPharmacyMedicines = async (
         per_page: perPage,
 
         ...(normalizedSearch && {
-          "filter[scientificName]": `*${normalizedSearch}*`,
+          "filter[scientificNameOrTradeName]": `*${normalizedSearch}*`,
         }),
       },
     },
