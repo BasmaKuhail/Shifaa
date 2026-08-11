@@ -25,12 +25,17 @@ type filterProps ={
     setIsFilterOpened:(isMenuOpened: boolean) => void,
     dosage: string,
     setSelectedDosageForm: Dispatch<SetStateAction<string>>
+    min:number,
+    max:number,
+    setMin:Dispatch<SetStateAction<number>>,
+    setMax:Dispatch<SetStateAction<number>>,
 }
 export default function MobileFilter ({
     isFilterOpened,
     setIsFilterOpened,
     dosage,
-    setSelectedDosageForm
+    setSelectedDosageForm,
+    min, max, setMin, setMax
 }:filterProps) {
     return(
         <div className="bg-white p-4 flex flex-col gap-3 py-5 rounded-[14px]">

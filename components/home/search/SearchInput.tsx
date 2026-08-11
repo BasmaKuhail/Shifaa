@@ -15,7 +15,11 @@ type SearchInputProps = {
     value: string;
     onChange: (value: string) => void;
     dosageForm?:string | null,
-    setSelectedDosageForm?: Dispatch<SetStateAction<string>>
+    setSelectedDosageForm?: Dispatch<SetStateAction<string>>,
+    min?:number,
+    max?:number,
+    setMin?:Dispatch<SetStateAction<number>>,
+    setMax?:Dispatch<SetStateAction<number>>,
 }
 
 function handleSearch (){
@@ -28,7 +32,11 @@ export default function SearchInput({
     value,
     onChange,
     dosageForm,
-    setSelectedDosageForm
+    setSelectedDosageForm,
+    min,
+    max,
+    setMin,
+    setMax
 }:SearchInputProps){
     const [isFilterOpened, setIsFilterOpened] = useState(false);
 
@@ -44,10 +52,12 @@ export default function SearchInput({
             if (dosageForm) {
                 query.set("dosage_form", dosageForm);
             }
-
+            query.set("min_price", String(min));
+            query.set("max_price", String(max));
+            
             void router.push(`/search-medicine?${query.toString()}`);
+            
         }
-            // router.push(`/search-medicine?search_input=${encodeURIComponent(String(value))}&dosageForm=${encodeURIComponent(String(dosageForm))}`)
     }
     return(<>
         <div dir="rtl" className="relative w-full">
@@ -56,13 +66,13 @@ export default function SearchInput({
                 width={15}
                 src={search} 
                 className="hidden lg:block md:block absolute right-5 top-1/2 -translate-y-1/2 cursor-pointer z-10"
-                onClick={handleSearch} />
+                onClick={handleSearchClick} />
             <div onClick={() => setIsFilterOpened(!isFilterOpened)}>
                 <Image 
                     alt=""
                     src={fillter} 
                     className="lg:hidden md:hidden block absolute right-5 top-1/2 -translate-y-1/2 cursor-pointer z-10"
-                    onClick={handleSearch} />
+                    onClick={handleSearchClick} />
              </div>
              
             <input 
@@ -108,12 +118,16 @@ export default function SearchInput({
             
             
         </div>
-        {isFilterOpened && setSelectedDosageForm && (
+        {isFilterOpened && setSelectedDosageForm && setMin && setMax && (
             <MobileFilter
                 isFilterOpened={isFilterOpened}
                 setIsFilterOpened={setIsFilterOpened}
                 dosage={dosageForm ?? ""}
                 setSelectedDosageForm={setSelectedDosageForm}
+                min={min ?? 1}
+                setMin={setMin}
+                max={max ?? 200}
+                setMax={setMax}
             />
         )}</>
     )

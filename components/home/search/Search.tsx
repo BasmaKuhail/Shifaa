@@ -4,28 +4,49 @@ import SearchInput from "./SearchInput";
 import Text from "./Text";
 import Dosage from "./DosageFormFilter";
 import Price from "./PriceFilter";
+import Location from "./LocationFilter";
 
 type SearchHomeProps = {
-  dosage?:string,
+  dosage?: string;
   isHome?: boolean;
   userInputProp?: string;
   onSearchChange?: (value: string) => void;
-  setSelectedDosageForm?:Dispatch<SetStateAction<string>>
+  setSelectedDosageForm?: Dispatch<SetStateAction<string>>;
+
+  min?: number;
+  max?: number;
+  setMin?: Dispatch<SetStateAction<number>>;
+  setMax?: Dispatch<SetStateAction<number>>;
 };
+const DEFAULT_MAX = 200;
+const DEFAULT_MIN = 1;
 
 export default function SearchHome({
   dosage="",
   isHome = true,
   userInputProp = "",
   onSearchChange,
-  setSelectedDosageForm
+  setSelectedDosageForm,
+  min: minProp,
+  max: maxProp,
+  setMin: setMinProp,
+  setMax: setMaxProp,
 }: SearchHomeProps) {
   const [userInput, setUserInput] = useState("");
   const [dropDownOpened, setDropDownOpened] = useState<string | null>(null);
 
   const containerRef = useRef<HTMLDivElement>(null);
-  const [localDosageForm, setLocalDosageForm] =
-    useState(dosage);
+
+  const [localMin, setLocalMin] = useState(DEFAULT_MIN);
+  const [localMax, setLocalMax] = useState(DEFAULT_MAX);
+
+  const min = isHome ? localMin : (minProp ?? DEFAULT_MIN);
+  const max = isHome ? localMax : (maxProp ?? DEFAULT_MAX);
+
+  const setMin = isHome ? setLocalMin : setMinProp;
+  const setMax = isHome ? setLocalMax : setMaxProp;
+
+  const [localDosageForm, setLocalDosageForm] =useState(dosage);
   const selectedDosageForm = isHome
     ? localDosageForm
     : dosage;
@@ -95,6 +116,10 @@ export default function SearchHome({
           onChange={handleSearchChange}
           dosageForm={selectedDosageForm}
           setSelectedDosageForm={handleDosageChange}
+          min={min}
+          setMin={setMin}
+          max={max}
+          setMax={setMax}
         />
 
         <div
@@ -108,11 +133,26 @@ export default function SearchHome({
             setDropDownOpened={setDropDownOpened}
             setSelectedDosageForm={handleDosageChange}
           />
-          <Price
+          {setMin && setMax && (
+            <Price
+              title="السعر"
+              dropDownOpened={dropDownOpened}
+              min={min}
+              setMin={setMin}
+              max={max}
+              setMax={setMax}
+              setDropDownOpened={setDropDownOpened}
+            />
+          )}
+          {/* <Location
             title="السعر" 
             dropDownOpened={dropDownOpened}
+            // min={min}
+            setMin={setMin}
+            max={max}
+            setMax={setMax}
             setDropDownOpened={setDropDownOpened}
-          />
+            /> */}
         </div>
       </div>
     </div>
