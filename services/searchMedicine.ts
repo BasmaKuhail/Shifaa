@@ -1,5 +1,6 @@
 import api from "@/lib/api";
 import { GetMedicinesParams, MedicinesApiResponse } from "./medication";
+import { resolveMedicineSearch } from "./smartMedicineSearch";
 
 export const searchMedicines = async (
   {
@@ -11,7 +12,7 @@ export const searchMedicines = async (
     max=200
   }: GetMedicinesParams = {},
 ): Promise<MedicinesApiResponse> => {
-  const normalizedSearch = search.trim();
+  const normalizedSearch = await resolveMedicineSearch(search);
 
   const response = await api.get<MedicinesApiResponse>(
     "/pharmacy-medicines",
