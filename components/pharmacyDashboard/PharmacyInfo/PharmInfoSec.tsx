@@ -74,6 +74,7 @@ export default function PharmInfoSec ({pharmacistRole}:{pharmacistRole:"staff" |
 
                 return;
             }
+            //if not vaild change
             if(!(
                 validateInput(pharmacyInfo.name, 'text').isValid &&
                 validateInput(pharmacyInfo.address, 'text').isValid &&
