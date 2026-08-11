@@ -4,7 +4,7 @@ import SearchInput from "./SearchInput";
 import Text from "./Text";
 import Dosage from "./DosageFormFilter";
 import Price from "./PriceFilter";
-import Location from "./LocationFilter";
+// import Location from "./LocationFilter";
 
 type SearchHomeProps = {
   dosage?: string;
