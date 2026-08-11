@@ -111,6 +111,7 @@ export default function SearchHome({
 
       <div className="flex w-full flex-col gap-4 lg:w-[90%] xl:w-[70%]">
         <SearchInput
+          isHome={isHome}
           label="ابحث عن الأدوية"
           value={userInput}
           onChange={handleSearchChange}

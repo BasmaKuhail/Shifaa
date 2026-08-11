@@ -67,13 +67,17 @@ export default function SearchInput({
                 src={search} 
                 className="hidden lg:block md:block absolute right-5 top-1/2 -translate-y-1/2 cursor-pointer z-10"
                 onClick={handleSearchClick} />
-            <div onClick={() => setIsFilterOpened(!isFilterOpened)}>
+            <button
+                type="button"
+                aria-label="Open filters"
+                onClick={() => setIsFilterOpened((opened) => !opened)}
+                className="absolute right-5 top-1/2 z-10 block -translate-y-1/2 cursor-pointer lg:hidden md:hidden"
+            >
                 <Image 
                     alt=""
                     src={fillter} 
-                    className="lg:hidden md:hidden block absolute right-5 top-1/2 -translate-y-1/2 cursor-pointer z-10"
-                    onClick={handleSearchClick} />
-             </div>
+                />
+            </button>
              
             <input 
                 onChange={(e) => {onChange(e.target.value)} }
@@ -120,13 +124,12 @@ export default function SearchInput({
         </div>
         {isFilterOpened && setSelectedDosageForm && setMin && setMax && (
             <MobileFilter
-                isFilterOpened={isFilterOpened}
                 setIsFilterOpened={setIsFilterOpened}
                 dosage={dosageForm ?? ""}
                 setSelectedDosageForm={setSelectedDosageForm}
                 min={min ?? 1}
                 setMin={setMin}
-                max={max ?? 200}
+                max={max?? 200}
                 setMax={setMax}
             />
         )}</>

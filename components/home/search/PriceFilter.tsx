@@ -88,19 +88,6 @@ const handleReset = () => {
                                 <input 
                                     className="w-[90px] h-[35px] p-2 border border-black-200 rounded-full" 
                                     type="number"
-                                    value={min}
-                                    onChange={(e) =>
-                                        handleMinChange(Number(e.target.value))
-                                    }
-                                    name="min"
-                                    min={MIN_PRICE} 
-                                    max={max}
-                                />₪
-                            </div>
-                            <div className="flex flex-row gap-1 items-center text-black-500">
-                                <input 
-                                    className="w-[90px] h-[35px] p-2 border border-black-200 rounded-full" 
-                                    type="number"
                                     value={max}
                                     onChange={(e) =>
                                         handleMaxChange(Number(e.target.value))
@@ -108,6 +95,19 @@ const handleReset = () => {
                                     name="max"
                                     min={min} 
                                     max={MAX_PRICE}
+                                />₪
+                            </div>
+                            <div className="flex flex-row gap-1 items-center text-black-500">
+                                <input 
+                                    className="w-[90px] h-[35px] p-2 border border-black-200 rounded-full" 
+                                    type="number"
+                                    value={min}
+                                    onChange={(e) =>
+                                        handleMinChange(Number(e.target.value))
+                                    }
+                                    name="min"
+                                    min={MIN_PRICE} 
+                                    max={max}
                                 />₪
                             </div>
                         </div>
