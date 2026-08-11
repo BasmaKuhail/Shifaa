@@ -17,14 +17,14 @@ type medCardProps ={
 }
 
 export default function MedCard({pharmacyName,pharmacyId, dosageFprm, scintifcName, availablity, price, image, medName, isList, location}:medCardProps){
-    const imageToDisplay =
-        image ?? getDosageFormImage(dosageFprm);
+    const imageToDisplay = image ?? getDosageFormImage(dosageFprm);
+    console.log(image)
     const router = useRouter();
     return(
         <div 
             onClick={() => router.push(`pharmacies/pharmacy-details/${pharmacyId}`)}
             className={`flex ${isList? "flex-row":"flex-col items-center"} border border-black-50 rounded-[10px] cursor-pointer hover:transtion-ease-out hover:shadow-sm`}>
-            <Image src={imageToDisplay} alt=""  className="h-full" height={200} width={200}/>
+            <Image src={imageToDisplay} alt="" className="h-full" height={200} width={200}/>
             
             <div className={`flex w-full h-full ${isList? "items-start px-5 rounded-l-[10px]":"items-center rounded-b-[10px] px-10 py-5 text-center"} py-2  bg-black-10 gap-2 flex-col`}>
                 <p className="text-btn md:text-21px font-[500]">{medName.toLocaleLowerCase()}</p>

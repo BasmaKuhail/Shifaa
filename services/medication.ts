@@ -2,7 +2,10 @@ import api from "@/lib/api";
 
 import { PaginationLink } from "./admin";
 import { ApplicationFile } from "@/types/PharmacistApplication";
-
+export type MedicineAttachment = {
+  id?: number;
+  url: string;
+};
 export type Medicine = {
   id: number;
   scientific_name: string;
@@ -10,7 +13,8 @@ export type Medicine = {
   dosage_form: string;
   strength: string | null;
   price: number | null;
-  medication_photo?: string | null;
+  medication_photo?: string | null
+  attachments?: MedicineAttachment[];
   is_available: boolean;
   pharmacy?:{
     id:number;
@@ -134,6 +138,7 @@ export const getMedicines = async ({
 
         ...(normalizedSearch && {
           "filter[scientificName]": `*${normalizedSearch}*`,
+          // "sort":"scientificName"
         }),
       },
     },
@@ -158,6 +163,7 @@ export const getPharmacyMedicines = async (
       params: {
         include: "globalMedicine",
         "filter[pharmacyId]": pharmacyId,
+        "sort":"-createdAt",
         page,
         per_page: perPage,
 

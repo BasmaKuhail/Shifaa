@@ -404,11 +404,14 @@ export default function SearchMed() {
                       : "flex flex-col gap-4"
                   }`}
                 >
-                  {results.map((medicine) => (
+                  {results.map((medicine) => {
+                   console.log("MEDICINE:", medicine);
+                    console.log("PHOTO:", medicine.medication_photo);
+                    return(
                     <MedCard
                       key={medicine.id}
                       dosageFprm={medicine.dosage_form}
-                      image={medicine.medication_photo}
+                      image={medicine.attachments?.[0]?.url}
                       scintifcName={medicine.scientific_name}
                       medName={medicine.trade_name}
                       isList={viewMode === "list"}
@@ -418,7 +421,7 @@ export default function SearchMed() {
                       location={medicine.pharmacy?.address}
                       pharmacyId={medicine.pharmacy?.id}
                     />
-                  ))}
+                  )})}
                 </div>
 
                 {error && (
