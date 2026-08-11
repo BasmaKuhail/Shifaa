@@ -1,9 +1,6 @@
-import Btn from "./Btn";
 import Card from "./CardContainer";
-import editIcon from "@/public/icons/editProfile/edit.svg"
 import { useContext, useEffect, useRef, useState } from "react";
 import PetrolBtn from "./invitePopup/PetrolBtn";
-import Link from "next/link";
 import ImageProfile from "@/components/EditProfile/Image";
 import Input from "@/components/register/input";
 import { PharmacyContext } from "@/contexts/PharmacyDataContext";
@@ -11,10 +8,6 @@ import { deletePharmacy, updatePharmacyData } from "@/services/pharmacy";
 import { showAlert } from "@/components/alerts/AlertContainer";
 import { getApiErrorMessage } from "@/utils/getApiErrorMessage";
 import { validateInput } from "@/utils/ValidateInput";
-import phamBg from "@/public/images/pharmBg.png"
-import Image from "next/image";
-import { ApplicationFile } from "@/types/PharmacistApplication";
-import PopUp from "@/components/adminDashboard/requests/InteractRequestPopup";
 import PopupContainer from "./PopUpContainer";
 import { useRouter } from "next/router";
 export default function PharmInfoSec ({pharmacistRole}:{pharmacistRole:"staff" | "owner" | undefined}){
@@ -77,6 +70,20 @@ export default function PharmInfoSec ({pharmacistRole}:{pharmacistRole:"staff" |
                 type: "Hint",
                 title: "تنبيه",
                 message: "لم يتم إجراء أي تغييرات.",
+                });
+
+                return;
+            }
+            //if not vaild change
+            if(!(
+                validateInput(pharmacyInfo.name, 'text').isValid &&
+                validateInput(pharmacyInfo.address, 'text').isValid &&
+                validateInput(pharmacyInfo.phone, 'mobile').isValid
+            )){
+                showAlert({
+                    type: "Hint",
+                    title: "تنبيه",
+                    message: "أحد/ كل الحقول تحاول تحديثها تحتوي بيانات غير صحيحة.",
                 });
 
                 return;
