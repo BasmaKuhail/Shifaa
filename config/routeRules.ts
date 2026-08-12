@@ -21,6 +21,10 @@ export const protectedRoutes: RouteRule[] = [
     {
         path: "/pharmacy-daqshboard",
         allowedRoles: ["pharmacist"],
+    },
+    {
+        path: "/join-pharmacy-request",
+        allowedRoles: ["pharmacist"],
     }
 ];
 
