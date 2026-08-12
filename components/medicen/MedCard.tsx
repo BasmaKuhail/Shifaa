@@ -22,7 +22,7 @@ export default function MedCard({pharmacyName,pharmacyId, dosageFprm, scintifcNa
     const router = useRouter();
     return(
         <div 
-            onClick={() => router.push(`pharmacies/pharmacy-details/${pharmacyId}`)}
+            onClick={() => router.push(`/pharmacies/pharmacy-details/${pharmacyId}`)}
             className={`flex ${isList? "flex-row":"flex-col items-center"} border border-black-50 rounded-[10px] cursor-pointer hover:transtion-ease-out hover:shadow-sm`}>
             <Image src={imageToDisplay} alt="" className="h-full" height={200} width={200}/>
             
