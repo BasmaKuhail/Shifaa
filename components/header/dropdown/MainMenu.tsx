@@ -78,6 +78,15 @@ export default function MainMenu({ user, setIsSettingsOpen }: Props) {
       },
     },
     {
+      title: "طلب انضمام لصيدلية",
+      icon: createPharm,
+      opened: false,
+      arrow: ArrowRight,
+      onclick: () => {
+        router.push("/join-pharmacy-request");
+      },
+    },
+    {
       title: "تسجيل خروج",
       icon: logout,
       opened: false,
@@ -103,14 +112,15 @@ export default function MainMenu({ user, setIsSettingsOpen }: Props) {
       return false;
     }
 
-    if (user?.pharmacy_id && item.title === "إنشاء صيدلية") {
+    if (user?.pharmacy_id && (item.title === "إنشاء صيدلية" || item.title === "طلب انضمام لصيدلية")) {
       return false;
     }
 
     return true;
   });
+
   const userArr = dropDownItems.filter(
-    (item) => item.title !== "إنشاء صيدلية"
+    (item) => item.title !== "إنشاء صيدلية" && item.title !== "طلب انضمام لصيدلية" 
   );
   const adminArr = dropDownItems.filter(
     (item) =>
