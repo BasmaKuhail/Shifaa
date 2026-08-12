@@ -78,6 +78,15 @@ export default function MainMenu({ user, setIsSettingsOpen }: Props) {
       },
     },
     {
+      title: "طلب انضمام لصيدلية",
+      icon: createPharm,
+      opened: false,
+      arrow: ArrowRight,
+      onclick: () => {
+        router.push("/join-pharmacy-request");
+      },
+    },
+    {
       title: "تسجيل خروج",
       icon: logout,
       opened: false,
