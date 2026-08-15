@@ -11,6 +11,8 @@ import switchTo from "@/public/icons/profile/switch.svg";
 import createPharm from "@/public/icons/profile/createPharm.svg";
 import invitaions from "@/public/icons/invitations.svg"
 import ArrowRight from "@/public/icons/profile/arrowRight.svg";
+import joinPharm from "@/public/icons/profile/joinPharm.svg";
+
 import { logout as logoutService } from "@/services/auth";
 import { User } from "@/types/UserType";
 import { clearUserNotifications } from "@/lib/notifications";
@@ -79,7 +81,7 @@ export default function MainMenu({ user, setIsSettingsOpen }: Props) {
     },
     {
       title: "طلب انضمام لصيدلية",
-      icon: createPharm,
+      icon: joinPharm,
       opened: false,
       arrow: ArrowRight,
       onclick: () => {

@@ -80,10 +80,10 @@ export default function JoinPharmacy() {
       await joinPharm({ pharmacy_id: Number(formData.pharmacyId), message: formData.message.trim() });
       showAlert({ type: "Success", title: "تم بنجاح", message: "تم إرسال طلب الانضمام" });
       handleReset();
-    } catch (error: unknown) {
+    } catch (error: any) {
       let errorMessage = "تعذر إرسال طلب الانضمام";
 
-      showAlert({ type: "Error", title: "خطأ", message: errorMessage });
+      showAlert({ type: "Error", title: "خطأ", message: error.message || errorMessage });
     }
   };
 
@@ -129,7 +129,7 @@ export default function JoinPharmacy() {
                 value={formData.message}
                 onChange={(value) => setFormData((current) => ({ ...current, message: typeof value === "string" ? value : "" }))}
                 isTrue={formData.message.trim() !== ""}
-                errorMsg={formData.message.trim()}
+                errorMsg={""}
               />
           </div>
         </div>

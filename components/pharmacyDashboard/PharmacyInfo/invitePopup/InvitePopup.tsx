@@ -19,74 +19,66 @@ export default function InvitePopup({onClose}: {onClose: () => void}) {
   const [errorMessage, setErrorMessage] = useState("");
   const [invitingPharmacistId, setInvitingPharmacistId] = useState<number | null>(null);
   const requestIdRef = useRef(0);
+  const [hasSearched, setHasSearched] = useState(false);
 
-  const handleSearch = async (event: FormEvent<HTMLFormElement>,) => {
-    event.preventDefault();
+const handleSearch = async (event: FormEvent<HTMLFormElement>) => {
+  event.preventDefault();
 
-    const normalizedInput = searchInput.trim();
+  const normalizedInput = searchInput.trim();
 
-    if (!normalizedInput || isSearching) {
+  if (!normalizedInput || isSearching) {
+    return;
+  }
+
+  const requestId = ++requestIdRef.current;
+
+  try {
+    setIsSearching(true);
+    setHasSearched(false);
+    setErrorMessage("");
+
+    const response = await searchPharmacists(normalizedInput, 1);
+
+    if (requestId !== requestIdRef.current) {
       return;
     }
 
-    const requestId = ++requestIdRef.current;
+    const pharmacists: Pharmacist[] = Array.isArray(response.data)
+      ? response.data
+      : [];
 
-    try {
-      setIsSearching(true);
-      setErrorMessage("");
+    const mappedResults: Pharmacist[] = pharmacists.map((pharmacist) => ({
+      id: pharmacist.id,
+      user: {
+        name: pharmacist.user.name ?? "",
+        email: pharmacist.user.email ?? "",
+      },
+      phone_number: pharmacist.phone_number ?? "",
+    }));
 
-      const response = await searchPharmacists(
-        normalizedInput,
-        1,
-      );
-
-      // Ignore an older request if a newer request has completed.
-      if (requestId !== requestIdRef.current) {
-        return;
-      }
-
-      const pharmacists: Pharmacist[] = Array.isArray(
-        response.data,
-      )
-        ? response.data
-        : [];
-      console.log(pharmacists);
-      const mappedResults: Pharmacist[] =
-        pharmacists.map((pharmacist) => ({
-          id: pharmacist.id,
-          user:{
-            name: pharmacist.user.name ?? "",
-            email:pharmacist.user.email ?? "",
-          },
-          phone_number:pharmacist.phone_number ??"",
-          
-        }));
-
-      // Replace the current results. Do not append.
-      console.log(mappedResults);
-      setResults(mappedResults);
-      
-    } catch (error: unknown) {
-      if (requestId !== requestIdRef.current) {
-        return;
-      }
-
-      setResults([]);
-
-      if (axios.isAxiosError(error)) {
-        setErrorMessage(
-          error.response?.data?.message ??
-            "حدث خطأ أثناء البحث",
-        );
-      } else {
-        setErrorMessage("حدث خطأ غير متوقع");
-      }
-    } finally {
-      if (requestId === requestIdRef.current) {
-        setIsSearching(false);
-      }
+    setResults(mappedResults);
+    setHasSearched(true);
+  } catch (error: unknown) {
+    if (requestId !== requestIdRef.current) {
+      return;
     }
-  };
+
+    setResults([]);
+    setHasSearched(true);
+
+    if (axios.isAxiosError(error)) {
+      setErrorMessage(
+        error.response?.data?.message ?? "حدث خطأ أثناء البحث",
+      );
+    } else {
+      setErrorMessage("حدث خطأ غير متوقع");
+    }
+  } finally {
+    if (requestId === requestIdRef.current) {
+      setIsSearching(false);
+    }
+  }
+};
 const handleInvite = async (pharmacistId: number) => {
   if (invitingPharmacistId !== null) {
     return;
@@ -166,6 +158,7 @@ const handleInvite = async (pharmacistId: number) => {
           placeholder="ابحث بالاسم أو البريد الإلكتروني أو رقم الهاتف"
           onChange={(event) => {
             setSearchInput(event.target.value);
+            setHasSearched(false);
           }}
           className="h-[40px] w-full rounded-[12px] border border-black-200 bg-white px-12 text-right text-black-500 focus:outline-none"
         />
@@ -179,8 +172,13 @@ const handleInvite = async (pharmacistId: number) => {
         <p className="text-sm text-red-500">{errorMessage}</p>
       )}
 
-      {!isSearching && results.length === 0 && searchInput.trim() && !errorMessage && (
-        <p className="w-full py-4 text-center text-sm text-gray-500">لم يتم العثور على صيادلة</p>
+      {hasSearched &&
+        !isSearching &&
+        results.length === 0 &&
+        !errorMessage && (
+          <p className="w-full py-4 text-center text-sm text-gray-500">
+            لم يتم العثور على صيادلة
+          </p>
       )}
 
     <div
