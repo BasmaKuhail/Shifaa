@@ -164,3 +164,25 @@ export const viewSentInvitations = async (
 
   return response.data.data;
 };
+export const viewJoinRequests = async (
+  pharmacyId: number,
+): Promise<InvitationData[]> => {
+  const response = await api.get<SentInvitationsResponse>(
+    `/pharmacies/${pharmacyId}/received-requests`, 
+  );
+  console.log(response)
+  return response.data.data;
+};
+
+export const interactPharmacistRequest = async(
+  id: number,
+  action: "accepted" | "rejected"
+)=>{
+  const response = await api.put<SentInvitationsResponse>(
+    `/pharmacies/requests/${id}/respond`, {
+      action
+    }
+  );
+  console.log(response)
+  return response.data.data;
+}
