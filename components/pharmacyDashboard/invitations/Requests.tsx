@@ -1,19 +1,16 @@
-import Image from "next/image";
 import Card from "../PharmacyInfo/CardContainer";
-import search from "@/public/icons/search.svg"
 import Row from "../PharmacyInfo/pharmacistsTable/Row";
 import StatusHolder from "../MedicineRequests/StatusHolder";
-import Sent from "@/public/icons/invitations/sent";
-import Resend from "@/public/icons/invitations/resend";
-import { InvitationData, viewSentInvitations } from "@/services/pharmacy";
+
+import { InvitationData, viewJoinRequests, viewSentInvitations } from "@/services/pharmacy";
 import { useContext, useEffect, useState } from "react";
 import { PharmacyContext } from "@/contexts/PharmacyDataContext";
 import { formatInvitationDate } from "@/config/date";
 import { UserContext } from "@/contexts/UserContext";
 import { useRouter } from "next/router";
-import Rquests from "./Requests";
+import InteractJoinPharm from "./Interact";
 
-export default function Invitations() {
+export default function Rquests() {
     const { pharmacy, loading: isPharmacyLoading } =
     useContext(PharmacyContext);
 
@@ -36,7 +33,7 @@ export default function Invitations() {
             setErrorMessage("");
 
             try {
-                const data = await viewSentInvitations(pharmacy.id);
+                const data = await viewJoinRequests(pharmacy.id);
 
                 if (!isCancelled) {
                     setInvitations(data);
@@ -67,30 +64,28 @@ export default function Invitations() {
         router.push("/403")
     }
     return(
-        <div className="flex flex-col mt-13 mb-40 w-full">
-            <p className="font-semibold text-27px mb-10">إدارة الدعوات وطلبات الانضمام</p>
-            <Card title="الدعوات المرسلة والحالات" scrollable >
+        <div className="flex flex-col gap-10 mt-13 mb-40 w-full">
+            <Card title="طلبات الانضمام" scrollable >
                 <div className="flex w-full flex-col px-10">
                     <div className="text-black-500 text-inpt">
                         <Row 
-                            data={{pharmacistName: "اسم الصيدلي", phone: "رقم التواصل", email: "البريد الإلكتروني", date:"وقت الارسال", status: "حالة الدعوة"}} 
+                            data={{pharmacistName: "اسم الصيدلي", phone: "رقم التواصل", email: "البريد الإلكتروني", date:"وقت الارسال", status: "حالة الدعوة", interact:"التفاعل"}} 
                             isFirst
                             columnClassNames={{
                                 pharmacistName: "flex-1",
                                 phone: "flex-1",
                                 email: "flex-[2]",
                                 date:"flex-1",
-                                status: "flex-[2]",
-                                
-                                // resendStatus: "flex-1"
+                                status: "flex-1",
+                                interact: "flex-1"
                             }}
                         />
                     </div>
-                    {(isPharmacyLoading || isLoadingInvitations) && <p className="py-6 text-center text-black-500">جاري تحميل الدعوات المرسلة...</p>}
+                    {(isPharmacyLoading || isLoadingInvitations) && <p className="py-6 text-center text-black-500">جاري تحميل الدعوات المستقبلة...</p>}
 
                     {errorMessage &&  <p className="py-6 text-center text-red-500">{errorMessage}</p>}
 
-                    {!(isPharmacyLoading || isLoadingInvitations) && invitations.length === 0 && <p className="py-6 text-center text-black-500">لا توجد دعوات مرسلة</p>}
+                    {!(isPharmacyLoading || isLoadingInvitations) && invitations.length === 0 && <p className="py-6 text-center text-black-500">لا توجد دعوات </p>}
                     
                     {invitations.map((invitation) => (
                         <div key={invitation.id}  className="flex border-t border-gray-200 w-full items-center text-inpt">
@@ -107,22 +102,22 @@ export default function Invitations() {
                                         ),
                                     status: (
                                     <StatusHolder status={invitation.status} />
-                                    )
+                                    ),
+                                    interact:<InteractJoinPharm status={invitation.status} id={invitation.id} name={invitation.pharmacist.user.name}/>
                                 }}
                                 columnClassNames={{
                                     pharmacistName: "flex-1",
                                     phone: "flex-1",
                                     email: "flex-[2]",
                                     date:"flex-1",
-                                    status: "flex-[2]",
-                                    // resendStatus: "flex-1"
+                                    status: "flex-1",
+                                    interact: "flex-1"
                                 }}
                             />
                         </div>
                     ))}
                 </div>
             </Card>
-            <Rquests/>
         </div>
     )
 }
