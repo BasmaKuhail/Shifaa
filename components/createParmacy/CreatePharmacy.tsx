@@ -16,6 +16,8 @@ import HasPharmacistApplication from "../joinAsPharmacist/HasForm";
 import { createPharm } from "@/services/createPharmacy";
 import HasPharm from "./HasPharm";
 import { addUserNotification } from "@/lib/notifications";
+import { getRegions, getSubRegions } from "@/services/regions";
+import { Region } from "@/types/RegionType";
 export default function CreatePharmacy(){
 
     const [checkBoxChecked, setCheckBoxChecked] = useState(false)
@@ -32,6 +34,8 @@ export default function CreatePharmacy(){
         phone: "",
         health_license: null as File | null,
         logo: null as File | null,
+        region_id: "",
+        sub_region_id: "",
         address: ""
 
     });
@@ -49,6 +53,44 @@ export default function CreatePharmacy(){
         ])
     }, [])
     const [submitLoading, setSubmitLoading] = useState(false);
+    const [regions, setRegions] = useState<Region[]>([]);
+    const [subRegions, setSubRegions] = useState<Region[]>([]);
+    const [regionsLoading, setRegionsLoading] = useState(true);
+    const [subRegionsLoading, setSubRegionsLoading] = useState(false);
+
+    useEffect(() => {
+        let active = true;
+        const loadRegions = async () => {
+            try {
+                setRegionsLoading(true);
+                const data = await getRegions();
+                if (active) setRegions(data);
+            } catch (error) {
+                console.error("Failed to load regions", error);
+                showAlert({ type: "Error", title: "خطأ", message: "تعذر تحميل المناطق" });
+            } finally {
+                if (active) setRegionsLoading(false);
+            }
+        };
+        void loadRegions();
+        return () => { active = false; };
+    }, []);
+
+    const handleRegionChange = async (regionId: string) => {
+        setUserInfo((current) => ({ ...current, region_id: regionId, sub_region_id: "" }));
+        setSubRegions([]);
+        if (!regionId) return;
+
+        try {
+            setSubRegionsLoading(true);
+            setSubRegions(await getSubRegions(Number(regionId)));
+        } catch (error) {
+            console.error("Failed to load sub-regions", error);
+            showAlert({ type: "Error", title: "خطأ", message: "تعذر تحميل المناطق الفرعية" });
+        } finally {
+            setSubRegionsLoading(false);
+        }
+    };
     // const [isSubmited, setIsSubmited] = useState(false);
     
     const handleSubmitForm = async () => {
@@ -58,7 +100,9 @@ export default function CreatePharmacy(){
             userInfo.phone === "" || 
             userInfo.health_license === null || 
             userInfo.name === "" ||
-            userInfo.address === ""
+            userInfo.region_id === "" ||
+            userInfo.sub_region_id === "" ||
+            userInfo.address.trim() === ""
              
         ) {
             showAlert({
@@ -98,7 +142,7 @@ export default function CreatePharmacy(){
         }
 
     try {
-        const res = await createPharm(userInfo.name, userInfo.phone, userInfo.health_license, userInfo.address, userInfo.logo);
+        const res = await createPharm(userInfo.name, userInfo.phone, userInfo.health_license, Number(userInfo.sub_region_id), userInfo.address, userInfo.logo);
         console.log(res);
         if (user) {
             addUserNotification(user.id, {
@@ -140,11 +184,11 @@ export default function CreatePharmacy(){
     
     return(
         <div className="flex flex-col gap-10">
-                    <nav className="flex items-center gap-4">
+                    {/* <nav className="flex items-center gap-4">
                         <Image src={arrowL} alt="arrow left" className="transform rotate-180 cursor-pointer hidden md:block" onClick={handlePreviousPage}/>
                         <p className="font-semibold text-27px">أنشئ صيدلية</p>
-                    </nav>
-                    <p className="text-sm">قدم طلب إنشاء صيدلية</p>
+                    </nav> */}
+                    {/* <p className="text-sm">قدم طلب إنشاء صيدلية</p> */}
 
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-7 w-full">
                         <Input 
@@ -210,9 +254,35 @@ export default function CreatePharmacy(){
                         <ErrorMsg text={validateInput(userInfo.phone, 'mobile').errorMsg}/></div>
                         
                     </div>
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-7 w-full">
+                        <div className="flex flex-col gap-1" dir="rtl">
+                            <label className="text-sm font-bold text-right">المنطقة الرئيسية</label>
+                            <select
+                                value={userInfo.region_id}
+                                onChange={(event) => void handleRegionChange(event.target.value)}
+                                disabled={regionsLoading}
+                                className="border border-[#D1D1D1] rounded-inpt p-2 w-full text-right h-[52px] md:h-[45px] focus:outline-none focus:border-[#1A71F6] disabled:bg-gray-100"
+                            >
+                                <option value="">{regionsLoading ? "جاري التحميل..." : "اختر المنطقة الرئيسية"}</option>
+                                {regions.map((region) => <option key={region.id} value={region.id}>{region.name}</option>)}
+                            </select>
+                        </div>
+                        <div className="flex flex-col gap-1" dir="rtl">
+                            <label className="text-sm font-bold text-right">المنطقة الفرعية</label>
+                            <select
+                                value={userInfo.sub_region_id}
+                                onChange={(event) => setUserInfo({ ...userInfo, sub_region_id: event.target.value })}
+                                disabled={!userInfo.region_id || subRegionsLoading}
+                                className="border border-[#D1D1D1] rounded-inpt p-2 w-full text-right h-[52px] md:h-[45px] focus:outline-none focus:border-[#1A71F6] disabled:bg-gray-100"
+                            >
+                                <option value="">{subRegionsLoading ? "جاري التحميل..." : "اختر المنطقة الفرعية"}</option>
+                                {subRegions.map((region) => <option key={region.id} value={region.id}>{region.name}</option>)}
+                            </select>
+                        </div>
+                    </div>
                     <div className="relative flex flex-col gap-1">
                         <Input 
-                            label="العنوان" 
+                            label="العنوان التفصيلي"
                             type="text" 
                             inputText="مثال: غزة- الرمال- دوار السرايا - مقابل بنك فلسطين" 
                             value={userInfo.address} 

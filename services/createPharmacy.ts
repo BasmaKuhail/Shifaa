@@ -1,14 +1,15 @@
 import api from "@/lib/api";
+import { PharmacyApplicationResponse } from "@/types/PharmacyApplicationResponse";
 
         
 export const createPharm = async (
   name: string,
   phone: string,
   health_license: File | null,
-  address:string,
+  sub_region_id: number,
+  address: string,
   logo: File | null,
-  
-) => {
+): Promise<PharmacyApplicationResponse> => {
   const token = localStorage.getItem("token");
 
   if (!token) {
@@ -22,7 +23,11 @@ export const createPharm = async (
   if(name === "")
     throw new Error("pharmacy name is required");
 
-  if(address === "")
+  if (!sub_region_id) {
+    throw new Error("sub-region is required");
+  }
+
+  if(address.trim() === "")
     throw new Error("pharmacy address is required");
 
   if(phone === "")
@@ -32,6 +37,7 @@ export const createPharm = async (
   formData.append("name", name);
   formData.append("health_license", health_license);
   formData.append("phone", phone);
+  formData.append("sub_region_id", String(sub_region_id));
   formData.append("address", address);
   if(logo){
     formData.append("logo", logo);
@@ -51,5 +57,5 @@ export const createPharm = async (
     },
   });
 
-  return response.data;
+  return response.data as PharmacyApplicationResponse;
 };

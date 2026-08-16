@@ -39,6 +39,9 @@ export type Pharmacy = {
   id: number;
   name: string;
   address: string;
+  region_id?: number;
+  sub_region_id?: number;
+  full_address?:string,
   owner: PharmacyTeamMember | undefined;
   phone: string;
   logo: string | undefined,
@@ -62,6 +65,7 @@ export type pharmacyResponseType = {
 export type PharmacyDataToUpdate = {
   name: string;
   address: string;
+  sub_region_id: number;
   phone: string;
   logo: File | null | string;
 }
