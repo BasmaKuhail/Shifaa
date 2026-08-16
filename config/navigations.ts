@@ -66,12 +66,12 @@ export const pharmacytNav = [
         label: "معلومات الصيدلية",
         link: "/pharmacy-dashboard/pharmInfo"
     },
-    {
-        id: 4,
-        icon: Requests,
-        label: "الطلبات",
-        link: "/pharmacy-dashboard/medicine-requests"
-    },
+    // {
+    //     id: 4,
+    //     icon: Requests,
+    //     label: "الطلبات",
+    //     link: "/pharmacy-dashboard/medicine-requests"
+    // },
     {
         id: 5,
         icon: Add,

@@ -66,9 +66,9 @@ export default function PopUpPharmacyRequests ({id, popupType, setShowPopup, nam
 
     const text = () => {
         if(popupType === "accept")
-            return "هل تريد قبول طلب"
+            return "هل تريد قبول طلب:" 
         else if (popupType === "reject")
-            return "هل تريد رفض طلب"
+            return " هل تريد رفض طلب:"
     }
     const functionToCall = () => {
         if(popupType === "accept"){

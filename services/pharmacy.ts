@@ -15,6 +15,9 @@ export type PharmacyApiResponse = {
   name: string;
   phone: string;
   address: string;
+  region_id?: number;
+  sub_region_id?: number;
+  full_address?:string;
   logo:string;
   status: string;
   team: PharmacyTeamMember[];
@@ -57,6 +60,9 @@ export const getPharmacyById = async (
       name:pharmacy.name,
       phone:pharmacy.phone,
       address:pharmacy.address,
+      region_id: pharmacy.region_id,
+      sub_region_id: pharmacy.sub_region_id,
+      full_address:pharmacy.full_address,
       logo:pharmacy.attachments[1]?.url,
       owner:owner,
       staff:staff,
@@ -102,6 +108,7 @@ export const updatePharmacyData = async (
   formData.append("_method", "PATCH");
   formData.append("name", pharmacyData.name);
   formData.append("address", pharmacyData.address);
+  formData.append("sub_region_id", String(pharmacyData.sub_region_id));
   formData.append("phone", pharmacyData.phone);
 
   if (pharmacyData.logo instanceof File) {

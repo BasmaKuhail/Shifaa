@@ -249,7 +249,7 @@ export default function PharmacyDetails() {
         {
             id: 3,
             title: "العنوان",
-            text: pharmacy?.address,
+            text: pharmacy?.full_address || pharmacy?.address,
             icon: location,
         },
     ];
@@ -421,7 +421,7 @@ export default function PharmacyDetails() {
                                             medName={medicine.trade_name}
                                             pharmacyName={pharmacy?.name}
                                             isList={viewMode ==="list"}
-                                            location={pharmacy?.address || ""}
+                                            location={pharmacy?.full_address || pharmacy?.address || ""}
                                             pharmacyId={pharmacy?.id}
                                             price={medicine.price}
                                             availablity={medicine.is_available}

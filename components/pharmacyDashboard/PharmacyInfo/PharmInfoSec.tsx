@@ -10,11 +10,15 @@ import { getApiErrorMessage } from "@/utils/getApiErrorMessage";
 import { validateInput } from "@/utils/ValidateInput";
 import PopupContainer from "./PopUpContainer";
 import { useRouter } from "next/router";
+import { getRegions, getSubRegions } from "@/services/regions";
+import { Region } from "@/types/RegionType";
 export default function PharmInfoSec ({pharmacistRole}:{pharmacistRole:"staff" | "owner" | undefined}){
     type PharmacyInfo = {
         logo: string | File | null;
         name: string;
         address: string;
+        region_id: string;
+        sub_region_id: string;
         phone: string;
     };
     const {pharmacy, loading} = useContext(PharmacyContext);
@@ -44,8 +48,44 @@ export default function PharmInfoSec ({pharmacistRole}:{pharmacistRole:"staff" |
         logo: pharmacy?.logo ?? null,
         name: pharmacy?.name ?? "",
         address: pharmacy?.address ?? "",
+        region_id: pharmacy?.region_id ? String(pharmacy.region_id) : "",
+        sub_region_id: pharmacy?.sub_region_id ? String(pharmacy.sub_region_id) : "",
         phone: pharmacy?.phone ?? "",
     });
+
+    const [regions, setRegions] = useState<Region[]>([]);
+    const [subRegions, setSubRegions] = useState<Region[]>([]);
+    const [subRegionsLoading, setSubRegionsLoading] = useState(false);
+
+    const handleRegionChange = async (regionId: string) => {
+        setPharmacyInfo((current) => ({ ...current, region_id: regionId, sub_region_id: "" }));
+        setSubRegions([]);
+        if (!regionId) return;
+
+        try {
+            setSubRegionsLoading(true);
+            setSubRegions(await getSubRegions(Number(regionId)));
+        } catch (error) {
+            console.error("Failed to load sub-regions", error);
+        } finally {
+            setSubRegionsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        void getRegions().then(setRegions).catch((error) => {
+            console.error("Failed to load regions", error);
+        });
+    }, []);
+
+    useEffect(() => {
+        if (!pharmacy?.region_id) return;
+        setSubRegionsLoading(true);
+        void getSubRegions(pharmacy.region_id)
+            .then(setSubRegions)
+            .catch((error) => console.error("Failed to load sub-regions", error))
+            .finally(() => setSubRegionsLoading(false));
+    }, [pharmacy?.region_id]);
 
     useEffect(() => {
         if (pharmacy) {
@@ -61,6 +101,8 @@ export default function PharmInfoSec ({pharmacistRole}:{pharmacistRole:"staff" |
             const hasChanges =
                 pharmacyInfo.name.trim() !== pharmacy.name.trim() ||
                 pharmacyInfo.address.trim() !== pharmacy.address.trim() ||
+                pharmacyInfo.region_id !== String(pharmacy.region_id ?? "") ||
+                pharmacyInfo.sub_region_id !== String(pharmacy.sub_region_id ?? "") ||
                 pharmacyInfo.phone.trim() !== pharmacy.phone.trim() ||
                 pharmacyInfo.logo instanceof File ||
                 pharmacyInfo.logo !== pharmacy.logo;
@@ -78,6 +120,8 @@ export default function PharmInfoSec ({pharmacistRole}:{pharmacistRole:"staff" |
             if(!(
                 validateInput(pharmacyInfo.name, 'text').isValid &&
                 validateInput(pharmacyInfo.address, 'text').isValid &&
+                pharmacyInfo.region_id !== "" &&
+                pharmacyInfo.sub_region_id !== "" &&
                 validateInput(pharmacyInfo.phone, 'mobile').isValid
             )){
                 showAlert({
@@ -95,6 +139,7 @@ export default function PharmInfoSec ({pharmacistRole}:{pharmacistRole:"staff" |
                     {
                         name: pharmacyInfo.name, 
                         address: pharmacyInfo.address, 
+                        sub_region_id: Number(pharmacyInfo.sub_region_id),
                         phone: pharmacyInfo.phone,
                         logo: pharmacyInfo.logo
                     });
@@ -175,8 +220,31 @@ export default function PharmInfoSec ({pharmacistRole}:{pharmacistRole:"staff" |
                             onChange={(value) => setPharmacyInfo({ ...pharmacyInfo, name: typeof value === 'string' ? value : ''})} 
                             isTrue={validateInput(pharmacyInfo.name, 'text').isValid}
                         />
+                        <div className="flex flex-col gap-2" dir="rtl">
+                            <label className="text-sm font-bold text-right">المنطقة الرئيسية</label>
+                            <select
+                                value={pharmacyInfo.region_id}
+                                onChange={(event) => void handleRegionChange(event.target.value)}
+                                className="border border-[#D1D1D1] rounded-inpt p-2 w-full text-right h-[52px] md:h-[45px] focus:outline-none focus:border-[#1A71F6]"
+                            >
+                                <option value="">اختر المنطقة الرئيسية</option>
+                                {regions.map((region) => <option key={region.id} value={region.id}>{region.name}</option>)}
+                            </select>
+                        </div>
+                        <div className="flex flex-col gap-2" dir="rtl">
+                            <label className="text-sm font-bold text-right">المنطقة الفرعية</label>
+                            <select
+                                value={pharmacyInfo.sub_region_id}
+                                onChange={(event) => setPharmacyInfo({ ...pharmacyInfo, sub_region_id: event.target.value })}
+                                disabled={!pharmacyInfo.region_id || subRegionsLoading}
+                                className="border border-[#D1D1D1] rounded-inpt p-2 w-full text-right h-[52px] md:h-[45px] focus:outline-none focus:border-[#1A71F6] disabled:bg-gray-100"
+                            >
+                                <option value="">{subRegionsLoading ? "جاري التحميل..." : "اختر المنطقة الفرعية"}</option>
+                                {subRegions.map((region) => <option key={region.id} value={region.id}>{region.name}</option>)}
+                            </select>
+                        </div>
                         <Input 
-                            label="العنوان" 
+                            label="العنوان التفصيلي"
                             type="text" 
                             inputText={pharmacy ? pharmacy.address : ""} 
                             value={pharmacyInfo.address} 

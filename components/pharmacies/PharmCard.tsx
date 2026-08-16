@@ -113,7 +113,7 @@ export default function PharmCard({
                         />
 
                         <p className="line-clamp-2 text-sm text-black-500">
-                            {pharmacy.address}
+                            {pharmacy.full_address}
                         </p>
                     </div>
 

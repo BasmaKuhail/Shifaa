@@ -11,6 +11,8 @@ type PharmacyInfo = {
   logo: File | string | null;
   name: string;
   address: string;
+  region_id: string;
+  sub_region_id: string;
   phone: string;
 };
 

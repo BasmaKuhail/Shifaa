@@ -5,6 +5,7 @@ export type PharmacyApplicationResponse = {
   phone: string;
   name:string;
   status: string;
+  sub_region_id: number;
   address: string;
   created_at: string;
   pharmacist:{
