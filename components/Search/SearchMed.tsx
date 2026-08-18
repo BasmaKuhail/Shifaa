@@ -41,6 +41,9 @@ export default function SearchMed() {
 
   const [min, setMin] = useState(1);
   const [max, setMax] = useState(200);
+
+  const [regionId, setRegionId] = useState<number | undefined>();
+  const [subregionId, setSubregionId] = useState<number | undefined>();
   const hasMoreMedicines =
     pagination !== null &&
     pagination.current_page < pagination.last_page;
@@ -79,6 +82,29 @@ export default function SearchMed() {
 
   setMin(Number.isFinite(queryMin) ? queryMin : 1);
   setMax(Number.isFinite(queryMax) ? queryMax : 200);
+
+  const queryRegionId =
+    typeof router.query.region === "string"
+      ? Number(router.query.region)
+      : undefined;
+
+  const querySubregionId =
+    typeof router.query.sub_region === "string"
+      ? Number(router.query.sub_region)
+      : undefined;
+
+  setRegionId(
+    queryRegionId !== undefined && Number.isFinite(queryRegionId)
+      ? queryRegionId
+      : undefined,
+  );
+
+  setSubregionId(
+    querySubregionId !== undefined &&
+      Number.isFinite(querySubregionId)
+      ? querySubregionId
+      : undefined,
+  );
 }, [router.isReady]);
 
   useEffect(() => {
@@ -130,7 +156,8 @@ export default function SearchMed() {
             scroll: false,
         },
     );
-}, [selectedDosageForm, router.isReady]);
+}, [selectedDosageForm, router.isReady]);  
+
   useEffect(() => {
     if (!router.isReady) {
       return;
@@ -219,7 +246,9 @@ export default function SearchMed() {
           search: debouncedSearch,
           dosageForm: selectedDosageForm,
           min,
-          max
+          max,
+          regionId,
+          subregionId
         });
 
         if (requestId !== searchRequestIdRef.current) {
@@ -257,6 +286,8 @@ export default function SearchMed() {
       selectedDosageForm,
       min,
       max,
+      regionId,
+      subregionId,
     ]);
 
 
@@ -283,6 +314,8 @@ export default function SearchMed() {
         dosageForm: selectedDosageForm,
         min,
         max,
+        regionId,
+        subregionId,
       });
 
       setResults((currentResults) => {
@@ -345,6 +378,10 @@ export default function SearchMed() {
               max={max}
               setMin={setMin}
               setMax={setMax}
+                          regionId={regionId}
+            setRegionId={setRegionId}
+            subregionId={subregionId}
+            setSubregionId={setSubregionId}
             />
         </div>
         </div>
@@ -368,6 +405,10 @@ export default function SearchMed() {
             max={max}
             setMin={setMin}
             setMax={setMax}
+            regionId={regionId}
+            setRegionId={setRegionId}
+            subregionId={subregionId}
+            setSubregionId={setSubregionId}
           />
         </div>
 

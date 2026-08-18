@@ -5,7 +5,6 @@ import Text from "./Text";
 import Dosage from "./DosageFormFilter";
 import Price from "./PriceFilter";
 import Location from "./LocationFilter";
-// import Location from "./LocationFilter";
 
 type SearchHomeProps = {
   dosage?: string;
@@ -18,6 +17,11 @@ type SearchHomeProps = {
   max?: number;
   setMin?: Dispatch<SetStateAction<number>>;
   setMax?: Dispatch<SetStateAction<number>>;
+
+  regionId?:number | undefined;
+  setRegionId?:Dispatch<SetStateAction<number | undefined>>
+  subregionId?:number | undefined;
+  setSubregionId?:Dispatch<SetStateAction<number | undefined>>
 };
 const DEFAULT_MAX = 200;
 const DEFAULT_MIN = 1;
@@ -27,11 +31,18 @@ export default function SearchHome({
   isHome = true,
   userInputProp = "",
   onSearchChange,
+
   setSelectedDosageForm,
+
   min: minProp,
   max: maxProp,
   setMin: setMinProp,
   setMax: setMaxProp,
+
+  regionId,
+  setRegionId,
+  subregionId,
+  setSubregionId,
 }: SearchHomeProps) {
   const [userInput, setUserInput] = useState("");
   const [dropDownOpened, setDropDownOpened] = useState<string | null>(null);
@@ -52,6 +63,32 @@ export default function SearchHome({
     ? localDosageForm
     : dosage;
 
+  const [localRegionId, setLocalRegionId] = useState<number | undefined>();
+  const [localSubregionId, setLocalSubregionId] =useState<number | undefined>();
+
+  const selectedRegionId = isHome ? localRegionId : regionId;
+  const selectedSubregionId = isHome ? localSubregionId : subregionId;
+
+  const handleRegionChange: Dispatch<SetStateAction<number | undefined>> = (value) => {
+    if (isHome) {
+      setLocalRegionId(value);
+      return;
+    }
+
+    setRegionId?.(value);
+  };
+
+  const handleSubregionChange: Dispatch<
+    SetStateAction<number | undefined>
+  > = (value) => {
+    if (isHome) {
+      setLocalSubregionId(value);
+      return;
+    }
+
+    setSubregionId?.(value);
+  };
+
   const handleDosageChange: Dispatch<
     SetStateAction<string>
   > = (value) => {
@@ -62,7 +99,7 @@ export default function SearchHome({
 
     setSelectedDosageForm?.(value);
   };
-  // const [selectedDosageForm, setSelectedDosageForm] = useState<string | null>();
+
   useEffect(() => {
     if (isHome) {
       return;
@@ -122,6 +159,10 @@ export default function SearchHome({
           setMin={setMin}
           max={max}
           setMax={setMax}
+          regionId={selectedRegionId}
+          setRegionId={handleRegionChange}
+          subregionId={selectedSubregionId}
+          setSubregionId={handleSubregionChange}
         />
 
         <div
@@ -150,6 +191,10 @@ export default function SearchHome({
             title="الموقع" 
             dropDownOpened={dropDownOpened}
             setDropDownOpened={setDropDownOpened}
+            regionId={selectedRegionId}
+            setRegionId={handleRegionChange}
+            subregionId={selectedSubregionId}
+            setSubregionId={handleSubregionChange}
             />
         </div>
       </div>

@@ -8,6 +8,7 @@ import { useState } from "react";
 import MobileFilter from "./mobileFilter/MobileFilter";
 import { useRouter } from "next/router";
 import { Dispatch, SetStateAction } from "react";
+import { showAlert } from "@/components/alerts/AlertContainer";
 
 type SearchInputProps = {
     isHome?:boolean;
@@ -20,12 +21,13 @@ type SearchInputProps = {
     max?:number,
     setMin?:Dispatch<SetStateAction<number>>,
     setMax?:Dispatch<SetStateAction<number>>,
+      regionId?:number | undefined;
+  setRegionId?:Dispatch<SetStateAction<number | undefined>>
+  subregionId?:number | undefined;
+  setSubregionId?:Dispatch<SetStateAction<number | undefined>>
 }
 
-function handleSearch (){
-    console.log("search")
-    return;
-}
+
 export default function SearchInput({
     isHome=true,
     label,
@@ -36,13 +38,24 @@ export default function SearchInput({
     min,
     max,
     setMin,
-    setMax
+    setMax,
+    regionId,
+    setRegionId,
+    subregionId,
+    setSubregionId,
 }:SearchInputProps){
     const [isFilterOpened, setIsFilterOpened] = useState(false);
 
     const router = useRouter()
 
     const handleSearchClick = () => {
+        if (isHome && (value.trim() === "")) {
+            showAlert({
+                type:"Hint",
+                title:"تحذير",
+                message:"ادخل نص لبدء البحث"
+            })
+        }
         if(value.trim() === ""){
             return
         }
@@ -55,6 +68,13 @@ export default function SearchInput({
             query.set("min_price", String(min));
             query.set("max_price", String(max));
             
+            if (regionId !== undefined) {
+                query.set("region", String(regionId));
+            }
+
+            if (subregionId !== undefined) {
+                query.set("sub_region", String(subregionId));
+            }
             void router.push(`/search-medicine?${query.toString()}`);
             
         }

@@ -60,7 +60,9 @@ export type GetMedicinesParams = {
   search?: string;
   dosageForm?:string;
   min?:number,
-  max?:number
+  max?:number,
+  regionId?:number,
+  subregionId?:number
 };
 
 type MedicineDetailsApiItem = {

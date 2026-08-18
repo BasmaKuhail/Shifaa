@@ -11,17 +11,25 @@ type FilterProps = {
   title: string;
   dropDownOpened: string | null;
   setDropDownOpened: Dispatch<SetStateAction<string | null>>;
+  regionId:number | undefined;
+  setRegionId:Dispatch<SetStateAction<number | undefined>>
+  subregionId:number | undefined;
+  setSubregionId:Dispatch<SetStateAction<number | undefined>>
 };
 
 export default function Location({
   title,
   dropDownOpened,
   setDropDownOpened,
+  regionId,
+  setRegionId,
+  subregionId,
+  setSubregionId,
 }: FilterProps) {
   const [regions, setRegions] = useState<Region[]>([]);
   const [subRegions, setSubRegions] = useState<Region[]>([]);
-  const [selectedRegionId, setSelectedRegionId] = useState<string>("");
-  const [selectedSubRegionId, setSelectedSubRegionId] = useState<string>("");
+//   const [selectedRegionId, setSelectedRegionId] = useState<string>("");
+//   const [selectedSubRegionId, setSelectedSubRegionId] = useState<string>("");
   const [regionsLoading, setRegionsLoading] = useState(true);
   const [subRegionsLoading, setSubRegionsLoading] = useState(false);
 
@@ -52,33 +60,49 @@ export default function Location({
       active = false;
     };
   }, []);
-
-  const handleRegionChange = async (regionId: string) => {
-    setSelectedRegionId(regionId);
-    setSelectedSubRegionId("");
+  useEffect(() => {
+  if (regionId === undefined) {
     setSubRegions([]);
+    return;
+  }
 
-    if (!regionId) return;
+  let active = true;
 
+  const loadSubRegions = async () => {
     try {
       setSubRegionsLoading(true);
-      const data = await getSubRegions(Number(regionId));
-      setSubRegions(data);
+
+      const data = await getSubRegions(regionId);
+
+      if (active) {
+        setSubRegions(data);
+      }
     } catch (error) {
       console.error("Failed to load sub-regions", error);
-      showAlert({
-        type: "Error",
-        title: "خطأ",
-        message: "تعذر تحميل المناطق الفرعية",
-      });
     } finally {
-      setSubRegionsLoading(false);
+      if (active) {
+        setSubRegionsLoading(false);
+      }
     }
   };
 
+  void loadSubRegions();
+
+  return () => {
+    active = false;
+  };
+}, [regionId]);
+
+const handleRegionChange = (
+  selectedRegionId: number | undefined,
+) => {
+  setRegionId(selectedRegionId);
+  setSubregionId(undefined);
+};
+
   const handleReset = () => {
-    setSelectedRegionId("");
-    setSelectedSubRegionId("");
+    setRegionId(undefined);
+    setSubregionId(undefined);
     setSubRegions([]);
   };
 
@@ -114,7 +138,7 @@ export default function Location({
       {dropDownOpened === title && (
         <div className="absolute right-0 top-full z-10">
           <DropDownMenu
-            title="الموقع"
+            title="الموقع الجغرافي"
             action={
               <button
                 type="button"
@@ -138,19 +162,17 @@ export default function Location({
                       name="location-region"
                       type="checkbox"
                       value={region.id}
-                      checked={selectedRegionId === String(region.id)}
+                      checked={regionId === region.id}
                       onChange={() =>
                         void handleRegionChange(
-                          selectedRegionId === String(region.id)
-                            ? ""
-                            : String(region.id),
+                            regionId === region.id ? undefined : region.id
                         )
-                      }
+                    }
                     />
                     <span className="text-inpt">{region.name}</span>
                   </label>
 
-                  {selectedRegionId === String(region.id) && (
+                  {regionId === region.id && (
                     <div className="flex flex-col gap-2 pb-1 ps-5">
                       {subRegionsLoading ? (
                         <span className="text-xs text-gray-500">
@@ -172,13 +194,13 @@ export default function Location({
                               type="checkbox"
                               value={subRegion.id}
                               checked={
-                                selectedSubRegionId === String(subRegion.id)
+                                subregionId === subRegion.id
                               }
                               onChange={() =>
-                                setSelectedSubRegionId((current) =>
-                                  current === String(subRegion.id)
-                                    ? ""
-                                    : String(subRegion.id),
+                                setSubregionId((current) =>
+                                  current === subRegion.id
+                                    ? undefined
+                                    : subRegion.id,
                                 )
                               }
                             />
