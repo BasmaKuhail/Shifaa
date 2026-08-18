@@ -4,6 +4,7 @@ import SearchInput from "./SearchInput";
 import Text from "./Text";
 import Dosage from "./DosageFormFilter";
 import Price from "./PriceFilter";
+import Location from "./LocationFilter";
 // import Location from "./LocationFilter";
 
 type SearchHomeProps = {
@@ -145,15 +146,11 @@ export default function SearchHome({
               setDropDownOpened={setDropDownOpened}
             />
           )}
-          {/* <Location
-            title="السعر" 
+          <Location
+            title="الموقع" 
             dropDownOpened={dropDownOpened}
-            // min={min}
-            setMin={setMin}
-            max={max}
-            setMax={setMax}
             setDropDownOpened={setDropDownOpened}
-            /> */}
+            />
         </div>
       </div>
     </div>
