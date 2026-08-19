@@ -3,6 +3,7 @@ import { PharmacistApplication, PharmacistApplicationsApiResponse, PharmacistApp
 import { PharmacyApplication, PharmacyApplicationApiResponse } from "@/types/PharmacyType";
 import { ApplicationStatusFilter, StatusType } from "@/types/Status";
 import { PharmacyRequestFilter } from "@/contexts/AdminPharmcyRequestsContext";
+import { body } from "framer-motion/client";
 export type PaginationLink = {
   url: string | null;
   label: string;
@@ -309,4 +310,13 @@ export const deletePharmacyApplication = async (application_id: number) => {
   }else { 
     throw new Error("Unexpected error");
   }
+}
+
+
+//import medicines
+export const importMed = async(excel:File) => {
+  const formData = new FormData();
+  formData.append("file", excel);
+  const res = await api.post("/admin/import-medicines", formData)
+  return res.data;
 }
