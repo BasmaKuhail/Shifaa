@@ -7,7 +7,7 @@ import Home from "@/public/icons/dashboard/home";
 import Med from "@/public/icons/dashboard/Med";
 import Settings from "@/public/icons/dashboard/settings";
 import Help from "@/public/icons/dashboard/help";
-
+import Excel from "@/public/icons/admin/excel"
 
 export const headerItems = [
     {
@@ -122,6 +122,12 @@ export const adminNav =[
             icon: Pharm,
             label: "طلبات الصيدلية",
             link: "/admin-dashboard/pharmacy-requests"
+        },
+        {
+            id: 6,
+            icon: Excel,
+            label: "اضافة ادوية",
+            link: "/admin-dashboard/medicines"
         },
         // {
         //     id: 5,
