@@ -43,13 +43,13 @@ export default function Footer(){
                         lg:flex lg:flex-col lg:gap-6
                         md:flex md:flex-col md:gap-6"
                 >
-                    <nav className="flex flex-row gap-6">
+                    <nav dir="rtl" className="flex flex-row gap-6">
                         <Image src={phone} alt="phone" />
-                        <p className="lg:text-btn md:text-btn text-xs">+97233000445</p>
+                        <p className="lg:text-btn md:text-btn text-xs">970598400656+</p>
                     </nav>
                     <nav className="flex flex-row gap-6">
                         <Image src={msg} alt="msg" />
-                        <p className="lg:text-btn md:text-btn text-xs">Shifaaweb@gmail.com</p>
+                        <p className="lg:text-btn md:text-btn text-xs">shifaawebsite@gmail.com</p>
                     </nav>
                 </div>
 
