@@ -4,6 +4,7 @@ import Title from "../SectionTitle";
 import { useState } from "react";
 import { validateInput } from "@/utils/ValidateInput"
 import GradientBrn from "../GradiantBtn";
+import { showAlert } from "@/components/alerts/AlertContainer";
 
 export default function ContactForm(){
     const [userContactFornInfo, setUserContactFornInfo] = useState({
@@ -26,15 +27,29 @@ export default function ContactForm(){
 
     const submitForm = async () => {
         const { firstName, lastName, email, message } = userContactFornInfo;
+
+        if(
+            userContactFornInfo.lastName.value.trim() === "" || 
+            userContactFornInfo.firstName.value.trim() === "" || 
+            userContactFornInfo.message.value.trim() === "" || 
+            userContactFornInfo.email.value.trim() === ""  
+        ){
+            showAlert({
+                type:"Warning",
+                title:"تحذير!",
+                message:"يرجلى تعبئة جميع الحقول المطلوبة"
+            })
+            return
+        }
+        
         const isValid = validateInput(firstName.value, 'text').isValid &&
             validateInput(lastName.value, 'text').isValid &&
-            validateInput(email.value, 'email').isValid &&
-            validateInput(message.value, 'textarea').isValid;
+            validateInput(email.value, 'email').isValid
 
-        // if (!isValid) {
-        //     setStatus({ type: 'error', text: 'يرجى تعبئة الحقول المطلوبة بشكل صحيح.' });
-        //     return;
-        // }
+        if (!isValid) {
+            setStatus({ type: 'error', text: 'يرجى تعبئة الحقول المطلوبة بشكل صحيح.' });
+            return;
+        }
 
         setIsSending(true);
         setStatus(null);
@@ -49,7 +64,10 @@ export default function ContactForm(){
                     message: message.value,
                 }),
             });
-            if (!response.ok) throw new Error('Unable to send message');
+            const result = await response.json().catch(() => ({}));
+            if (!response.ok) {
+                throw new Error(result.error || `تعذر الإرسال (رمز الخطأ: ${response.status})`);
+            }
             setStatus({ type: 'success', text: 'تم إرسال رسالتك بنجاح.' });
             setUserContactFornInfo({
                 firstName: { value: '', isTrueData: false },
@@ -58,8 +76,9 @@ export default function ContactForm(){
                 password: { value: '', isTrueData: false },
                 message: { value: '', isTrueData: false },
             });
-        } catch {
-            setStatus({ type: 'error', text: 'تعذر إرسال الرسالة. يرجى المحاولة مرة أخرى.' });
+        } catch (error) {
+            const message = error instanceof Error ? error.message : 'حدث خطأ غير معروف.';
+            setStatus({ type: 'error', text: `خطأ: ${message}` });
         } finally {
             setIsSending(false);
         }

@@ -1,7 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 
-const recipient = 'basmakuhaill@gmail.com';
-
 type ContactBody = {
     firstName?: string;
     lastName?: string;
@@ -40,7 +38,7 @@ export default async function handler(
         },
         body: JSON.stringify({
             from: process.env.CONTACT_FORM_EMAIL || process.env.CONTACT_FROM_EMAIL || 'Shifaa website <onboarding@resend.dev>',
-            to: [recipient],
+            to: [process.env.recipient],
             reply_to: email.trim(),
             subject: `رسالة تواصل جديدة من ${firstName.trim()} ${lastName.trim()}`,
             text: `الاسم: ${firstName.trim()} ${lastName.trim()}\nالبريد: ${email.trim()}\n\nالرسالة:\n${message.trim()}`,
@@ -48,7 +46,13 @@ export default async function handler(
     });
 
     if (!resendResponse.ok) {
-        return res.status(502).json({ error: 'Email provider rejected the message.' });
+        const providerResult = await resendResponse.json().catch(() => null) as { message?: string; name?: string } | null;
+        const providerMessage = providerResult?.message || providerResult?.name;
+        return res.status(502).json({
+            error: providerMessage
+                ? `Resend: ${providerMessage}`
+                : `خدمة البريد رفضت الرسالة (رمز الخطأ: ${resendResponse.status}).`,
+        });
     }
 
     return res.status(200).json({ success: true });
