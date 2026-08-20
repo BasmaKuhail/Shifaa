@@ -13,6 +13,8 @@ export default function ContactForm(){
             password: { value: '', isTrueData: false },
             message: { value: '', isTrueData: false }
         });
+    const [isSending, setIsSending] = useState(false);
+    const [status, setStatus] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
     // const [phone, setPhone] = useState("")
     // const [countryCode, setCounteryCode] = useState("")
 
@@ -21,6 +23,47 @@ export default function ContactForm(){
     //     { name: "Saudi Arabia", dialCode: "+966", iso: "sa" },
     //     { name: "Egypt", dialCode: "+20", iso: "eg" }
     // ]
+
+    const submitForm = async () => {
+        const { firstName, lastName, email, message } = userContactFornInfo;
+        const isValid = validateInput(firstName.value, 'text').isValid &&
+            validateInput(lastName.value, 'text').isValid &&
+            validateInput(email.value, 'email').isValid &&
+            validateInput(message.value, 'textarea').isValid;
+
+        // if (!isValid) {
+        //     setStatus({ type: 'error', text: 'يرجى تعبئة الحقول المطلوبة بشكل صحيح.' });
+        //     return;
+        // }
+
+        setIsSending(true);
+        setStatus(null);
+        try {
+            const response = await fetch('/api/contact', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    firstName: firstName.value,
+                    lastName: lastName.value,
+                    email: email.value,
+                    message: message.value,
+                }),
+            });
+            if (!response.ok) throw new Error('Unable to send message');
+            setStatus({ type: 'success', text: 'تم إرسال رسالتك بنجاح.' });
+            setUserContactFornInfo({
+                firstName: { value: '', isTrueData: false },
+                lastName: { value: '', isTrueData: false },
+                email: { value: '', isTrueData: false },
+                password: { value: '', isTrueData: false },
+                message: { value: '', isTrueData: false },
+            });
+        } catch {
+            setStatus({ type: 'error', text: 'تعذر إرسال الرسالة. يرجى المحاولة مرة أخرى.' });
+        } finally {
+            setIsSending(false);
+        }
+    };
 
     return(
         <div dir="rtl" className="bg-white flex flex-col p-10 lg:py-0 md:py-0 lg:mb-20 md:mb-20 rounded-[10px] lg:rounded-l-[0] md:rounded-l-[0] h-full gap-7 justify-center">
@@ -89,11 +132,16 @@ export default function ContactForm(){
                 inputText="اترك رسالتك هنا..."  
                 value={userContactFornInfo.message.value} 
                 onChange={(value) => setUserContactFornInfo({ ...userContactFornInfo, message: { value: value as string, isTrueData: true } })} 
-                isTrue={validateInput(userContactFornInfo.message.value, 'textarea').isValid}/>
+                isTrue={true}/>
 
             <div className="flex w-fit h-[51px] justify-center lg:justify-start md:justify-start w-full">
-                <GradientBrn text="إرسال الرسالة" onClick={() => {}} px={10}/>
+                <GradientBrn text={isSending ? "جاري الإرسال..." : "إرسال الرسالة"} onClick={submitForm} px={10}/>
             </div>
+            {status && (
+                <p className={status.type === 'success' ? 'text-green-600' : 'text-red-600'} role="status">
+                    {status.text}
+                </p>
+            )}
         </div>
     )
 }

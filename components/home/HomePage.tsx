@@ -17,6 +17,7 @@ import { useState } from "react";
 
 import whoAreWe from "@/public/images/whoAreWe.jpg"
 import RequestMed from "@/public/images/RequestMed.png"
+import ContatcSec from "./contactForm/ContactFormSec";
 
 export default function Home (){
     const textSec =[
@@ -107,9 +108,9 @@ export default function Home (){
                 <div className="lg:mb-40 md:mb-40 mb-20 h-full">
                     <Features featuresArr={featuresArr}/>
                 </div>
-                {/* <div className="mb-30" id="contact"> 
+                <div className="mb-30" id="contact"> 
                     <ContatcSec/>
-                </div> */}
+                </div>
             </div>
             
             {/* <h1>{t('welcome')}</h1>
