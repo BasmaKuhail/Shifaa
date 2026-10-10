@@ -18,7 +18,7 @@ type medCardProps ={
 
 export default function MedCard({pharmacyName,pharmacyId, dosageFprm, scintifcName, availablity, price, image, medName, isList, location}:medCardProps){
     const imageToDisplay = image ?? getDosageFormImage(dosageFprm);
-    console.log(image)
+    // console.log(image)
     const router = useRouter();
     return(
         <div 

@@ -13,6 +13,7 @@
     "@emotion/styled": "^11.14.1",
     "@mui/material": "^9.2.0",
     "@next/font": "^14.2.15",
+    "@upstash/redis": "^1.38.2",
     "axios": "^1.13.5",
     "framer-motion": "^12.35.1",
     "i18next": "^25.8.4",

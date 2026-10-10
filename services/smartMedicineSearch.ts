@@ -4,40 +4,67 @@ type SmartSearchResponse = {
 
 const resolvedQueries = new Map<string, string>();
 
-export const resolveMedicineSearch = async (input: string) => {
+const getCacheKey = (input: string): string =>
+  input
+    .trim()
+    .toLowerCase()
+    .replace(/\s+/g, " ");
+
+export const resolveSmartSearch = async (
+  input: string,
+): Promise<string> => {
   const normalizedInput = input.trim();
 
-  if (!normalizedInput || normalizedInput.length < 2) {
+  if (normalizedInput.length < 2) {
     return normalizedInput;
   }
 
-  const cachedQuery = resolvedQueries.get(normalizedInput.toLocaleLowerCase());
+  const cacheKey = getCacheKey(normalizedInput);
+
+  const cachedQuery = resolvedQueries.get(cacheKey);
+
   if (cachedQuery) {
+    console.log("Client cache hit:", cacheKey);
     return cachedQuery;
   }
 
   try {
-    const response = await fetch("/api/smart-medicine-search", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ input: normalizedInput }),
-    });
+    const response = await fetch(
+      "/api/smart-medicine-search",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          input: normalizedInput,
+        }),
+        
+      },
+    );
 
     if (!response.ok) {
       return normalizedInput;
     }
 
-    const data = (await response.json()) as SmartSearchResponse;
+    const data =
+      (await response.json()) as SmartSearchResponse;
+
     const searchQuery = data.searchQuery?.trim();
 
     if (!searchQuery) {
       return normalizedInput;
     }
 
-    resolvedQueries.set(normalizedInput.toLocaleLowerCase(), searchQuery);
+    resolvedQueries.set(cacheKey, searchQuery);
+
     return searchQuery;
-  } catch {
-    // AI search is an enhancement; the normal backend search remains available.
+  } catch (error) {
+    console.error(
+      "Smart search normalization failed:",
+      error,
+    );
+
     return normalizedInput;
   }
 };

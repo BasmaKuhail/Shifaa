@@ -15,7 +15,7 @@ import {
   Medicine,
   MedicinesPaginationMeta,
 } from "@/services/medication";
-import { searchMedicines } from "@/services/searchMedicine";
+import { smartSearchMedicines } from "@/services/searchMedicine";
 
 const MEDICINES_PER_PAGE = 9;
 const SEARCH_DEBOUNCE_MS = 400;
@@ -213,7 +213,7 @@ export default function SearchMed() {
       setError("");
 
       try {
-        const response = await searchMedicines({
+        const response = await smartSearchMedicines({
           page: 1,
           perPage: MEDICINES_PER_PAGE,
           search: debouncedSearch,
@@ -249,7 +249,7 @@ export default function SearchMed() {
         }
       }
     };
-
+    
     void fetchResults();
   }, [
       router.isReady,
@@ -276,7 +276,7 @@ export default function SearchMed() {
     setError("");
 
     try {
-      const response = await searchMedicines({
+      const response = await smartSearchMedicines({
         page: nextPage,
         perPage: MEDICINES_PER_PAGE,
         search: debouncedSearch,
@@ -405,8 +405,6 @@ export default function SearchMed() {
                   }`}
                 >
                   {results.map((medicine) => {
-                   console.log("MEDICINE:", medicine);
-                    console.log("PHOTO:", medicine.medication_photo);
                     return(
                     <MedCard
                       key={medicine.id}
