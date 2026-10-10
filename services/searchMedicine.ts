@@ -9,7 +9,9 @@ export const searchMedicines = async (
     search = "",
     dosageForm="",
     min=1,
-    max=200
+    max=200,
+    regionId ,
+    subregionId
   }: GetMedicinesParams = {},
 ): Promise<MedicinesApiResponse> => {
   const normalizedSearch = await resolveMedicineSearch(search);
@@ -29,6 +31,13 @@ export const searchMedicines = async (
           "filter[dosageForm]": `*${dosageForm}*`,
         }),
 
+        ...(subregionId !== undefined && {
+          "filter[subRegionId]": subregionId,
+        }),
+
+        ...(regionId !== undefined && {
+          "filter[regionId]": regionId,
+        }),
         "filter[priceRange]": `${min},${max}`,    
       }
     })
