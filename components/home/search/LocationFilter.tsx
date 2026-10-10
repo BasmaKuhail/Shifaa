@@ -28,8 +28,6 @@ export default function Location({
 }: FilterProps) {
   const [regions, setRegions] = useState<Region[]>([]);
   const [subRegions, setSubRegions] = useState<Region[]>([]);
-//   const [selectedRegionId, setSelectedRegionId] = useState<string>("");
-//   const [selectedSubRegionId, setSelectedSubRegionId] = useState<string>("");
   const [regionsLoading, setRegionsLoading] = useState(true);
   const [subRegionsLoading, setSubRegionsLoading] = useState(false);
 

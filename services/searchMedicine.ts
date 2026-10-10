@@ -23,19 +23,15 @@ export const searchMedicines = async (
         include: "pharmacy",
         page,
         per_page: perPage,
-
         ...(normalizedSearch && {
           "filter[scientificNameOrTradeName]": `*${normalizedSearch}*`}),
-
         ...(dosageForm && {
           "filter[dosageForm]": `*${dosageForm}*`,
         }),
-
-        ...(subregionId !== undefined && {
+        ...(subregionId && {
           "filter[subRegionId]": subregionId,
         }),
-
-        ...(regionId !== undefined && {
+        ...(regionId && {
           "filter[regionId]": regionId,
         }),
         "filter[priceRange]": `${min},${max}`,    

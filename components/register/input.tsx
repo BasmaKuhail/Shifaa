@@ -11,10 +11,11 @@ type InputProps = {
     isTrue: boolean;
     editable?:boolean;
     errorMsg?: string;
+    isRequired?: boolean;
 }
 
 
-const Input = React.memo(({label, type, inputText, value, onChange, isTrue, editable=true, errorMsg}: InputProps) =>{
+const Input = React.memo(({label, type, inputText, value, onChange, isTrue, editable=true, errorMsg, isRequired = true}: InputProps) =>{
     const [passSrc, setPassSrc] = useState<string>('/icons/unshowPass.svg');
     const [inputType, setInputType] = useState<'text' | 'email' | 'password' | 'textarea' | 'file' | 'number'>(type);
     const togglePasswordVisibility = () => {
@@ -26,7 +27,12 @@ const Input = React.memo(({label, type, inputText, value, onChange, isTrue, edit
 
     return (
         <div dir="rtl" className="flex flex-col gap-1">
-            <label className="text-sm font-bold text-right">{label}</label>
+            <nav className='flex gap-2 flex-row items-center'>
+                <label className="text-sm font-bold text-right">{label}</label>
+                {isRequired && <span className="text-red-500 text-btn">*</span>}
+                {!isRequired && <span className="text-gray-400 text-sm">(اختياري)</span>}
+                
+            </nav>
             <div className="relative mb-5">
                 {(type == 'textarea') ? (
                     <textarea 
